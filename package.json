@@ -2,10 +2,15 @@
   "name": "globomap-ui",
   "version": "0.1.0",
   "private": true,
+  "devDependencies": {
+    "react-scripts": "1.0.10"
+  },
   "dependencies": {
+    "axios": "^0.16.2",
+    "express": "^4.15.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-scripts": "1.0.10"
+    "react-router-dom": "^4.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
