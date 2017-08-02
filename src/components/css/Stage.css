@@ -1,0 +1,9 @@
+.stage {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 5px;
+}

@@ -1,0 +1,5 @@
+.search-box {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 40px;
+}
