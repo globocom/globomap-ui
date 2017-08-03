@@ -1,0 +1,12 @@
+.node-item {
+  display: inline-block;
+  margin: 5px;
+  padding: 3px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.node-item.current {
+  border: 1px solid #9daca9;
+}
