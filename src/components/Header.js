@@ -7,7 +7,7 @@ class Header extends Component {
     return (
       <header className="main-header">
         <span className="logo">globomap</span>
-        <Search />
+        <Search findNodes={this.props.findNodes} />
       </header>
     );
   }

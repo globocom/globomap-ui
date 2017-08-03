@@ -5,7 +5,8 @@ class Info extends Component {
   render() {
     return (
       <div className="info">
-        info
+        <div className="info-title"></div>
+        {this.props.currentNode}
       </div>
     );
   }

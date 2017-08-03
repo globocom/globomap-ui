@@ -7,17 +7,20 @@ class Search extends Component {
     super(props);
 
     this.state = {
-      query: "",
+      query: ""
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.onSendSearchQuery = this.onSendSearchQuery.bind(this);
   }
 
   render() {
     return (
       <div className="search-box">
-        <input type="text" name="query"
+        <input type="text" name="query" placeholder="search"
                value={this.state.query} onChange={this.handleInputChange} />
+
+        <button className="btn-search" onClick={this.onSendSearchQuery}>Search</button>
       </div>
     );
   }
@@ -26,6 +29,10 @@ class Search extends Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     this.setState({[target.name]: value});
+  }
+
+  onSendSearchQuery() {
+    this.props.findNodes(this.state.query);
   }
 
 }
