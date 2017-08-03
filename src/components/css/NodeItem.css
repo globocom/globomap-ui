@@ -1,12 +1,19 @@
 .node-item {
   display: inline-block;
-  margin: 5px;
-  padding: 3px;
+  margin: 0 5px 5px 0;
+  padding: 5px 8px;
   border: 1px solid transparent;
   border-radius: 2px;
   cursor: pointer;
+  background-color: #9daca9;
+}
+
+.node-item a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
 }
 
 .node-item.current {
-  border: 1px solid #9daca9;
+  background-color: #288edf;
 }

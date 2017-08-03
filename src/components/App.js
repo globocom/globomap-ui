@@ -15,11 +15,12 @@ class App extends Component {
       nodes: []
     };
 
-    this.addNode = this.addNode.bind(this);
-    this.setCurrent = this.setCurrent.bind(this);
-    this.clearCurrent = this.clearCurrent.bind(this);
+    this.addSingleNode = this.addSingleNode.bind(this);
+    this.addMultipleNodes = this.addMultipleNodes.bind(this);
     this.findNodes = this.findNodes.bind(this);
     this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
+    this.setCurrent = this.setCurrent.bind(this);
+    this.clearCurrent = this.clearCurrent.bind(this);
   }
 
   render() {
@@ -30,7 +31,8 @@ class App extends Component {
         <Stage nodes={this.state.nodes}
                setCurrent={this.setCurrent} />
 
-        <Info currentNode={this.state.currentNode} />
+        <Info nodes={this.state.nodes}
+              currentNode={this.state.currentNode} />
       </div>
     );
   }
@@ -40,6 +42,8 @@ class App extends Component {
   }
 
   getGraphsAndCollections() {
+    // endpoints: /v1/graphs, /v1/collections
+
     this.setState({
       graphs: ['base'],
       collections: ['compunit', 'pool', 'vip']
@@ -48,18 +52,36 @@ class App extends Component {
 
   findNodes(query, coll) {
     let colls = this.state.collections;
+    let nodes = []
 
     if(coll !== undefined && colls.indexOf(coll) < 0) {
-      return []
+      return;
     }
 
-    this.setState({
-      nodes: [{_id: "pool/napi_1",_key: "napi_1",_rev: "_VYORx9q---",name: "pool01"}],
-    });
+    // search for mached nodes
+    nodes = [{"_id":"compunit/napi_2","_key":"napi_2","_rev":"_VYOPfAa---","name":"compunit02"},
+             {"_id":"compunit/napi_5","_key":"napi_5","_rev":"_VYmsfwq---","name":"compunit05"},
+             {"_id":"compunit/napi_1","_key":"napi_1","_rev":"_VYOPIJe---","name":"compunit01"},
+             {"_id":"compunit/napi_3","_key":"napi_3","_rev":"_VYmsv6m---","name":"compunit03"},
+             {"_id":"compunit/napi_4","_key":"napi_4","_rev":"_VYms7Vm---","name":"compunit04"}];
+
+    if(nodes.length > 0) {
+      this.setState({ nodes: [] });
+    }
+
+    this.addMultipleNodes(nodes);
   }
 
-  addNode(node) {
-    this.state.nodes.push(node);
+  addSingleNode(node) {
+    this.setState(previousState => ({
+        nodes: [...previousState.nodes, node]
+    }));
+  }
+
+  addMultipleNodes(nodeList) {
+    this.setState(previousState => ({
+        nodes: [...previousState.nodes, ...nodeList]
+    }));
   }
 
   setCurrent(nodeId) {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './css/NodeItem.css';
 
-
 class NodeItem extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +9,7 @@ class NodeItem extends Component {
 
   render() {
     let node = this.props.node,
-        { name, properties, current } = node;
+        { name, current } = node;
 
     return (
       <div className={"node-item " + (current ? " current" : "")}
