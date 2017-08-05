@@ -21,7 +21,7 @@ class Info extends Component {
   }
 
   getNode(nodeId) {
-    let nodes = this.props.nodes.slice();
+    let nodes = this.props.nodes;
     let index = nodes.findIndex((elem, i, arr) => {
       return elem._id === nodeId;
     });

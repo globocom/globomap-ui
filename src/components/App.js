@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client';
 import Header from './Header';
 import Stage from './Stage';
 import Info from './Info';
@@ -8,6 +9,8 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.socket = io();
+
     this.state = {
       currentNode: null,
       graphs: [],
@@ -50,26 +53,21 @@ class App extends Component {
     });
   }
 
-  findNodes(query, coll) {
-    let colls = this.state.collections;
-    let nodes = []
+  findNodes(query, co) {
+    let collections = this.state.collections;
 
-    if(coll !== undefined && colls.indexOf(coll) < 0) {
+    if(co !== undefined && collections.indexOf(co) < 0) {
       return;
     }
 
-    // search for mached nodes
-    nodes = [{"_id":"compunit/napi_2","_key":"napi_2","_rev":"_VYOPfAa---","name":"compunit02"},
-             {"_id":"compunit/napi_5","_key":"napi_5","_rev":"_VYmsfwq---","name":"compunit05"},
-             {"_id":"compunit/napi_1","_key":"napi_1","_rev":"_VYOPIJe---","name":"compunit01"},
-             {"_id":"compunit/napi_3","_key":"napi_3","_rev":"_VYmsv6m---","name":"compunit03"},
-             {"_id":"compunit/napi_4","_key":"napi_4","_rev":"_VYms7Vm---","name":"compunit04"}];
+    this.socket.emit('findnodes', {query: query, co: collections }, (data) => {
+      if(!data || data.length <= 0) {
+        this.setState({ nodes: [] });
+        return;
+      }
 
-    if(nodes.length > 0) {
-      this.setState({ nodes: [] });
-    }
-
-    this.addMultipleNodes(nodes);
+      this.addMultipleNodes(data);
+    });
   }
 
   addSingleNode(node) {
