@@ -8,8 +8,7 @@ class NodeItem extends Component {
   }
 
   render() {
-    let node = this.props.node,
-        { name, current } = node;
+    let { name, current } = this.props.node;
 
     return (
       <div className={"node-item " + (current ? " current" : "")}
@@ -21,7 +20,9 @@ class NodeItem extends Component {
 
   onItemSelect(event) {
     event.stopPropagation();
-    this.props.setCurrent(this.props.node._id);
+    let node = this.props.node;
+
+    this.props.setCurrent(node._id);
   }
 }
 

@@ -9,7 +9,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = io();
+    this.socket = io('http://localhost:8888');  // development
 
     this.state = {
       currentNode: null,
@@ -45,41 +45,48 @@ class App extends Component {
   }
 
   getGraphsAndCollections() {
-    // endpoints: /v1/graphs, /v1/collections
-
-    this.setState({
-      graphs: ['base'],
-      collections: ['compunit', 'pool', 'vip']
+    this.socket.emit('getcollections', {}, (data) => {
+      this.setState({ collections: data });
     });
-  }
 
-  findNodes(query, co) {
-    let collections = this.state.collections;
-
-    if(co !== undefined && collections.indexOf(co) < 0) {
-      return;
-    }
-
-    this.socket.emit('findnodes', {query: query, co: collections }, (data) => {
-      if(!data || data.length <= 0) {
-        this.setState({ nodes: [] });
-        return;
-      }
-
-      this.addMultipleNodes(data);
+    this.socket.emit('getgraphs', {}, (data) => {
+      this.setState({ graphs: data });
     });
   }
 
   addSingleNode(node) {
     this.setState(previousState => ({
-        nodes: [...previousState.nodes, node]
+      nodes: [...previousState.nodes, node]
     }));
   }
 
   addMultipleNodes(nodeList) {
     this.setState(previousState => ({
-        nodes: [...previousState.nodes, ...nodeList]
+      nodes: [...previousState.nodes, ...nodeList]
     }));
+  }
+
+  findNodes(query, co) {
+    if(co !== undefined && !co instanceof Array)  {
+      console.log('The 2nd argument must be an Array');
+      return;
+    }
+
+    if(co.length === 0) {
+      co = this.state.collections;
+    }
+
+    this.socket.emit('findnodes', {query: query, collections: co}, (data) => {
+      if(!data || data.length <= 0) {
+        this.setState({ nodes: [] });
+        return;
+      }
+    });
+
+    this.socket.on('nodefound', (data) => {
+      let {collection, nodes} = data;
+      this.addMultipleNodes(nodes);
+    });
   }
 
   setCurrent(nodeId) {

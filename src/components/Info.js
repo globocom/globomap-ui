@@ -1,23 +1,40 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client';
 import './css/Info.css';
 
 class Info extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {}
+    this.socket = io('http://localhost:8888');  // development
+
+    this.state = {
+      node: this.getNode(this.props.currentNode),
+      nodeInfo: null
+    }
 
     this.getNode = this.getNode.bind(this);
+    this.traversalSearch = this.traversalSearch.bind(this);
   }
 
   render() {
-    let node = this.getNode(this.props.currentNode);
-
     return (
         <div className="info">
-          <div className="info-title">{node && node.name}</div>
+          <div className="info-title">
+            {this.props.currentNode && this.state.node.name}
+
+          </div>
         </div>
     );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.currentNode !== nextProps.currentNode) {
+      let node = this.getNode(nextProps.currentNode);
+
+      this.setState({node: node});
+      this.traversalSearch(node);
+    }
   }
 
   getNode(nodeId) {
@@ -32,6 +49,17 @@ class Info extends Component {
 
     return nodes[index];
   }
+
+  traversalSearch(node) {
+    let options = { start: node._id, graph: 'base', depth: 1 }
+
+    this.socket.emit('traversalsearch', options, (data) => {
+      console.log(data);
+
+      this.setState({ nodeInfo: data });
+    });
+  }
+
 }
 
 export default Info;

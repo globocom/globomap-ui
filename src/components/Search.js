@@ -7,7 +7,8 @@ class Search extends Component {
     super(props);
 
     this.state = {
-      query: ""
+      query: "",
+      collections: []
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -32,7 +33,7 @@ class Search extends Component {
   }
 
   onSendSearchQuery() {
-    this.props.findNodes(this.state.query);
+    this.props.findNodes(this.state.query, this.state.collections);
   }
 
 }
