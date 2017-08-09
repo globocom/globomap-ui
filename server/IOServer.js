@@ -59,21 +59,18 @@ class IOServer {
 
   findNodes(data, fn) {
     let { query, collections } = data;
+    let urlList = []
 
     collections.map((co) => {
-      let url = globomapApiUrl + '/collections/'+ co +'/search';
-      axios.get(url, {
-        params: { field: "name", value: query },
-        responseType: 'json'
-      })
-      .then((response) => {
-        fn('Searching...');
-        this.io.emit('nodefound', {'collection': co, 'nodes': response.data});
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      let url = globomapApiUrl + '/collections/'+ co +'/search?'+ 'field=name&value='+ query;
+      urlList.push(axios.get(url));
     });
+
+    axios.all(urlList)
+      .then((results) => {
+        let data = results.map(resp => resp.data);
+        fn(data);
+      });
   }
 
   traversalSearch(data, fn) {
