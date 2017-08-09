@@ -21,8 +21,7 @@ class Info extends Component {
     return (
         <div className="info">
           <div className="info-title">
-            {this.props.currentNode && this.state.node.name}
-
+            {this.props.currentNode ? this.state.node.name : 'Info'}
           </div>
         </div>
     );

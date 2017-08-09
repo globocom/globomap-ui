@@ -29,9 +29,12 @@ class App extends Component {
   render() {
     return (
       <div className="main">
-        <Header findNodes={this.findNodes} />
+        <Header graphs={this.state.graphs}
+                collections={this.state.collections}
+                findNodes={this.findNodes} />
 
         <Stage nodes={this.state.nodes}
+               collections={this.state.collections}
                setCurrent={this.setCurrent} />
 
         <Info nodes={this.state.nodes}
@@ -50,7 +53,11 @@ class App extends Component {
     });
 
     this.socket.emit('getgraphs', {}, (data) => {
-      this.setState({ graphs: data });
+      let graphs = [];
+      for(let i=0, l=data.length; i<l; i++) {
+        graphs.push({name: data[i], colorClass: 'graph-color' + i});
+      }
+      this.setState({ graphs: graphs });
     });
   }
 
@@ -66,6 +73,10 @@ class App extends Component {
     }));
   }
 
+  clearStage() {
+    this.setState({ nodes: [] });
+  }
+
   findNodes(query, co) {
     if(co !== undefined && !co instanceof Array)  {
       console.log('The 2nd argument must be an Array');
@@ -73,19 +84,19 @@ class App extends Component {
     }
 
     if(co.length === 0) {
-      co = this.state.collections;
+      console.log('Select an item');
+      return;
     }
 
     this.socket.emit('findnodes', {query: query, collections: co}, (data) => {
       if(!data || data.length <= 0) {
         this.setState({ nodes: [] });
-        return;
       }
-    });
 
-    this.socket.on('nodefound', (data) => {
-      let {collection, nodes} = data;
-      this.addMultipleNodes(nodes);
+      data.map((coNodes) => {
+        console.log(coNodes.map((node) => { return node._id; }));
+        return coNodes;
+      });
     });
   }
 

@@ -1,18 +1,73 @@
-.main-header {
+.main-header .header-group,
+.main-header .header-sub-group,
+.header-sub-group .graph-buttons,
+.header-sub-group .collection-items {
+  box-sizing: border-box;
+}
+
+.main-header .header-group,
+.main-header .header-sub-group {
   position: fixed;
   top: 0;
   left: 0;
-  height: 50px;
   width: 100%;
-  background-color: #d2d6d6;
-  padding: 5px;
 }
 
-.main-header .logo {
-  display: inline-block;
+.main-header .header-group {
+  height: 50px;
+  background-color: #d2d6d6;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  z-index: 9;
+}
+
+.main-header .header-group .logo {
+  float: left;
   font-size: 22px;
   font-weight: bold;
   letter-spacing: -1px;
-  color: #a5a7a7;
+  color: #454545;
   margin: 0 20px;
+  line-height: 50px;
+}
+
+.main-header .header-sub-group {
+  height: 60px;
+  top: 50px;
+  background-color: #ebecec;
+  border-bottom: 1px solid rgba(157, 172, 169, 0.35);
+  z-index: 5;
+}
+
+.header-sub-group .graph-buttons {
+  float: left;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  border-right: 1px solid rgba(157, 172, 169, 0.35);
+}
+
+.header-sub-group .graph-buttons button {
+  margin-right: 5px;
+  text-shadow: none;
+  color: white;
+  font-weight: normal;
+}
+
+.header-sub-group .graph-buttons button:hover {
+  box-shadow: none;
+}
+
+.header-sub-group .collection-items {
+  float: left;
+  display: flex;
+  flex-flow: column wrap;
+  height: 60px;
+  padding: 8px 20px 0;
+  font-size: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.header-sub-group .collection-items .item {
+  margin: 0 15px 10px 0;
 }

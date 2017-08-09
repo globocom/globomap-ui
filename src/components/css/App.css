@@ -1,10 +1,10 @@
-html {
+/* html {
   box-sizing: border-box;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
-}
+} */
 
 body {
   border: 0;
@@ -17,3 +17,16 @@ body {
 a {
   color: #288edf
 }
+
+.graph-color0,
+.graph-color0:hover { background-color: #36bb77 }
+
+.graph-color1,
+.graph-color1:hover { background-color: #3e92d4 }
+
+.graph-color2,
+.graph-color2:hover { background-color: #d43e5e }
+
+.graph-color3,
+.graph-color3:hover { background-color: #dfc97a }
+

@@ -1,8 +1,9 @@
 .stage {
   position: absolute;
-  top: 50px;
+  top: 110px;
   left: 0;
   right: 0;
   bottom: 0;
   padding: 20px;
+  z-index: 5;
 }

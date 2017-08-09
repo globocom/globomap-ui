@@ -7,8 +7,7 @@ class Search extends Component {
     super(props);
 
     this.state = {
-      query: "",
-      collections: []
+      query: ""
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -18,10 +17,9 @@ class Search extends Component {
   render() {
     return (
       <div className="search-box">
-        <input type="text" name="query" placeholder="search"
-               value={this.state.query} onChange={this.handleInputChange} />
-
-        <button className="btn-search" onClick={this.onSendSearchQuery}>Search</button>
+        <input className="topcoat-text-input--large" type="text" name="query" pattern="blah"
+          placeholder="search" value={this.state.query} onChange={this.handleInputChange} />
+        <button className="btn-search topcoat-button--large" onClick={this.onSendSearchQuery}>Search</button>
       </div>
     );
   }
@@ -33,7 +31,10 @@ class Search extends Component {
   }
 
   onSendSearchQuery() {
-    this.props.findNodes(this.state.query, this.state.collections);
+    if(this.state.query === "") {
+
+    }
+    this.props.findNodes(this.state.query, this.props.enabledCollections);
   }
 
 }
