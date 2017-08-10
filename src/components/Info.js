@@ -20,10 +20,6 @@ class Info extends Component {
 
   render() {
     let subnodes = this.state.subnodes.map((subnode) => {
-      if(subnode._id === this.state.node._id) {
-        return "";
-      }
-
       return (<div key={subnode._id} className="sub-node">
                 <span className="sub-node-type">{subnode.type}</span>
                 <span className="sub-node-name">{subnode.name}</span>
@@ -68,7 +64,11 @@ class Info extends Component {
     let options = { start: node._id, graph: 'base', depth: 1 }
 
     this.socket.emit('traversalsearch', options, (data) => {
-      this.setState({ subnodes: data.nodes, edges: data.edges });
+      let subnodes = data.nodes.filter((n) => {
+        return n._id !== node._id;
+      });
+
+      this.setState({ subnodes: subnodes, edges: data.edges });
     });
   }
 
