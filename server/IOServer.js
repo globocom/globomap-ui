@@ -96,7 +96,6 @@ class IOServer {
         return this.updateItemInfo(node);
       });
 
-      console.log(data);
       fn(data);
     })
     .catch((error) => {
