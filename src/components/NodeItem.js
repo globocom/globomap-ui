@@ -8,12 +8,20 @@ class NodeItem extends Component {
   }
 
   render() {
-    let { name, current } = this.props.node;
+    let { name, type, current } = this.props.node;
 
     return (
       <div className={"node-item " + (current ? " current" : "")}
            onClick={this.onItemSelect}>
-        <a href={"#"+ name} className="node-name">{name}</a>
+
+        <div className="node-info">
+          <span className="type">{type}</span>
+          <span className="name">{name}</span>
+        </div>
+
+        <div className="node-graphs">
+          <span className="label">base</span>
+        </div>
       </div>
     );
   }

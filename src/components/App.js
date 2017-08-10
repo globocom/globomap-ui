@@ -38,6 +38,7 @@ class App extends Component {
                setCurrent={this.setCurrent} />
 
         <Info nodes={this.state.nodes}
+              graphs={this.state.graphs}
               currentNode={this.state.currentNode} />
       </div>
     );
@@ -73,10 +74,6 @@ class App extends Component {
     }));
   }
 
-  clearStage() {
-    this.setState({ nodes: [] });
-  }
-
   findNodes(query, co) {
     if(co !== undefined && !co instanceof Array)  {
       console.log('The 2nd argument must be an Array');
@@ -88,15 +85,16 @@ class App extends Component {
       return;
     }
 
+    if(query === '') {
+      console.log('Enter some text to search for');
+      return;
+    }
+
     this.socket.emit('findnodes', {query: query, collections: co}, (data) => {
       if(!data || data.length <= 0) {
         this.setState({ nodes: [] });
       }
-
-      data.map((coNodes) => {
-        console.log(coNodes.map((node) => { return node._id; }));
-        return coNodes;
-      });
+      this.setState({ nodes: data });
     });
   }
 

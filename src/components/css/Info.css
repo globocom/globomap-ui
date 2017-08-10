@@ -28,3 +28,19 @@
   padding: 0 20px;
   border-bottom: 1px solid #9daca9;
 }
+
+.info .info-content .sub-node {
+  padding: 20px;
+  border-bottom: 1px dotted #9daca9;
+}
+
+.info .info-content .sub-node:nth-child(odd) {
+  background-color: #d9dddd;
+}
+
+.info .info-content .sub-node .sub-node-type {
+  display: block;
+  font-size: 10px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}

@@ -17,8 +17,8 @@ class Search extends Component {
   render() {
     return (
       <div className="search-box">
-        <input className="topcoat-text-input--large" type="text" name="query" pattern="blah"
-          placeholder="search" value={this.state.query} onChange={this.handleInputChange} />
+        <input className="topcoat-text-input--large" type="search" name="query"
+          value={this.state.query} onChange={this.handleInputChange} />
         <button className="btn-search topcoat-button--large" onClick={this.onSendSearchQuery}>Search</button>
       </div>
     );

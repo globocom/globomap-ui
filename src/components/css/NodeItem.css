@@ -1,19 +1,53 @@
+.node-item,
+.node-item .graph-labels {
+  box-sizing: border-box;
+}
+
 .node-item {
   display: inline-block;
   margin: 0 5px 5px 0;
-  padding: 5px 8px;
   border: 1px solid transparent;
   border-radius: 2px;
+  min-width: 80px;
   cursor: pointer;
   background-color: #9daca9;
 }
 
-.node-item a {
+.node-item .node-info,
+.node-item .node-graphs {
+  padding: 10px 15px;
+}
+
+.node-item .node-info {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.node-item .type {
+  display: block;
+  font-size: 10px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.node-item .name {
   color: white;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .node-item.current {
   background-color: #288edf;
+}
+
+.node-item .node-graphs {
+  display: block;
+  background-color: #7f8c89;
+}
+
+.node-item .node-graphs .label {
+  font-size: 12px;
+  background-color: #36bb77;
+  color: white;
+  border-radius: 2px;
+  padding: 2px 4px;
 }

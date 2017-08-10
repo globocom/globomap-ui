@@ -10,7 +10,8 @@ class Info extends Component {
 
     this.state = {
       node: this.getNode(this.props.currentNode),
-      nodeInfo: null
+      subnodes: [],
+      edges: []
     }
 
     this.getNode = this.getNode.bind(this);
@@ -18,10 +19,24 @@ class Info extends Component {
   }
 
   render() {
+    let subnodes = this.state.subnodes.map((subnode) => {
+      if(subnode._id === this.state.node._id) {
+        return "";
+      }
+
+      return (<div key={subnode._id} className="sub-node">
+                <span className="sub-node-type">{subnode.type}</span>
+                <span className="sub-node-name">{subnode.name}</span>
+              </div>);
+    });
+
     return (
         <div className="info">
           <div className="info-title">
             {this.props.currentNode ? this.state.node.name : 'Info'}
+          </div>
+          <div className="info-content">
+            {subnodes}
           </div>
         </div>
     );
@@ -53,9 +68,7 @@ class Info extends Component {
     let options = { start: node._id, graph: 'base', depth: 1 }
 
     this.socket.emit('traversalsearch', options, (data) => {
-      console.log(data);
-
-      this.setState({ nodeInfo: data });
+      this.setState({ subnodes: data.nodes, edges: data.edges });
     });
   }
 
