@@ -1,0 +1,39 @@
+.search-content {
+  box-sizing: border-box;
+}
+
+.search-content {
+  position: absolute;
+  top: 110px;
+  width: 100%;
+  left: 0;
+}
+
+.search-content table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.search-content table tr {
+  cursor: pointer;
+}
+
+.search-content table tr:nth-child(odd) {
+  background-color: #efefef;
+}
+
+.search-content table tr:hover td {
+  background-color: #dfdbcc;
+}
+
+.search-content table th {
+  background-color: #d9dddd;
+}
+
+.search-content table th,
+.search-content table td {
+  text-align: left;
+  padding: 8px 10px;
+  color: #454545;
+  font-size: 14px;
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import Header from './Header';
+import SearchContent from './SearchContent';
 import Stage from './Stage';
 import Info from './Info';
 import './css/App.css';
@@ -18,12 +19,13 @@ class App extends Component {
       nodes: []
     };
 
-    this.addSingleNode = this.addSingleNode.bind(this);
-    this.addMultipleNodes = this.addMultipleNodes.bind(this);
     this.findNodes = this.findNodes.bind(this);
+    this.addSingleNode = this.addSingleNode.bind(this);
+    this.hasNode = this.hasNode.bind(this);
     this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
     this.setCurrent = this.setCurrent.bind(this);
     this.clearCurrent = this.clearCurrent.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   render() {
@@ -33,19 +35,22 @@ class App extends Component {
                 collections={this.state.collections}
                 findNodes={this.findNodes} />
 
-        <Stage nodes={this.state.nodes}
-               collections={this.state.collections}
+        <SearchContent nodes={this.state.nodes}
+                       setCurrent={this.setCurrent}
+                       addSingleNode={this.addSingleNode}
+                       currentNode={this.state.currentNode} />
+
+        <Stage nodes={[]}
+               currentNode={this.state.currentNode}
+               clearCurrent={this.clearCurrent}
                setCurrent={this.setCurrent} />
 
-        <Info nodes={this.state.nodes}
-              graphs={this.state.graphs}
-              currentNode={this.state.currentNode} />
+        {this.state.currentNode &&
+          <Info nodes={this.state.nodes}
+                graphs={this.state.graphs}
+                currentNode={this.state.currentNode} />}
       </div>
     );
-  }
-
-  componentDidMount() {
-    this.getGraphsAndCollections();
   }
 
   getGraphsAndCollections() {
@@ -62,16 +67,27 @@ class App extends Component {
     });
   }
 
-  addSingleNode(node) {
-    this.setState(previousState => ({
-      nodes: [...previousState.nodes, node]
-    }));
+  addSingleNode(node, fn) {
+    if(this.hasNode(node._id)) {
+      this.setCurrent(node._id);
+      return;
+    }
+
+    this.setState((prevState) => {
+      return {nodes: [...prevState.nodes, node]}
+    }, fn());
   }
 
-  addMultipleNodes(nodeList) {
-    this.setState(previousState => ({
-      nodes: [...previousState.nodes, ...nodeList]
-    }));
+  hasNode(nodeId) {
+    let currentNodes = this.state.nodes.map((node) => {
+      return node._id;
+    });
+
+    if(currentNodes.indexOf(nodeId) < 0) {
+      return false;
+    }
+
+    return true;
   }
 
   findNodes(query, co) {
@@ -124,6 +140,22 @@ class App extends Component {
       currentNode: null,
       nodes: currentNodes
     });
+  }
+
+  handleKeyDown(event) {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.clearCurrent();
+    }
+  };
+
+  componentDidMount() {
+    this.getGraphsAndCollections();
+    document.addEventListener('keydown', this.handleKeyDown)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyDown)
   }
 
 }
