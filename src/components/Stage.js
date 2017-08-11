@@ -19,7 +19,7 @@ class Stage extends Component {
     });
 
     return (
-      <div className="stage">
+      <div className={"stage" + (nodes.length > 0 ? " open" : "")}>
         {allNodes}
       </div>
     );

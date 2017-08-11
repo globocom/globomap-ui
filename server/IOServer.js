@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:5000/v1'
+const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1'
 
 class IOServer {
   constructor(io) {
@@ -59,7 +59,7 @@ class IOServer {
 
   findNodes(data, fn) {
     let { query, collections } = data;
-    let urlList = []
+    let urlList = [];
 
     for(let i=0, l=collections.length; i<l; i++) {
       let url = `${globomapApiUrl}/collections/${collections[i]}/search?field=name&value=${query}`;
@@ -79,28 +79,31 @@ class IOServer {
   }
 
   traversalSearch(data, fn) {
-    let { start, graph, depth } = data;
-    let url = `${globomapApiUrl}/traversal`;
+    let { start, graphs, depth } = data;
+    let urlList = [];
 
-    axios.get(url, {
-      params: { start_vertex: start, graph: graph, max_depth: depth },
-      responseType: 'json'
-    })
-    .then((response) => {
-      let data = {};
-      data.edges = response.data.edges.map((edge) => {
-        return this.updateItemInfo(edge);
+    for(let i=0, l=graphs.length; i<l; i++) {
+      let url = `${globomapApiUrl}/traversal?graph=${graphs[i]}&start_vertex=${start}&max_depth=${depth}`;
+      urlList.push(axios.get(url));
+    }
+
+    axios.all(urlList)
+      .then((results) => {
+        results = results.map((resp) => {
+          let data = {graph: resp.data.graph};
+
+          data.edges = resp.data.edges.map((edge) => {
+            return this.updateItemInfo(edge);
+          });
+
+          data.nodes = resp.data.nodes.map((node) => {
+            return this.updateItemInfo(node);
+          });
+          return data;
+        });
+
+        fn(results);
       });
-
-      data.nodes = response.data.nodes.map((node) => {
-        return this.updateItemInfo(node);
-      });
-
-      fn(data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
   }
 
   updateItemInfo(item) {
