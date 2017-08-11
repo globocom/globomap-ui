@@ -22,8 +22,14 @@
   background-color: #efefef;
 }
 
+.search-content table tr.current td,
+.search-content table tr.current:hover td {
+  background-color: #9daca9;
+  color: white;
+}
+
 .search-content table tr:hover td {
-  background-color: #dfdbcc;
+  background-color: #dbeae7;
 }
 
 .search-content table th {
@@ -33,7 +39,11 @@
 .search-content table th,
 .search-content table td {
   text-align: left;
-  padding: 8px 10px;
+  padding: 6px 10px;
   color: #454545;
   font-size: 14px;
+}
+
+.search-content .btn-open-node {
+  font-size: 16px;
 }

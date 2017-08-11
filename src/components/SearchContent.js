@@ -13,8 +13,13 @@ class SearchContent extends Component {
     let nodes = this.props.nodes;
 
     const allNodes = nodes.map((node, i) => {
-      return (<tr key={node._id} onClick={(e) => this.onNodeSelect(e, node)}>
+      return (<tr key={node._id} className={node.current ? 'current' : ''}
+                  onClick={(e) => this.onNodeSelect(e, node)}>
                 <td>{i + 1}</td>
+                <td>
+                  <button className="btn-open-node topcoat-button"
+                    onClick={(e) => this.onNodeOpen(e, node)}>+</button>
+                </td>
                 <td>{node.type}</td>
                 <td>{node.name}</td>
               </tr>);
@@ -26,6 +31,7 @@ class SearchContent extends Component {
           (<table>
             <thead>
               <tr>
+                <th width="2%">&nbsp;</th>
                 <th width="2%">&nbsp;</th>
                 <th width="10%">Type</th>
                 <th>Name</th>
@@ -42,7 +48,11 @@ class SearchContent extends Component {
   onNodeSelect(event, node) {
     event.stopPropagation();
     this.props.setCurrent(node._id);
-    // this.props.addSingleNode(node, () => {});
+  }
+
+  onNodeOpen(event, node) {
+    event.stopPropagation();
+    console.log()
   }
 
 }

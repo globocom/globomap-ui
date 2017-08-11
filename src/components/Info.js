@@ -29,16 +29,23 @@ class Info extends Component {
       });
 
       let qtdNodes = nodesItem.subnodes.length;
+      let graphColor = this.props.graphs.filter((graph) => {
+        return graph.name === nodesItem.graph;
+      })[0].colorClass;
+
       return (<div key={nodesItem.graph} className="sub-nodes-by-graph">
-                <span className="graph-name">
-                  {nodesItem.graph} - {qtdNodes + (qtdNodes === 1 ? ' node' : ' nodes')}
-                </span>
+                <div className={'graph-name '+ graphColor}>
+                  {nodesItem.graph}
+                  <span className="qtd-nodes">
+                    {qtdNodes + (qtdNodes === 1 ? ' node' : ' nodes')}
+                  </span>
+                </div>
                 {subnodes}
               </div>);
     });
 
     return (
-      <div className="info">
+      <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
         <div className="info-title">
           {this.props.currentNode ? this.state.node.name : 'Info'}
         </div>
@@ -72,14 +79,13 @@ class Info extends Component {
   }
 
   traversalSearch(node) {
-    let options = { start: node._id, graphs: ['base', 'access'], depth: 1 }
-
-    this.socket.emit('traversalsearch', options, (data) => {
+    let graphs = this.props.graphs.filter(g => g.enabled)
+                                  .map(g => g.name);
+    this.socket.emit('traversalsearch', { start: node._id, graphs: graphs, depth: 1 }, (data) => {
       let subNodesByGraph = [];
 
       for(let i=0, l=data.length; i<l; i++) {
         let nodesItem = { graph: data[i].graph };
-
         let subnodes = data[i].nodes.map((n) => {
           n.edges = [];
           for(let j=0, k=data[i].edges.length; j<k; j++) {
@@ -91,14 +97,10 @@ class Info extends Component {
           return n;
         });
 
-        nodesItem.subnodes = subnodes.filter((n) => {
-          return n._id !== node._id;
-        })
-
+        nodesItem.subnodes = subnodes.filter(n => n._id !== node._id);
         subNodesByGraph.push(nodesItem);
       }
 
-      console.log(subNodesByGraph);
       this.setState({ subNodesByGraph: subNodesByGraph });
     });
   }

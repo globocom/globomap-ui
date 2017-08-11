@@ -82,6 +82,8 @@ class IOServer {
     let { start, graphs, depth } = data;
     let urlList = [];
 
+    console.log(graphs);
+
     for(let i=0, l=graphs.length; i<l; i++) {
       let url = `${globomapApiUrl}/traversal?graph=${graphs[i]}&start_vertex=${start}&max_depth=${depth}`;
       urlList.push(axios.get(url));

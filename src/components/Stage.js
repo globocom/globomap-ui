@@ -10,7 +10,7 @@ class Stage extends Component {
   }
 
   render() {
-    let nodes = this.props.nodes;
+    let nodes = this.props.stageNodes;
 
     const allNodes = nodes.map((node) => {
       return <NodeItem key={node._id}

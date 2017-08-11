@@ -6,14 +6,21 @@
 .info {
   position: fixed;
   top: 110px;
-  right: 0px;
+  right: -31%;
   bottom: 0px;
-  width: 25%;
+  width: 30%;
   min-width: 250px;
-  background-color: #d2d6d6;
+  background-color: #dfe2e2;
   padding: 50px 0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: -5px 25px 80px rgba(0,0,0,0.25);
   z-index: 8;
+
+  transition: all 0.1s cubic-bezier(0.70, 0, 0.175, 1);
+}
+
+.info.open {
+  right: 0;
 }
 
 .info .info-title {
@@ -24,21 +31,36 @@
   height: 50px;
   line-height: 50px;
   padding: 0 20px;
-  border-bottom: 1px solid #9daca9;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  background-color: #d2d6d6;
 }
 
 .info .info-content .sub-node {
-  padding: 20px;
-  border-bottom: 1px dotted #9daca9;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(157, 172, 169, 0.35);
 }
 
-.info .info-content .sub-node:nth-child(odd) {
+/* .info .info-content .sub-node:nth-child(odd) {
   background-color: #d9dddd;
-}
+} */
 
 .info .info-content .sub-node .sub-node-type {
   display: block;
   font-size: 10px;
   margin-bottom: 6px;
   text-transform: uppercase;
+}
+
+.info .sub-nodes-by-graph {
+
+}
+
+.info .sub-nodes-by-graph .graph-name {
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+}
+
+.info .sub-nodes-by-graph .graph-name .qtd-nodes {
+  float: right;
 }

@@ -16,12 +16,13 @@ class App extends Component {
       currentNode: null,
       graphs: [],
       collections: [],
-      nodes: []
+      nodes: [],
+      stageNodes: []
     };
 
     this.findNodes = this.findNodes.bind(this);
-    this.addSingleNode = this.addSingleNode.bind(this);
-    this.hasNode = this.hasNode.bind(this);
+    this.addNodeToStage = this.addNodeToStage.bind(this);
+    this.stageHasNode = this.stageHasNode.bind(this);
     this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
     this.setCurrent = this.setCurrent.bind(this);
     this.clearCurrent = this.clearCurrent.bind(this);
@@ -37,18 +38,17 @@ class App extends Component {
 
         <SearchContent nodes={this.state.nodes}
                        setCurrent={this.setCurrent}
-                       addSingleNode={this.addSingleNode}
                        currentNode={this.state.currentNode} />
 
-        <Stage nodes={[]}
+        <Stage stageNodes={this.state.stageNodes}
                currentNode={this.state.currentNode}
                clearCurrent={this.clearCurrent}
                setCurrent={this.setCurrent} />
 
-        {this.state.currentNode &&
-          <Info nodes={this.state.nodes}
-                graphs={this.state.graphs}
-                currentNode={this.state.currentNode} />}
+        <Info nodes={this.state.nodes}
+              graphs={this.state.graphs}
+              addNodeToStage={this.addNodeToStage}
+              currentNode={this.state.currentNode} />
       </div>
     );
   }
@@ -61,33 +61,30 @@ class App extends Component {
     this.socket.emit('getgraphs', {}, (data) => {
       let graphs = [];
       for(let i=0, l=data.length; i<l; i++) {
-        graphs.push({name: data[i], colorClass: 'graph-color' + i});
+        graphs.push({
+          name: data[i],
+          colorClass: 'graph-color' + i,
+          enabled: true
+        });
       }
       this.setState({ graphs: graphs });
     });
   }
 
-  addSingleNode(node, fn) {
-    if(this.hasNode(node._id)) {
+  addNodeToStage(node, fn) {
+    if(this.stageHasNode(node._id)) {
       this.setCurrent(node._id);
       return;
     }
 
     this.setState((prevState) => {
-      return {nodes: [...prevState.nodes, node]}
+      return {stageNodes: [...prevState.stageNodes, node]}
     }, fn());
   }
 
-  hasNode(nodeId) {
-    let currentNodes = this.state.nodes.map((node) => {
-      return node._id;
-    });
-
-    if(currentNodes.indexOf(nodeId) < 0) {
-      return false;
-    }
-
-    return true;
+  stageHasNode(nodeId) {
+    let currentNodes = this.state.stageNodes.map(n => n._id);
+    return !(currentNodes.indexOf(nodeId) < 0);
   }
 
   findNodes(query, co) {

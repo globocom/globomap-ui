@@ -8,7 +8,6 @@ class Header extends Component {
     super(props);
 
     this.state = {
-      enabledGraphs: ['base'],
       enabledCollections: []
     };
 
@@ -16,15 +15,15 @@ class Header extends Component {
   }
 
   render() {
-    const graphButtons = this.props.graphs.map((graph) => {
+    let graphButtons = this.props.graphs.map((graph) => {
       return (<button key={"btn-" + graph.name}
                 className={"graph-btn topcoat-button--quiet " + graph.colorClass}
-                disabled={this.state.enabledGraphs.indexOf(graph.name) < 0}>
+                disabled={!graph.enabled}>
                 {graph.name}
               </button>);
     });
 
-    const collectionItems = this.props.collections.map((co) => {
+    let collectionItems = this.props.collections.map((co) => {
       return (<label key={co} className="item topcoat-checkbox">
                 <input type="checkbox" name={co} checked={this.state.enabledCollections.indexOf(co) >= 0}
                   onChange={this.handleCheckItem} />
@@ -35,13 +34,11 @@ class Header extends Component {
 
     return (
       <header className="main-header">
-
         <div className="header-group">
           <span className="logo">globomap</span>
           <Search findNodes={this.props.findNodes}
                   enabledCollections={this.state.enabledCollections} />
         </div>
-
         <div className="header-sub-group">
           <div className="graph-buttons">
             {graphButtons}
@@ -50,7 +47,6 @@ class Header extends Component {
             {collectionItems}
           </div>
         </div>
-
       </header>
     );
   }
