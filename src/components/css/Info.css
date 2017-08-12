@@ -1,22 +1,25 @@
 .info,
-.info .info-title {
+.info .info-title,
+.info .info-content {
   box-sizing: border-box;
 }
 
 .info {
   position: fixed;
   top: 110px;
-  right: -31%;
+  right: -36%;
   bottom: 0px;
-  width: 30%;
+  width: 35%;
   min-width: 250px;
   background-color: #dfe2e2;
   padding: 50px 0;
-  border-left: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: -5px 25px 80px rgba(0,0,0,0.25);
+  /* border-left: 1px solid rgba(255, 255, 255, 0.35); */
+  /* box-shadow: -5px 25px 80px rgba(0,0,0,0.25); */
+
+  box-shadow: -1px 0px 0px rgba(157, 172, 169, 0.35);
   z-index: 8;
 
-  transition: all 0.1s cubic-bezier(0.70, 0, 0.175, 1);
+  /* transition: all 0.1s cubic-bezier(0.70, 0, 0.175, 1); */
 }
 
 .info.open {
@@ -33,16 +36,40 @@
   padding: 0 20px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   background-color: #d2d6d6;
+  z-index: 9;
+}
+
+.info .info-content {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .info .info-content .sub-node {
-  padding: 10px 20px;
+  display: flex;
+  flex-flow: row nowrap;
   border-bottom: 1px solid rgba(157, 172, 169, 0.35);
 }
 
-/* .info .info-content .sub-node:nth-child(odd) {
-  background-color: #d9dddd;
-} */
+.info .info-content .sub-node-info,
+.info .info-content .sub-node-edges {
+  padding: 15px;
+}
+
+.info .info-content .sub-node-edges {
+  flex-grow: 2;
+}
+
+.info .info-content .sub-node-edges .edge {
+  color: white;
+  background-color: #9daca9;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  margin: 0 6px 6px 0;
+}
 
 .info .info-content .sub-node .sub-node-type {
   display: block;

@@ -14,7 +14,7 @@
   border-spacing: 0;
 }
 
-.search-content table tr {
+.search-content table tr td {
   cursor: pointer;
 }
 

@@ -23,8 +23,14 @@ class Info extends Component {
     let subNodesByGraph = this.state.subNodesByGraph.map((nodesItem) => {
       let subnodes = nodesItem.subnodes.map((subnode) => {
         return (<div key={subnode._id} className="sub-node">
-                  <span className="sub-node-type">{subnode.type}</span>
-                  <span className="sub-node-name">{subnode.name}</span>
+                  <div className="sub-node-info">
+                    <span className="sub-node-type">{subnode.type}</span>
+                    <span className="sub-node-name">{subnode.name}</span>
+                  </div>
+                  <div className="sub-node-edges">
+                    {subnode.edges.map((edge, i) => {
+                      return <span key={i} className="edge">{edge.edge_type}</span>})}
+                  </div>
                 </div>);
       });
 
