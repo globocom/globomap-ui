@@ -7,9 +7,9 @@
 .info {
   position: fixed;
   top: 110px;
-  right: -36%;
+  right: -31%;
   bottom: 0px;
-  width: 35%;
+  width: 30%;
   min-width: 250px;
   background-color: #dfe2e2;
   padding: 50px 0;
@@ -64,7 +64,7 @@
 
 .info .info-content .sub-node-edges .edge {
   color: white;
-  background-color: #9daca9;
+  /*background-color: #9daca9;*/
   font-size: 12px;
   padding: 2px 4px;
   border-radius: 2px;

@@ -7,6 +7,7 @@ class SearchContent extends Component {
     super(props);
     this.state = {};
     this.onNodeSelect = this.onNodeSelect.bind(this);
+    this.onAddNode = this.onAddNode.bind(this);
   }
 
   render() {
@@ -18,7 +19,7 @@ class SearchContent extends Component {
                 <td>{i + 1}</td>
                 <td>
                   <button className="btn-open-node topcoat-button"
-                    onClick={(e) => this.onNodeOpen(e, node)}>+</button>
+                    onClick={(e) => this.onAddNode(e, node)}>+</button>
                 </td>
                 <td>{node.type}</td>
                 <td>{node.name}</td>
@@ -50,9 +51,9 @@ class SearchContent extends Component {
     this.props.setCurrent(node._id);
   }
 
-  onNodeOpen(event, node) {
+  onAddNode(event, node) {
     event.stopPropagation();
-    console.log()
+    this.props.addNodeToStage(node);
   }
 
 }

@@ -4,6 +4,7 @@ import Header from './Header';
 import SearchContent from './SearchContent';
 import Stage from './Stage';
 import Info from './Info';
+import { traverseItems } from '../utils';
 import './css/App.css';
 
 class App extends Component {
@@ -38,6 +39,7 @@ class App extends Component {
 
         <SearchContent nodes={this.state.nodes}
                        setCurrent={this.setCurrent}
+                       addNodeToStage={this.addNodeToStage}
                        currentNode={this.state.currentNode} />
 
         <Stage stageNodes={this.state.stageNodes}
@@ -46,6 +48,7 @@ class App extends Component {
                setCurrent={this.setCurrent} />
 
         <Info nodes={this.state.nodes}
+              stageNodes={this.state.stageNodes}
               graphs={this.state.graphs}
               addNodeToStage={this.addNodeToStage}
               currentNode={this.state.currentNode} />
@@ -60,6 +63,7 @@ class App extends Component {
 
     this.socket.emit('getgraphs', {}, (data) => {
       let graphs = [];
+
       for(let i=0, l=data.length; i<l; i++) {
         graphs.push({
           name: data[i],
@@ -67,24 +71,48 @@ class App extends Component {
           enabled: true
         });
       }
+
       this.setState({ graphs: graphs });
     });
   }
 
-  addNodeToStage(node, fn) {
-    if(this.stageHasNode(node._id)) {
+  addNodeToStage(node, parentId) {
+    if(this.stageHasNode(node._id, parentId)) {
       this.setCurrent(node._id);
       return;
     }
 
-    this.setState((prevState) => {
-      return {stageNodes: [...prevState.stageNodes, node]}
-    }, fn());
+    node.items = node.items || [];
+    let currentNodes = this.state.stageNodes.slice();
+
+    if(parentId !== undefined) {
+      traverseItems(currentNodes, (n, lvl) => {
+        if(n._id === parentId) {
+          node.level = lvl;
+          n.items.push(node);
+        }
+      });
+    } else {
+      node.root = true;
+      currentNodes.push(node);
+    }
+
+    return this.setState({ stageNodes: currentNodes });
   }
 
-  stageHasNode(nodeId) {
-    let currentNodes = this.state.stageNodes.map(n => n._id);
-    return !(currentNodes.indexOf(nodeId) < 0);
+  stageHasNode(nodeId, parentId) {
+    let stageNodes = this.state.stageNodes,
+        ids = [];
+
+    if(parentId !== undefined) {
+      traverseItems(stageNodes, (n) => {
+        if(n._id === parentId) {
+          ids = n.items.map(n => n._id);
+        }
+      });
+    }
+
+    return !(ids.indexOf(nodeId) < 0);
   }
 
   findNodes(query, co) {
@@ -112,31 +140,11 @@ class App extends Component {
   }
 
   setCurrent(nodeId) {
-    let currentNodes = this.state.nodes.slice();
-    currentNodes.map((node) => {
-      if(node._id !== nodeId) {
-        node.current = false;
-      } else {
-        node.current = true;
-      }
-      return node;
-    });
-    this.setState({
-      currentNode: nodeId,
-      nodes: currentNodes
-    });
+    this.setState({ currentNode: nodeId });
   }
 
   clearCurrent() {
-    let currentNodes = this.state.nodes.slice();
-    currentNodes.map((node) => {
-      node.current = false;
-      return node;
-    });
-    this.setState({
-      currentNode: null,
-      nodes: currentNodes
-    });
+    this.setState({ currentNode: null });
   }
 
   handleKeyDown(event) {

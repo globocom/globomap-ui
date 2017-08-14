@@ -1,9 +1,10 @@
 .stage {
+  display: flex;
+  flex-flow: row nowrap;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 2%;
   padding: 20px;
   border-top: 1px solid rgba(157, 172, 169, 0.35);
   background-color: #dfe2e2;
@@ -11,5 +12,10 @@
 }
 
 .stage.open {
-  height: 50%
+  top: 110px;
+}
+
+.stage .stage-node-group {
+  display: flex;
+  flex-flow: column nowrap;
 }

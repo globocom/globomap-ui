@@ -8,7 +8,8 @@ class NodeItem extends Component {
   }
 
   render() {
-    let { name, type, current } = this.props.node;
+    let { _id, name, type, edges } = this.props.node;
+    let current = _id === this.props.currentNode;
 
     return (
       <div className={"node-item " + (current ? " current" : "")}
@@ -18,9 +19,11 @@ class NodeItem extends Component {
           <span className="type">{type}</span>
           <span className="name">{name}</span>
         </div>
-
         <div className="node-graphs">
-          <span className="label">base</span>
+          {/* <span className="label">base</span> */}
+        </div>
+        <div className="node-edges">
+          {/* edges.map((e) => { return <span>{e]</span>}) */}
         </div>
       </div>
     );
@@ -28,9 +31,7 @@ class NodeItem extends Component {
 
   onItemSelect(event) {
     event.stopPropagation();
-    let node = this.props.node;
-
-    this.props.setCurrent(node._id);
+    this.props.setCurrent(this.props.node._id);
   }
 }
 
