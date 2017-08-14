@@ -2,6 +2,9 @@
   "name": "globomap-ui",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "7.7.1"
+  },
   "devDependencies": {
     "react-scripts": "1.0.10"
   },
@@ -11,7 +14,8 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-router-dom": "^4.1.2",
-    "socket.io": "^2.0.3"
+    "socket.io": "^1.7.2",
+    "uws": "^0.14.4"
   },
   "scripts": {
     "start": "react-scripts start",
