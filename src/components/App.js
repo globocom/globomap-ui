@@ -4,14 +4,14 @@ import Header from './Header';
 import SearchContent from './SearchContent';
 import Stage from './Stage';
 import Info from './Info';
-import { traverseItems } from '../utils';
+import { traverseItems, uuid } from '../utils';
 import './css/App.css';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = io('http://localhost:8888');  // development
+    this.socket = io();
 
     this.state = {
       currentNode: null,

@@ -7,7 +7,7 @@ class Info extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = io('http://localhost:8888');  // development
+    this.socket = io();
 
     this.state = {
       node: this.getNode(this.props.currentNode),
