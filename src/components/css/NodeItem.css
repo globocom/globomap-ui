@@ -5,22 +5,18 @@
 
 .node-item {
   position: relative;
-  display: inline-block;
-  margin: 0 5px 5px 0;
-  border: 1px solid transparent;
+  margin: 0 10px 10px 0;
   border-radius: 2px;
-  min-width: 80px;
+  min-width: 120px;
+  max-width: 200px;
   cursor: pointer;
   background-color: #9daca9;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .node-item .node-info,
 .node-item .node-graphs {
   padding: 10px 15px;
-}
-
-.node-item .node-info {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .node-item .type {
@@ -31,16 +27,20 @@
 }
 
 .node-item .name {
+  display: block;
   color: white;
   text-decoration: none;
   font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .node-item.current {
-  background-color: #288edf;
+  background-color: #7f8c89;
 }
 
-.node-item .node-graphs {
+/*.node-item .node-graphs {
   display: block;
   background-color: #7f8c89;
 }
@@ -51,17 +51,28 @@
   color: white;
   border-radius: 2px;
   padding: 2px 4px;
-}
+}*/
 
 .node-item .node-edges {
   position: absolute;
-  top: 10px;
-  left: -10px;
-  width: 20px;
+  top: 11px;
+  left: -22px;
+  width: 30px;
   height: 10px;
-
-  color: white;
-  font-size: 12px;
-  padding: 2px 4px;
   border-radius: 2px;
+  z-index: 6;
+}
+
+.node-item .edge-link {
+  position: absolute;
+  width: 5px;
+  border-radius: 2px;
+  top: -50px;
+  height: 70px;
+  left: -22px;
+  background-color: #9daca9;
+}
+
+.node-item-content {
+  position: relative;
 }

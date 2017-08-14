@@ -11,14 +11,14 @@ class SearchContent extends Component {
   }
 
   render() {
-    let nodes = this.props.nodes;
-
-    const allNodes = nodes.map((node, i) => {
-      return (<tr key={node._id} className={node.current ? 'current' : ''}
-                  onClick={(e) => this.onNodeSelect(e, node)}>
+    let allNodes = this.props.nodes.map((node, i) => {
+      let current = node._id === this.props.currentNode;
+      return (<tr key={node._id} className={current ? 'current' : ''}
+                  onClick={(e) => this.onNodeSelect(e, node)}
+                  onDoubleClick={(e) => this.onAddNode(e, node)}>
                 <td>{i + 1}</td>
                 <td>
-                  <button className="btn-open-node topcoat-button"
+                  <button className="btn-open-node topcoat-button--quiet"
                     onClick={(e) => this.onAddNode(e, node)}>+</button>
                 </td>
                 <td>{node.type}</td>
@@ -32,8 +32,8 @@ class SearchContent extends Component {
           (<table>
             <thead>
               <tr>
-                <th width="2%">&nbsp;</th>
-                <th width="2%">&nbsp;</th>
+                <th width="2%">#</th>
+                <th width="2%">Add</th>
                 <th width="10%">Type</th>
                 <th>Name</th>
               </tr>

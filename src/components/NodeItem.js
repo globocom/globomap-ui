@@ -5,6 +5,7 @@ class NodeItem extends Component {
   constructor(props) {
     super(props);
     this.onItemSelect = this.onItemSelect.bind(this);
+    this.drawEdges = this.drawEdges.bind(this);
   }
 
   render() {
@@ -19,14 +20,22 @@ class NodeItem extends Component {
           <span className="type">{type}</span>
           <span className="name">{name}</span>
         </div>
-        <div className="node-graphs">
-          {/* <span className="label">base</span> */}
-        </div>
-        <div className="node-edges">
-          {/* edges.map((e) => { return <span>{e]</span>}) */}
-        </div>
+
+        {this.drawEdges(edges)}
       </div>
     );
+  }
+
+  drawEdges(edgeList=[]) {
+    if(edgeList.length > 0) {
+      let edge0 = edgeList[0];
+      let color = this.props.graphs.filter((graph) => {
+        return graph.name === edge0.graph;
+      })[0].colorClass;
+
+      return <div className={'node-edges ' + color}></div>;
+    }
+    return '';
   }
 
   onItemSelect(event) {

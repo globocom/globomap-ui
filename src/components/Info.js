@@ -22,6 +22,9 @@ class Info extends Component {
   }
 
   render() {
+    let node = this.state.node,
+        edgesSet = new Set();
+
     let subNodesByGraph = this.state.subNodesByGraph.map((nodesItem) => {
 
       let graphColorClass = this.props.graphs.filter((graph) => {
@@ -29,6 +32,12 @@ class Info extends Component {
       })[0].colorClass;
 
       let subnodes = nodesItem.subnodes.map((subnode) => {
+
+        let subNodeEdges = subnode.edges.map((edge, i) => {
+          edgesSet.add(edge.type);
+          return <span key={i} className={'edge '+ graphColorClass}>{edge.type}</span>
+        });
+
         return (<div key={subnode._id} className="sub-node">
                   <button className="btn-add-node topcoat-button--quiet"
                     onClick={(e) => this.onAddNode(e, subnode)}>+</button>
@@ -37,10 +46,7 @@ class Info extends Component {
                     <span className="sub-node-name">{subnode.name}</span>
                   </div>
                   <div className="sub-node-edges">
-                    {subnode.edges.map((edge, i) => {
-                      return (<span key={i} className={'edge '+ graphColorClass}>
-                              {edge.type}
-                             </span>)})}
+                    {subNodeEdges}
                   </div>
                 </div>);
       });
@@ -61,9 +67,18 @@ class Info extends Component {
     return (
       <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
         <div className="info-title">
-          {this.props.currentNode ? this.state.node.name : 'Info'}
+          {this.props.currentNode ? node.name : 'Info'}
         </div>
         <div className="info-content">
+          <div className="info-properties">
+            {node.properties &&
+              <table>
+                <tbody>
+                {node.properties.map((prop, i) => {
+                  return (<tr key={i}><th>{prop.key}</th><td>{prop.value}</td></tr>); })}
+                </tbody>
+              </table>}
+          </div>
           {subNodesByGraph}
         </div>
       </div>

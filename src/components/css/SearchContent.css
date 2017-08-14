@@ -7,6 +7,8 @@
   top: 110px;
   width: 100%;
   left: 0;
+  bottom: 0;
+  overflow: auto;
 }
 
 .search-content table {
@@ -41,7 +43,7 @@
   text-align: left;
   padding: 6px 10px;
   color: #454545;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .search-content .btn-open-node {
