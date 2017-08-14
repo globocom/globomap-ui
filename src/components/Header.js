@@ -37,6 +37,7 @@ class Header extends Component {
         <div className="header-group">
           <span className="logo">globomap</span>
           <Search findNodes={this.props.findNodes}
+                  clearStage={this.props.clearStage}
                   enabledCollections={this.state.enabledCollections} />
         </div>
         <div className="header-sub-group">

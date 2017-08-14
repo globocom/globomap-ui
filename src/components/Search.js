@@ -31,9 +31,7 @@ class Search extends Component {
   }
 
   onSendSearchQuery() {
-    if(this.state.query === "") {
-
-    }
+    this.props.clearStage();
     this.props.findNodes(this.state.query, this.props.enabledCollections);
   }
 

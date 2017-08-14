@@ -28,21 +28,24 @@ class App extends Component {
     this.setCurrent = this.setCurrent.bind(this);
     this.clearCurrent = this.clearCurrent.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.clearStage = this.clearStage.bind(this);
   }
 
   render() {
     return (
       <div className="main">
         <Header graphs={this.state.graphs}
+                clearStage={this.clearStage}
                 collections={this.state.collections}
                 findNodes={this.findNodes} />
 
         <SearchContent nodes={this.state.nodes}
-                       setCurrent={this.setCurrent}
-                       addNodeToStage={this.addNodeToStage}
-                       currentNode={this.state.currentNode} />
+                      setCurrent={this.setCurrent}
+                      addNodeToStage={this.addNodeToStage}
+                      currentNode={this.state.currentNode} />
 
-        <Stage stageNodes={this.state.stageNodes}
+        <Stage graphs={this.state.graphs}
+              stageNodes={this.state.stageNodes}
                currentNode={this.state.currentNode}
                clearCurrent={this.clearCurrent}
                setCurrent={this.setCurrent} />
@@ -115,6 +118,10 @@ class App extends Component {
     return !(ids.indexOf(nodeId) < 0);
   }
 
+  clearStage() {
+    return this.setState({ stageNodes: [] });
+  }
+
   findNodes(query, co) {
     if(co !== undefined && !co instanceof Array)  {
       console.log('The 2nd argument must be an Array');
@@ -135,6 +142,7 @@ class App extends Component {
       if(!data || data.length <= 0) {
         this.setState({ nodes: [] });
       }
+
       this.setState({ nodes: data });
     });
   }

@@ -1,4 +1,3 @@
-
 function traverseItems(nList, fn, level=0) {
   for (let i in nList) {
     let node = nList[i];
@@ -31,13 +30,8 @@ function uuid() {
   return uuidv4();
 }
 
-
 module.exports = {
   traverseItems,
   getAllIds,
   uuid
 };
-
-
-
-
