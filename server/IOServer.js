@@ -63,7 +63,7 @@ class IOServer {
     let urlList = [];
 
     for(let i=0, l=collections.length; i<l; i++) {
-      let url = `${globomapApiUrl}/collections/${collections[i]}/search?field=name&value=${query}`;
+      let url = `${globomapApiUrl}/collections/${collections[i]}/search?field=name&value=${query}&count=50`;
       urlList.push(axios.get(url));
     }
 
