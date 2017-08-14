@@ -1,4 +1,5 @@
 const axios = require('axios');
+const utils = require('../src/utils');
 
 const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1'
 
@@ -108,6 +109,7 @@ class IOServer {
 
   updateItemInfo(item) {
     item.type = item._id.split('/')[0];
+    item.uuid = utils.uuid();
     delete item._key;
     delete item._rev;
     return item;
