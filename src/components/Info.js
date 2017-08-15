@@ -17,6 +17,7 @@ class Info extends Component {
     this.getNode = this.getNode.bind(this);
     this.traversalSearch = this.traversalSearch.bind(this);
     this.onAddNode = this.onAddNode.bind(this);
+    this.buildProperties = this.buildProperties.bind(this);
 
     this.traversalSearch(this.state.node);
   }
@@ -72,12 +73,7 @@ class Info extends Component {
         <div className="info-content">
           <div className="info-properties">
             {node.properties &&
-              <table>
-                <tbody>
-                {node.properties.map((prop, i) => {
-                  return (<tr key={i}><th>{prop.key}</th><td>{prop.value}</td></tr>); })}
-                </tbody>
-              </table>}
+              this.buildProperties(node.properties)}
           </div>
           {subNodesByGraph}
         </div>
@@ -85,12 +81,34 @@ class Info extends Component {
     );
   }
 
+  buildProperties(properties) {
+    let props = properties.map((prop, i) => {
+      let val = prop.value;
+
+      if(val instanceof Object) {
+        let items = [];
+        for(let o in val) {
+          items.push(<span key={o}>{o}: {val[o]}</span>)
+        }
+        val = <div>{items}</div>;
+      }
+
+      if(val instanceof Array) {
+        val = <div>{prop.value.map(o => <span key={o}>{o}</span>)}</div>;
+      }
+
+      return <tr key={prop.key}><th>{prop.key}</th><td>{val}</td></tr>;
+    });
+
+    return <table><tbody>{props}</tbody></table>;
+  }
+
   componentWillReceiveProps(nextProps) {
     if(this.props.currentNode !== nextProps.currentNode) {
       let node = this.getNode(nextProps.currentNode);
 
       if(node) {
-        this.setState({node: node});
+        this.setState({ node: node });
         this.traversalSearch(node);
       }
     }
@@ -124,9 +142,15 @@ class Info extends Component {
   }
 
   traversalSearch(node) {
-    let graphs = this.props.graphs.filter(g => g.enabled).map(g => g.name);
+    let graphs = this.props.graphs.filter(g => g.enabled).map(g => g.name),
+        params = { start: node._id, graphs: graphs }
 
-    this.socket.emit('traversalsearch', { start: node._id, graphs: graphs, depth: 1 }, (data) => {
+    this.socket.emit('traversalsearch', params, (data) => {
+      if(data.errors !== undefined) {
+        console.log(data.errors);
+        return;
+      }
+
       let subNodesByGraph = [];
 
       for(let i=0, l=data.length; i<l; i++) {

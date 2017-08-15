@@ -4,7 +4,7 @@ import Header from './Header';
 import SearchContent from './SearchContent';
 import Stage from './Stage';
 import Info from './Info';
-import { traverseItems, uuid } from '../utils';
+import { traverseItems } from '../utils';
 import './css/App.css';
 
 class App extends Component {
@@ -36,6 +36,7 @@ class App extends Component {
       <div className="main">
         <Header graphs={this.state.graphs}
                 clearStage={this.clearStage}
+                clearCurrent={this.clearCurrent}
                 collections={this.state.collections}
                 findNodes={this.findNodes} />
 
@@ -130,11 +131,6 @@ class App extends Component {
 
     if(co.length === 0) {
       console.log('Select an item');
-      return;
-    }
-
-    if(query === '') {
-      console.log('Enter some text to search for');
       return;
     }
 

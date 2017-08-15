@@ -32,6 +32,7 @@ class Search extends Component {
 
   onSendSearchQuery() {
     this.props.clearStage();
+    this.props.clearCurrent();
     this.props.findNodes(this.state.query, this.props.enabledCollections);
   }
 
