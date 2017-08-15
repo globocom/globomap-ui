@@ -81,14 +81,14 @@ class IOServer {
 
   traversalSearch(data, fn) {
     let { start, graphs, depth } = data;
-    let urlList = [];
+    let urlPromisseList = [];
 
     for(let i=0, l=graphs.length; i<l; i++) {
-      let url = `${globomapApiUrl}/traversal?graph=${graphs[i]}&start_vertex=${start}&max_depth=${depth}`;
-      urlList.push(axios.get(url));
+      let url = `${globomapApiUrl}/traversal?graph=${graphs[i]}&start_vertex=${start}&max_depth=1&direction=any`;
+      urlPromisseList.push(axios.get(url));
     }
 
-    axios.all(urlList)
+    axios.all(urlPromisseList)
       .then((results) => {
         results = results.map((resp) => {
           let data = {graph: resp.data.graph};
@@ -102,8 +102,10 @@ class IOServer {
           });
           return data;
         });
-
         fn(results);
+      }).catch((error) => {
+        console.log(error.response.data);
+        fn(error.response.data);
       });
   }
 
