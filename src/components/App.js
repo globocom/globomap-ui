@@ -11,7 +11,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = io();
+    this.socket = io('http://localhost:8888');
 
     this.state = {
       currentNode: false,

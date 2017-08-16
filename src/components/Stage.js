@@ -10,8 +10,11 @@ class Stage extends Component {
   }
 
   render() {
+    let open = this.props.stageNodes.length > 0 ? ' open' : '',
+        withInfo = this.props.currentNode ? ' with-info' : '';
+
     return (
-      <div className={"stage" + (this.props.stageNodes.length > 0 ? " open" : "")}>
+      <div className={"stage" + open + withInfo}>
         <div className="stage-container">
           {this.renderNodes(this.props.stageNodes)}
         </div>
