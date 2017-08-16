@@ -18,8 +18,6 @@ class Info extends Component {
     this.traversalSearch = this.traversalSearch.bind(this);
     this.onAddNode = this.onAddNode.bind(this);
     this.buildProperties = this.buildProperties.bind(this);
-
-    this.traversalSearch(this.state.node);
   }
 
   render() {
@@ -68,7 +66,7 @@ class Info extends Component {
     return (
       <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
         <div className="info-title">
-          {this.props.currentNode ? node.name : 'Info'}
+          {node.name}
         </div>
         <div className="info-content">
           <div className="info-properties">
@@ -85,6 +83,10 @@ class Info extends Component {
     let props = properties.map((prop, i) => {
       let val = prop.value;
 
+      if(typeof val === 'boolean') {
+        val = val ? 'yes' : 'no';
+      }
+
       if(val instanceof Object) {
         let items = [];
         for(let o in val) {
@@ -97,7 +99,9 @@ class Info extends Component {
         val = <div>{prop.value.map(o => <span key={o}>{o}</span>)}</div>;
       }
 
-      return <tr key={prop.key}><th>{prop.key}</th><td>{val}</td></tr>;
+      let name = prop.description ? prop.description : prop.key;
+
+      return <tr key={prop.key}><th>{name}</th><td>{val}</td></tr>;
     });
 
     return <table><tbody>{props}</tbody></table>;
@@ -114,10 +118,10 @@ class Info extends Component {
     }
   }
 
-  getNode(nodeId) {
+  getNode(node) {
     let nodes = this.props.nodes.slice(),
         index = nodes.findIndex((elem, i, arr) => {
-      return elem._id === nodeId;
+      return elem._id === node._id;
     });
 
     if(index >= 0) {
@@ -125,20 +129,20 @@ class Info extends Component {
     }
 
     let stageNodes = this.props.stageNodes.slice(),
-        node = false;
+        foundNode = false;
 
     traverseItems(stageNodes, (n) => {
-      if(n._id === nodeId) {
-        node = n;
+      if(n.uuid === node.uuid) {
+        foundNode = n;
       }
     });
 
-    return node;
+    return foundNode;
   }
 
   onAddNode(event, node) {
     event.stopPropagation();
-    this.props.addNodeToStage(node, this.state.node._id);
+    this.props.addNodeToStage(node, this.state.node.uuid);
   }
 
   traversalSearch(node) {
@@ -160,7 +164,11 @@ class Info extends Component {
           for(let j=0, k=data[i].edges.length; j<k; j++) {
             let e = data[i].edges[j];
             if(n._id === e._to) {
-              n.edges.push({type: e.type, graph: data[i].graph});
+              n.edges.push({type: e.type, dir: 'in', graph: data[i].graph});
+            }
+
+            if(n._id === e._from) {
+              n.edges.push({type: e.type, dir: 'out', graph: data[i].graph});
             }
           }
           return n;

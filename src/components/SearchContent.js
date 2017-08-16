@@ -5,14 +5,15 @@ class SearchContent extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
     this.onNodeSelect = this.onNodeSelect.bind(this);
     this.onAddNode = this.onAddNode.bind(this);
   }
 
   render() {
     let allNodes = this.props.nodes.map((node, i) => {
-      let current = node._id === this.props.currentNode;
+      let current = (this.props.currentNode &&
+                    node._id === this.props.currentNode._id);
+
       return (<tr key={node._id} className={current ? 'current' : ''}
                   onClick={(e) => this.onNodeSelect(e, node)}
                   onDoubleClick={(e) => this.onAddNode(e, node)}>
@@ -48,7 +49,7 @@ class SearchContent extends Component {
 
   onNodeSelect(event, node) {
     event.stopPropagation();
-    this.props.setCurrent(node._id);
+    this.props.setCurrent(node);
   }
 
   onAddNode(event, node) {

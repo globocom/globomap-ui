@@ -10,7 +10,6 @@ body {
   border: 0;
   padding: 0;
   margin: 0;
-  /* background-color: #dfe2e2; */
   background-color: #f8f8f8;
   font-family: sans-serif;
 }
@@ -20,14 +19,14 @@ a {
 }
 
 .graph-color0,
-.graph-color0:hover { background-color: #36bb77 }
+.graph-color0:hover { background-color: #2b9e63 }
 
 .graph-color1,
-.graph-color1:hover { background-color: #3e92d4 }
+.graph-color1:hover { background-color: #347eb9 }
 
 .graph-color2,
 .graph-color2:hover { background-color: #d43e5e }
 
 .graph-color3,
-.graph-color3:hover { background-color: #dfc97a }
+.graph-color3:hover { background-color: #ccaf6f }
 

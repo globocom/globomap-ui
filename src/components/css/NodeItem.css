@@ -30,7 +30,7 @@
   display: block;
   color: white;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -40,27 +40,29 @@
   background-color: #7f8c89;
 }
 
-/*.node-item .node-graphs {
-  display: block;
-  background-color: #7f8c89;
+.node-item.current.thisnode {
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15);
 }
-
-.node-item .node-graphs .label {
-  font-size: 12px;
-  background-color: #36bb77;
-  color: white;
-  border-radius: 2px;
-  padding: 2px 4px;
-}*/
 
 .node-item .node-edges {
   position: absolute;
-  top: 11px;
-  left: -22px;
-  width: 30px;
-  height: 10px;
+  left: -17px;
+  width: 20px;
+  color: white;
+  padding: 2px;
+  font-size: 14px;
+  height: 18px;
   border-radius: 2px;
+  text-align: center;
   z-index: 6;
+}
+
+.node-item .node-edges.in {
+  top: 4px;
+}
+
+.node-item .node-edges.out {
+  bottom: 4px;
 }
 
 .node-item .edge-link {
