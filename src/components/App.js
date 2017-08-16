@@ -4,7 +4,7 @@ import Header from './Header';
 import SearchContent from './SearchContent';
 import Stage from './Stage';
 import Info from './Info';
-import { traverseItems } from '../utils';
+import { traverseItems, uuid } from '../utils';
 import './css/App.css';
 
 class App extends Component {
@@ -14,7 +14,7 @@ class App extends Component {
     this.socket = io();
 
     this.state = {
-      currentNode: null,
+      currentNode: false,
       graphs: [],
       collections: [],
       nodes: [],
@@ -80,19 +80,19 @@ class App extends Component {
     });
   }
 
-  addNodeToStage(node, parentId) {
-    if(this.stageHasNode(node._id, parentId)) {
-      this.setCurrent(node._id);
+  addNodeToStage(node, parentUuid) {
+    if(this.stageHasNode(node._id, parentUuid)) {
+      this.setCurrent(node);
       return;
     }
 
+    node.uuid = uuid();
     node.items = node.items || [];
     let currentNodes = this.state.stageNodes.slice();
 
-    if(parentId !== undefined) {
-      traverseItems(currentNodes, (n, lvl) => {
-        if(n._id === parentId) {
-          node.level = lvl;
+    if(parentUuid !== undefined) {
+      traverseItems(currentNodes, (n) => {
+        if(n.uuid === parentUuid) {
           n.items.push(node);
         }
       });
@@ -104,13 +104,13 @@ class App extends Component {
     return this.setState({ stageNodes: currentNodes });
   }
 
-  stageHasNode(nodeId, parentId) {
+  stageHasNode(nodeId, parentUuid) {
     let stageNodes = this.state.stageNodes,
-        ids = [];
+        ids = stageNodes.map(n => n._id);
 
-    if(parentId !== undefined) {
+    if(parentUuid !== undefined) {
       traverseItems(stageNodes, (n) => {
-        if(n._id === parentId) {
+        if(n.uuid === parentUuid) {
           ids = n.items.map(n => n._id);
         }
       });
@@ -143,12 +143,12 @@ class App extends Component {
     });
   }
 
-  setCurrent(nodeId) {
-    this.setState({ currentNode: nodeId });
+  setCurrent(node) {
+    this.setState({ currentNode: { _id: node._id, uuid: node.uuid } });
   }
 
   clearCurrent() {
-    this.setState({ currentNode: null });
+    this.setState({ currentNode: false });
   }
 
   handleKeyDown(event) {

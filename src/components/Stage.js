@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import NodeItem from './NodeItem';
-import { uuid } from '../utils';
 import './css/Stage.css';
 
 class Stage extends Component {
@@ -21,8 +20,8 @@ class Stage extends Component {
   }
 
   renderNodes(nodeList) {
-    return nodeList.map((node) => {
-      return (<div key={uuid()} className="node-item-group">
+    return nodeList.map((node, i) => {
+      return (<div key={'n' + i} className="node-item-group">
               <NodeItem node={node}
                        graphs={this.props.graphs}
                        currentNode={this.props.currentNode}

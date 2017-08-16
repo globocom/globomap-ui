@@ -9,8 +9,6 @@ class IOServer {
       return;
     }
 
-    this.io = io;
-
     io.on('connection', (socket) => {
       socket.on('getcollections', (data, fn) => {
         this.getCollections(data, (result) => { fn(result); });
@@ -100,6 +98,7 @@ class IOServer {
           data.nodes = resp.data.nodes.map((node) => {
             return this.updateItemInfo(node);
           });
+
           return data;
         });
         fn(results);
@@ -111,7 +110,6 @@ class IOServer {
 
   updateItemInfo(item) {
     item.type = item._id.split('/')[0];
-    item.uuid = utils.uuid();
     delete item._key;
     delete item._rev;
     return item;
