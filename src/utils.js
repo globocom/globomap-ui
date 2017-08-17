@@ -1,11 +1,11 @@
-function traverseItems(nList, fn, level=0) {
+function traverseItems(nList, fn) {
   for (let i in nList) {
     let node = nList[i];
 
-    fn.apply(this, [node, level]);
+    fn.apply(this, [node]);
 
     if (node.items !== undefined && node.items.length > 0) {
-      traverseItems(node.items, fn, level + 1);
+      traverseItems(node.items, fn);
     }
   }
 }

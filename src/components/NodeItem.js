@@ -13,7 +13,7 @@ class NodeItem extends Component {
     let { _id, name, type, edges, uuid } = this.props.node;
     let cNode = this.props.currentNode,
         current = cNode && _id === cNode._id ? ' current' : '',
-        thisnode = cNode && uuid === cNode.uuid ? ' thisnode' : '';
+        thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '';
 
     return (
       <div className={'node-item' + current + thisnode} onClick={this.onItemSelect}>

@@ -40,7 +40,7 @@
   background-color: #7f8c89;
 }
 
-.node-item.current.thisnode {
+.node-item.current.this-node {
   box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15);
 }
 

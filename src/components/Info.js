@@ -11,7 +11,7 @@ class Info extends Component {
 
     this.state = {
       node: this.getNode(this.props.currentNode),
-      subNodesByGraph: []
+      byGraph: []
     }
 
     this.getNode = this.getNode.bind(this);
@@ -21,65 +21,83 @@ class Info extends Component {
   }
 
   render() {
-    let node = this.state.node,
-        edgesSet = new Set();
+    let byGraph = this.state.byGraph.map((nodesItem) => {
 
-    let subNodesByGraph = this.state.subNodesByGraph.map((nodesItem) => {
-
-      let graphColorClass = this.props.graphs.filter((graph) => {
+      let colorCls = this.props.graphs.filter((graph) => {
         return graph.name === nodesItem.graph;
       })[0].colorClass;
 
-      let subnodes = nodesItem.subnodes.map((subnode) => {
-
-        let subNodeEdges = subnode.edges.map((edge, i) => {
-          edgesSet.add(edge.type);
-          return <span key={i} className={'edge '+ graphColorClass}>{edge.type}</span>
-        });
-
-        return (<div key={subnode._id} className="sub-node">
-                  <button className="btn-add-node topcoat-button--quiet"
-                    onClick={(e) => this.onAddNode(e, subnode)}>+</button>
-                  <div className="sub-node-info">
-                    <span className="sub-node-type">{subnode.type}</span>
-                    <span className="sub-node-name">{subnode.name}</span>
-                  </div>
-                  <div className="sub-node-edges">
-                    {subNodeEdges}
-                  </div>
-                </div>);
-      });
-
-      let qtdNodes = nodesItem.subnodes.length;
-
-      return (<div key={nodesItem.graph} className="sub-nodes-by-graph">
-                <div className={'graph-name '+ graphColorClass}>
-                  {nodesItem.graph}
-                  <span className="qtd-nodes">
-                    {qtdNodes + (qtdNodes === 1 ? ' node' : ' nodes')}
-                  </span>
-                </div>
-                {subnodes}
-              </div>);
+      return <div key={nodesItem.graph} className="sub-nodes-by-graph">
+              <div className={'graph-name ' + colorCls}>
+                {nodesItem.graph}
+                <span className="qtd-nodes">
+                  {nodesItem.subnodes.length}
+                </span>
+              </div>
+              {this.buildSubNodes(nodesItem)}
+            </div>;
     });
 
-    return (
-      <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
-        <div className="info-title">
-          {node.name}
-        </div>
-        <div className="info-content">
-          <div className="info-properties">
-            {node.properties &&
-              this.buildProperties(node.properties)}
-          </div>
-          {subNodesByGraph}
-        </div>
-      </div>
-    );
+    return <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
+            <div className="info-title">
+              {this.state.node.name}
+            </div>
+            <div className="info-content">
+              <div className="info-properties">
+                {this.buildProperties()}
+              </div>
+              <div className="graph-items">
+                {byGraph}
+              </div>
+            </div>
+          </div>;
   }
 
-  buildProperties(properties) {
+  buildSubNodes(node) {
+    let subnodes = node.subnodes.map((subnode) => {
+      return <div key={subnode._id} className="sub-node">
+              <button className="btn-add-node topcoat-button--quiet"
+                onClick={(e) => this.onAddNode(e, subnode)}>+</button>
+
+              <div className="sub-node-info">
+                <span className="sub-node-type">{subnode.type}</span>
+                <span className="sub-node-name">{subnode.name}</span>
+              </div>
+
+              <div className="sub-node-edges">
+                {this.buildEdges()}
+              </div>
+            </div>;
+    });
+
+    return subnodes;
+  }
+
+  buildEdges() {
+    let edges = this.state.node.edges;
+    if(!edges) {
+      return '';
+    }
+
+    let edgesSet = new Set();
+    let nodeEdges = edges.map((edge, i) => {
+      let colorCls = this.props.graphs.filter((graph) => {
+          return graph.name === edge.graph;
+      })[0].colorClass;
+
+      edgesSet.add(edge.type);
+      return <span key={i} className={'edge '+ colorCls}>{edge.type}</span>
+    });
+
+    return nodeEdges;
+  }
+
+  buildProperties() {
+    let properties = this.state.node.properties;
+    if(!properties) {
+      return '';
+    }
+
     let props = properties.map((prop, i) => {
       let val = prop.value;
 
@@ -90,7 +108,7 @@ class Info extends Component {
       if(val instanceof Object) {
         let items = [];
         for(let o in val) {
-          items.push(<span key={o}>{o}: {val[o]}</span>)
+          items.push(<span key={o}>{o}: {val[o]}</span>);
         }
         val = <div>{items}</div>;
       }
@@ -99,16 +117,20 @@ class Info extends Component {
         val = <div>{prop.value.map(o => <span key={o}>{o}</span>)}</div>;
       }
 
-      let name = prop.description ? prop.description : prop.key;
-
-      return <tr key={prop.key}><th>{name}</th><td>{val}</td></tr>;
+      return <tr key={prop.key}>
+              <th>{prop.description || prop.key}</th>
+              <td>{val}</td>
+            </tr>;
     });
 
-    return <table><tbody>{props}</tbody></table>;
+    return <table>
+            <tbody>{props}</tbody>
+          </table>;
   }
 
   componentWillReceiveProps(nextProps) {
     if(this.props.currentNode !== nextProps.currentNode) {
+      this.resetSubNodes();
       let node = this.getNode(nextProps.currentNode);
 
       if(node) {
@@ -142,7 +164,16 @@ class Info extends Component {
 
   onAddNode(event, node) {
     event.stopPropagation();
-    this.props.addNodeToStage(node, this.state.node.uuid);
+    this.props.addNodeToStage(node, this.state.node.uuid || this.state.node._id);
+  }
+
+  resetSubNodes() {
+    let byGraphCopy = this.state.byGraph.slice();
+    byGraphCopy = byGraphCopy.map((nodesItem) => {
+      nodesItem.subnodes = [];
+      return nodesItem;
+    });
+    this.setState({ byGraph: byGraphCopy });
   }
 
   traversalSearch(node) {
@@ -155,7 +186,7 @@ class Info extends Component {
         return;
       }
 
-      let subNodesByGraph = [];
+      let byGraph = [];
 
       for(let i=0, l=data.length; i<l; i++) {
         let nodesItem = { graph: data[i].graph };
@@ -175,10 +206,10 @@ class Info extends Component {
         });
 
         nodesItem.subnodes = subnodes.filter(n => n._id !== node._id);
-        subNodesByGraph.push(nodesItem);
+        byGraph.push(nodesItem);
       }
 
-      this.setState({ subNodesByGraph: subNodesByGraph });
+      this.setState({ byGraph: byGraph });
     });
   }
 

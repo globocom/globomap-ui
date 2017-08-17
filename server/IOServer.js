@@ -60,7 +60,7 @@ class IOServer {
     let { query, collections } = data;
     let urlList = [];
 
-    for(let i=0, l=collections.length; i<l; i++) {
+    for(let i=0, l=collections.length; i<l; ++i) {
       let url = `${globomapApiUrl}/collections/${collections[i]}/search?field=name&value=${query}&count=50`;
       urlList.push(axios.get(url));
     }
@@ -81,7 +81,7 @@ class IOServer {
     let { start, graphs, depth } = data;
     let urlPromisseList = [];
 
-    for(let i=0, l=graphs.length; i<l; i++) {
+    for(let i=0, l=graphs.length; i<l; ++i) {
       let url = `${globomapApiUrl}/traversal?graph=${graphs[i]}&start_vertex=${start}&max_depth=1&direction=any`;
       urlPromisseList.push(axios.get(url));
     }
