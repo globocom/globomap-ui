@@ -11,7 +11,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = io('http://localhost:8888');
+    this.socket = io();
 
     this.state = {
       currentNode: false,
@@ -68,7 +68,7 @@ class App extends Component {
     this.socket.emit('getgraphs', {}, (data) => {
       let graphs = [];
 
-      for(let i=0, l=data.length; i<l; i++) {
+      for(let i=0, l=data.length; i<l; ++i) {
         graphs.push({
           name: data[i],
           colorClass: 'graph-color' + i,

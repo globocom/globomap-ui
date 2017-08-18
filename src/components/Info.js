@@ -65,7 +65,7 @@ class Info extends Component {
               </div>
 
               <div className="sub-node-edges">
-                {this.buildEdges()}
+                {this.buildEdges(subnode.edges)}
               </div>
             </div>;
     });
@@ -73,12 +73,7 @@ class Info extends Component {
     return subnodes;
   }
 
-  buildEdges() {
-    let edges = this.state.node.edges;
-    if(!edges) {
-      return '';
-    }
-
+  buildEdges(edges) {
     let edgesSet = new Set();
     let nodeEdges = edges.map((edge, i) => {
       let colorCls = this.props.graphs.filter((graph) => {
@@ -129,9 +124,12 @@ class Info extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.currentNode !== nextProps.currentNode) {
+    let current = this.props.currentNode,
+        next = nextProps.currentNode;
+
+    if(current._id !== next._id || current.uuid !== next.uuid) {
       this.resetSubNodes();
-      let node = this.getNode(nextProps.currentNode);
+      let node = this.getNode(next);
 
       if(node) {
         this.setState({ node: node });
@@ -141,9 +139,11 @@ class Info extends Component {
   }
 
   getNode(node) {
-    let nodes = this.props.nodes.slice(),
-        index = nodes.findIndex((elem, i, arr) => {
-      return elem._id === node._id;
+    let nodes = this.props.nodes.slice();
+    let index = nodes.findIndex((n, i, arr) => {
+      return n.uuid
+              ? n.uuid === node.uuid
+              : n._id === node._id;
     });
 
     if(index >= 0) {
@@ -151,15 +151,15 @@ class Info extends Component {
     }
 
     let stageNodes = this.props.stageNodes.slice(),
-        foundNode = false;
+        nodeFound = false;
 
     traverseItems(stageNodes, (n) => {
       if(n.uuid === node.uuid) {
-        foundNode = n;
+        nodeFound = n;
       }
     });
 
-    return foundNode;
+    return nodeFound;
   }
 
   onAddNode(event, node) {
@@ -188,11 +188,11 @@ class Info extends Component {
 
       let byGraph = [];
 
-      for(let i=0, l=data.length; i<l; i++) {
+      for(let i=0, l=data.length; i<l; ++i) {
         let nodesItem = { graph: data[i].graph };
         let subnodes = data[i].nodes.map((n) => {
           n.edges = [];
-          for(let j=0, k=data[i].edges.length; j<k; j++) {
+          for(let j=0, k=data[i].edges.length; j<k; ++j) {
             let e = data[i].edges[j];
             if(n._id === e._to) {
               n.edges.push({type: e.type, dir: 'in', graph: data[i].graph});
