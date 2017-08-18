@@ -57,7 +57,7 @@ class App extends Component {
               graphs={this.state.graphs}
               stageHasNode={this.stageHasNode}
               addNodeToStage={this.addNodeToStage}
-              setCurrent={this.setCurrent}
+              clearCurrent={this.clearCurrent}
               currentNode={this.state.currentNode} />
       </div>
     );

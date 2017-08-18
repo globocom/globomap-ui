@@ -13,9 +13,8 @@ class Info extends Component {
       byGraph: []
     }
 
-    this.traversalSearch = this.traversalSearch.bind(this);
     this.onAddNode = this.onAddNode.bind(this);
-    this.buildProperties = this.buildProperties.bind(this);
+    this.onCloseInfo = this.onCloseInfo.bind(this);
   }
 
   render() {
@@ -39,6 +38,10 @@ class Info extends Component {
     return <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
             <div className="info-title">
               {this.state.node.name}
+              <button className="close-info-btn topcoat-button--quiet"
+                onClick={this.onCloseInfo}>
+                <i className="fa fa-close"></i>
+              </button>
             </div>
             <div className="info-content">
               <div className="info-properties">
@@ -184,6 +187,11 @@ class Info extends Component {
         this.traversalSearch(node);
       }
     }
+  }
+
+  onCloseInfo(event) {
+    event.stopPropagation();
+    this.props.clearCurrent();
   }
 
   onAddNode(event, node, makeCurrent) {
