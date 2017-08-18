@@ -87,6 +87,11 @@
   box-sizing: border-box;
 }
 
+.graph-items .sub-node.disabled .sub-node-info,
+.graph-items .sub-node.disabled .sub-node-edges {
+  opacity: 0.5;
+}
+
 .graph-items .sub-node .sub-node-type {
   display: block;
   font-size: 10px;
@@ -98,18 +103,25 @@
   font-size: 14px;
 }
 
-.graph-items .sub-node .btn-add-node {
-  font-size: 18px;
-  width: 30px;
-}
-
 .graph-items .sub-node {
   display: flex;
   flex-flow: row nowrap;
-  /*height: 50px;*/
+  align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid rgba(157, 172, 169, 0.35);
 }
 
+.graph-items .sub-node-info {
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.graph-items .sub-node-info:hover .sub-node-name {
+  color: #4ca1e4;
+  text-decoration: underline;
+}
+
+.graph-items .sub-node-btn,
 .graph-items .sub-node-info,
 .graph-items .sub-node-edges {
   padding: 10px;

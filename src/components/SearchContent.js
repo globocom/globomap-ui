@@ -6,7 +6,6 @@ class SearchContent extends Component {
   constructor(props) {
     super(props);
     this.onNodeSelect = this.onNodeSelect.bind(this);
-    this.onAddNode = this.onAddNode.bind(this);
   }
 
   render() {
@@ -15,13 +14,8 @@ class SearchContent extends Component {
                     node._id === this.props.currentNode._id);
 
       return (<tr key={node._id} className={current ? 'current' : ''}
-                  onClick={(e) => this.onNodeSelect(e, node)}
-                  onDoubleClick={(e) => this.onAddNode(e, node)}>
+                  onClick={(e) => this.onNodeSelect(e, node)}>
                 <td>{i + 1}</td>
-                <td>
-                  <button className="btn-open-node topcoat-button--quiet"
-                    onClick={(e) => this.onAddNode(e, node)}>+</button>
-                </td>
                 <td>{node.type}</td>
                 <td>{node.name}</td>
               </tr>);
@@ -33,9 +27,8 @@ class SearchContent extends Component {
           (<table>
             <thead>
               <tr>
-                <th width="2%">#</th>
-                <th width="2%">Add</th>
-                <th width="10%">Type</th>
+                <th width="3%">#</th>
+                <th width="5%">Type</th>
                 <th>Name</th>
               </tr>
             </thead>
@@ -49,12 +42,9 @@ class SearchContent extends Component {
 
   onNodeSelect(event, node) {
     event.stopPropagation();
-    this.props.setCurrent(node);
-  }
-
-  onAddNode(event, node) {
-    event.stopPropagation();
-    this.props.addNodeToStage(node);
+    this.props.setCurrent(node, () => {
+      this.props.addNodeToStage(node);
+    });
   }
 
 }

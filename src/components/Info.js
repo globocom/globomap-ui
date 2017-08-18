@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { traverseItems } from '../utils';
 import './css/Info.css';
 
 class Info extends Component {
@@ -10,11 +9,10 @@ class Info extends Component {
     this.socket = io();
 
     this.state = {
-      node: this.getNode(this.props.currentNode),
+      node: this.props.getNode(this.props.currentNode),
       byGraph: []
     }
 
-    this.getNode = this.getNode.bind(this);
     this.traversalSearch = this.traversalSearch.bind(this);
     this.onAddNode = this.onAddNode.bind(this);
     this.buildProperties = this.buildProperties.bind(this);
@@ -53,13 +51,17 @@ class Info extends Component {
           </div>;
   }
 
-  buildSubNodes(node) {
-    let subnodes = node.subnodes.map((subnode) => {
-      return <div key={subnode._id} className="sub-node">
-              <button className="btn-add-node topcoat-button--quiet"
-                onClick={(e) => this.onAddNode(e, subnode)}>+</button>
+  buildSubNodes(nodesItem) {
+    let subnodes = nodesItem.subnodes.map((subnode) => {
+      let hasNode = this.props.stageHasNode(subnode._id, this.state.node.uuid);
 
-              <div className="sub-node-info">
+      return <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
+              <div className="sub-node-btn">
+                <button className="btn-add-node topcoat-button"
+                  onClick={(e) => this.onAddNode(e, subnode)} disabled={hasNode}>+</button>
+              </div>
+
+              <div className="sub-node-info" onClick={(e) => this.onAddNode(e, subnode, true)}>
                 <span className="sub-node-type">{subnode.type}</span>
                 <span className="sub-node-name">{subnode.name}</span>
               </div>
@@ -123,50 +125,6 @@ class Info extends Component {
           </table>;
   }
 
-  componentWillReceiveProps(nextProps) {
-    let current = this.props.currentNode,
-        next = nextProps.currentNode;
-
-    if(current._id !== next._id || current.uuid !== next.uuid) {
-      this.resetSubNodes();
-      let node = this.getNode(next);
-
-      if(node) {
-        this.setState({ node: node });
-        this.traversalSearch(node);
-      }
-    }
-  }
-
-  getNode(node) {
-    let nodes = this.props.nodes.slice();
-    let index = nodes.findIndex((n, i, arr) => {
-      return n.uuid
-              ? n.uuid === node.uuid
-              : n._id === node._id;
-    });
-
-    if(index >= 0) {
-      return nodes[index];
-    }
-
-    let stageNodes = this.props.stageNodes.slice(),
-        nodeFound = false;
-
-    traverseItems(stageNodes, (n) => {
-      if(n.uuid === node.uuid) {
-        nodeFound = n;
-      }
-    });
-
-    return nodeFound;
-  }
-
-  onAddNode(event, node) {
-    event.stopPropagation();
-    this.props.addNodeToStage(node, this.state.node.uuid || this.state.node._id);
-  }
-
   resetSubNodes() {
     let byGraphCopy = this.state.byGraph.slice();
     byGraphCopy = byGraphCopy.map((nodesItem) => {
@@ -211,6 +169,26 @@ class Info extends Component {
 
       this.setState({ byGraph: byGraph });
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let current = this.props.currentNode,
+        next = nextProps.currentNode;
+
+    if(current._id !== next._id || current.uuid !== next.uuid) {
+      this.resetSubNodes();
+      let node = this.props.getNode(next);
+
+      if(node) {
+        this.setState({ node: node });
+        this.traversalSearch(node);
+      }
+    }
+  }
+
+  onAddNode(event, node, makeCurrent) {
+    event.stopPropagation();
+    this.props.addNodeToStage(node, this.state.node.uuid || this.state.node._id, makeCurrent);
   }
 
 }

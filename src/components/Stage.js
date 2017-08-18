@@ -10,7 +10,14 @@ class Stage extends Component {
   }
 
   render() {
-    let open = this.props.stageNodes.length > 0 ? ' open' : '',
+    let sNodes = this.props.stageNodes,
+        sItems = [];
+
+    if(sNodes.length > 0) {
+      sItems = sNodes[0].items;
+    }
+
+    let open = sItems.length > 0 ? ' open' : '',
         withInfo = this.props.currentNode ? ' with-info' : '';
 
     return (

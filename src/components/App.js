@@ -22,6 +22,7 @@ class App extends Component {
     };
 
     this.findNodes = this.findNodes.bind(this);
+    this.getNode = this.getNode.bind(this);
     this.addNodeToStage = this.addNodeToStage.bind(this);
     this.stageHasNode = this.stageHasNode.bind(this);
     this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
@@ -35,26 +36,28 @@ class App extends Component {
     return (
       <div className="main">
         <Header graphs={this.state.graphs}
-                clearStage={this.clearStage}
-                clearCurrent={this.clearCurrent}
-                collections={this.state.collections}
-                findNodes={this.findNodes} />
+               clearStage={this.clearStage}
+               clearCurrent={this.clearCurrent}
+               collections={this.state.collections}
+               findNodes={this.findNodes} />
 
         <SearchContent nodes={this.state.nodes}
-                      setCurrent={this.setCurrent}
-                      addNodeToStage={this.addNodeToStage}
-                      currentNode={this.state.currentNode} />
+                     setCurrent={this.setCurrent}
+                     addNodeToStage={this.addNodeToStage}
+                     currentNode={this.state.currentNode} />
 
         <Stage graphs={this.state.graphs}
               stageNodes={this.state.stageNodes}
-               currentNode={this.state.currentNode}
-               clearCurrent={this.clearCurrent}
-               setCurrent={this.setCurrent} />
+              currentNode={this.state.currentNode}
+              clearCurrent={this.clearCurrent}
+              setCurrent={this.setCurrent} />
 
-        <Info nodes={this.state.nodes}
+        <Info getNode={this.getNode}
               stageNodes={this.state.stageNodes}
               graphs={this.state.graphs}
+              stageHasNode={this.stageHasNode}
               addNodeToStage={this.addNodeToStage}
+              setCurrent={this.setCurrent}
               currentNode={this.state.currentNode} />
       </div>
     );
@@ -80,9 +83,10 @@ class App extends Component {
     });
   }
 
-  addNodeToStage(node, parentUuid) {
+  addNodeToStage(node, parentUuid, makeCurrent=false) {
     if(this.stageHasNode(node._id, parentUuid)) {
-      this.setCurrent(node);
+      let n = this.getNode(node, parentUuid);
+      this.setCurrent(n);
       return;
     }
 
@@ -98,10 +102,14 @@ class App extends Component {
       });
     } else {
       node.root = true;
-      currentNodes.push(node);
+      currentNodes = [node];
     }
 
-    return this.setState({ stageNodes: currentNodes });
+    return this.setState({stageNodes: currentNodes}, () => {
+      if(makeCurrent) {
+        this.setCurrent(node);
+      }
+    });
   }
 
   stageHasNode(nodeId, parentUuid) {
@@ -117,6 +125,42 @@ class App extends Component {
     }
 
     return !(ids.indexOf(nodeId) < 0);
+  }
+
+  getNode(node, parentUuid) {
+    let nodes = this.state.nodes.slice();
+    let index = nodes.findIndex((n, i, arr) => {
+      return n.uuid
+              ? n.uuid === node.uuid
+              : n._id === node._id;
+    });
+
+    if(index >= 0) {
+      return nodes[index];
+    }
+
+    let stageNodes = this.state.stageNodes.slice(),
+        nodeFound = false;
+
+    traverseItems(stageNodes, (n) => {
+      if(n.uuid === node.uuid) {
+        nodeFound = n;
+      }
+    });
+
+    if(!nodeFound && parentUuid !== undefined) {
+      traverseItems(stageNodes, (n) => {
+        if(n.uuid === parentUuid) {
+          for(let i in n.items) {
+            if(node._id === n.items[i]._id) {
+              nodeFound = n.items[i];
+            }
+          }
+        }
+      });
+    }
+
+    return nodeFound;
   }
 
   clearStage() {
@@ -143,12 +187,12 @@ class App extends Component {
     });
   }
 
-  setCurrent(node) {
-    this.setState({ currentNode: { _id: node._id, uuid: node.uuid } });
+  setCurrent(node, fn) {
+    this.setState({currentNode: {_id: node._id, uuid: node.uuid}}, fn);
   }
 
-  clearCurrent() {
-    this.setState({ currentNode: false });
+  clearCurrent(fn) {
+    this.setState({currentNode: false}, fn);
   }
 
   handleKeyDown(event) {
