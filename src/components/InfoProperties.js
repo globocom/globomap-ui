@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Monit from './Monit';
 import './css/InfoProperties.css';
 
 class InfoProperties extends Component {
@@ -17,6 +18,7 @@ class InfoProperties extends Component {
 
     return <div className="info-properties">
             {props}
+            <Monit nodeName={this.props.node.name} />
           </div>
   }
 
