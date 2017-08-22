@@ -16,9 +16,11 @@ class Header extends Component {
 
   render() {
     let graphButtons = this.props.graphs.map((graph) => {
+      let disabledCls = !graph.enabled ? ' btn-disabled' : '';
+
       return (<button key={"btn-" + graph.name}
-                className={"graph-btn topcoat-button--quiet " + graph.colorClass}
-                disabled={!graph.enabled}>
+                className={"graph-btn topcoat-button--quiet " + graph.colorClass + disabledCls}
+                onClick={(e) => this.props.onToggleGraph(e, graph.name)}>
                 {graph.name}
               </button>);
     });

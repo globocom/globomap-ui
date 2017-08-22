@@ -30,6 +30,7 @@ class App extends Component {
     this.clearCurrent = this.clearCurrent.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.clearStage = this.clearStage.bind(this);
+    this.onToggleGraph = this.onToggleGraph.bind(this);
   }
 
   render() {
@@ -39,7 +40,8 @@ class App extends Component {
                clearStage={this.clearStage}
                clearCurrent={this.clearCurrent}
                collections={this.state.collections}
-               findNodes={this.findNodes} />
+               findNodes={this.findNodes}
+               onToggleGraph={this.onToggleGraph} />
 
         <SearchContent nodes={this.state.nodes}
                      setCurrent={this.setCurrent}
@@ -105,7 +107,7 @@ class App extends Component {
       currentNodes = [node];
     }
 
-    return this.setState({stageNodes: currentNodes}, () => {
+    return this.setState({ stageNodes: currentNodes }, () => {
       if(makeCurrent) {
         this.setCurrent(node);
       }
@@ -178,7 +180,7 @@ class App extends Component {
       return;
     }
 
-    this.socket.emit('findnodes', {query: query, collections: co}, (data) => {
+    this.socket.emit('findnodes', { query: query, collections: co }, (data) => {
       if(!data || data.length <= 0) {
         this.setState({ nodes: [] });
       }
@@ -188,11 +190,11 @@ class App extends Component {
   }
 
   setCurrent(node, fn) {
-    this.setState({currentNode: {_id: node._id, uuid: node.uuid}}, fn);
+    this.setState({ currentNode: { _id: node._id, uuid: node.uuid } }, fn);
   }
 
   clearCurrent(fn) {
-    this.setState({currentNode: false}, fn);
+    this.setState({ currentNode: false }, fn);
   }
 
   handleKeyDown(event) {
@@ -201,6 +203,17 @@ class App extends Component {
       this.clearCurrent();
     }
   };
+
+  onToggleGraph(event, graphName) {
+    event.stopPropagation();
+    let graphsCopy = this.state.graphs.map((graph) => {
+      if(graph.name === graphName) {
+        graph.enabled = !graph.enabled;
+      }
+      return graph;
+    });
+    this.setState({ graphs: graphsCopy });
+  }
 
   componentDidMount() {
     this.getGraphsAndCollections();

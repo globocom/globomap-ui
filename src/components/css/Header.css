@@ -58,6 +58,10 @@
   box-shadow: none;
 }
 
+.header-sub-group .graph-buttons button.btn-disabled {
+  opacity: 0.3;
+}
+
 .header-sub-group .collection-items {
   float: left;
   display: flex;
