@@ -75,6 +75,12 @@
   display: block;
 }
 
+.info .info-properties .btn-show-more {
+  margin: 8px 0;
+  background-color: #efefef;
+}
+
+
 .info .info-content {
   position: absolute;
   top: 50px;

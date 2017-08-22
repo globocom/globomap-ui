@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import InfoProperties from './InfoProperties';
 import './css/Info.css';
 
 class Info extends Component {
@@ -15,6 +16,7 @@ class Info extends Component {
 
     this.onAddNode = this.onAddNode.bind(this);
     this.onCloseInfo = this.onCloseInfo.bind(this);
+    this.composeEdges = this.composeEdges.bind(this);
   }
 
   render() {
@@ -44,9 +46,7 @@ class Info extends Component {
               </button>
             </div>
             <div className="info-content">
-              <div className="info-properties">
-                {this.buildProperties()}
-              </div>
+              <InfoProperties infoprops={this.state.node.properties} />
               <div className="graph-items">
                 {byGraph}
               </div>
@@ -80,52 +80,19 @@ class Info extends Component {
 
   buildEdges(edges) {
     let edgesSet = new Set();
+
+    let edgesIn = [],
+        edgesOut = [];
+
     let nodeEdges = edges.map((edge, i) => {
       let colorCls = this.props.graphs.filter((graph) => {
           return graph.name === edge.graph;
       })[0].colorClass;
 
-      edgesSet.add(edge.type);
       return <span key={i} className={'edge '+ colorCls}>{edge.type}</span>
     });
 
     return nodeEdges;
-  }
-
-  buildProperties() {
-    let properties = this.state.node.properties;
-    if(!properties) {
-      return '';
-    }
-
-    let props = properties.map((prop, i) => {
-      let val = prop.value;
-
-      if(typeof val === 'boolean') {
-        val = val ? 'yes' : 'no';
-      }
-
-      if(val instanceof Object) {
-        let items = [];
-        for(let o in val) {
-          items.push(<span key={o}>{o}: {val[o]}</span>);
-        }
-        val = <div>{items}</div>;
-      }
-
-      if(val instanceof Array) {
-        val = <div>{prop.value.map(o => <span key={o}>{o}</span>)}</div>;
-      }
-
-      return <tr key={prop.key}>
-              <th>{prop.description || prop.key}</th>
-              <td>{val}</td>
-            </tr>;
-    });
-
-    return <table>
-            <tbody>{props}</tbody>
-          </table>;
   }
 
   resetSubNodes() {
@@ -147,31 +114,39 @@ class Info extends Component {
         return;
       }
 
-      let byGraph = [];
-
-      for(let i=0, l=data.length; i<l; ++i) {
-        let nodesItem = { graph: data[i].graph };
-        let subnodes = data[i].nodes.map((n) => {
-          n.edges = [];
-          for(let j=0, k=data[i].edges.length; j<k; ++j) {
-            let e = data[i].edges[j];
-            if(n._id === e._to) {
-              n.edges.push({type: e.type, dir: 'in', graph: data[i].graph});
-            }
-
-            if(n._id === e._from) {
-              n.edges.push({type: e.type, dir: 'out', graph: data[i].graph});
-            }
-          }
+      let byGraph = data.map((gData) => {
+        gData.subnodes = gData.nodes.filter(n => n._id !== node._id).map((n) => {
+          n.edges = this.composeEdges(n, gData.edges).map((e) => {
+            e.graph = gData.graph;
+            return e;
+          });
           return n;
         });
-
-        nodesItem.subnodes = subnodes.filter(n => n._id !== node._id);
-        byGraph.push(nodesItem);
-      }
+        return gData;
+      });
 
       this.setState({ byGraph: byGraph });
     });
+  }
+
+  composeEdges(node, edges) {
+    let nEdges = [];
+
+    for(let i=0, l=edges.length; i<l; ++i) {
+      let edge = edges[i];
+
+      if(node._id === edge._to) {
+        edge.dir = 'in';
+        nEdges.push(edge);
+      }
+
+      if(node._id === edge._from) {
+        edge.dir = 'out';
+        nEdges.push(edge);
+      }
+    }
+
+    return nEdges;
   }
 
   componentWillReceiveProps(nextProps) {
