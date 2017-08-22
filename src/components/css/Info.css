@@ -132,6 +132,9 @@
 .graph-items .sub-node-info {
   flex-grow: 1;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .graph-items .sub-node-info:hover .sub-node-name {

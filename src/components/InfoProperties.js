@@ -21,7 +21,7 @@ class InfoProperties extends Component {
   }
 
   buildProperties() {
-    let properties = this.props.infoprops;
+    let properties = this.props.node.properties;
     if(!properties) {
       return <table></table>;
     }
@@ -38,7 +38,7 @@ class InfoProperties extends Component {
             remaining = [];
 
         for(let i in val) {
-          i < 5
+          i < 3
             ? initial.push(<span key={i}>{i}: {val[i]}</span>)
             : remaining.push(<span key={i}>{i}: {val[i]}</span>);
         }

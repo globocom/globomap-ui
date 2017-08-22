@@ -46,7 +46,7 @@ class Info extends Component {
               </button>
             </div>
             <div className="info-content">
-              <InfoProperties infoprops={this.state.node.properties} />
+              <InfoProperties node={this.state.node} />
               <div className="graph-items">
                 {byGraph}
               </div>
@@ -66,7 +66,7 @@ class Info extends Component {
 
               <div className="sub-node-info" onClick={(e) => this.onAddNode(e, subnode, true)}>
                 <span className="sub-node-type">{subnode.type}</span>
-                <span className="sub-node-name">{subnode.name}</span>
+                <span className="sub-node-name" title={subnode.name}>{subnode.name}</span>
               </div>
 
               <div className="sub-node-edges">
@@ -149,6 +149,16 @@ class Info extends Component {
     return nEdges;
   }
 
+  onCloseInfo(event) {
+    event.stopPropagation();
+    this.props.clearCurrent();
+  }
+
+  onAddNode(event, node, makeCurrent) {
+    event.stopPropagation();
+    this.props.addNodeToStage(node, this.state.node.uuid || this.state.node._id, makeCurrent);
+  }
+
   componentWillReceiveProps(nextProps) {
     let current = this.props.currentNode,
         next = nextProps.currentNode;
@@ -162,16 +172,6 @@ class Info extends Component {
         this.traversalSearch(node);
       }
     }
-  }
-
-  onCloseInfo(event) {
-    event.stopPropagation();
-    this.props.clearCurrent();
-  }
-
-  onAddNode(event, node, makeCurrent) {
-    event.stopPropagation();
-    this.props.addNodeToStage(node, this.state.node.uuid || this.state.node._id, makeCurrent);
   }
 
 }
