@@ -106,8 +106,7 @@
   box-sizing: border-box;
 }
 
-.graph-items .sub-node.disabled .sub-node-info,
-.graph-items .sub-node.disabled .sub-node-edges {
+.graph-items .sub-node.disabled .sub-node-info {
   opacity: 0.5;
 }
 

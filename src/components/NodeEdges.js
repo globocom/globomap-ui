@@ -24,39 +24,52 @@ class NodeEdges extends Component {
         return graph.name === edges.graph;
     })[0].colorClass;
 
-    let edgesIn = edges.in.map((e, i) => {
-      return <span key={i}>{e.type}: {e.name}</span>;
-    });
-
-    let edgesOut = edges.out.map((e, i) => {
-      return <span key={i}>{e.type}</span>;
+    let edgesInOut = [
+      {
+        dir: 'in',
+        toggleFn: this.onOpenIn,
+        openState: this.state.inOpen,
+        items: edges.in.map((e, i) => {
+          return <span key={i} className="edge-item">
+                   <strong>{e.type}</strong>: {e.name}
+                 </span>;
+        })
+      },
+      {
+        dir: 'out',
+        toggleFn: this.onOpenOut,
+        openState: this.state.outOpen,
+        items: edges.out.map((e, i) => {
+          return <span key={i} className="edge-item">
+                   <strong>{e.type}</strong>: {e.name}
+                 </span>;
+        })
+      }
+    ].map((elem) => {
+      return elem.items.length > 0
+              ? (<div key={elem.dir} className={'edges-' + elem.dir}>
+                  <button className={'edges-btn ' + colorCls} onClick={elem.toggleFn}>
+                    <i className={'fa fa-arrow-'+ (elem.dir === 'in' ? 'right' : 'left')}></i>
+                  </button>
+                  {elem.openState &&
+                    <div className="edges-content" onClick={e => e.stopPropagation()}>
+                      <div className="tooltip-arrow"></div>
+                      <div className={'v-line ' + colorCls}></div>
+                      <div className="edges-content-head">
+                        Links
+                        <button className="close-tooltip-btn" onClick={elem.toggleFn}>
+                          <i className="fa fa-close"></i>
+                        </button>
+                      </div>
+                      {elem.items}
+                    </div>}
+                  </div>)
+              : '';
     });
 
     return <div className={'sub-node-edges ' + this.props.position}>
-            {edgesIn.length > 0 &&
-              <div className="edges-in">
-                <button className={'edges-btn ' + colorCls} onClick={this.onOpenIn}>
-                  <i className="fa fa-arrow-right"></i>
-                </button>
-                {this.state.inOpen &&
-                  <div className="edges-in-content">
-                    <div className="tooltip-arrow"></div>
-                    {edgesIn}
-                  </div>}
-              </div>}
-
-            {edgesOut.length > 0 &&
-              <div className="edges-out">
-                <button className={'edges-btn ' + colorCls} onClick={this.onOpenOut}>
-                  <i className="fa fa-arrow-left"></i>
-                </button>
-                {this.state.outOpen &&
-                  <div className="edges-out-content">
-                    <div className="tooltip-arrow"></div>
-                    {edgesOut}
-                  </div>}
-              </div>}
-            </div>;
+            {edgesInOut}
+           </div>;
   }
 
   onOpenIn(event) {

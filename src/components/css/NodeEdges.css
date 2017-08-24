@@ -1,10 +1,9 @@
-.edges-in,
-.edges-out {
+.sub-node-edges .edges-in,
+.sub-node-edges .edges-out {
   position: relative;
 }
 
-.edges-in .edges-btn,
-.edges-out .edges-btn {
+.sub-node-edges .edges-btn {
   box-sizing: content-box;
   width: 20px;
   height: 18px;
@@ -16,34 +15,57 @@
   cursor: pointer;
 }
 
-.edges-in .edges-btn:hover,
-.edges-out .edges-btn:hover {
+.sub-node-edges .edges-btn:hover {
   opacity: 0.9;
 }
 
-.edges-in .edges-in-content,
-.edges-out .edges-out-content {
+.sub-node-edges .edges-content {
   position: absolute;
   top: 35px;
-  padding: 10px;
+  min-width: 100px;
   border-radius: 2px;
+  padding-bottom: 10px;
+  text-align: left;
   background-color: white;
   margin-bottom: 10px;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
   z-index: 9;
+  cursor: default;
 }
 
-.sub-node-edges.left .edges-in-content,
-.sub-node-edges.left .edges-out-content {
-  left: 0;
+.sub-node-edges .edges-content .edge-item {
+  display: block;
+  font-size: 13px;
+  white-space: nowrap;
+  color: #333;
+  padding: 5px 10px;
+  border-bottom: 1px solid #ddd;
 }
 
-.sub-node-edges.right .edges-in-content,
-.sub-node-edges.right .edges-out-content {
-  right: 0;
+.sub-node-edges .edges-content .edge-item:last-child {
+  border-bottom: 0;
 }
 
-.tooltip-arrow {
+.sub-node-edges .edges-content .v-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+.sub-node-edges.left .edges-content { left: 0; }
+.sub-node-edges.left .edges-content .v-line {
+  left: -3px;
+  border-radius: 3px 0 0 3px;
+}
+
+.sub-node-edges.right .edges-content { right: 0; }
+.sub-node-edges.right .edges-content .v-line {
+  right: -3px;
+  border-radius: 0 3px 3px 0;
+}
+
+.sub-node-edges .tooltip-arrow {
   position: absolute;
   top: -8px;
   width: 0;
@@ -59,4 +81,24 @@
 
 .sub-node-edges.right .tooltip-arrow {
   right: 4px;
+}
+
+.sub-node-edges .edges-content-head {
+  text-align: left;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.sub-node-edges .close-tooltip-btn {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  border: 0;
+  background-color: transparent;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.sub-node-edges .close-tooltip-btn:hover {
+  color: #333;
 }
