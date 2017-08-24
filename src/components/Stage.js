@@ -20,26 +20,24 @@ class Stage extends Component {
     let open = sItems.length > 0 ? ' open' : '',
         withInfo = this.props.currentNode ? ' with-info' : '';
 
-    return (
-      <div className={"stage" + open + withInfo}>
-        <div className="stage-container">
-          {this.renderNodes(this.props.stageNodes)}
-        </div>
-      </div>
-    );
+    return <div className={"stage" + open + withInfo}>
+             <div className="stage-container">
+               {this.renderNodes(this.props.stageNodes)}
+             </div>
+           </div>
   }
 
   renderNodes(nodeList) {
     return nodeList.map((node, i) => {
-      return (<div key={'n' + i} className="node-item-group">
-              <NodeItem node={node}
-                       graphs={this.props.graphs}
-                       currentNode={this.props.currentNode}
-                       setCurrent={this.props.setCurrent} />
-              <div className="node-item-content">
-                {node.items.length > 0 ? this.renderNodes(node.items) : ''}
-              </div>
-             </div>);
+      return <div key={'n' + i} className="node-item-group">
+               <NodeItem node={node}
+                         graphs={this.props.graphs}
+                         currentNode={this.props.currentNode}
+                         setCurrent={this.props.setCurrent} />
+               <div className="node-item-content">
+                 {node.items.length > 0 ? this.renderNodes(node.items) : ''}
+               </div>
+             </div>
     });
   }
 

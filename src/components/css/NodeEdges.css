@@ -1,0 +1,62 @@
+.edges-in,
+.edges-out {
+  position: relative;
+}
+
+.edges-in .edges-btn,
+.edges-out .edges-btn {
+  box-sizing: content-box;
+  width: 20px;
+  height: 18px;
+  color: white;
+  padding: 2px;
+  border: 0;
+  border-radius: 2px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.edges-in .edges-btn:hover,
+.edges-out .edges-btn:hover {
+  opacity: 0.9;
+}
+
+.edges-in .edges-in-content,
+.edges-out .edges-out-content {
+  position: absolute;
+  top: 35px;
+  padding: 10px;
+  border-radius: 2px;
+  background-color: white;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  z-index: 9;
+}
+
+.sub-node-edges.left .edges-in-content,
+.sub-node-edges.left .edges-out-content {
+  left: 0;
+}
+
+.sub-node-edges.right .edges-in-content,
+.sub-node-edges.right .edges-out-content {
+  right: 0;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  top: -8px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid white;
+}
+
+.sub-node-edges.left .tooltip-arrow {
+  left: 4px;
+}
+
+.sub-node-edges.right .tooltip-arrow {
+  right: 4px;
+}

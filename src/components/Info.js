@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import InfoProperties from './InfoProperties';
+import NodeEdges from './NodeEdges';
 import './css/Info.css';
 
 class Info extends Component {
@@ -69,38 +70,23 @@ class Info extends Component {
                 <span className="sub-node-name" title={subnode.name}>{subnode.name}</span>
               </div>
 
-              <div className="sub-node-edges">
-                {this.buildEdges(subnode.edges)}
-              </div>
+              <NodeEdges edges={subnode.edges}
+                         graphs={this.props.graphs}
+                         position={'right'} />
             </div>;
     });
 
     return subnodes;
   }
 
-  buildEdges(edges) {
-    let edgesSet = new Set();
-
-    let edgesIn = [],
-        edgesOut = [];
-
-    let nodeEdges = edges.map((edge, i) => {
-      let colorCls = this.props.graphs.filter((graph) => {
-          return graph.name === edge.graph;
-      })[0].colorClass;
-
-      return <span key={i} className={'edge '+ colorCls}>{edge.type}</span>
-    });
-
-    return nodeEdges;
-  }
-
   resetSubNodes() {
     let byGraphCopy = this.state.byGraph.slice();
+
     byGraphCopy = byGraphCopy.map((nodesItem) => {
       nodesItem.subnodes = [];
       return nodesItem;
     });
+
     this.setState({ byGraph: byGraphCopy });
   }
 
@@ -116,10 +102,8 @@ class Info extends Component {
 
       let byGraph = data.map((gData) => {
         gData.subnodes = gData.nodes.filter(n => n._id !== node._id).map((n) => {
-          n.edges = this.composeEdges(n, gData.edges).map((e) => {
-            e.graph = gData.graph;
-            return e;
-          });
+          n.edges = this.composeEdges(n, gData.edges)
+          n.edges.graph = gData.graph;
           return n;
         });
         return gData;
@@ -130,19 +114,19 @@ class Info extends Component {
   }
 
   composeEdges(node, edges) {
-    let nEdges = [];
+    let nEdges = { in: [], out: [] };
 
     for(let i=0, l=edges.length; i<l; ++i) {
       let edge = edges[i];
 
       if(node._id === edge._to) {
         edge.dir = 'in';
-        nEdges.push(edge);
+        nEdges.in.push(edge);
       }
 
       if(node._id === edge._from) {
         edge.dir = 'out';
-        nEdges.push(edge);
+        nEdges.out.push(edge);
       }
     }
 

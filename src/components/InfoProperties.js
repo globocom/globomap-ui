@@ -46,16 +46,15 @@ class InfoProperties extends Component {
         }
 
         val = <div>
-              <div className="prop-initial">{initial}</div>
-              {remaining.length > 0 &&
-                <button className="btn-show-more topcoat-button--quiet"
-                  onClick={(e) => this.setState({ showMore: !this.state.showMore })}>
-                    show {!this.state.showMore ? 'more' : 'less'}
-                </button>}
-
-              {this.state.showMore &&
-                <div className="prop-remaining">{remaining}</div>}
-             </div>;
+                <div className="prop-initial">{initial}</div>
+                {remaining.length > 0 &&
+                  <button className="btn-show-more topcoat-button--quiet"
+                    onClick={(e) => this.setState({ showMore: !this.state.showMore })}>
+                      show {!this.state.showMore ? 'more' : 'less'}
+                  </button>}
+                {this.state.showMore &&
+                  <div className="prop-remaining">{remaining}</div>}
+              </div>;
       }
 
       if(val instanceof Array) {
@@ -65,12 +64,12 @@ class InfoProperties extends Component {
       return <tr key={prop.key}>
               <th>{prop.description || prop.key}</th>
               <td>{val}</td>
-            </tr>;
+             </tr>;
     });
 
     return <table>
             <tbody>{props}</tbody>
-          </table>;
+           </table>;
   }
 
 }

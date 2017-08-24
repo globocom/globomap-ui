@@ -37,22 +37,22 @@ class App extends Component {
     return (
       <div className="main">
         <Header graphs={this.state.graphs}
-               clearStage={this.clearStage}
-               clearCurrent={this.clearCurrent}
-               collections={this.state.collections}
-               findNodes={this.findNodes}
-               onToggleGraph={this.onToggleGraph} />
+                clearStage={this.clearStage}
+                clearCurrent={this.clearCurrent}
+                collections={this.state.collections}
+                findNodes={this.findNodes}
+                onToggleGraph={this.onToggleGraph} />
 
         <SearchContent nodes={this.state.nodes}
-                     setCurrent={this.setCurrent}
-                     addNodeToStage={this.addNodeToStage}
-                     currentNode={this.state.currentNode} />
+                       setCurrent={this.setCurrent}
+                       addNodeToStage={this.addNodeToStage}
+                       currentNode={this.state.currentNode} />
 
         <Stage graphs={this.state.graphs}
-              stageNodes={this.state.stageNodes}
-              currentNode={this.state.currentNode}
-              clearCurrent={this.clearCurrent}
-              setCurrent={this.setCurrent} />
+               stageNodes={this.state.stageNodes}
+               currentNode={this.state.currentNode}
+               clearCurrent={this.clearCurrent}
+               setCurrent={this.setCurrent} />
 
         <Info getNode={this.getNode}
               stageNodes={this.state.stageNodes}

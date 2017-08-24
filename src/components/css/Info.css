@@ -63,6 +63,7 @@
 .info .info-properties th {
   text-align: right;
   width: 36%;
+  vertical-align: top;
 }
 
 .info .info-properties th,
@@ -148,14 +149,12 @@
   padding: 10px;
 }
 
-.graph-items .sub-node-edges {
+.graph-items .sub-node-edges .edges-in,
+.graph-items .sub-node-edges .edges-out {
   display: inline-block;
+  margin-right: 5px;
 }
 
-.graph-items .sub-node-edges .edge {
-  color: white;
-  font-size: 12px;
-  padding: 2px 4px;
-  border-radius: 2px;
-  margin: 0 6px 6px 0;
+.graph-items .sub-node-edges > div:last-child {
+  margin-right: 0;
 }

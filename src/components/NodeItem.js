@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NodeEdges from './NodeEdges';
 import './css/NodeItem.css';
 
 class NodeItem extends Component {
@@ -6,7 +7,6 @@ class NodeItem extends Component {
   constructor(props) {
     super(props);
     this.onItemSelect = this.onItemSelect.bind(this);
-    this.drawEdges = this.drawEdges.bind(this);
   }
 
   render() {
@@ -21,28 +21,11 @@ class NodeItem extends Component {
           <span className="type">{type}</span>
           <span className="name">{name}</span>
         </div>
-        {this.drawEdges(edges)}
+        <NodeEdges edges={edges}
+                   graphs={this.props.graphs}
+                   position={'left'} />
       </div>
     );
-  }
-
-  drawEdges(edgeList=[]) {
-    if(edgeList.length > 0) {
-      let edge0 = edgeList[0];
-      let color = this.props.graphs.filter((graph) => {
-        return graph.name === edge0.graph;
-      })[0].colorClass;
-
-      let arrow = <i className="fa fa-arrow-right"></i>;
-      if(edge0.dir === 'out') {
-        arrow = <i className="fa fa-arrow-left"></i>;
-      }
-
-      return (<div className={'node-edges ' + edge0.dir + ' ' + color}>
-              {arrow}
-             </div>);
-    }
-    return '';
   }
 
   onItemSelect(event) {

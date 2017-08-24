@@ -1,7 +1,7 @@
 const app = require('./app');
 const httpServer = require('http').Server(app);
 const socketIO = require('socket.io');
-const uws = require('uws');
+// const uws = require('uws');
 const io = socketIO(httpServer);
 const IOServer = require('./IOServer');
 

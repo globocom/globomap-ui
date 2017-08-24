@@ -44,37 +44,19 @@
   box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15);
 }
 
-.node-item .node-edges {
+.node-item .sub-node-edges .edges-in,
+.node-item .sub-node-edges .edges-out {
   position: absolute;
   left: -17px;
   width: 20px;
-  color: white;
-  padding: 2px;
-  font-size: 14px;
   height: 18px;
-  border-radius: 2px;
-  text-align: center;
   z-index: 6;
 }
 
-.node-item .node-edges.in {
+.node-item .sub-node-edges .edges-in {
   top: 4px;
 }
 
-.node-item .node-edges.out {
-  bottom: 4px;
-}
-
-.node-item .edge-link {
-  position: absolute;
-  width: 5px;
-  border-radius: 2px;
-  top: -50px;
-  height: 70px;
-  left: -22px;
-  background-color: #9daca9;
-}
-
-.node-item-content {
-  position: relative;
+.node-item .sub-node-edges .edges-out {
+  bottom: 6px;
 }

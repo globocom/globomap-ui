@@ -1,11 +1,3 @@
-/* html {
-  box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-} */
-
 body {
   border: 0;
   padding: 0;
@@ -29,4 +21,3 @@ a {
 
 .graph-color3,
 .graph-color3:hover { background-color: #ccaf6f }
-
