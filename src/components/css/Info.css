@@ -157,3 +157,12 @@
 .graph-items .sub-node-edges > div:last-child {
   margin-right: 0;
 }
+
+.graph-items .sub-node-edges .edges-content {
+  max-width: 420px;
+}
+
+.graph-items .sub-node-edges .edges-content .edge-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

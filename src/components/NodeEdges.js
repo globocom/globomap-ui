@@ -30,7 +30,7 @@ class NodeEdges extends Component {
         toggleFn: this.onOpenIn,
         openState: this.state.inOpen,
         items: edges.in.map((e, i) => {
-          return <span key={i} className="edge-item">
+          return <span key={i} className="edge-item" title={e.name}>
                    <strong>{e.type}</strong>: {e.name}
                  </span>;
         })
@@ -40,7 +40,7 @@ class NodeEdges extends Component {
         toggleFn: this.onOpenOut,
         openState: this.state.outOpen,
         items: edges.out.map((e, i) => {
-          return <span key={i} className="edge-item">
+          return <span key={i} className="edge-item" title={e.name}>
                    <strong>{e.type}</strong>: {e.name}
                  </span>;
         })
