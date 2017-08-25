@@ -18,7 +18,7 @@ class InfoProperties extends Component {
 
     return <div className="info-properties">
             {props}
-            <Monit nodeName={this.props.node.name} />
+            <Monit node={this.props.node} />
           </div>
   }
 

@@ -2,6 +2,9 @@ const axios = require('axios');
 const utils = require('../src/utils');
 
 const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1'
+const zabbixApiUrl = process.env.ZABBIX_API_URL
+const zabbixUser = process.env.ZABBIX_API_USER
+const zabbixPassword = process.env.ZABBIX_API_PASSWORD
 
 class IOServer {
   constructor(io) {
@@ -24,6 +27,10 @@ class IOServer {
 
       socket.on('traversalsearch', (data, fn) => {
         this.traversalSearch(data, (result) => { fn(result); });
+      });
+
+      socket.on('getmonitoring', (data, fn) => {
+        this.getMonitoring(data, (result) => { fn(result); });
       });
     });
   }
@@ -113,6 +120,62 @@ class IOServer {
     delete item._key;
     delete item._rev;
     return item;
+  }
+
+  getMonitoring(data, fn){
+    let loginRequest =  { "user": zabbixUser, "password": zabbixPassword }
+
+    this.jsonRPCRequest("user.login", loginRequest, null, (auth) => {
+      let ips = this.getIps(data);
+      if (!ips){
+        return fn([]);
+      }
+      
+      let hostRequest = {
+        "output": ["hostid"],
+        "search": { "ip": ips },
+        "searchByAny": 1
+      }
+
+      this.jsonRPCRequest("host.get", hostRequest, auth, (hosts) => {
+        let hostIds = hosts.map((host, i) => {
+            return host.hostid
+        })
+        if (!hostIds){
+          return fn([]);
+        }
+
+        let triggersRequest = { 
+          "output": ["description","status","state", "value"],
+          "filter": { "hostid": hostIds },
+          "expandDescription": 1,
+          "searchByAny": 1
+        }
+
+        this.jsonRPCRequest("trigger.get", triggersRequest, auth, (triggers) => {
+          fn(triggers);
+        })
+      })
+    })
+  }
+
+  jsonRPCRequest(action, params, auth, fn){
+    axios.post(`${zabbixApiUrl}/api/v2`, {
+      "jsonrpc": "2.0", "method": action, "params": params,
+      "id": 1,"auth": auth
+    }) 
+    .then(function(response) {
+        fn(response.data.result)
+    });
+  }
+
+  getIps(element){
+    let property = element.properties.find((element, index, array) => {
+      return element['key'] == 'ips';
+    })
+    if(property){
+      return property.value;
+    }
   }
 }
 
