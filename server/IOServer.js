@@ -130,7 +130,7 @@ class IOServer {
       if (!ips){
         return fn([]);
       }
-      
+
       let hostRequest = {
         "output": ["hostid"],
         "search": { "ip": ips },
@@ -145,7 +145,7 @@ class IOServer {
           return fn([]);
         }
 
-        let triggersRequest = { 
+        let triggersRequest = {
           "output": ["description","status","state", "value"],
           "filter": { "hostid": hostIds },
           "expandDescription": 1,
@@ -163,7 +163,7 @@ class IOServer {
     axios.post(`${zabbixApiUrl}/api/v2`, {
       "jsonrpc": "2.0", "method": action, "params": params,
       "id": 1,"auth": auth
-    }) 
+    })
     .then(function(response) {
         fn(response.data.result)
     });

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Monit from './Monit';
 import './css/InfoProperties.css';
 
 class InfoProperties extends Component {
@@ -17,9 +16,8 @@ class InfoProperties extends Component {
     let props = this.buildProperties();
 
     return <div className="info-properties">
-            {props}
-            <Monit node={this.props.node} />
-          </div>
+             {props}
+           </div>;
   }
 
   buildProperties() {
@@ -62,13 +60,13 @@ class InfoProperties extends Component {
       }
 
       return <tr key={prop.key}>
-              <th>{prop.description || prop.key}</th>
-              <td>{val}</td>
+               <th>{prop.description || prop.key}</th>
+               <td>{val}</td>
              </tr>;
     });
 
     return <table>
-            <tbody>{props}</tbody>
+             <tbody>{props}</tbody>
            </table>;
   }
 

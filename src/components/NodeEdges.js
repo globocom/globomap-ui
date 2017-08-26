@@ -68,7 +68,7 @@ class NodeEdges extends Component {
     });
 
     return <div className={'sub-node-edges ' + this.props.position}>
-            {edgesInOut}
+             {edgesInOut}
            </div>;
   }
 
