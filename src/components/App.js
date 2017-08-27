@@ -75,7 +75,7 @@ class App extends Component {
 
       for(let i=0, l=data.length; i<l; ++i) {
         graphs.push({
-          name: data[i],
+          name: data[i].name,
           colorClass: 'graph-color' + i,
           enabled: true
         });
