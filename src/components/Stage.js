@@ -24,7 +24,7 @@ class Stage extends Component {
              <div className="stage-container">
                {this.renderNodes(this.props.stageNodes)}
              </div>
-           </div>
+           </div>;
   }
 
   renderNodes(nodeList) {
@@ -37,7 +37,7 @@ class Stage extends Component {
                <div className="node-item-content">
                  {node.items.length > 0 ? this.renderNodes(node.items) : ''}
                </div>
-             </div>
+             </div>;
     });
   }
 
