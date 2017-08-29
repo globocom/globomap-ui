@@ -1,0 +1,39 @@
+.monit table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.monit table th {
+  text-align: left;
+  font-weight: normal;
+}
+
+.monit table th,
+.monit table td {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(157, 172, 169, 0.35);
+}
+
+.monit table td {
+  border-bottom: 1px solid #dadada;
+}
+
+.monit table tr:last-child th,
+.monit table tr:last-child td {
+  border-bottom: 0;
+}
+
+.monit .trigger-0,
+.monit .trigger-1 {
+  color: white;
+  width: 2%;
+  font-size: 14px;
+}
+
+.monit .trigger-0 {
+  background-color: #34a853;
+}
+.monit .trigger-1 {
+  background-color: #ea4335;
+}

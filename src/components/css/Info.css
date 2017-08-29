@@ -54,8 +54,11 @@
   color: #555;
 }
 
+.info .info-properties {
+  padding: 8px 0;
+}
+
 .info .info-properties table {
-  margin: 10px 0;
   width: 100%;
   border-spacing: 0;
 }
@@ -80,7 +83,6 @@
   margin: 8px 0;
   background-color: #efefef;
 }
-
 
 .info .info-content {
   position: absolute;
@@ -195,7 +197,6 @@
 .info-content .tab-content {
   display: none;
   min-height: 50px;
-  margin: 10px 0;
 }
 
 .info-content .tab-content.active {
