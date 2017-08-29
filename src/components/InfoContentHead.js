@@ -104,7 +104,7 @@ class InfoContentHead extends Component {
         next = nextProps.node;
 
     if(current._id !== next._id) {
-      this.setState({ currentTab: 'Properties' });
+      // this.setState({ currentTab: 'Properties' });
     }
   }
 

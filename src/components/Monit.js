@@ -8,6 +8,7 @@ class Monit extends Component {
     super(props);
     this.socket = uiSocket();
     this.state = {
+      loading: true,
       triggers: []
     }
   }
@@ -24,11 +25,13 @@ class Monit extends Component {
       });
 
       return <div className="monit">
-              {this.state.triggers.length > 0
+              {!this.state.loading
                 ? <table>
                     <tbody>{props}</tbody>
                   </table>
-                : <table></table>}
+                : <div className="monit-loading">
+                    <i className="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                  </div>}
             </div>;
     }
     return null;
@@ -40,23 +43,35 @@ class Monit extends Component {
            : <i className="fa fa-check"></i>;
   }
 
-  componentWillReceiveProps(nextProps){
-    let current = this.props.node,
-        next = nextProps.node;
+  // componentWillReceiveProps(nextProps){
+  //   let next = nextProps.node,
+  //       current = this.props.node;
 
-    if(next.type !== 'comp_unit'){
-      this.setState({ triggers : [] });
+  //   if(next.type !== 'comp_unit'){
+  //     return;
+  //   }
+
+  //   if(current._id !== next._id) {
+  //     this.setState({ loading: true, triggers: [] }, () => {
+  //       this.socket.emit('getmonitoring', next, (data) => {
+  //         this.setState({ loading: false, triggers: data });
+  //       });
+  //     });
+  //   }
+  // }
+
+  componentDidMount() {
+    let node = this.props.node;
+
+    if(node.type !== 'comp_unit') {
       return;
     }
 
-    if(current._id !== next._id) {
-      this.setState({ triggers : [] });
-      this.socket.emit('getmonitoring', next, (data) => {
-        console.log(data);
-
-        this.setState({ triggers : data });
+    this.setState({ loading: true, triggers: [] }, () => {
+      this.socket.emit('getmonitoring', this.props.node, (data) => {
+        this.setState({ loading: false, triggers: data });
       });
-    }
+    });
   }
 
 }

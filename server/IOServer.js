@@ -122,12 +122,15 @@ class IOServer {
     return item;
   }
 
-  getMonitoring(data, fn){
-    let loginRequest =  { "user": zabbixUser, "password": zabbixPassword }
+  getMonitoring(data, fn) {
+    let loginRequest =  {
+      "user": zabbixUser,
+      "password": zabbixPassword
+    };
 
     this.jsonRPCRequest("user.login", loginRequest, null, (auth) => {
       let ips = this.getIps(data);
-      if (!ips){
+      if (!ips) {
         return fn([]);
       }
 
@@ -135,13 +138,13 @@ class IOServer {
         "output": ["hostid"],
         "search": { "ip": ips },
         "searchByAny": 1
-      }
+      };
 
       this.jsonRPCRequest("host.get", hostRequest, auth, (hosts) => {
         let hostIds = hosts.map((host, i) => {
             return host.hostid
         })
-        if (!hostIds){
+        if (!hostIds) {
           return fn([]);
         }
 
@@ -150,22 +153,28 @@ class IOServer {
           "filter": { "hostid": hostIds },
           "expandDescription": 1,
           "searchByAny": 1
-        }
+        };
 
         this.jsonRPCRequest("trigger.get", triggersRequest, auth, (triggers) => {
           fn(triggers);
-        })
-      })
-    })
+        });
+      });
+    });
   }
 
-  jsonRPCRequest(action, params, auth, fn){
+  jsonRPCRequest(action, params, auth, fn) {
     axios.post(`${zabbixApiUrl}/api/v2`, {
       "jsonrpc": "2.0", "method": action, "params": params,
       "id": 1,"auth": auth
+    }, {
+      timeout: 9000
     })
     .then(function(response) {
-        fn(response.data.result)
+      fn(response.data.result);
+    })
+    .catch((error) => {
+      console.log(error);
+      fn(error.response.data);
     });
   }
 
