@@ -11,6 +11,7 @@
   max-width: 200px;
   cursor: pointer;
   background-color: #9daca9;
+  border: 1px solid transparent;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
@@ -41,19 +42,21 @@
 }
 
 .node-item.current.this-node {
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15);
+  border: 1px solid #587bff;
+  border-bottom-color: #0036ff;
+  box-shadow: 0 0 0 3px #6fb5f1;
 }
 
 .node-item .sub-node-edges .edges-in,
 .node-item .sub-node-edges .edges-out {
   position: absolute;
-  left: -17px;
+  left: -18px;
   width: 20px;
   height: 18px;
 }
 
 .node-item .sub-node-edges .edges-in {
-  top: 4px;
+  top: 2px;
 }
 
 .node-item .sub-node-edges .edges-out {

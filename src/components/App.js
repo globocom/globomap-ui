@@ -4,14 +4,18 @@ import Header from './Header';
 import SearchContent from './SearchContent';
 import Stage from './Stage';
 import Info from './Info';
-import { traverseItems, uuid } from '../utils';
+import { traverseItems, uuid, sortByName } from '../utils';
 import './css/App.css';
+
+function uiSocket() {
+  return io();
+}
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = io();
+    this.socket = uiSocket();
 
     this.state = {
       currentNode: false,
@@ -72,6 +76,7 @@ class App extends Component {
 
     this.socket.emit('getgraphs', {}, (data) => {
       let graphs = [];
+      data = sortByName(data);
 
       for(let i=0, l=data.length; i<l; ++i) {
         graphs.push({
@@ -226,4 +231,4 @@ class App extends Component {
 
 }
 
-export default App;
+export { App as default, uiSocket };
