@@ -45,7 +45,8 @@ class IOServer {
       fn(response.data);
     })
     .catch((error) => {
-      console.log(error);
+      let errorMsg = this.handleError(error);
+      fn({ error: true, message: errorMsg || 'Get Collections Error' });
     });
   }
 
@@ -59,7 +60,8 @@ class IOServer {
       fn(response.data);
     })
     .catch((error) => {
-      console.log(error);
+      let errorMsg = this.handleError(error);
+      fn({ error: true, message: errorMsg || 'Get Graphs Error' });
     });
   }
 
@@ -81,6 +83,9 @@ class IOServer {
         });
 
         fn(data);
+      }).catch((error) => {
+        let errorMsg = this.handleError(error);
+        fn({ error: true, message: errorMsg || 'Find Nodes Error' });
       });
   }
 
@@ -110,8 +115,8 @@ class IOServer {
         });
         fn(results);
       }).catch((error) => {
-        console.log(error.response.data);
-        fn(error.response.data);
+        let errorMsg = this.handleError(error);
+        fn({ error: true, message: errorMsg || 'Traversal Search Error' });
       });
   }
 
@@ -129,21 +134,17 @@ class IOServer {
     };
 
     this.jsonRPCRequest("user.login", loginRequest, null, (auth) => {
-      let ips = this.getIps(data);
-      if (!ips) {
-        return fn([]);
-      }
-
       let hostRequest = {
         "output": ["hostid"],
-        "search": { "ip": ips },
+        "search": { "host": data.name },
         "searchByAny": 1
       };
 
       this.jsonRPCRequest("host.get", hostRequest, auth, (hosts) => {
         let hostIds = hosts.map((host, i) => {
             return host.hostid
-        })
+        });
+
         if (!hostIds) {
           return fn([]);
         }
@@ -151,8 +152,7 @@ class IOServer {
         let triggersRequest = {
           "output": ["description","status","state", "value"],
           "filter": { "hostid": hostIds },
-          "expandDescription": 1,
-          "searchByAny": 1
+          "expandDescription": 1
         };
 
         this.jsonRPCRequest("trigger.get", triggersRequest, auth, (triggers) => {
@@ -173,18 +173,27 @@ class IOServer {
       fn(response.data.result);
     })
     .catch((error) => {
-      console.log(error);
-      fn(error.response.data);
+      let errorMsg = this.handleError(error);
+      fn({ error: true, message: errorMsg || 'Zabbix API Error' });
     });
   }
 
-  getIps(element){
-    let property = element.properties.find((element, index, array) => {
-      return element['key'] == 'ips';
-    })
-    if(property){
-      return property.value;
+  handleError(error) {
+    let msg = false;
+
+    if(error.response) {
+      msg = `Response Error: ${error.response.data}`;
+      console.log(msg);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      msg = `Error: ${error.message}`;
+      console.log(msg);
     }
+
+    console.log(error.config);
+
+    return msg;
   }
 }
 

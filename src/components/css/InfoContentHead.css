@@ -46,7 +46,7 @@
 
 .info-content .tab-content {
   display: none;
-  min-height: 50px;
+  min-height: 52px;
 }
 
 .info-content .tab-content.active {

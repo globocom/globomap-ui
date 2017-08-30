@@ -25,6 +25,10 @@ class Monit extends Component {
               </tr>;
       });
 
+      if(props.length === 0) {
+        props = [<tr key={1}><th className="trigger-not-found">Not found</th></tr>];
+      }
+
       return <div className="monit">
               {!this.state.loading
                 ? <table>
@@ -55,7 +59,11 @@ class Monit extends Component {
     if(current._id !== next._id) {
       this.setState({ loading: true, triggers: [] }, () => {
         this.socket.emit('getmonitoring', next, (data) => {
-          this.setState({ loading: false, triggers: data });
+          if (data.error) {
+            console.log(data.message);
+            return this.setState({ loading: false, triggers: [] });
+          }
+          return this.setState({ loading: false, triggers: data });
         });
       });
     }
@@ -70,7 +78,11 @@ class Monit extends Component {
 
     this.setState({ loading: true, triggers: [] }, () => {
       this.socket.emit('getmonitoring', node, (data) => {
-        this.setState({ loading: false, triggers: data });
+        if (data.error) {
+          console.log(data.message);
+          return this.setState({ loading: false, triggers: [] });
+        }
+        return this.setState({ loading: false, triggers: data });
       });
     });
   }
