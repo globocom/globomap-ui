@@ -30,6 +30,11 @@
   border-bottom: 0;
 }
 
+.monit .trigger-not-found {
+  text-align: center;
+  padding-top: 18px;
+}
+
 .monit .trigger-0,
 .monit .trigger-1 {
   color: white;
