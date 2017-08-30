@@ -16,8 +16,6 @@
   border-left: 1px solid rgba(255, 255, 255, 0.35);
   box-shadow: -5px 25px 80px rgba(0,0,0,0.25);
   z-index: 10;
-
-  /*box-shadow: -1px 0px 0px rgba(157, 172, 169, 0.35);*/
   transition: all 0.1s cubic-bezier(0.70, 0, 0.175, 1);
 }
 
@@ -27,10 +25,6 @@
 
 .info .info-title {
   position: absolute;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
   top: 0;
   left: 0;
   width: 100%;
@@ -39,6 +33,9 @@
   padding: 0 10px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   background-color: #d2d6d6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   z-index: 9;
 }
 
@@ -167,38 +164,4 @@
 .info-graph-items .sub-node-edges .edges-content .edge-item {
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.info-content .tabs-nav {
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
-}
-
-.info-content .tabs-nav ul {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.info-content .tabs-nav ul li {
-  display: inline-block;
-}
-
-.info-content .tabs-nav .tab-btn {
-  margin-left: 10px;
-  color: #666;
-}
-
-.info-content .tabs-nav .active .tab-btn {
-  background-color: #f8f8f8;
-  color: #333;
-}
-
-.info-content .tab-content {
-  display: none;
-  min-height: 50px;
-}
-
-.info-content .tab-content.active {
-  display: block;
 }
