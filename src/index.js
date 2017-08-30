@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import App from './components/App';
 import NotFound from './components/NotFound';
-import registerServiceWorker from './registerServiceWorker';
-
 
 ReactDOM.render(
   <Router>
@@ -12,7 +10,5 @@ ReactDOM.render(
       <Route path="/" exact component={App} />
       <Route component={NotFound} />
     </Switch>
-  </Router>,
-  document.getElementById('root')
+  </Router>, document.getElementById('root')
 );
-registerServiceWorker();
