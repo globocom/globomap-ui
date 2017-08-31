@@ -52,7 +52,7 @@ class Monit extends Component {
     let next = nextProps.node,
         current = this.props.node;
 
-    if(this.monitItems.indexOf(next.type) < 0) {
+    if(!this.monitItems.includes(next.type)) {
       return;
     }
 
@@ -72,7 +72,7 @@ class Monit extends Component {
   componentDidMount() {
     let node = this.props.node;
 
-    if(this.monitItems.indexOf(node.type) < 0) {
+    if(!this.monitItems.includes(node.type)) {
       return;
     }
 

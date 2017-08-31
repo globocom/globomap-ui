@@ -26,7 +26,7 @@ class Header extends Component {
 
     let collectionItems = this.props.collections.map((co) => {
       return <label key={co} className="item topcoat-checkbox">
-              <input type="checkbox" name={co} checked={this.state.enabledCollections.indexOf(co) >= 0}
+              <input type="checkbox" name={co} checked={this.state.enabledCollections.includes(co)}
                 onChange={this.handleCheckItem} />
               <div className="topcoat-checkbox__checkmark"></div>
               &nbsp;{co}
