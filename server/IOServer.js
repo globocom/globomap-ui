@@ -1,10 +1,10 @@
 const axios = require('axios');
-const utils = require('../src/utils');
 
-const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1'
-const zabbixApiUrl = process.env.ZABBIX_API_URL
-const zabbixUser = process.env.ZABBIX_API_USER
-const zabbixPassword = process.env.ZABBIX_API_PASSWORD
+const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1';
+const zabbixApiUrl = process.env.ZABBIX_API_URL;
+const zabbixUser = process.env.ZABBIX_API_USER;
+const zabbixPassword = process.env.ZABBIX_API_PASSWORD;
+const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
 
 class IOServer {
   constructor(io) {
@@ -132,16 +132,28 @@ class IOServer {
       "user": zabbixUser,
       "password": zabbixPassword
     };
+    let eTypes = zabbixEquipmentTypes.split(','),
+        nodeType = this.getProperty(data, 'equipment_type');
+
+    if(!eTypes.includes(nodeType)) {
+      return fn([]);
+    }
 
     this.jsonRPCRequest("user.login", loginRequest, null, (auth) => {
+      let ips = Array.from(this.getProperty(data, 'ips'));
+
+      if (ips.length === 0) {
+        return fn([]);
+      }
+
       let hostRequest = {
         "output": ["hostid"],
-        "search": { "host": data.name },
+        "search": { "ip": ips },
         "searchByAny": 1
       };
 
       this.jsonRPCRequest("host.get", hostRequest, auth, (hosts) => {
-        let hostIds = hosts.map((host, i) => {
+        let hostIds = hosts.map((host) => {
             return host.hostid
         });
 
@@ -176,6 +188,18 @@ class IOServer {
       let errorMsg = this.handleError(error);
       fn({ error: true, message: errorMsg || 'Zabbix API Error' });
     });
+  }
+
+  getProperty(element, prop) {
+    let property = element.properties.find((item) => {
+      return item['key'] === prop;
+    });
+
+    if(property) {
+      return property.value;
+    }
+
+    return [];
   }
 
   handleError(error) {
