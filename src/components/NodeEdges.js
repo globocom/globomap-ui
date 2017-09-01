@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Properties from './Properties';
 import './css/NodeEdges.css';
 
 class NodeEdges extends Component {
@@ -7,11 +8,15 @@ class NodeEdges extends Component {
     super(props);
     this.state = {
       inOpen: false,
-      outOpen: false
+      outOppen: false
     }
 
+    this.buildEdgeItems = this.buildEdgeItems.bind(this);
     this.onOpenIn = this.onOpenIn.bind(this);
     this.onOpenOut = this.onOpenOut.bind(this);
+    this.onOpenProp = this.onOpenProp.bind(this);
+    this.closeAll = this.closeAll.bind(this);
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
   render() {
@@ -25,26 +30,8 @@ class NodeEdges extends Component {
     })[0].colorClass;
 
     let edgesInOut = [
-      {
-        dir: 'in',
-        toggleFn: this.onOpenIn,
-        openState: this.state.inOpen,
-        items: edges.in.map((e, i) => {
-          return <span key={i} className="edge-item" title={e.name}>
-                   <strong>{e.type}</strong>: {e.name}
-                 </span>;
-        })
-      },
-      {
-        dir: 'out',
-        toggleFn: this.onOpenOut,
-        openState: this.state.outOpen,
-        items: edges.out.map((e, i) => {
-          return <span key={i} className="edge-item" title={e.name}>
-                   <strong>{e.type}</strong>: {e.name}
-                 </span>;
-        })
-      }
+      { dir: 'in', toggleFn: this.onOpenIn, openState: this.state.inOpen, items: this.buildEdgeItems(edges.in) },
+      { dir: 'out', toggleFn: this.onOpenOut, openState: this.state.outOpen, items: this.buildEdgeItems(edges.out) }
     ].map((elem) => {
       return elem.items.length > 0
               ? (<div key={elem.dir} className={'edges-' + elem.dir}>
@@ -64,12 +51,39 @@ class NodeEdges extends Component {
                       {elem.items}
                     </div>}
                   </div>)
-              : '';
+              : null;
     });
 
-    return <div className={'sub-node-edges ' + this.props.position}>
+    return <div className={'sub-node-edges ' + this.props.position}
+                ref={node => { this.node = node; }}>
              {edgesInOut}
            </div>;
+  }
+
+  buildEdgeItems(edges) {
+    return edges.map((edge, i) => {
+      let noProp = edge.properties.length === 0 ? ' no-prop' : '';
+
+      return <span key={i} className={'edge-item' + noProp} title={edge.name}>
+               <span className="edge-item-prop" onClick={(e) => this.onOpenProp(e, edge)}>
+                 <i className="icon-right fa fa-caret-right"></i>
+                 <i className="icon-down fa fa-caret-down"></i>
+                 &nbsp;<strong>{edge.type}</strong>: {edge.name}
+               </span>
+               <Properties properties={edge.properties} />
+             </span>;
+    });
+  }
+
+  handleOutsideClick(e) {
+    if (this.node && this.node.contains(e.target)) {
+      return;
+    }
+    this.closeAll();
+  }
+
+  closeAll() {
+    this.setState({ inOpen: false, outOpen: false });
   }
 
   onOpenIn(event) {
@@ -80,6 +94,24 @@ class NodeEdges extends Component {
   onOpenOut(event) {
     event.stopPropagation();
     this.setState({ outOpen: !this.state.outOpen });
+  }
+
+  onOpenProp(event, edge) {
+    event.stopPropagation();
+
+    if(edge.properties.length > 0) {
+      return event.currentTarget.parentNode.classList.toggle('open');
+    }
+
+    return event.preventDefault();
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleOutsideClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleOutsideClick, false);
   }
 
 }
