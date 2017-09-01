@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Monit from './Monit';
+import Properties from './Properties';
 import './css/InfoContentHead.css';
 
 class InfoContentHead extends Component {
@@ -7,16 +8,13 @@ class InfoContentHead extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showMore: false,
       currentTab: 'Properties'
     }
-
-    this.buildProperties = this.buildProperties.bind(this);
   }
 
   render() {
 
-    let tabs = [{ name: 'Properties', content: this.buildProperties() },
+    let tabs = [{ name: 'Properties', content: <Properties properties={this.props.node.properties} /> },
                 { name: 'Monitoring', content: <Monit node={this.props.node} /> }];
 
     let tabsButtons = tabs.map((tabItem) => {
@@ -45,58 +43,6 @@ class InfoContentHead extends Component {
             <div className="tabs-container">
               {tabsContent}
             </div>
-           </div>;
-  }
-
-  buildProperties() {
-    let properties = this.props.node.properties;
-    if(!properties) {
-      return <table></table>;
-    }
-
-    let props = properties.map((prop, i) => {
-      let val = prop.value;
-
-      if(typeof val === 'boolean') {
-        val = val ? 'yes' : 'no';
-      }
-
-      if(val instanceof Object) {
-        let initial = [],
-            remaining = [];
-
-        for(let i in val) {
-          i < 3
-            ? initial.push(<span key={i}>{i}: {val[i]}</span>)
-            : remaining.push(<span key={i}>{i}: {val[i]}</span>);
-        }
-
-        val = <div>
-                <div className="prop-initial">{initial}</div>
-                {remaining.length > 0 &&
-                  <button className="btn-show-more topcoat-button--quiet"
-                    onClick={(e) => this.setState({ showMore: !this.state.showMore })}>
-                      show {!this.state.showMore ? 'more' : 'less'}
-                  </button>}
-                {this.state.showMore &&
-                  <div className="prop-remaining">{remaining}</div>}
-              </div>;
-      }
-
-      if(val instanceof Array) {
-        val = <div>{prop.value.map(o => <span key={o}>{o}</span>)}</div>;
-      }
-
-      return <tr key={prop.key}>
-               <th>{prop.description || prop.key}</th>
-               <td>{val}</td>
-             </tr>;
-    });
-
-    return <div className="info-properties">
-            <table>
-              <tbody>{props}</tbody>
-            </table>
            </div>;
   }
 

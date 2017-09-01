@@ -1,0 +1,29 @@
+.item-properties {
+  padding: 8px 0;
+}
+
+.item-properties table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.item-properties th {
+  text-align: right;
+  width: 36%;
+  vertical-align: top;
+}
+
+.item-properties th,
+.item-properties td {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.item-properties td span {
+  display: block;
+}
+
+.item-properties .btn-show-more {
+  margin: 8px 0;
+  background-color: #efefef;
+}
