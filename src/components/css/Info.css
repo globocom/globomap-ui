@@ -51,36 +51,6 @@
   color: #555;
 }
 
-.info .info-properties {
-  padding: 8px 0;
-}
-
-.info .info-properties table {
-  width: 100%;
-  border-spacing: 0;
-}
-
-.info .info-properties th {
-  text-align: right;
-  width: 36%;
-  vertical-align: top;
-}
-
-.info .info-properties th,
-.info .info-properties td {
-  font-size: 12px;
-  padding: 4px 8px;
-}
-
-.info .info-properties td span {
-  display: block;
-}
-
-.info .info-properties .btn-show-more {
-  margin: 8px 0;
-  background-color: #efefef;
-}
-
 .info .info-content {
   position: absolute;
   top: 50px;

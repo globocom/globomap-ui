@@ -88,12 +88,12 @@ class NodeEdges extends Component {
 
   onOpenIn(event) {
     event.stopPropagation();
-    this.setState({ inOpen: !this.state.inOpen });
+    this.setState({ inOpen: !this.state.inOpen, outOpen: false });
   }
 
   onOpenOut(event) {
     event.stopPropagation();
-    this.setState({ outOpen: !this.state.outOpen });
+    this.setState({ outOpen: !this.state.outOpen, inOpen: false });
   }
 
   onOpenProp(event, edge) {

@@ -32,7 +32,7 @@ class Properties extends Component {
             remaining = [];
 
         Object.keys(val).forEach((key, i) => {
-          i < 3
+          i < 5
             ? initial.push(<span key={i}>{key}: {val[key]}</span>)
             : remaining.push(<span key={i}>{key}: {val[key]}</span>);
         });
