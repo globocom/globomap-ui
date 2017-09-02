@@ -68,9 +68,12 @@ class IOServer {
   findNodes(data, fn) {
     let { query, collections } = data;
     let urlList = [];
+    let count = Math.ceil(50 / collections.length);
+
+    console.log(count, collections.length);
 
     for(let i=0, l=collections.length; i<l; ++i) {
-      let url = `${globomapApiUrl}/collections/${collections[i]}/search?field=name&value=${query}&count=50`;
+      let url = `${globomapApiUrl}/collections/${collections[i]}/search?field=name&value=${query}&count=${count}&offset=0`;
       urlList.push(axios.get(url));
     }
 
