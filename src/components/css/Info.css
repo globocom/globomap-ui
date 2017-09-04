@@ -80,15 +80,31 @@ limitations under the License.
   padding: 8px 10px;
   color: white;
   font-size: 14px;
+  cursor: pointer;
+}
+
+.info .sub-nodes-by-graph .graph-name .icon-down,
+.info .sub-nodes-by-graph .graph-name .icon-right {
+  display: inline-block;
+  min-width: 10px;
 }
 
 .info .sub-nodes-by-graph .graph-name .qtd-nodes {
   float: right;
 }
 
+.info .sub-nodes-by-graph .graph-items {
+  display: none;
+}
+
+.info .sub-nodes-by-graph.open .graph-items {
+  display: block;
+}
+
 .info-graph-items,
 .info-graph-items .sub-node {
   box-sizing: border-box;
+  position: relative;
 }
 
 .info-graph-items .sub-node.disabled .sub-node-info {
@@ -150,4 +166,21 @@ limitations under the License.
 .info-graph-items .sub-node-edges .edges-content .edge-item {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.info-graph-items .items-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9;
+}
+
+.info-graph-items .items-loading .loading-cog {
+  color: rgba(255, 255, 255, 0.6)
 }
