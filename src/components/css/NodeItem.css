@@ -78,7 +78,7 @@ limitations under the License.
 }
 
 .node-item .close-node-btn {
-  color: rgba(0, 0, 0, 0.05);
+  color: transparent;
   position: absolute;
   top: 5px;
   right: 5px;
@@ -88,5 +88,9 @@ limitations under the License.
 }
 
 .node-item:hover .close-node-btn {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.node-item:hover .close-node-btn:hover {
   color: rgba(0, 0, 0, 0.9);
 }
