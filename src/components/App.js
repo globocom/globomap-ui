@@ -117,7 +117,7 @@ class App extends Component {
     node.items = node.items || [];
     let currentNodes = this.state.stageNodes.slice();
 
-    if(parentUuid !== undefined) {
+    if(parentUuid) {
       traverseItems(currentNodes, (n) => {
         if(n.uuid === parentUuid) {
           n.items.push(node);
@@ -151,17 +151,6 @@ class App extends Component {
   }
 
   getNode(node, parentUuid) {
-    let nodes = this.state.nodes.slice();
-    let index = nodes.findIndex((n, i, arr) => {
-      return n.uuid
-              ? n.uuid === node.uuid
-              : n._id === node._id;
-    });
-
-    if(index >= 0) {
-      return nodes[index];
-    }
-
     let stageNodes = this.state.stageNodes.slice(),
         nodeFound = false;
 
