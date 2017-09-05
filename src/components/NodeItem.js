@@ -23,6 +23,7 @@ class NodeItem extends Component {
   constructor(props) {
     super(props);
     this.onItemSelect = this.onItemSelect.bind(this);
+    this.onSelfRemove = this.onSelfRemove.bind(this);
   }
 
   render() {
@@ -31,22 +32,28 @@ class NodeItem extends Component {
         current = cNode && _id === cNode._id ? ' current' : '',
         thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '';
 
-    return (
-      <div className={'node-item' + current + thisnode} onClick={this.onItemSelect}>
-        <div className="node-info">
-          <span className="type">{type}</span>
-          <span className="name">{name}</span>
-        </div>
-        <NodeEdges edges={edges}
-                   graphs={this.props.graphs}
-                   position={'left'} />
-      </div>
-    );
+    return <div className={'node-item' + current + thisnode} onClick={this.onItemSelect}>
+            <button className="close-node-btn" onClick={this.onSelfRemove}>
+              <i className="fa fa-close"></i>
+            </button>
+            <div className="node-info">
+              <span className="type">{type}</span>
+              <span className="name">{name}</span>
+            </div>
+            <NodeEdges edges={edges}
+                       graphs={this.props.graphs}
+                       position={'left'} />
+           </div>;
   }
 
   onItemSelect(event) {
     event.stopPropagation();
     this.props.setCurrent(this.props.node);
+  }
+
+  onSelfRemove(event) {
+    event.stopPropagation();
+    this.props.removeNode(this.props.node);
   }
 
 }
