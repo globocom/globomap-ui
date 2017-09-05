@@ -33,9 +33,10 @@ class NodeItem extends Component {
         thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '';
 
     return <div className={'node-item' + current + thisnode} onClick={this.onItemSelect}>
-            <button className="close-node-btn" onClick={this.onSelfRemove}>
-              <i className="fa fa-close"></i>
-            </button>
+            {!this.props.node.root &&
+              <button className="close-node-btn" onClick={this.onSelfRemove}>
+                <i className="fa fa-close"></i>
+              </button>}
             <div className="node-info">
               <span className="type">{type}</span>
               <span className="name">{name}</span>
