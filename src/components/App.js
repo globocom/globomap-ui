@@ -24,7 +24,7 @@ import { traverseItems, uuid, sortByName } from '../utils';
 import './css/App.css';
 
 function uiSocket() {
-  return io('http://localhost:8888');
+  return io();
 }
 
 class App extends Component {
@@ -184,14 +184,14 @@ class App extends Component {
     });
 
     if (i >= 0) {
-      stageNodes.splice(stageNodes[i], 1);
+      stageNodes.splice(i, 1);
     } else {
       traverseItems(stageNodes, (n) => {
         let j = n.items.findIndex((n) => {
           return n.uuid === node.uuid;
         });
         if (j >= 0) {
-          n.items.splice(n.items[j], 1);
+          n.items.splice(j, 1);
         }
       });
     }
