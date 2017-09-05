@@ -55,7 +55,7 @@ class SearchContent extends Component {
   onNodeSelect(event, node) {
     event.stopPropagation();
     this.props.setCurrent(node, () => {
-      this.props.addNodeToStage(node);
+      this.props.addNodeToStage(node, false, true);
     });
   }
 
