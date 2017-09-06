@@ -196,7 +196,7 @@ class IOServer {
       "jsonrpc": "2.0", "method": action, "params": params,
       "id": 1,"auth": auth
     }, {
-      timeout: 9000
+      timeout: 20000
     })
     .then(function(response) {
       fn(response.data.result);
