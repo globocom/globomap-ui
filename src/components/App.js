@@ -196,7 +196,9 @@ class App extends Component {
       });
     }
 
-    this.setState({ stageNodes: stageNodes });
+    this.setState({ stageNodes: stageNodes }, () => {
+      this.clearCurrent();
+    });
   }
 
   clearStage() {
