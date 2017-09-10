@@ -89,7 +89,8 @@ class NodeEdges extends Component {
                  <i className="icon-down fa fa-caret-down"></i>
                  &nbsp;<strong>{edge.type}</strong>: {edge.name}
                </span>
-               <Properties properties={edge.properties} />
+               {edge.properties &&
+                <Properties properties={edge.properties} />}
              </span>;
     });
   }

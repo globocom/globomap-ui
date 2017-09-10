@@ -205,23 +205,27 @@ class App extends Component {
     return this.setState({ stageNodes: [] });
   }
 
-  findNodes(query, co) {
-    if(co !== undefined && !co instanceof Array)  {
+  findNodes(query, co, fn) {
+    if (co !== undefined && !co instanceof Array)  {
       console.log('The 2nd argument must be an Array');
       return;
     }
 
-    if(co.length === 0) {
+    if (co.length === 0) {
       console.log('Select an item');
       return;
     }
 
     this.socket.emit('findnodes', { query: query, collections: co }, (data) => {
-      if(!data || data.length <= 0) {
-        this.setState({ nodes: [] });
+      if (fn === undefined) {
+        fn = () => {};
       }
 
-      this.setState({ nodes: data });
+      if (!data || data.length <= 0) {
+        this.setState({ nodes: [] }, fn());
+      }
+
+      this.setState({ nodes: data }, fn());
     });
   }
 

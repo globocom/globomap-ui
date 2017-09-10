@@ -22,7 +22,8 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: ""
+      query: "",
+      loading: false
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -35,7 +36,11 @@ class Search extends Component {
       <div className="search-box">
         <input className="topcoat-text-input--large" type="search" name="query"
           value={this.state.query} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
-        <button className="btn-search topcoat-button--large" onClick={this.onSendSearchQuery}>Search</button>
+        <button className="btn-search topcoat-button--large"
+                onClick={this.onSendSearchQuery}
+                disabled={this.state.loading}>
+          Search {this.state.loading && <i className="loading-cog fa fa-cog fa-spin fa-fw"></i>}
+        </button>
       </div>
     );
   }
@@ -57,7 +62,14 @@ class Search extends Component {
     event.preventDefault();
     this.props.clearStage();
     this.props.clearCurrent();
-    this.props.findNodes(this.state.query, this.props.enabledCollections);
+
+    if (this.props.enabledCollections.length > 0)
+
+    this.setState({ loading: true }, () => {
+      this.props.findNodes(this.state.query, this.props.enabledCollections, () => {
+        this.setState({ loading: true });
+      });
+    });
   }
 
 }
