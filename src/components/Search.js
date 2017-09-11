@@ -67,7 +67,7 @@ class Search extends Component {
 
     this.setState({ loading: true }, () => {
       this.props.findNodes(this.state.query, this.props.enabledCollections, () => {
-        this.setState({ loading: true });
+        this.setState({ loading: false });
       });
     });
   }
