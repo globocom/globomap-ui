@@ -89,13 +89,13 @@ class Info extends Component {
       if (data.error) {
         console.log(data.error.message);
 
-        params.graphs.map((graph) => {
-          byGraph.push({
+        byGraph = params.graphs.map((graph) => {
+          return {
             "graph": graph,
             "edges": [],
             "nodes": [],
             "subnodes": []
-          })
+          }
         });
 
         return this.setState({ byGraph: byGraph, loading: false });
