@@ -65,3 +65,9 @@ limitations under the License.
 .search-content .btn-open-node {
   font-size: 16px;
 }
+
+.search-content .empty {
+  display: block;
+  padding: 15px;
+  text-align: center;
+}

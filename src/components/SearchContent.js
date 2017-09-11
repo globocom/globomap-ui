@@ -49,6 +49,8 @@ class SearchContent extends Component {
                 </thead>
                 <tbody>{allNodes}</tbody>
               </table>}
+              {allNodes.length === 0 &&
+                <span className="empty">Nenhum resultado encontrado.</span>}
            </div>;
   }
 
