@@ -50,7 +50,11 @@ class SearchContent extends Component {
                 <tbody>{allNodes}</tbody>
               </table>}
               {allNodes.length === 0 &&
-                <span className="empty">Nenhum resultado encontrado.</span>}
+                <span className="empty">
+                  {this.props.firstTimeSearch ?
+                    "Inicie sua busca." :
+                    "Nenhum resultado encontrado."}
+              </span>}
            </div>;
   }
 

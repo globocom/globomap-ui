@@ -38,7 +38,8 @@ class App extends Component {
       graphs: [],
       collections: [],
       nodes: [],
-      stageNodes: []
+      stageNodes: [],
+      firstTimeSearch: true
     };
 
     this.findNodes = this.findNodes.bind(this);
@@ -67,7 +68,8 @@ class App extends Component {
         <SearchContent nodes={this.state.nodes}
                        setCurrent={this.setCurrent}
                        addNodeToStage={this.addNodeToStage}
-                       currentNode={this.state.currentNode} />
+                       currentNode={this.state.currentNode}
+                       firstTimeSearch={this.state.firstTimeSearch} />
 
         <Stage graphs={this.state.graphs}
                stageNodes={this.state.stageNodes}
@@ -222,10 +224,10 @@ class App extends Component {
       }
 
       if (!data || data.length <= 0) {
-        this.setState({ nodes: [] }, fn());
+        this.setState({ nodes: [], firstTimeSearch: false }, fn());
       }
 
-      this.setState({ nodes: data }, fn());
+      this.setState({ nodes: data, firstTimeSearch: false }, fn());
     });
   }
 
