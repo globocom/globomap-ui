@@ -84,12 +84,24 @@ class Info extends Component {
         params = { start: node._id, graphs: graphs }
 
     this.socket.emit('traversalsearch', params, (data) => {
-      if(data.errors !== undefined) {
-        console.log(data.errors);
-        return;
+      let byGraph = [];
+
+      if (data.error) {
+        console.log(data.error.message);
+
+        params.graphs.map((graph) => {
+          byGraph.push({
+            "graph": graph,
+            "edges": [],
+            "nodes": [],
+            "subnodes": []
+          })
+        });
+
+        return this.setState({ byGraph: byGraph, loading: false });
       }
 
-      let byGraph = data.map((gData) => {
+      byGraph = data.map((gData) => {
         gData.subnodes = gData.nodes.filter(n => n._id !== node._id).map((n) => {
           n.edges = this.composeEdges(n, gData.edges)
           n.edges.graph = gData.graph;
