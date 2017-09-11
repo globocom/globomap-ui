@@ -223,7 +223,7 @@ class IOServer {
     let msg = false;
 
     if(error.response) {
-      msg = `Response Error: ${error.response.data}`;
+      msg = `Response Error: ${error.response.data.errors}`;
       console.log(msg);
     } else if (error.request) {
       console.log(error.request);
