@@ -53,7 +53,8 @@ class ByGraph extends Component {
 
                <span className="graph-buttons">
                  <button className="btn btn-filter"><i className="fa fa-filter"></i></button>
-                 <button className="btn btn-add-all"><i className="fa fa-plus-square"></i></button>
+                 <button className="btn btn-add-all"><i className="fa fa-plus-square"
+                  onClick={(e) => this.onAddAllNodes(e)}></i></button>
                </span>
              </div>
              <div className="graph-items">
@@ -94,6 +95,13 @@ class ByGraph extends Component {
   onAddNode(event, node, makeCurrent) {
     event.stopPropagation();
     this.props.addNodeToStage(node, this.props.node.uuid || this.props.node._id, makeCurrent);
+  }
+
+  onAddAllNodes(event, makeCurrent) {
+    event.stopPropagation();
+    this.props.items.subnodes.map(node => {
+      return this.props.addNodeToStage(node, this.props.node.uuid || this.props.node._id, makeCurrent);
+    });
   }
 
 }
