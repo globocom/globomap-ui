@@ -79,7 +79,7 @@ class NodeEdges extends Component {
   buildEdgeItems(edges) {
     return edges.map((edge, i) => {
       let noProp = '';
-      if (edge.properties && edge.properties.length === 0) {
+      if (!edge.properties || Object.keys(edge.properties).length === 0) {
         noProp = ' no-prop';
       }
 
@@ -90,7 +90,7 @@ class NodeEdges extends Component {
                  &nbsp;<strong>{edge.type}</strong>: {edge.name}
                </span>
                {edge.properties &&
-                <Properties properties={edge.properties} />}
+                <Properties key="properties-node" properties={edge.properties} propertiesMetadata={edge.properties_metadata} />}
              </span>;
     });
   }
@@ -119,7 +119,7 @@ class NodeEdges extends Component {
   onOpenProp(event, edge) {
     event.stopPropagation();
 
-    if(edge.properties && edge.properties.length > 0) {
+    if(edge.properties && Object.keys(edge.properties).length > 0) {
       return event.currentTarget.parentNode.classList.toggle('open');
     }
 
