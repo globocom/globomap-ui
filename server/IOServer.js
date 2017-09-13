@@ -150,14 +150,14 @@ class IOServer {
       "password": zabbixPassword
     };
     let eTypes = zabbixEquipmentTypes.split(','),
-        nodeType = this.getProperty(data, 'equipment_type');
+        nodeType = data.properties['equipment_type'] || '';
 
     if(!eTypes.includes(nodeType)) {
       return fn([]);
     }
 
     this.jsonRPCRequest("user.login", loginRequest, null, (auth) => {
-      let ips = Array.from(this.getProperty(data, 'ips'));
+      let ips = Array.from(data.properties['ips'] || '');
 
       if (ips.length === 0) {
         return fn([]);
@@ -205,18 +205,6 @@ class IOServer {
       let errorMsg = this.handleError(error);
       fn({ error: true, message: errorMsg || 'Zabbix API Error' });
     });
-  }
-
-  getProperty(element, prop) {
-    let property = element.properties.find((item) => {
-      return item['key'] === prop;
-    });
-
-    if(property) {
-      return property.value;
-    }
-
-    return [];
   }
 
   handleError(error) {

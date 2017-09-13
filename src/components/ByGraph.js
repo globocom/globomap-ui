@@ -23,14 +23,22 @@ class ByGraph extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: true
+      isOpen: true,
+      filterIsOpen: false,
+      query: "",
+      searchIndex: []
     };
 
     this.onAddNode = this.onAddNode.bind(this);
     this.onOpenGraph = this.onOpenGraph.bind(this);
+    this.onInputFilter = this.onInputFilter.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.onSendSearchQuery = this.onSendSearchQuery.bind(this);
+    this.clearSearchIndex = this.clearSearchIndex.bind(this);
   }
 
   render() {
+    let hasQuery = this.state.query.trim().length > 0;
     let items = this.props.items,
         isOpen = items.subnodes.length > 0
                  ? this.state.isOpen
@@ -48,14 +56,23 @@ class ByGraph extends Component {
                </span>
 
                <span className="graph-amount">
-                 {items.subnodes.length}
+                {hasQuery ?
+                  this.state.searchIndex.length : items.subnodes.length}
                </span>
 
                <span className="graph-buttons">
-                 <button className="btn btn-filter"><i className="fa fa-filter"></i></button>
+                 <button className="btn btn-filter"><i className="fa fa-filter"
+                  onClick={(e) => this.onInputFilter(e)}></i></button>
                  <button className="btn btn-add-all"><i className="fa fa-plus-square"
                   onClick={(e) => this.onAddAllNodes(e)}></i></button>
                </span>
+
+               {this.state.filterIsOpen &&
+               <span className="graph-filter">
+                <input type="search" name="query" className="topcoat-text-input graph-filter-input"
+                  value={this.state.query} onChange={this.handleInputChange} />
+                <i className="fa fa-filter" onClick={(e) => this.onInputFilter(e)}></i>
+               </span>}
              </div>
              <div className="graph-items">
              {this.buildSubNodes(items)}
@@ -64,8 +81,19 @@ class ByGraph extends Component {
   }
 
   buildSubNodes(nodesItem) {
-    let subnodes = nodesItem.subnodes.map((subnode) => {
-      let hasNode = this.props.stageHasNode(subnode._id, this.props.node.uuid);
+    let hasQuery = this.state.query.trim().length > 0;
+    let hasSearchIndex = this.state.searchIndex.length > 0;
+    let subnodes = nodesItem.subnodes.map((subnode, index) => {
+      let hasNode = false;
+
+      if (hasQuery) {
+        if (!hasSearchIndex) {
+          return null;
+        } else if (!this.state.searchIndex.includes(index)) {
+          return null;
+        }
+      }
+      hasNode = this.props.stageHasNode(subnode._id, this.props.node.uuid);
 
       return <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
                <div className="sub-node-btn">
@@ -94,13 +122,55 @@ class ByGraph extends Component {
 
   onAddNode(event, node, makeCurrent) {
     event.stopPropagation();
+    this.clearSearchIndex();
     this.props.addNodeToStage(node, this.props.node.uuid || this.props.node._id, makeCurrent);
   }
 
   onAddAllNodes(event, makeCurrent) {
     event.stopPropagation();
-    this.props.items.subnodes.map(node => {
+    this.clearSearchIndex();
+    this.props.items.subnodes.map((node, index) => {
+      let searchIndex = this.state.searchIndex;
+      if (searchIndex.length > 0 &&
+        !searchIndex.includes(index)) {
+        return false;
+      }
       return this.props.addNodeToStage(node, this.props.node.uuid || this.props.node._id, makeCurrent);
+    });
+  }
+
+  onInputFilter(event) {
+    this.setState({
+      filterIsOpen: !this.state.filterIsOpen
+    });
+  }
+
+  handleInputChange(event) {
+    let value = event.target.value;
+    this.setState({ query: value }, () => {
+      this.onSendSearchQuery(event);
+    });
+  }
+
+  onSendSearchQuery(event) {
+    let searchIndex = [];
+    this.props.items.subnodes.map((subnode, index) => {
+      let query = this.state.query.toLowerCase();
+      let item = subnode.name.toLowerCase();
+
+      if (item.includes(query)) {
+        searchIndex.push(index);
+      }
+      return false;
+    });
+    this.setState({ searchIndex });
+  }
+
+  clearSearchIndex() {
+    this.setState({
+      filterIsOpen: false,
+      query: "",
+      searchIndex: []
     });
   }
 

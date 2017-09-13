@@ -28,16 +28,24 @@ class Properties extends Component {
   }
 
   render() {
-    return this.buildProperties(this.props.properties);
+    return (
+      <div className="item-properties">
+      {this.buildProperties(
+        this.props.properties,
+        this.props.propertiesMetadata
+      )}
+      </div>
+    );
   }
 
-  buildProperties(properties) {
+  buildProperties(properties, propertiesMetadata) {
     if(!properties) {
       return <table></table>;
     }
 
-    let props = properties.map((prop) => {
-      let val = prop.value;
+    let props = Object.keys(properties).map((key, index) => {
+
+      let val = properties[key];
 
       if(typeof val === 'boolean') {
         val = val ? 'yes' : 'no';
@@ -47,10 +55,10 @@ class Properties extends Component {
         let initial = [],
             remaining = [];
 
-        Object.keys(val).forEach((key, i) => {
+        Object.keys(val).forEach((objectKey, i) => {
           i < 5
-            ? initial.push(<span key={i}>{key}: {val[key]}</span>)
-            : remaining.push(<span key={i}>{key}: {val[key]}</span>);
+            ? initial.push(<span key={i}>{objectKey}: {val[objectKey]}</span>)
+            : remaining.push(<span key={i}>{objectKey}: {val[objectKey]}</span>);
         });
 
         val = <div>
@@ -66,22 +74,20 @@ class Properties extends Component {
       }
 
       if(val instanceof Array) {
-        val = <div>{prop.value.map(o => <span key={o}>{o}</span>)}</div>;
+        val = <div>{properties[key].map(o => <span key={o}>{o}</span>)}</div>;
       }
 
-      return <tr key={prop.key}>
-               <th>{prop.description || prop.key}</th>
+      return <tr key={key}>
+               <th>{(propertiesMetadata &&
+                  propertiesMetadata[key].description) || key}</th>
                <td>{val}</td>
              </tr>;
     });
 
-    return props.length > 0
-           ? <div className="item-properties">
-              <table>
-                <tbody>{props}</tbody>
-              </table>
-             </div>
-           : null;
+    return <table>
+              {props.length > 0 &&
+                <tbody>{props}</tbody>}
+           </table>;
   }
 
 }
