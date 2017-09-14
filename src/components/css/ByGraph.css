@@ -18,6 +18,7 @@ limitations under the License.
   padding: 8px 10px;
   color: white;
   font-size: 14px;
+  min-height: 23px;
 }
 
 .sub-nodes-by-graph .graph-header .icon-down,
@@ -30,12 +31,14 @@ limitations under the License.
   display: inline-block;
   min-width: 150px;
   cursor: pointer;
+  padding-top: 3px;
 }
 
 .sub-nodes-by-graph .graph-header .graph-amount {
   float: right;
   min-width: 40px;
   text-align: right;
+  padding-top: 3px;
 }
 
 .sub-nodes-by-graph .graph-items {
@@ -49,6 +52,28 @@ limitations under the License.
 .sub-nodes-by-graph .graph-buttons {
   float: right;
   margin: 0 8px;
+  padding-top: 3px;
+}
+
+.sub-nodes-by-graph .graph-filter {
+  cursor: pointer;
+  position: absolute;
+  right: 90px;
+}
+
+.sub-nodes-by-graph .graph-filter .graph-filter-input {
+  position: absolute;
+  right: 0;
+  z-index: 0;
+  width: 180px;
+}
+
+.sub-nodes-by-graph .graph-filter .fa-filter {
+  position: absolute;
+  right: 10px;
+  z-index: 10;
+  color: #424242;
+  top: 4px;
 }
 
 .sub-nodes-by-graph .graph-buttons .btn {
