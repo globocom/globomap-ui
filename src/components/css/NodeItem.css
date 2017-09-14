@@ -51,6 +51,14 @@ limitations under the License.
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  margin-bottom: 6px;
+}
+
+.node-item .timestamp {
+  color: #616161;
+  display: block;
+  font-size: 12px;
+  letter-spacing: -0.4px;
 }
 
 .node-item.current {

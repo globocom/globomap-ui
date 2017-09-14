@@ -37,12 +37,8 @@ class ByGraph extends Component {
     this.clearSearchIndex = this.clearSearchIndex.bind(this);
   }
 
-  componentDidUpdate() {
-    this.hasQuery = this.state.query.trim().length > 0;
-    this.hasSearchIndex = this.state.searchIndex.length > 0;
-  }
-
   render() {
+    let hasQuery = this.state.query.trim().length > 0;
     let items = this.props.items,
         isOpen = items.subnodes.length > 0
                  ? this.state.isOpen
@@ -60,7 +56,7 @@ class ByGraph extends Component {
                </span>
 
                <span className="graph-amount">
-                {this.hasQuery && this.hasSearchIndex ?
+                {hasQuery ?
                   this.state.searchIndex.length : items.subnodes.length}
                </span>
 
@@ -85,11 +81,13 @@ class ByGraph extends Component {
   }
 
   buildSubNodes(nodesItem) {
+    let hasQuery = this.state.query.trim().length > 0;
+    let hasSearchIndex = this.state.searchIndex.length > 0;
     let subnodes = nodesItem.subnodes.map((subnode, index) => {
       let hasNode = false;
 
-      if (this.hasQuery) {
-        if (!this.hasSearchIndex) {
+      if (hasQuery) {
+        if (!hasSearchIndex) {
           return null;
         } else if (!this.state.searchIndex.includes(index)) {
           return null;
