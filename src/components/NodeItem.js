@@ -27,10 +27,12 @@ class NodeItem extends Component {
   }
 
   render() {
-    let { _id, name, type, edges, uuid } = this.props.node;
+    let { _id, name, type, edges, uuid, timestamp } = this.props.node;
     let cNode = this.props.currentNode,
         current = cNode && _id === cNode._id ? ' current' : '',
         thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '';
+    let convertedDate = new Date(parseInt(timestamp, 10) * 1000);
+    let formattedDate = convertedDate.toLocaleString('pt-BR');
 
     return <div className={'node-item' + current + thisnode} onClick={this.onItemSelect}>
             {!this.props.node.root &&
@@ -40,6 +42,7 @@ class NodeItem extends Component {
             <div className="node-info">
               <span className="type">{type}</span>
               <span className="name">{name}</span>
+              <span className="timestamp">{formattedDate}</span>
             </div>
             <NodeEdges edges={edges}
                        graphs={this.props.graphs}
