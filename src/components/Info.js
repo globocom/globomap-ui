@@ -25,7 +25,6 @@ class Info extends Component {
   constructor(props) {
     super(props);
     this.socket = uiSocket();
-
     this.state = {
       node: this.props.getNode(this.props.currentNode),
       loading: true,
@@ -37,8 +36,10 @@ class Info extends Component {
   }
 
   render() {
-    let byGraph = this.state.byGraph.map((items, i) => {
-      return <ByGraph key={i}
+    let random = Math.floor(Math.random() * 256);
+    let byGraph = this.state.byGraph.map((items, index) => {
+      return <ByGraph ref={(ByGraph) => {this.byGraph = ByGraph}}
+                      key={index * random}
                       items={items}
                       graphs={this.props.graphs}
                       stageHasNode={this.props.stageHasNode}
