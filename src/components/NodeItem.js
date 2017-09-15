@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* global Stickyfill */
+
 import React, { Component } from 'react';
 import NodeEdges from './NodeEdges';
 import './css/NodeItem.css';
@@ -24,6 +26,11 @@ class NodeItem extends Component {
     super(props);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
+  }
+
+  componentDidMount() {
+    let element = document.getElementsByClassName('sticky');
+    Stickyfill.add(element);
   }
 
   render() {
@@ -39,7 +46,7 @@ class NodeItem extends Component {
               <button className="close-node-btn" onClick={this.onSelfRemove}>
                 <i className="fa fa-close"></i>
               </button>}
-            <div className="node-info">
+            <div className="node-info sticky">
               <span className="type">{type}</span>
               <span className="name">{name}</span>
               <span className="timestamp">{formattedDate}</span>
