@@ -27,7 +27,7 @@ class NodeItem extends Component {
   }
 
   render() {
-    let { _id, name, type, edges, uuid, timestamp } = this.props.node;
+    let { _id, name, type, edges, uuid, timestamp, id } = this.props.node;
     let cNode = this.props.currentNode,
         current = cNode && _id === cNode._id ? ' current' : '',
         thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '';
@@ -43,6 +43,7 @@ class NodeItem extends Component {
               <span className="type">{type}</span>
               <span className="name">{name}</span>
               <span className="timestamp">{formattedDate}</span>
+              {this.props.hasId && <span>{id}</span>}
             </div>
             <NodeEdges edges={edges}
                        graphs={this.props.graphs}

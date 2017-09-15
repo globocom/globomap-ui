@@ -59,6 +59,7 @@ limitations under the License.
   display: block;
   font-size: 12px;
   letter-spacing: -0.4px;
+  margin-bottom: 6px;
 }
 
 .node-item.current {
