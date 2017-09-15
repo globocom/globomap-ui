@@ -36,6 +36,18 @@ limitations under the License.
   padding: 10px 15px;
 }
 
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+.sticky:before,
+.sticky:after {
+    content: '';
+    display: table;
+}
+
 .node-item .type {
   display: block;
   font-size: 10px;
