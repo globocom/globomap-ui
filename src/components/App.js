@@ -85,7 +85,8 @@ class App extends Component {
                setCurrent={this.setCurrent}
                hasId={this.state.hasId} />
 
-        <Info getNode={this.getNode}
+        <Info ref={(Info) => {this.info = Info}}
+              getNode={this.getNode}
               stageNodes={this.state.stageNodes}
               graphs={this.state.graphs}
               stageHasNode={this.stageHasNode}
@@ -262,7 +263,9 @@ class App extends Component {
       }
       return graph;
     });
-    this.setState({ graphs: graphsCopy });
+    this.setState({ graphs: graphsCopy }, () => {
+      this.info.onTraversalSearch();
+    });
   }
 
   handleDoubleClick() {
