@@ -33,6 +33,7 @@ class Info extends Component {
 
     this.onCloseInfo = this.onCloseInfo.bind(this);
     this.composeEdges = this.composeEdges.bind(this);
+    this.onTraversalSearch = this.onTraversalSearch.bind(this);
   }
 
   render() {
@@ -84,7 +85,7 @@ class Info extends Component {
 
   traversalSearch(node) {
     let graphs = this.props.graphs.filter(g => g.enabled).map(g => g.name),
-        params = { start: node._id, graphs: graphs }
+        params = { start: (node._id || ''), graphs: graphs }
 
     this.socket.emit('traversalsearch', params, (data) => {
       let byGraph = [];
@@ -140,6 +141,13 @@ class Info extends Component {
   onCloseInfo(event) {
     event.stopPropagation();
     this.props.clearCurrent();
+  }
+
+  onTraversalSearch() {
+    let node = this.state.node;
+    if (node) {
+      this.traversalSearch(node);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
