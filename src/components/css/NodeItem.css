@@ -67,15 +67,6 @@ limitations under the License.
   margin-bottom: 6px;
 }
 
-.node-item .timestamp {
-  color: #616161;
-  display: block;
-  font-size: 12px;
-  letter-spacing: -0.4px;
-  margin-bottom: 6px;
-  white-space: nowrap;
-}
-
 .node-item.current {
   background-color: #7f8c89;
 }

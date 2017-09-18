@@ -37,3 +37,13 @@ a {
 
 .graph-color3,
 .graph-color3:hover { background-color: #2b9e63 }
+
+.main-xxxx {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 10px;
+  width: 10px;
+  user-select: none;
+  z-index: 10;
+}

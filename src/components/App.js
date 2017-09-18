@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* global _ */
+
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import Header from './Header';
@@ -39,7 +41,8 @@ class App extends Component {
       collections: [],
       nodes: [],
       stageNodes: [],
-      firstTimeSearch: true
+      firstTimeSearch: true,
+      hasId: false
     };
 
     this.findNodes = this.findNodes.bind(this);
@@ -53,11 +56,14 @@ class App extends Component {
     this.clearStage = this.clearStage.bind(this);
     this.onToggleGraph = this.onToggleGraph.bind(this);
     this.removeNode = this.removeNode.bind(this);
+    this.handleDoubleClick = this.handleDoubleClick.bind(this);
   }
 
   render() {
     return (
       <div className="main">
+        <span className="main-xxxx"
+              onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
         <Header graphs={this.state.graphs}
                 clearStage={this.clearStage}
                 clearCurrent={this.clearCurrent}
@@ -76,7 +82,8 @@ class App extends Component {
                currentNode={this.state.currentNode}
                clearCurrent={this.clearCurrent}
                removeNode={this.removeNode}
-               setCurrent={this.setCurrent} />
+               setCurrent={this.setCurrent}
+               hasId={this.state.hasId} />
 
         <Info getNode={this.getNode}
               stageNodes={this.state.stageNodes}
@@ -84,7 +91,8 @@ class App extends Component {
               stageHasNode={this.stageHasNode}
               addNodeToStage={this.addNodeToStage}
               clearCurrent={this.clearCurrent}
-              currentNode={this.state.currentNode} />
+              currentNode={this.state.currentNode}
+              hasId={this.state.hasId} />
       </div>
     );
   }
@@ -257,9 +265,15 @@ class App extends Component {
     this.setState({ graphs: graphsCopy });
   }
 
+  handleDoubleClick() {
+    this.setState({
+      hasId: !this.state.hasId
+    });
+  }
+
   componentDidMount() {
     this.getGraphsAndCollections();
-    document.addEventListener('keydown', this.handleKeyDown)
+    document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100))
   }
 
   componentWillUnmount() {

@@ -30,7 +30,8 @@ class InfoContentHead extends Component {
 
   render() {
 
-    let tabs = [{ name: 'Properties', content: <Properties properties={this.props.node.properties} /> },
+    let tabs = [{ name: 'Properties', content: <Properties properties={this.props.node}
+                                                           hasId={this.props.hasId} /> },
                 { name: 'Monitoring', content: <Monit node={this.props.node} /> }];
 
     let tabsButtons = tabs.map((tabItem) => {
