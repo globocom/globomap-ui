@@ -22,17 +22,7 @@ class Stage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      hasId: false
-    };
     this.renderNodes = this.renderNodes.bind(this);
-    this.handleDoubleClick = this.handleDoubleClick.bind(this);
-  }
-
-  handleDoubleClick() {
-    this.setState({
-      hasId: !this.state.hasId
-    });
   }
 
   render() {
@@ -47,8 +37,6 @@ class Stage extends Component {
         withInfo = this.props.currentNode ? ' with-info' : '';
 
     return <div className={"stage" + open + withInfo}>
-             <span className="stage-xxxx"
-              onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
              <div className="stage-container">
                {this.renderNodes(this.props.stageNodes)}
              </div>
@@ -63,7 +51,7 @@ class Stage extends Component {
                          currentNode={this.props.currentNode}
                          removeNode={this.props.removeNode}
                          setCurrent={this.props.setCurrent}
-                         hasId={this.state.hasId} />
+                         hasId={this.props.hasId} />
                <div className="node-item-content">
                  {node.items.length > 0 ? this.renderNodes(node.items) : ''}
                </div>

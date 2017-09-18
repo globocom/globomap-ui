@@ -44,7 +44,8 @@ class Info extends Component {
                       graphs={this.props.graphs}
                       stageHasNode={this.props.stageHasNode}
                       node={this.state.node}
-                      addNodeToStage={this.props.addNodeToStage} />
+                      addNodeToStage={this.props.addNodeToStage}
+                      hasId={this.props.hasId} />
     });
 
     return <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
@@ -57,7 +58,8 @@ class Info extends Component {
              </div>
 
              <div className="info-content">
-               <InfoContentHead node={this.state.node} />
+               <InfoContentHead node={this.state.node}
+                                hasId={this.props.hasId} />
                <div className="info-graph-items">
                  {this.state.loading &&
                    <div className="items-loading">

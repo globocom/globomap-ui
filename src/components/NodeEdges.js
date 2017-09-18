@@ -90,7 +90,8 @@ class NodeEdges extends Component {
                  &nbsp;<strong>{edge.type}</strong>: {edge.name}
                </span>
                {edge.properties &&
-                <Properties properties={edge.properties} />}
+                <Properties properties={edge}
+                            hasId={this.props.hasId} />}
              </span>;
     });
   }

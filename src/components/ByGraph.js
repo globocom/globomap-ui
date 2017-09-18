@@ -111,7 +111,8 @@ class ByGraph extends Component {
 
                <NodeEdges edges={subnode.edges}
                           graphs={this.props.graphs}
-                          position={'right'} />
+                          position={'right'}
+                          hasId={this.props.hasId} />
              </div>;
     });
 

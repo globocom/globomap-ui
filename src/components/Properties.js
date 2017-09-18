@@ -31,12 +31,18 @@ class Properties extends Component {
     return this.buildProperties(this.props.properties);
   }
 
-  buildProperties(properties) {
+  buildProperties(item) {
+    let properties = item.properties;
+    let convertedDate, formattedDate, props;
+
     if(!properties) {
       return <table></table>;
     }
 
-    let props = properties.map((prop) => {
+    convertedDate = new Date(parseInt(item.timestamp, 10) * 1000);
+    formattedDate = convertedDate.toLocaleString('pt-BR');
+
+    props = properties.map((prop) => {
       let val = prop.value;
 
       if(typeof val === 'boolean') {
@@ -74,6 +80,19 @@ class Properties extends Component {
                <td>{val}</td>
              </tr>;
     });
+
+    props.push(
+      <tr key="timestamp">
+        <th>timestamp</th>
+        <td>{formattedDate}</td>
+      </tr>
+    )
+
+    this.props.hasId &&
+    props.push(<tr key="id">
+      <th>id</th>
+      <td>{item.id}</td>
+    </tr>)
 
     return props.length > 0
            ? <div className="item-properties">
