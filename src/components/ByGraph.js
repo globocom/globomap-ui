@@ -30,6 +30,7 @@ class ByGraph extends Component {
     };
 
     this.onAddNode = this.onAddNode.bind(this);
+    this.onAddAllNodes = this.onAddAllNodes.bind(this);
     this.onOpenGraph = this.onOpenGraph.bind(this);
     this.onInputFilter = this.onInputFilter.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -49,35 +50,37 @@ class ByGraph extends Component {
     })[0].colorClass;
 
     return <div key={items.graph} className={'sub-nodes-by-graph' + (isOpen ? ' open' : '')}>
-             <div className={'graph-header ' + colorCls}>
-               <span className="graph-name" onClick={this.onOpenGraph}>
-                 <i className={isOpen ? 'icon-down fa fa-caret-down' : 'icon-right fa fa-caret-right'}></i>
-                 &nbsp;{items.graph}
-               </span>
+            <div className={'graph-header ' + colorCls}>
+                <span className="graph-name" onClick={this.onOpenGraph}>
+                  <i className={isOpen ? 'icon-down fa fa-caret-down' : 'icon-right fa fa-caret-right'}></i>
+                  &nbsp;{items.graph}
+                </span>
 
-               <span className="graph-amount">
-                {hasQuery ?
-                  this.state.searchIndex.length : items.subnodes.length}
-               </span>
+                <span className="graph-amount">
+                  {hasQuery ?
+                    this.state.searchIndex.length : items.subnodes.length}
+                </span>
 
-               <span className="graph-buttons">
-                 <button className="btn btn-filter"><i className="fa fa-filter"
-                  onClick={(e) => this.onInputFilter(e)}></i></button>
-                 <button className="btn btn-add-all"><i className="fa fa-plus-square"
-                  onClick={(e) => this.onAddAllNodes(e)}></i></button>
-               </span>
+                <span className="graph-buttons">
+                  <button className="btn btn-filter" onClick={this.onInputFilter}>
+                    <i className="fa fa-filter"></i>
+                  </button>
+                  <button className="btn btn-add-all" onClick={this.onAddAllNodes}>
+                    <i className="fa fa-plus-square"></i>
+                  </button>
+                </span>
 
-               {this.state.filterIsOpen &&
-               <span className="graph-filter">
-                <input type="search" name="query" className="topcoat-text-input graph-filter-input"
-                  value={this.state.query} onChange={this.handleInputChange} />
-                <i className="fa fa-filter" onClick={(e) => this.onInputFilter(e)}></i>
-               </span>}
-             </div>
-             <div className="graph-items">
-             {this.buildSubNodes(items)}
-             </div>
-           </div>;
+                {this.state.filterIsOpen &&
+                <span className="graph-filter">
+                  <input type="search" name="query" className="topcoat-text-input graph-filter-input"
+                    value={this.state.query} onChange={this.handleInputChange} />
+                  <i className="fa fa-filter" onClick={this.onInputFilter}></i>
+                </span>}
+              </div>
+              <div className="graph-items">
+              {this.buildSubNodes(items)}
+              </div>
+            </div>;
   }
 
   buildSubNodes(nodesItem) {
