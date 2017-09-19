@@ -38,6 +38,7 @@ class App extends Component {
     this.state = {
       currentNode: false,
       graphs: [],
+      collectionsByGraphs: [],
       collections: [],
       nodes: [],
       stageNodes: [],
@@ -50,6 +51,7 @@ class App extends Component {
     this.addNodeToStage = this.addNodeToStage.bind(this);
     this.stageHasNode = this.stageHasNode.bind(this);
     this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
+    this.getCollectionByGraphs = this.getCollectionByGraphs.bind(this);
     this.setCurrent = this.setCurrent.bind(this);
     this.clearCurrent = this.clearCurrent.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -65,6 +67,7 @@ class App extends Component {
         <span className="main-xxxx"
               onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
         <Header graphs={this.state.graphs}
+                collectionsByGraphs={this.state.collectionsByGraphs}
                 clearStage={this.clearStage}
                 clearCurrent={this.clearCurrent}
                 collections={this.state.collections}
@@ -72,7 +75,7 @@ class App extends Component {
                 onToggleGraph={this.onToggleGraph} />
 
         <SearchContent nodes={this.state.nodes}
-                       setCurrent={this.setCurrent}
+
                        addNodeToStage={this.addNodeToStage}
                        currentNode={this.state.currentNode}
                        firstTimeSearch={this.state.firstTimeSearch} />
@@ -105,9 +108,22 @@ class App extends Component {
 
     this.socket.emit('getgraphs', {}, (data) => {
       let graphs = [];
+      let collectionsByGraphs = {};
       data = sortByName(data);
 
       for(let i=0, l=data.length; i<l; ++i) {
+        data[i].links.map((edge) => {
+          edge.from_collections.map((key) => {
+            collectionsByGraphs[key] = key;
+            return false;
+          })
+          edge.to_collections.map((key) => {
+            collectionsByGraphs[key] = key;
+            return false;
+          })
+          return false;
+        })
+
         graphs.push({
           name: data[i].name,
           colorClass: 'graph-color' + i,
@@ -115,7 +131,34 @@ class App extends Component {
         });
       }
 
-      this.setState({ graphs: graphs });
+      this.setState({
+        graphs: graphs,
+        collectionsByGraphs: Object.keys(collectionsByGraphs)
+      });
+    });
+  }
+
+  getCollectionByGraphs(graphsCopy, fn) {
+    let collectionsByGraphs = {};
+
+    this.socket.emit('getgraphs', {}, (data) => {
+      data = sortByName(data);
+
+      for(let i=0, l=data.length; i<l; ++i) {
+        if (!graphsCopy[i].enabled) {
+          continue;
+        }
+        data[i].links.forEach((edge) => {
+          edge.from_collections.forEach((key) => {
+            collectionsByGraphs[key] = key;
+          })
+          edge.to_collections.forEach((key) => {
+            collectionsByGraphs[key] = key;
+          })
+        })
+      }
+
+      fn(collectionsByGraphs);
     });
   }
 
@@ -263,8 +306,14 @@ class App extends Component {
       }
       return graph;
     });
-    this.setState({ graphs: graphsCopy }, () => {
-      this.info.onTraversalSearch();
+
+    this.getCollectionByGraphs(graphsCopy, (collectionsByGraphs) => {
+      this.setState({
+        graphs: graphsCopy,
+        collectionsByGraphs: Object.keys(collectionsByGraphs)
+      }, () => {
+        this.info.onTraversalSearch();
+      });
     });
   }
 

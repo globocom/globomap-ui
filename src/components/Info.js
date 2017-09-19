@@ -37,7 +37,7 @@ class Info extends Component {
   }
 
   render() {
-    let random = Math.floor(Math.random() * 256);
+    let random = Math.floor(Math.random() * 16392);
     let byGraph = this.state.byGraph.map((items, index) => {
       return <ByGraph ref={(ByGraph) => {this.byGraph = ByGraph}}
                       key={index * random}
