@@ -91,3 +91,7 @@ limitations under the License.
 .header-sub-group .collection-items .item {
   margin: 0 15px 9px 0;
 }
+
+.header-sub-group .collection-items .item.disabled {
+  color: #b5b5b5;
+}
