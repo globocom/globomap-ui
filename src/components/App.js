@@ -38,7 +38,8 @@ class App extends Component {
     this.state = {
       currentNode: false,
       graphs: [],
-      collectionsByGraphs: [],
+      enabledCollections: [],
+      collectionsByGraphs: {},
       collections: [],
       nodes: [],
       stageNodes: [],
@@ -67,7 +68,7 @@ class App extends Component {
         <span className="main-xxxx"
               onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
         <Header graphs={this.state.graphs}
-                collectionsByGraphs={this.state.collectionsByGraphs}
+                enabledCollections={this.state.enabledCollections}
                 clearStage={this.clearStage}
                 clearCurrent={this.clearCurrent}
                 collections={this.state.collections}
@@ -92,6 +93,7 @@ class App extends Component {
               getNode={this.getNode}
               stageNodes={this.state.stageNodes}
               graphs={this.state.graphs}
+              collectionsByGraphs={this.state.collectionsByGraphs}
               stageHasNode={this.stageHasNode}
               addNodeToStage={this.addNodeToStage}
               clearCurrent={this.clearCurrent}
@@ -101,64 +103,69 @@ class App extends Component {
     );
   }
 
+  getEdgeLinks(graph) {
+    let collections = [];
+
+    graph.links.forEach((edge) => {
+      edge.from_collections.forEach((key) => {
+        collections.push(key);
+      })
+      edge.to_collections.forEach((key) => {
+        collections.push(key);
+      })
+    });
+
+    return collections;
+  }
+
   getGraphsAndCollections() {
     this.socket.emit('getcollections', {}, (data) => {
       this.setState({ collections: data });
     });
 
-    this.socket.emit('getgraphs', {}, (data) => {
+    this.socket.emit('getgraphs', {}, (items) => {
       let graphs = [];
+      let enabledCollections = [];
       let collectionsByGraphs = {};
-      data = sortByName(data);
+      let collections = [];
+      items = sortByName(items);
 
-      for(let i=0, l=data.length; i<l; ++i) {
-        data[i].links.map((edge) => {
-          edge.from_collections.map((key) => {
-            collectionsByGraphs[key] = key;
-            return false;
-          })
-          edge.to_collections.map((key) => {
-            collectionsByGraphs[key] = key;
-            return false;
-          })
-          return false;
-        })
+      items.forEach((item, index) => {
+        collections = this.getEdgeLinks(item);
 
         graphs.push({
-          name: data[i].name,
-          colorClass: 'graph-color' + i,
+          name: item.name,
+          colorClass: 'graph-color' + index,
           enabled: true
         });
-      }
+
+        enabledCollections = enabledCollections.concat(collections);
+        collectionsByGraphs[item.name] = _.uniq(collections);
+      });
 
       this.setState({
         graphs: graphs,
-        collectionsByGraphs: Object.keys(collectionsByGraphs)
+        enabledCollections: _.uniq(enabledCollections),
+        collectionsByGraphs: collectionsByGraphs
       });
     });
   }
 
   getCollectionByGraphs(graphsCopy, fn) {
-    let collectionsByGraphs = {};
+    let enabledCollections = [];
 
-    this.socket.emit('getgraphs', {}, (data) => {
-      data = sortByName(data);
+    this.socket.emit('getgraphs', {}, (items) => {
+      items = sortByName(items);
 
-      for(let i=0, l=data.length; i<l; ++i) {
-        if (!graphsCopy[i].enabled) {
-          continue;
+      items.forEach((item, index) => {
+        if (!graphsCopy[index].enabled) {
+          return;
         }
-        data[i].links.forEach((edge) => {
-          edge.from_collections.forEach((key) => {
-            collectionsByGraphs[key] = key;
-          })
-          edge.to_collections.forEach((key) => {
-            collectionsByGraphs[key] = key;
-          })
-        })
-      }
+        enabledCollections = enabledCollections.concat(
+          this.getEdgeLinks(item));
+      });
 
-      fn(collectionsByGraphs);
+      fn(_.uniq(enabledCollections));
     });
   }
 
@@ -307,10 +314,10 @@ class App extends Component {
       return graph;
     });
 
-    this.getCollectionByGraphs(graphsCopy, (collectionsByGraphs) => {
+    this.getCollectionByGraphs(graphsCopy, (enabledCollections) => {
       this.setState({
         graphs: graphsCopy,
-        collectionsByGraphs: Object.keys(collectionsByGraphs)
+        enabledCollections: enabledCollections
       }, () => {
         this.info.onTraversalSearch();
       });
