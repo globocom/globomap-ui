@@ -49,31 +49,56 @@ limitations under the License.
   display: block;
 }
 
+.sub-nodes-by-graph.open .graph-types {
+  background-color: #dfe2e2;
+  z-index: 9;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+}
+
+.sub-nodes-by-graph.open .graph-types .item {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 50%;
+  overflow: hidden;
+  font-size: 12px;
+  height: 26px;
+}
+
 .sub-nodes-by-graph .graph-buttons {
   float: right;
   margin: 0 8px;
   padding-top: 3px;
 }
 
-.sub-nodes-by-graph .graph-filter {
+.sub-nodes-by-graph .graph-search {
   cursor: pointer;
   position: absolute;
   right: 90px;
 }
 
-.sub-nodes-by-graph .graph-filter .graph-filter-input {
+.sub-nodes-by-graph .graph-search .graph-search-input {
   position: absolute;
   right: 0;
   z-index: 0;
   width: 180px;
 }
 
-.sub-nodes-by-graph .graph-filter .fa-filter {
+.sub-nodes-by-graph .graph-search .fa-search {
   position: absolute;
   right: 10px;
   z-index: 10;
   color: #424242;
   top: 4px;
+}
+
+.sub-nodes-by-graph .graph-search .fa-filter {
+    position: absolute;
+    right: 30px;
+    z-index: 10;
+    color: #424242;
+    top: 4px;
 }
 
 .sub-nodes-by-graph .graph-buttons .btn {

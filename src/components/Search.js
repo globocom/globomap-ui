@@ -63,10 +63,10 @@ class Search extends Component {
     this.props.clearStage();
     this.props.clearCurrent();
 
-    if (this.props.enabledCollections.length > 0)
+    if (this.props.checkedCollections.length > 0)
 
     this.setState({ loading: true }, () => {
-      this.props.findNodes(this.state.query, this.props.enabledCollections, () => {
+      this.props.findNodes(this.state.query, this.props.checkedCollections, () => {
         this.setState({ loading: false });
       });
     });
