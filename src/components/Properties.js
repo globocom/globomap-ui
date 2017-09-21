@@ -30,15 +30,14 @@ class Properties extends Component {
   render() {
     return (
       <div className="item-properties">
-      {this.buildProperties(
-        this.props.properties,
-        this.props.propertiesMetadata
-      )}
+      {this.buildProperties(this.props.item)}
       </div>
     );
   }
 
-  buildProperties(properties, propertiesMetadata) {
+  buildProperties(item) {
+    let properties = item.properties;
+    let propertiesMetadata = item.propertiesMetadata;
     let convertedDate, formattedDate, props;
 
     if(!properties) {
