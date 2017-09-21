@@ -36,6 +36,19 @@ limitations under the License.
   padding: 10px 15px;
 }
 
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
+
+.sticky:before,
+.sticky:after {
+  content: '';
+  display: table;
+}
+
 .node-item .type {
   display: block;
   font-size: 10px;
@@ -52,13 +65,6 @@ limitations under the License.
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 6px;
-}
-
-.node-item .timestamp {
-  color: #616161;
-  display: block;
-  font-size: 12px;
-  letter-spacing: -0.4px;
 }
 
 .node-item.current {
@@ -93,6 +99,7 @@ limitations under the License.
   border: 0;
   background-color: transparent;
   font-size: 12px;
+  z-index: 1;
 }
 
 .node-item:hover .close-node-btn {

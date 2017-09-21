@@ -50,7 +50,8 @@ class Stage extends Component {
                          graphs={this.props.graphs}
                          currentNode={this.props.currentNode}
                          removeNode={this.props.removeNode}
-                         setCurrent={this.props.setCurrent} />
+                         setCurrent={this.props.setCurrent}
+                         hasId={this.props.hasId} />
                <div className="node-item-content">
                  {node.items.length > 0 ? this.renderNodes(node.items) : ''}
                </div>
