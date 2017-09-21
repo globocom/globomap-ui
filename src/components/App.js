@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* global _ */
+
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import Header from './Header';
@@ -36,10 +38,13 @@ class App extends Component {
     this.state = {
       currentNode: false,
       graphs: [],
+      enabledCollections: [],
+      collectionsByGraphs: {},
       collections: [],
       nodes: [],
       stageNodes: [],
-      firstTimeSearch: true
+      firstTimeSearch: true,
+      hasId: false
     };
 
     this.findNodes = this.findNodes.bind(this);
@@ -47,18 +52,23 @@ class App extends Component {
     this.addNodeToStage = this.addNodeToStage.bind(this);
     this.stageHasNode = this.stageHasNode.bind(this);
     this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
+    this.getCollectionByGraphs = this.getCollectionByGraphs.bind(this);
     this.setCurrent = this.setCurrent.bind(this);
     this.clearCurrent = this.clearCurrent.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.clearStage = this.clearStage.bind(this);
     this.onToggleGraph = this.onToggleGraph.bind(this);
     this.removeNode = this.removeNode.bind(this);
+    this.handleDoubleClick = this.handleDoubleClick.bind(this);
   }
 
   render() {
     return (
       <div className="main">
+        <span className="main-xxxx"
+              onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
         <Header graphs={this.state.graphs}
+                enabledCollections={this.state.enabledCollections}
                 clearStage={this.clearStage}
                 clearCurrent={this.clearCurrent}
                 collections={this.state.collections}
@@ -66,7 +76,7 @@ class App extends Component {
                 onToggleGraph={this.onToggleGraph} />
 
         <SearchContent nodes={this.state.nodes}
-                       setCurrent={this.setCurrent}
+
                        addNodeToStage={this.addNodeToStage}
                        currentNode={this.state.currentNode}
                        firstTimeSearch={this.state.firstTimeSearch} />
@@ -76,17 +86,36 @@ class App extends Component {
                currentNode={this.state.currentNode}
                clearCurrent={this.clearCurrent}
                removeNode={this.removeNode}
-               setCurrent={this.setCurrent} />
+               setCurrent={this.setCurrent}
+               hasId={this.state.hasId} />
 
-        <Info getNode={this.getNode}
+        <Info ref={(Info) => {this.info = Info}}
+              getNode={this.getNode}
               stageNodes={this.state.stageNodes}
               graphs={this.state.graphs}
+              collectionsByGraphs={this.state.collectionsByGraphs}
               stageHasNode={this.stageHasNode}
               addNodeToStage={this.addNodeToStage}
               clearCurrent={this.clearCurrent}
-              currentNode={this.state.currentNode} />
+              currentNode={this.state.currentNode}
+              hasId={this.state.hasId} />
       </div>
     );
+  }
+
+  getEdgeLinks(graph) {
+    let collections = [];
+
+    graph.links.forEach((edge) => {
+      edge.from_collections.forEach((key) => {
+        collections.push(key);
+      })
+      edge.to_collections.forEach((key) => {
+        collections.push(key);
+      })
+    });
+
+    return collections;
   }
 
   getGraphsAndCollections() {
@@ -94,19 +123,49 @@ class App extends Component {
       this.setState({ collections: data });
     });
 
-    this.socket.emit('getgraphs', {}, (data) => {
+    this.socket.emit('getgraphs', {}, (items) => {
       let graphs = [];
-      data = sortByName(data);
+      let enabledCollections = [];
+      let collectionsByGraphs = {};
+      let collections = [];
+      items = sortByName(items);
 
-      for(let i=0, l=data.length; i<l; ++i) {
+      items.forEach((item, index) => {
+        collections = this.getEdgeLinks(item);
+
         graphs.push({
-          name: data[i].name,
-          colorClass: 'graph-color' + i,
+          name: item.name,
+          colorClass: 'graph-color' + index,
           enabled: true
         });
-      }
 
-      this.setState({ graphs: graphs });
+        enabledCollections = enabledCollections.concat(collections);
+        collectionsByGraphs[item.name] = _.uniq(collections);
+      });
+
+      this.setState({
+        graphs: graphs,
+        enabledCollections: _.uniq(enabledCollections),
+        collectionsByGraphs: collectionsByGraphs
+      });
+    });
+  }
+
+  getCollectionByGraphs(graphsCopy, fn) {
+    let enabledCollections = [];
+
+    this.socket.emit('getgraphs', {}, (items) => {
+      items = sortByName(items);
+
+      items.forEach((item, index) => {
+        if (!graphsCopy[index].enabled) {
+          return;
+        }
+        enabledCollections = enabledCollections.concat(
+          this.getEdgeLinks(item));
+      });
+
+      fn(_.uniq(enabledCollections));
     });
   }
 
@@ -254,12 +313,26 @@ class App extends Component {
       }
       return graph;
     });
-    this.setState({ graphs: graphsCopy });
+
+    this.getCollectionByGraphs(graphsCopy, (enabledCollections) => {
+      this.setState({
+        graphs: graphsCopy,
+        enabledCollections: enabledCollections
+      }, () => {
+        this.info.onTraversalSearch();
+      });
+    });
+  }
+
+  handleDoubleClick() {
+    this.setState({
+      hasId: !this.state.hasId
+    });
   }
 
   componentDidMount() {
     this.getGraphsAndCollections();
-    document.addEventListener('keydown', this.handleKeyDown)
+    document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100))
   }
 
   componentWillUnmount() {

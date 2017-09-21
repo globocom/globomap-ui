@@ -39,12 +39,16 @@ class Properties extends Component {
   }
 
   buildProperties(properties, propertiesMetadata) {
+    let convertedDate, formattedDate, props;
+
     if(!properties) {
       return <table></table>;
     }
 
-    let props = Object.keys(properties).map((key, index) => {
+    convertedDate = new Date(parseInt(item.timestamp, 10) * 1000);
+    formattedDate = convertedDate.toLocaleString('pt-BR');
 
+    props = Object.keys(properties).map((key, index) => {
       let val = properties[key];
 
       if(typeof val === 'boolean') {
@@ -83,6 +87,19 @@ class Properties extends Component {
                <td>{val}</td>
              </tr>;
     });
+
+    props.push(
+      <tr key="timestamp">
+        <th>timestamp</th>
+        <td>{formattedDate}</td>
+      </tr>
+    )
+
+    this.props.hasId &&
+    props.push(<tr key="id">
+      <th>id</th>
+      <td>{item.id}</td>
+    </tr>)
 
     return <table>
               {props.length > 0 &&

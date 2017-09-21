@@ -33,21 +33,24 @@ class Info extends Component {
 
     this.onCloseInfo = this.onCloseInfo.bind(this);
     this.composeEdges = this.composeEdges.bind(this);
+    this.onTraversalSearch = this.onTraversalSearch.bind(this);
   }
 
   render() {
-    let random = Math.floor(Math.random() * 256);
+    let random = Math.floor(Math.random() * 16392);
     let byGraph = this.state.byGraph.map((items, index) => {
       return <ByGraph ref={(ByGraph) => {this.byGraph = ByGraph}}
-                      key={index * random}
+                      key={index + random}
                       items={items}
                       graphs={this.props.graphs}
+                      collectionsByGraphs={this.props.collectionsByGraphs}
                       stageHasNode={this.props.stageHasNode}
                       node={this.state.node}
-                      addNodeToStage={this.props.addNodeToStage} />
+                      addNodeToStage={this.props.addNodeToStage}
+                      hasId={this.props.hasId} />
     });
 
-    return <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
+    return <div ref="info" className={'info ' + (this.props.currentNode ? 'open' : '')}>
              <div className="info-title">
                {this.state.node.name}
                <button className="close-info-btn topcoat-button--quiet"
@@ -57,7 +60,8 @@ class Info extends Component {
              </div>
 
              <div className="info-content">
-               <InfoContentHead node={this.state.node} />
+               <InfoContentHead node={this.state.node}
+                                hasId={this.props.hasId} />
                <div className="info-graph-items">
                  {this.state.loading &&
                    <div className="items-loading">
@@ -82,7 +86,7 @@ class Info extends Component {
 
   traversalSearch(node) {
     let graphs = this.props.graphs.filter(g => g.enabled).map(g => g.name),
-        params = { start: node._id, graphs: graphs }
+        params = { start: (node._id || ''), graphs: graphs }
 
     this.socket.emit('traversalsearch', params, (data) => {
       let byGraph = [];
@@ -136,8 +140,23 @@ class Info extends Component {
   }
 
   onCloseInfo(event) {
+    let byGraph = [];
+
     event.stopPropagation();
     this.props.clearCurrent();
+
+    this.state.byGraph.forEach((graph, index) => {
+      byGraph[index] = Object.assign({}, graph, { edges: {}, nodes:{}, subnodes: {} });
+    });
+
+    this.setState({ byGraph });
+  }
+
+  onTraversalSearch() {
+    let node = this.state.node;
+    if (node) {
+      this.traversalSearch(node);
+    }
   }
 
   componentWillReceiveProps(nextProps) {

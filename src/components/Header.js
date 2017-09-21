@@ -23,7 +23,7 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      enabledCollections: []
+      checkedCollections: []
     };
 
     this.handleCheckItem = this.handleCheckItem.bind(this);
@@ -41,9 +41,12 @@ class Header extends Component {
     });
 
     let collectionItems = this.props.collections.map((co) => {
-      return <label key={co} className="item topcoat-checkbox">
-              <input type="checkbox" name={co} checked={this.state.enabledCollections.includes(co)}
-                onChange={this.handleCheckItem} />
+      let hasCollection = !this.props.enabledCollections.includes(co);
+      let disabledCls = hasCollection ? ' disabled' : '';
+
+      return <label key={co} className={"item topcoat-checkbox" + disabledCls}>
+              <input type="checkbox" name={co} checked={this.state.checkedCollections.includes(co)}
+                onChange={this.handleCheckItem} disabled={hasCollection} />
               <div className="topcoat-checkbox__checkmark"></div>
               &nbsp;{co}
              </label>;
@@ -55,7 +58,7 @@ class Header extends Component {
               <Search findNodes={this.props.findNodes}
                       clearStage={this.props.clearStage}
                       clearCurrent={this.props.clearCurrent}
-                      enabledCollections={this.state.enabledCollections} />
+                      checkedCollections={this.state.checkedCollections} />
             </div>
             <div className="header-sub-group">
               <div className="graph-buttons">
@@ -70,7 +73,7 @@ class Header extends Component {
 
   handleCheckItem(event) {
     let target = event.target,
-        colls = this.state.enabledCollections.slice(),
+        colls = this.state.checkedCollections.slice(),
         itemIndex = colls.indexOf(target.name);
 
     if(itemIndex < 0) {
@@ -79,7 +82,19 @@ class Header extends Component {
       colls.splice(itemIndex, 1);
     }
 
-    this.setState({ enabledCollections: colls });
+    this.setState({ checkedCollections: colls });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let checkedCollections = [];
+
+    this.state.checkedCollections.forEach((item) => {
+      if (nextProps.enabledCollections.includes(item)) {
+        checkedCollections.push(item);
+      }
+    });
+
+    this.setState({ checkedCollections });
   }
 }
 

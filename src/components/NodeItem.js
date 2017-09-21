@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* global Stickyfill */
+
 import React, { Component } from 'react';
 import NodeEdges from './NodeEdges';
 import './css/NodeItem.css';
@@ -26,27 +28,31 @@ class NodeItem extends Component {
     this.onSelfRemove = this.onSelfRemove.bind(this);
   }
 
+  componentDidMount() {
+    let element = document.getElementsByClassName('sticky');
+    Stickyfill.add(element);
+  }
+
   render() {
-    let { _id, name, type, edges, uuid, timestamp } = this.props.node;
+    let { _id, name, type, edges, uuid, id } = this.props.node;
     let cNode = this.props.currentNode,
         current = cNode && _id === cNode._id ? ' current' : '',
         thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '';
-    let convertedDate = new Date(parseInt(timestamp, 10) * 1000);
-    let formattedDate = convertedDate.toLocaleString('pt-BR');
 
     return <div className={'node-item' + current + thisnode} onClick={this.onItemSelect}>
             {!this.props.node.root &&
               <button className="close-node-btn" onClick={this.onSelfRemove}>
                 <i className="fa fa-close"></i>
               </button>}
-            <div className="node-info">
+            <div className="node-info sticky">
               <span className="type">{type}</span>
               <span className="name">{name}</span>
-              <span className="timestamp">{formattedDate}</span>
+              {this.props.hasId && <span>{id}</span>}
             </div>
             <NodeEdges edges={edges}
                        graphs={this.props.graphs}
-                       position={'left'} />
+                       position={'left'}
+                       hasId={this.props.hasId} />
            </div>;
   }
 
