@@ -61,14 +61,14 @@ class Search extends Component {
   onSendSearchQuery(event) {
     event.preventDefault();
     this.props.clearStage();
-    this.props.clearCurrent();
-
-    if (this.props.checkedCollections.length > 0)
-
-    this.setState({ loading: true }, () => {
-      this.props.findNodes(this.state.query, this.props.checkedCollections, () => {
-        this.setState({ loading: false });
-      });
+    this.props.clearInfo(() => {
+      if (this.props.checkedCollections.length > 0) {
+        this.setState({ loading: true }, () => {
+          this.props.findNodes(this.state.query, this.props.checkedCollections, () => {
+            this.setState({ loading: false });
+          });
+        });
+      }
     });
   }
 
