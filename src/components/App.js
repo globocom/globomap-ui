@@ -337,6 +337,7 @@ class App extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown)
+    this.socket.disconnect();
   }
 
 }
