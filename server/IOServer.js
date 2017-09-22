@@ -33,15 +33,9 @@ class IOServer {
       return;
     }
 
-    this.connectedCount = 0;
-    console.log('[IOServer] Start connection');
-
     this.logMemory();
 
     io.on('connection', (socket) => {
-      console.log('[IOServer] Client connected.', this.connectedCount);
-      this.connectedCount++;
-
       socket.on('getcollections', (data, fn) => {
         this.getCollections(data, (result) => { fn(result); });
       });
@@ -60,15 +54,6 @@ class IOServer {
 
       socket.on('getmonitoring', (data, fn) => {
         this.getMonitoring(data, (result) => { fn(result); });
-      });
-
-      // Disconnect listener
-      socket.on('disconnect', () => {
-        this.connectedCount--;
-        console.log('[IOServer] Client disconnected. Total Connections: ', this.connectedCount);
-        if(!this.connectedCount) {
-          this.logMemory();
-        }
       });
     });
 
