@@ -34,6 +34,7 @@ class Info extends Component {
     this.onCloseInfo = this.onCloseInfo.bind(this);
     this.composeEdges = this.composeEdges.bind(this);
     this.onTraversalSearch = this.onTraversalSearch.bind(this);
+    this.resetByGraph = this.resetByGraph.bind(this);
   }
 
   render() {
@@ -50,7 +51,7 @@ class Info extends Component {
                       hasId={this.props.hasId} />
     });
 
-    return <div ref="info" className={'info ' + (this.props.currentNode ? 'open' : '')}>
+    return <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
              <div className="info-title">
                {this.state.node.name}
                <button className="close-info-btn topcoat-button--quiet"
@@ -140,16 +141,21 @@ class Info extends Component {
   }
 
   onCloseInfo(event) {
-    let byGraph = [];
-
     event.stopPropagation();
     this.props.clearCurrent();
+    this.resetByGraph(() => {});
+  }
+
+  resetByGraph(fn) {
+    let byGraph = [];
 
     this.state.byGraph.forEach((graph, index) => {
-      byGraph[index] = Object.assign({}, graph, { edges: {}, nodes:{}, subnodes: {} });
+      byGraph[index] = Object.assign({}, graph, { edges: [], nodes: [], subnodes: [] });
     });
 
-    this.setState({ byGraph });
+    this.setState({ byGraph }, () => {
+      fn();
+    });
   }
 
   onTraversalSearch() {
@@ -178,7 +184,6 @@ class Info extends Component {
       }
     }
   }
-
 }
 
 export default Info;

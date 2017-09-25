@@ -58,7 +58,8 @@ class Header extends Component {
               <Search findNodes={this.props.findNodes}
                       clearStage={this.props.clearStage}
                       clearCurrent={this.props.clearCurrent}
-                      checkedCollections={this.state.checkedCollections} />
+                      checkedCollections={this.state.checkedCollections}
+                      clearInfo={this.props.clearInfo} />
             </div>
             <div className="header-sub-group">
               <div className="graph-buttons">
