@@ -71,17 +71,19 @@ class ByGraph extends Component {
                   <button className="btn btn-search" onClick={this.onInputSearch}>
                     <i className="fa fa-search"></i>
                   </button>
+                  <button className="btn btn-filter" onClick={this.onInputFilter}>
+                    <i className="fa fa-filter"></i>
+                  </button>
                   <button className="btn btn-add-all" onClick={this.onAddAllNodes}>
                     <i className="fa fa-plus-square"></i>
                   </button>
                 </span>
 
-                {this.state.searchIsOpen &&
+                {(this.state.searchIsOpen && this.state.graphAmount > 0) &&
                 <span className="graph-search">
                   <input type="search" name="query" className="topcoat-text-input graph-search-input"
-                    value={this.state.query} onChange={this.handleInputChange} />
+                    autoFocus value={this.state.query} onChange={this.handleInputChange} />
                   <i className="fa fa-search" onClick={this.onInputSearch}></i>
-                  <i className="fa fa-filter" onClick={this.onInputFilter}></i>
                 </span>}
               </div>
               <div className="graph-items">
