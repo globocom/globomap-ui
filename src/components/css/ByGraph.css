@@ -107,6 +107,10 @@ limitations under the License.
   color: rgba(255, 255, 255, 1);
 }
 
+.sub-nodes-by-graph .graph-buttons .btn.btn-filter.active {
+  color: rgba(255, 255, 255, 1);
+}
+
 .info-graph-items,
 .info-graph-items .sub-node {
   box-sizing: border-box;

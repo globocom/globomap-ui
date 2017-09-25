@@ -71,7 +71,9 @@ class ByGraph extends Component {
                   <button className="btn btn-search" onClick={this.onInputSearch}>
                     <i className="fa fa-search"></i>
                   </button>
-                  <button className="btn btn-filter" onClick={this.onInputFilter}>
+                  <button className={"btn btn-filter" + (
+                      this.state.filterIsOpen ? " active" : "")}
+                    onClick={this.onInputFilter}>
                     <i className="fa fa-filter"></i>
                   </button>
                   <button className="btn btn-add-all" onClick={this.onAddAllNodes}>
@@ -199,6 +201,10 @@ class ByGraph extends Component {
   }
 
   onInputFilter() {
+    if (this.props.items.subnodes.length === 0) {
+      return;
+    }
+
     this.setState({
       filterIsOpen: !this.state.filterIsOpen
     });
