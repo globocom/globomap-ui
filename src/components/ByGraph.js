@@ -121,10 +121,6 @@ class ByGraph extends Component {
     let hasSearchIndex = this.state.searchIndex.length > 0;
     let subnodes;
 
-    if (this.state.filterIsOpen) {
-      return null;
-    }
-
     subnodes = nodesItem.subnodes.map((subnode, index) => {
       let type = subnode.type.toLowerCase();
       let hasNode = false;
