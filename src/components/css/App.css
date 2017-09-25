@@ -38,6 +38,12 @@ a {
 .graph-color3,
 .graph-color3:hover { background-color: #2b9e63 }
 
+.graph-color4,
+.graph-color4:hover { background-color: #b84bbf }
+
+.graph-color5,
+.graph-color5:hover { background-color: #327352 }
+
 .main-xxxx {
   position: absolute;
   left: 0;
