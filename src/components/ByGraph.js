@@ -71,17 +71,21 @@ class ByGraph extends Component {
                   <button className="btn btn-search" onClick={this.onInputSearch}>
                     <i className="fa fa-search"></i>
                   </button>
+                  <button className={"btn btn-filter" + (
+                      this.state.filterIsOpen ? " active" : "")}
+                    onClick={this.onInputFilter}>
+                    <i className="fa fa-filter"></i>
+                  </button>
                   <button className="btn btn-add-all" onClick={this.onAddAllNodes}>
                     <i className="fa fa-plus-square"></i>
                   </button>
                 </span>
 
-                {this.state.searchIsOpen &&
+                {(this.state.searchIsOpen && this.state.graphAmount > 0) &&
                 <span className="graph-search">
                   <input type="search" name="query" className="topcoat-text-input graph-search-input"
-                    value={this.state.query} onChange={this.handleInputChange} />
+                    autoFocus value={this.state.query} onChange={this.handleInputChange} />
                   <i className="fa fa-search" onClick={this.onInputSearch}></i>
-                  <i className="fa fa-filter" onClick={this.onInputFilter}></i>
                 </span>}
               </div>
               <div className="graph-items">
@@ -118,10 +122,6 @@ class ByGraph extends Component {
     let hasQuery = this.state.query.trim().length > 0;
     let hasSearchIndex = this.state.searchIndex.length > 0;
     let subnodes;
-
-    if (this.state.filterIsOpen) {
-      return null;
-    }
 
     subnodes = nodesItem.subnodes.map((subnode, index) => {
       let type = subnode.type.toLowerCase();
@@ -201,6 +201,10 @@ class ByGraph extends Component {
   }
 
   onInputFilter() {
+    if (this.props.items.subnodes.length === 0) {
+      return;
+    }
+
     this.setState({
       filterIsOpen: !this.state.filterIsOpen
     });

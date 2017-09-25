@@ -51,6 +51,7 @@ limitations under the License.
 
 .sub-nodes-by-graph.open .graph-types {
   background-color: #dfe2e2;
+  border-bottom: 1px solid rgba(157, 172, 169, 0.50);
   z-index: 9;
   display: flex;
   flex-wrap: wrap;
@@ -75,7 +76,7 @@ limitations under the License.
 .sub-nodes-by-graph .graph-search {
   cursor: pointer;
   position: absolute;
-  right: 90px;
+  right: 120px;
 }
 
 .sub-nodes-by-graph .graph-search .graph-search-input {
@@ -87,18 +88,10 @@ limitations under the License.
 
 .sub-nodes-by-graph .graph-search .fa-search {
   position: absolute;
-  right: 10px;
+  right: 11px;
   z-index: 10;
   color: #424242;
   top: 4px;
-}
-
-.sub-nodes-by-graph .graph-search .fa-filter {
-    position: absolute;
-    right: 30px;
-    z-index: 10;
-    color: #424242;
-    top: 4px;
 }
 
 .sub-nodes-by-graph .graph-buttons .btn {
@@ -111,6 +104,10 @@ limitations under the License.
 }
 
 .sub-nodes-by-graph .graph-buttons .btn:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.sub-nodes-by-graph .graph-buttons .btn.btn-filter.active {
   color: rgba(255, 255, 255, 1);
 }
 
