@@ -51,7 +51,7 @@ class Info extends Component {
                       hasId={this.props.hasId} />
     });
 
-    return <div ref="info" className={'info ' + (this.props.currentNode ? 'open' : '')}>
+    return <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
              <div className="info-title">
                {this.state.node.name}
                <button className="close-info-btn topcoat-button--quiet"
