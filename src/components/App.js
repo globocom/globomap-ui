@@ -60,6 +60,7 @@ class App extends Component {
     this.onToggleGraph = this.onToggleGraph.bind(this);
     this.removeNode = this.removeNode.bind(this);
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
+    this.clearInfo = this.clearInfo.bind(this);
   }
 
   render() {
@@ -73,7 +74,8 @@ class App extends Component {
                 clearCurrent={this.clearCurrent}
                 collections={this.state.collections}
                 findNodes={this.findNodes}
-                onToggleGraph={this.onToggleGraph} />
+                onToggleGraph={this.onToggleGraph}
+                clearInfo={this.clearInfo} />
 
         <SearchContent nodes={this.state.nodes}
 
@@ -263,7 +265,13 @@ class App extends Component {
   }
 
   clearStage() {
-    return this.setState({ stageNodes: [] });
+    return this.setState({ stageNodes: [] }, () => {
+      this.clearCurrent();
+    });
+  }
+
+  clearInfo(fn) {
+    this.info.resetByGraph(fn);
   }
 
   findNodes(query, co, fn) {
@@ -337,6 +345,7 @@ class App extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown)
+    this.socket.disconnect();
   }
 
 }
