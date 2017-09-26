@@ -23,7 +23,7 @@ const zabbixApiUrl = process.env.ZABBIX_API_URL;
 const zabbixUser = process.env.ZABBIX_API_USER;
 const zabbixPassword = process.env.ZABBIX_API_PASSWORD;
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
-const certificates = process.env.CERTIFICATES;
+const certificates = process.env.CERTIFICATES || 'ca-certificates.crt';
 
 class IOServer {
   constructor(io) {
