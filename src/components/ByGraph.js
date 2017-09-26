@@ -48,6 +48,7 @@ class ByGraph extends Component {
 
   render() {
     let items = this.props.items,
+        subnodesAmount = this.props.items.subnodes.length,
         isOpen = items.subnodes.length > 0
                  ? this.state.isOpen
                  : false;
@@ -81,7 +82,7 @@ class ByGraph extends Component {
                   </button>
                 </span>
 
-                {(this.state.searchIsOpen && this.state.graphAmount > 0) &&
+                {(this.state.searchIsOpen && subnodesAmount > 0) &&
                 <span className="graph-search">
                   <input type="search" name="query" className="topcoat-text-input graph-search-input"
                     autoFocus value={this.state.query} onChange={this.handleInputChange} />
@@ -191,9 +192,7 @@ class ByGraph extends Component {
   }
 
   onInputSearch(event) {
-    this.setState({
-      searchIsOpen: !this.state.searchIsOpen
-    }, () => {
+    this.setState({ searchIsOpen: !this.state.searchIsOpen }, () => {
       if (!this.state.searchIsOpen) {
         this.clearFilter();
       }
@@ -205,9 +204,7 @@ class ByGraph extends Component {
       return;
     }
 
-    this.setState({
-      filterIsOpen: !this.state.filterIsOpen
-    });
+    this.setState({ filterIsOpen: !this.state.filterIsOpen });
   }
 
   handleInputChange(event) {
