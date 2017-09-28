@@ -26,24 +26,6 @@ a {
   color: #288edf
 }
 
-.graph-color0,
-.graph-color0:hover { background-color: #347eb9 }
-
-.graph-color1,
-.graph-color1:hover { background-color: #ccaf6f }
-
-.graph-color2,
-.graph-color2:hover { background-color: #d43e5e }
-
-.graph-color3,
-.graph-color3:hover { background-color: #2b9e63 }
-
-.graph-color4,
-.graph-color4:hover { background-color: #b84bbf }
-
-.graph-color5,
-.graph-color5:hover { background-color: #327352 }
-
 .main-xxxx {
   position: absolute;
   left: 0;
@@ -53,3 +35,27 @@ a {
   user-select: none;
   z-index: 10;
 }
+
+.graph-color0,
+.graph-color0:hover { background-color: #67001f }
+
+.graph-color1,
+.graph-color1:hover { background-color: #b2182b }
+
+.graph-color2,
+.graph-color2:hover { background-color: #d6604d }
+
+.graph-color3,
+.graph-color3:hover { background-color: #f4a582 }
+
+.graph-color4,
+.graph-color4:hover { background-color: #92c5de }
+
+.graph-color5,
+.graph-color5:hover { background-color: #4393c3 }
+
+.graph-color6,
+.graph-color6:hover { background-color: #2166ac }
+
+.graph-color7,
+.graph-color7:hover { background-color: #053061 }
