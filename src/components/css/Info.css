@@ -73,6 +73,7 @@ limitations under the License.
   right: 0;
   bottom: 0;
   left: 0;
-  overflow: scroll;
+  overflow: auto;
+  overflow-x: hidden;
 }
 
