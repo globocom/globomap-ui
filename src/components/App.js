@@ -26,7 +26,7 @@ import { traverseItems, uuid, sortByName } from '../utils';
 import './css/App.css';
 
 function uiSocket() {
-  return io();
+  return io('http://localhost:8888');
 }
 
 class App extends Component {

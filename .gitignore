@@ -21,7 +21,11 @@ yarn-debug.log*
 yarn-error.log*
 
 TODO
+<<<<<<< HEAD
 server/ca-certificates.crt
+=======
+ca-certificates.crt
+>>>>>>> 89ab20e907267bc9806580dba0fbc8f6ad892fd2
 
 # editors
 .vscode/

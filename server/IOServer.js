@@ -23,7 +23,7 @@ const zabbixApiUrl = process.env.ZABBIX_API_URL;
 const zabbixUser = process.env.ZABBIX_API_USER;
 const zabbixPassword = process.env.ZABBIX_API_PASSWORD;
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
-const certificates = process.env.CERTIFICATES;
+const certificates = process.env.CERTIFICATES || 'ca-certificates.crt';
 
 class IOServer {
   constructor(io) {
@@ -112,7 +112,7 @@ class IOServer {
     console.log('[IOServer.findNodes] request start');
 
     for(let i=0, l=collections.length; i<l; ++i) {
-      let url = `${globomapApiUrl}/collections/${collections[i]}/search?field=name&value=${query}&count=${count}&offset=0`;
+      let url = `${globomapApiUrl}/collections/${collections[i]}?search=[[{"field":"name","value":${query},"operator":"LIKE"}],[{"field":"properties","value":${query},"operator":"LIKE"}]]&page=1`;
       urlList.push(axios.get(url));
     }
 
