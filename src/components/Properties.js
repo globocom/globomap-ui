@@ -36,13 +36,9 @@ class Properties extends Component {
   }
 
   buildProperties(item) {
-    let properties = item.properties;
+    let properties = item.properties || {};
     let propertiesMetadata = item.propertiesMetadata;
     let convertedDate, formattedDate, props;
-
-    if(!properties) {
-      return <table></table>;
-    }
 
     convertedDate = new Date(parseInt(item.timestamp, 10) * 1000);
     formattedDate = convertedDate.toLocaleString('pt-BR');
@@ -95,10 +91,10 @@ class Properties extends Component {
     )
 
     this.props.hasId &&
-    props.push(<tr key="id">
-      <th>id</th>
-      <td>{item.id}</td>
-    </tr>)
+      props.push(<tr key="id">
+                  <th>id</th>
+                  <td>{item.id}</td>
+                 </tr>)
 
     return <table>
               {props.length > 0 &&
