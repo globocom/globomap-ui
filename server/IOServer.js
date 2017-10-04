@@ -112,7 +112,7 @@ class IOServer {
     console.log('[IOServer.findNodes] request start');
 
     for(let i=0, l=collections.length; i<l; ++i) {
-      let url = `${globomapApiUrl}/collections/${collections[i]}?search=[[{"field":"name","value":${query},"operator":"LIKE"}],[{"field":"properties","value":${query},"operator":"LIKE"}]]&page=1`;
+      let url = `${globomapApiUrl}/collections/${collections[i]}?search=[[{"field":"name","value":"${query}","operator":"LIKE"}],[{"field":"properties","value":"${query}","operator":"LIKE"}]]&page=1`;
       urlList.push(axios.get(url));
     }
 
@@ -120,7 +120,7 @@ class IOServer {
       .then((results) => {
         let endTime = new Date().getTime();
         console.log('[IOServer.findNodes] call ok ' + (endTime - startTime) + ' milliseconds.');
-        results = results.map(resp => resp.data);
+        results = results.map(resp => resp.data.documents);
 
         let data = [].concat.apply([], results).map((node) => {
           return this.updateItemInfo(node);
