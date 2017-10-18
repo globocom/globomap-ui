@@ -180,10 +180,6 @@ class IOServer {
   }
 
   getMonitoring(data, fn) {
-    let loginRequest =  {
-      "user": zabbixUser,
-      "password": zabbixPassword
-    };
     let eTypes = zabbixEquipmentTypes.split(','),
         nodeType = data.properties['equipment_type'] || '';
 
@@ -191,61 +187,26 @@ class IOServer {
       return fn([]);
     }
 
-    this.jsonRPCRequest("user.login", loginRequest, null, (auth) => {
-      let ips = Array.from(data.properties['ips'] || '');
+    let ips = Array.from(data.properties['ips'] || '');
 
-      if (ips.length === 0) {
-        return fn([]);
-      }
-
-      let hostRequest = {
-        "output": ["hostid"],
-        "search": { "ip": ips },
-        "searchByAny": 1
-      };
-
-      this.jsonRPCRequest("host.get", hostRequest, auth, (hosts) => {
-        let hostIds = hosts.map((host) => {
-            return host.hostid
-        });
-
-        if (!hostIds) {
-          return fn([]);
-        }
-
-        let triggersRequest = {
-          "output": ["description","status","state", "value"],
-          "filter": { "hostid": hostIds },
-          "expandDescription": 1
-        };
-
-        this.jsonRPCRequest("trigger.get", triggersRequest, auth, (triggers) => {
-          fn(triggers);
-        });
-      });
-    });
-  }
-
-  jsonRPCRequest(action, params, auth, fn) {
+    let url = `${globomapApiUrl}/plugin_data/zabbix?ips=` + ips.join();
     let startTime = new Date().getTime();
-    console.log('[IOServer.jsonRPCRequest] request start');
+    console.log('[IOServer.getMonitoring] request start');
 
-    axios.post(`${zabbixApiUrl}/api/v2`, {
-      "jsonrpc": "2.0", "method": action, "params": params,
-      "id": 1,"auth": auth
-    }, {
+    axios.get(url, {
+      responseType: 'json',
       timeout: 20000
     })
-    .then(function(response) {
+    .then((response) => {
       let endTime = new Date().getTime();
-      console.log('[IOServer.jsonRPCRequest] call ok ' + (endTime - startTime) + ' milliseconds.');
-      fn(response.data.result);
+      console.log('[IOServer.getMonitoring] call ok ' + (endTime - startTime) + ' milliseconds.');
+      fn(response.data);
     })
     .catch((error) => {
       let endTime = new Date().getTime();
-      console.log('[IOServer.jsonRPCRequest] call error ' + (endTime - startTime) + ' milliseconds.');
+      console.log('[IOServer.getMonitoring] call error ' + (endTime - startTime) + ' milliseconds.');
       let errorMsg = this.handleError(error);
-      fn({ error: true, message: errorMsg || 'Zabbix API Error' });
+      fn({ error: true, message: errorMsg || 'Get Monitoring Error' });
     });
   }
 

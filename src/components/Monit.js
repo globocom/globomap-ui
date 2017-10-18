@@ -33,8 +33,8 @@ class Monit extends Component {
   render() {
     if(this.props.node.type === 'comp_unit'){
       let props = this.state.triggers.map((trigger, i) => {
-        return <tr key={trigger.triggerid}>
-                <th>{trigger.description}</th>
+        return <tr key={trigger.properties.triggerid}>
+                <th>{trigger.key}</th>
                 <td className={'trigger-' + trigger.value}>
                   {this.getIcon(trigger.value)}
                 </td>
