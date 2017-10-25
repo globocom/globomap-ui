@@ -133,7 +133,7 @@ class IOServer {
     console.log('[IOServer.traversalSearch] request start');
 
     for(let i=0, l=graphs.length; i<l; ++i) {
-      let url = `${globomapApiUrl}/${graphs[i]}/traversal?start_vertex=${start}&max_depth=1&direction=any`;
+      let url = `${globomapApiUrl}/graphs/${graphs[i]}/traversal?start_vertex=${start}&max_depth=1&direction=any`;
       urlPromisseList.push(axios.get(url));
     }
 
