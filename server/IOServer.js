@@ -85,7 +85,14 @@ class IOServer {
 
   findNodes(data, fn) {
     let { query, collections } = data;
-    let url = `${globomapApiUrl}/collections/search/?collections=${collections.toString()}&per_page=10&page=1`;
+
+    // query
+    // [[{"field":"name","value":"a","operator":"LIKE"}],[{"field":"properties","value":"a","operator":"LIKE"}]]
+
+    let c = collections.toString(),
+        q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}]]`;
+
+    let url = `${globomapApiUrl}/collections/search/?collections=${c}&query=${q}&per_page=10&page=1`;
 
     axios.get(url)
       .then((result) => {

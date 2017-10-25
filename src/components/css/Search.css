@@ -26,10 +26,20 @@ limitations under the License.
   margin: 0 20px;
 }
 
-.search-box input {
+.search-box .search-query {
   border: 0;
   width: 400px;
   font-size: 16px;
   color: #333;
-  margin-right: 5px;
+  border: 1px solid #9daca9;
+  border-right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.search-box .btn-search {
+  margin-left: 5px;
+}
+
+.search-box .btn-search-settings {
+  border-radius: 0 4px 4px 0;
 }
