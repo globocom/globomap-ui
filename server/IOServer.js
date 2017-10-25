@@ -19,9 +19,6 @@ const https = require('https');
 const fs = require('fs');
 
 const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1';
-const zabbixApiUrl = process.env.ZABBIX_API_URL;
-const zabbixUser = process.env.ZABBIX_API_USER;
-const zabbixPassword = process.env.ZABBIX_API_PASSWORD;
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
 const certificates = process.env.CERTIFICATES || 'ca-certificates.crt';
 
@@ -32,8 +29,6 @@ class IOServer {
     if(io === undefined) {
       return;
     }
-
-    this.logMemory();
 
     io.on('connection', (socket) => {
       socket.on('getcollections', (data, fn) => {
@@ -56,10 +51,6 @@ class IOServer {
         this.getMonitoring(data, (result) => { fn(result); });
       });
     });
-
-    setInterval(() => {
-        this.logMemory();
-    }, 60000);
   }
 
   getCollections(data, fn) {
@@ -142,7 +133,7 @@ class IOServer {
     console.log('[IOServer.traversalSearch] request start');
 
     for(let i=0, l=graphs.length; i<l; ++i) {
-      let url = `${globomapApiUrl}/${graphs[i]}/traversal?start_vertex=${start}&max_depth=1&direction=any`;
+      let url = `${globomapApiUrl}/graphs/${graphs[i]}/traversal?start_vertex=${start}&max_depth=1&direction=any`;
       urlPromisseList.push(axios.get(url));
     }
 
