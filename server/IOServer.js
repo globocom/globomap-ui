@@ -21,6 +21,7 @@ const fs = require('fs');
 const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1';
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
 const certificates = process.env.CERTIFICATES || `${process.cwd()}/server/ca-certificates.crt`;
+const pageSize = process.env.PAGE_SIZE || 20;
 
 class IOServer {
   constructor(io) {
@@ -84,12 +85,23 @@ class IOServer {
   }
 
   findNodes(data, fn) {
-    let { query, collections } = data;
-    let url = `${globomapApiUrl}/collections/search/?collections=${collections.toString()}&per_page=10&page=1`;
+    let { query, collections, per_page, page } = data;
+
+    // query
+    // [[{"field":"name","value":"a","operator":"LIKE"}],[{"field":"properties","value":"a","operator":"LIKE"}]]
+
+    let c = collections.toString(),
+        q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}]]`;
+
+    let url = `${globomapApiUrl}/collections/search/?collections=${c}&query=${q}&per_page=${per_page || pageSize}&page=${page}`;
 
     axios.get(url)
       .then((result) => {
-        fn(result.data.documents);
+        result.data.documents.filter((doc) => {
+          this.updateItemInfo(doc);
+        });
+
+        fn(result.data);
       })
       .catch((error) => {
         let errorMsg = this.handleError(error);

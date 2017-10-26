@@ -16,6 +16,9 @@ limitations under the License.
 
 .search-content {
   box-sizing: border-box;
+
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .search-content {
@@ -30,6 +33,8 @@ limitations under the License.
 .search-content table {
   width: 100%;
   border-spacing: 0;
+
+  align-items: flex-start;
 }
 
 .search-content table tr td {
@@ -70,4 +75,5 @@ limitations under the License.
   display: block;
   padding: 15px;
   text-align: center;
+  width: 100%;
 }
