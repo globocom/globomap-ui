@@ -55,11 +55,13 @@ class Header extends Component {
     return <header className="main-header">
             <div className="header-group">
               <span className="logo">globomap</span>
-              <Search findNodes={this.props.findNodes}
+              <Search ref={(search) => {this.search = search}}
+                      findNodes={this.props.findNodes}
                       clearStage={this.props.clearStage}
                       clearCurrent={this.props.clearCurrent}
                       checkedCollections={this.state.checkedCollections}
-                      clearInfo={this.props.clearInfo} />
+                      clearInfo={this.props.clearInfo}
+                      searchContent={this.props.searchContent} />
             </div>
             <div className="header-sub-group">
               <div className="graph-buttons">

@@ -69,8 +69,13 @@ class Search extends Component {
     this.props.clearInfo(() => {
       if (this.props.checkedCollections.length > 0) {
         this.setState({ loading: true }, () => {
-          this.props.findNodes(this.state.query, this.props.checkedCollections, () => {
+          this.props.findNodes(this.state.query, this.props.checkedCollections, null, 1, (data) => {
             this.setState({ loading: false });
+            this.props.searchContent.pagination.setState({
+              pageNumber: 1,
+              totalPages: data.total_pages,
+              total: data.total
+            });
           });
         });
       }
