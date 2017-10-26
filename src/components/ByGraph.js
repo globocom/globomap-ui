@@ -286,7 +286,6 @@ class ByGraph extends Component {
       filterIsOpen: false
     });
   }
-
 }
 
 export default ByGraph;

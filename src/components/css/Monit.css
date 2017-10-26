@@ -14,6 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+.monit {
+  padding: 8px 0;
+}
+
 .monit .monit-loading {
   text-align: center;
   padding: 10px;
@@ -48,7 +52,6 @@ limitations under the License.
 
 .monit .trigger-not-found {
   text-align: center;
-  padding-top: 18px;
 }
 
 .monit .trigger-0,

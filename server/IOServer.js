@@ -19,11 +19,8 @@ const https = require('https');
 const fs = require('fs');
 
 const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1';
-const zabbixApiUrl = process.env.ZABBIX_API_URL;
-const zabbixUser = process.env.ZABBIX_API_USER;
-const zabbixPassword = process.env.ZABBIX_API_PASSWORD;
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
-const certificates = process.env.CERTIFICATES;
+const certificates = process.env.CERTIFICATES || `${process.cwd()}/server/ca-certificates.crt`;
 
 class IOServer {
   constructor(io) {
@@ -32,8 +29,6 @@ class IOServer {
     if(io === undefined) {
       return;
     }
-
-    this.logMemory();
 
     io.on('connection', (socket) => {
       socket.on('getcollections', (data, fn) => {
@@ -56,28 +51,18 @@ class IOServer {
         this.getMonitoring(data, (result) => { fn(result); });
       });
     });
-
-    setInterval(() => {
-        this.logMemory();
-    }, 60000);
   }
 
   getCollections(data, fn) {
     let url = `${globomapApiUrl}/collections`;
-    let startTime = new Date().getTime();
-    console.log('[IOServer.getCollections] request start');
 
     axios.get(url, {
       responseType: 'json'
     })
     .then((response) => {
-      let endTime = new Date().getTime();
-      console.log('[IOServer.getCollections] call ok ' + (endTime - startTime) + ' milliseconds.');
       fn(response.data);
     })
     .catch((error) => {
-      let endTime = new Date().getTime();
-      console.log('[IOServer.getCollections] call error ' + (endTime - startTime) + ' milliseconds.');
       let errorMsg = this.handleError(error);
       fn({ error: true, message: errorMsg || 'Get Collections Error' });
     });
@@ -85,20 +70,14 @@ class IOServer {
 
   getGraphs(data, fn) {
     let url = `${globomapApiUrl}/graphs`;
-    let startTime = new Date().getTime();
-    console.log('[IOServer.getGraphs] request start');
 
     axios.get(url, {
       responseType: 'json'
     })
     .then((response) => {
-      let endTime = new Date().getTime();
-      console.log('[IOServer.getGraphs] call ok ' + (endTime - startTime) + ' milliseconds.');
       fn(response.data);
     })
     .catch((error) => {
-      let endTime = new Date().getTime();
-      console.log('[IOServer.getGraphs] call error ' + (endTime - startTime) + ' milliseconds.');
       let errorMsg = this.handleError(error);
       fn({ error: true, message: errorMsg || 'Get Graphs Error' });
     });
@@ -108,8 +87,6 @@ class IOServer {
     let { query, collections } = data;
     let urlList = [];
     let count = Math.ceil(50 / collections.length);
-    let startTime = new Date().getTime();
-    console.log('[IOServer.findNodes] request start');
 
     for(let i=0, l=collections.length; i<l; ++i) {
       let url = `${globomapApiUrl}/collections/${collections[i]}/search?field=name&value=${query}&count=${count}&offset=0`;
@@ -117,39 +94,31 @@ class IOServer {
     }
 
     axios.all(urlList)
-      .then((results) => {
-        let endTime = new Date().getTime();
-        console.log('[IOServer.findNodes] call ok ' + (endTime - startTime) + ' milliseconds.');
-        results = results.map(resp => resp.data);
+    .then((results) => {
+      results = results.map(resp => resp.data);
 
-        let data = [].concat.apply([], results).map((node) => {
-          return this.updateItemInfo(node);
-        });
-
-        fn(data);
-      }).catch((error) => {
-        let endTime = new Date().getTime();
-        console.log('[IOServer.findNodes] call error ' + (endTime - startTime) + ' milliseconds.');
-        let errorMsg = this.handleError(error);
-        fn({ error: true, message: errorMsg || 'Find Nodes Error' });
+      let data = [].concat.apply([], results).map((node) => {
+        return this.updateItemInfo(node);
       });
+
+      fn(data);
+    }).catch((error) => {
+      let errorMsg = this.handleError(error);
+      fn({ error: true, message: errorMsg || 'Find Nodes Error' });
+    });
   }
 
   traversalSearch(data, fn) {
     let { start, graphs, depth } = data;
     let urlPromisseList = [];
-    let startTime = new Date().getTime();
-    console.log('[IOServer.traversalSearch] request start');
 
     for(let i=0, l=graphs.length; i<l; ++i) {
-      let url = `${globomapApiUrl}/traversal?graph=${graphs[i]}&start_vertex=${start}&max_depth=1&direction=any`;
+      let url = `${globomapApiUrl}/graphs/${graphs[i]}/traversal?start_vertex=${start}&max_depth=1&direction=any`;
       urlPromisseList.push(axios.get(url));
     }
 
     axios.all(urlPromisseList)
       .then((results) => {
-        let endTime = new Date().getTime();
-        console.log('[IOServer.traversalSearch] call ok ' + (endTime - startTime) + ' milliseconds.');
         results = results.map((resp) => {
           let data = {graph: resp.data.graph};
 
@@ -165,8 +134,6 @@ class IOServer {
         });
         fn(results);
       }).catch((error) => {
-        let endTime = new Date().getTime();
-        console.log('[IOServer.traversalSearch] call error ' + (endTime - startTime) + ' milliseconds.');
         let errorMsg = this.handleError(error);
         fn({ error: true, message: errorMsg || 'Traversal Search Error' });
       });
@@ -180,85 +147,27 @@ class IOServer {
   }
 
   getMonitoring(data, fn) {
-    let loginRequest =  {
-      "user": zabbixUser,
-      "password": zabbixPassword
-    };
     let eTypes = zabbixEquipmentTypes.split(','),
-        nodeType = this.getProperty(data, 'equipment_type');
+        nodeType = data.properties['equipment_type'] || '';
 
     if(!eTypes.includes(nodeType)) {
       return fn([]);
     }
 
-    this.jsonRPCRequest("user.login", loginRequest, null, (auth) => {
-      let ips = Array.from(this.getProperty(data, 'ips'));
+    let ips = Array.from(data.properties['ips'] || '');
+    let url = `${globomapApiUrl}/plugin_data/zabbix?ips=` + ips.join();
 
-      if (ips.length === 0) {
-        return fn([]);
-      }
-
-      let hostRequest = {
-        "output": ["hostid"],
-        "search": { "ip": ips },
-        "searchByAny": 1
-      };
-
-      this.jsonRPCRequest("host.get", hostRequest, auth, (hosts) => {
-        let hostIds = hosts.map((host) => {
-            return host.hostid
-        });
-
-        if (!hostIds) {
-          return fn([]);
-        }
-
-        let triggersRequest = {
-          "output": ["description","status","state", "value"],
-          "filter": { "hostid": hostIds },
-          "expandDescription": 1
-        };
-
-        this.jsonRPCRequest("trigger.get", triggersRequest, auth, (triggers) => {
-          fn(triggers);
-        });
-      });
-    });
-  }
-
-  jsonRPCRequest(action, params, auth, fn) {
-    let startTime = new Date().getTime();
-    console.log('[IOServer.jsonRPCRequest] request start');
-
-    axios.post(`${zabbixApiUrl}/api/v2`, {
-      "jsonrpc": "2.0", "method": action, "params": params,
-      "id": 1,"auth": auth
-    }, {
+    axios.get(url, {
+      responseType: 'json',
       timeout: 20000
     })
-    .then(function(response) {
-      let endTime = new Date().getTime();
-      console.log('[IOServer.jsonRPCRequest] call ok ' + (endTime - startTime) + ' milliseconds.');
-      fn(response.data.result);
+    .then((response) => {
+      fn(response.data);
     })
     .catch((error) => {
-      let endTime = new Date().getTime();
-      console.log('[IOServer.jsonRPCRequest] call error ' + (endTime - startTime) + ' milliseconds.');
       let errorMsg = this.handleError(error);
-      fn({ error: true, message: errorMsg || 'Zabbix API Error' });
+      fn({ error: true, message: errorMsg || 'Get Monitoring Error' });
     });
-  }
-
-  getProperty(element, prop) {
-    let property = element.properties.find((item) => {
-      return item['key'] === prop;
-    });
-
-    if(property) {
-      return property.value;
-    }
-
-    return [];
   }
 
   handleError(error) {
@@ -275,7 +184,6 @@ class IOServer {
     }
 
     console.log(error.config);
-
     return msg;
   }
 
