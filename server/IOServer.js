@@ -95,13 +95,16 @@ class IOServer {
     let url = `${globomapApiUrl}/collections/search/?collections=${c}&query=${q}&per_page=10&page=1`;
 
     axios.get(url)
-      .then((result) => {
-        fn(result.data.documents);
-      })
-      .catch((error) => {
-        let errorMsg = this.handleError(error);
-        fn({ error: true, message: errorMsg || 'Find Nodes Error' });
+    .then((result) => {
+      let data = result.data.documents.map((doc) => {
+        return this.updateItemInfo(doc);
       });
+
+      fn(data);
+    }).catch((error) => {
+      let errorMsg = this.handleError(error);
+      fn({ error: true, message: errorMsg || 'Find Nodes Error' });
+    });
   }
 
   traversalSearch(data, fn) {
