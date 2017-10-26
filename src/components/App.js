@@ -68,20 +68,25 @@ class App extends Component {
       <div className="main">
         <span className="main-xxxx"
               onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
-        <Header graphs={this.state.graphs}
+        <Header ref={(header) => {this.header = header}}
+                graphs={this.state.graphs}
                 enabledCollections={this.state.enabledCollections}
                 clearStage={this.clearStage}
                 clearCurrent={this.clearCurrent}
                 collections={this.state.collections}
                 findNodes={this.findNodes}
                 onToggleGraph={this.onToggleGraph}
-                clearInfo={this.clearInfo} />
+                clearInfo={this.clearInfo}
+                searchContent={this.searchContent} />
 
-        <SearchContent nodes={this.state.nodes}
-
+        <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
+                       nodes={this.state.nodes}
+                       findNodes={this.findNodes}
                        addNodeToStage={this.addNodeToStage}
                        currentNode={this.state.currentNode}
-                       firstTimeSearch={this.state.firstTimeSearch} />
+                       firstTimeSearch={this.state.firstTimeSearch}
+                       enabledCollections={this.state.enabledCollections}
+                       header={this.header} />
 
         <Stage graphs={this.state.graphs}
                stageNodes={this.state.stageNodes}
@@ -274,7 +279,7 @@ class App extends Component {
     this.info.resetByGraph(fn);
   }
 
-  findNodes(query, co, fn) {
+  findNodes(query, co, per_page, page, fn) {
     if (co !== undefined && !co instanceof Array)  {
       console.log('The 2nd argument must be an Array');
       return;
@@ -285,16 +290,17 @@ class App extends Component {
       return;
     }
 
-    this.socket.emit('findnodes', { query: query, collections: co }, (data) => {
+    this.socket.emit('findnodes', { query: query, collections: co, per_page: per_page, page: page }, (data) => {
       if (fn === undefined) {
         fn = () => {};
       }
 
-      if (!data || data.length <= 0) {
-        this.setState({ nodes: [], firstTimeSearch: false }, fn());
+      if (!data.documents || data.documents.length <= 0) {
+        return;
+        // this.setState({ nodes: [], firstTimeSearch: false }, fn(data));
       }
 
-      this.setState({ nodes: data, firstTimeSearch: false }, fn());
+      this.setState({ nodes: data.documents, firstTimeSearch: false }, fn(data));
     });
   }
 

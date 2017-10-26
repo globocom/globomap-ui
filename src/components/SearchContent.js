@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import Pagination from './Pagination';
 import './css/SearchContent.css';
 
 class SearchContent extends Component {
@@ -25,13 +26,18 @@ class SearchContent extends Component {
   }
 
   render() {
+    let index = 1;
+    if (this.pagination) {
+      index = this.pagination.state.total * (this.pagination.state.pageNumber - 1);
+      index = (index === 0 ? 1 : index + 1);
+    }
     let allNodes = this.props.nodes.map((node, i) => {
       let current = (this.props.currentNode &&
                      node._id === this.props.currentNode._id);
 
       return <tr key={node._id} className={current ? 'current' : ''}
                  onClick={(e) => this.onNodeSelect(e, node)}>
-              <td>{i + 1}</td>
+              <td>{i + index}</td>
               <td>{node.type}</td>
               <td>{node.name}</td>
              </tr>;
@@ -55,6 +61,12 @@ class SearchContent extends Component {
                     "Inicie sua busca." :
                     "Nenhum resultado encontrado."}
               </span>}
+              <Pagination
+                ref={(pagination) => {this.pagination = pagination}}
+                nodes={this.props.nodes}
+                findNodes={this.props.findNodes}
+                enabledCollections={this.props.enabledCollections}
+                header={this.props.header} />
            </div>;
   }
 
