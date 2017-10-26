@@ -112,7 +112,7 @@ class IOServer {
     console.log('[IOServer.findNodes] request start');
 
     for(let i=0, l=collections.length; i<l; ++i) {
-      let url = `${globomapApiUrl}/collections/${collections[i]}?search=[[{"field":"name","value":${query},"operator":"LIKE"}],[{"field":"properties","value":${query},"operator":"LIKE"}]]&page=1`;
+      let url = `${globomapApiUrl}/collections/${collections[i]}/search?field=name&value=${query}&count=${count}&offset=0`;
       urlList.push(axios.get(url));
     }
 
