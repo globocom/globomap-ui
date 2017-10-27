@@ -295,11 +295,6 @@ class App extends Component {
         fn = () => {};
       }
 
-      if (!data.documents || data.documents.length <= 0) {
-        return;
-        // this.setState({ nodes: [], firstTimeSearch: false }, fn(data));
-      }
-
       this.setState({ nodes: data.documents, firstTimeSearch: false }, fn(data));
     });
   }
