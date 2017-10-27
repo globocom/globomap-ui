@@ -23,11 +23,17 @@ limitations under the License.
 
 .search-content {
   position: absolute;
-  top: 110px;
-  width: 100%;
-  left: 0;
-  bottom: 0;
+  top: 70px;
+  right: 10px;
+  left: 10px;
+  bottom: 10px;
   overflow: auto;
+  border: 1px solid #9daca9;
+  border-radius: 4px;
+}
+
+.search-content.with-info {
+  width: 62.6%;
 }
 
 .search-content table {

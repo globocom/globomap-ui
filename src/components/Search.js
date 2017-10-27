@@ -61,7 +61,7 @@ class Search extends Component {
       event.preventDefault();
       this.onSendSearchQuery(event);
     }
-  };
+  }
 
   onSendSearchQuery(event) {
     event.preventDefault();

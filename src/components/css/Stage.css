@@ -23,11 +23,13 @@ limitations under the License.
   flex-direction: column;
   position: fixed;
   overflow: auto;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  bottom: 10px;
+  left: 10px;
+  /*width: 100%;*/
   padding: 20px;
-  border-top: 1px solid rgba(157, 172, 169, 0.35);
+  border: 1px solid #9daca9;
+  border-radius: 4px;
+  /*border-top: 1px solid rgba(157, 172, 169, 0.35);*/
   background-color: #dfe2e2;
   z-index: 5;
 
@@ -35,12 +37,13 @@ limitations under the License.
 }
 
 .stage.open {
-  top: 110px;
+  top: 70px;
   display: flex;
+  right: 10px;
 }
 
 .stage.with-info {
-  width: 65%;
+  width: 62.6%;
 }
 
 .stage .node-item-group {

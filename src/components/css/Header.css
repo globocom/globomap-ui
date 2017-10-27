@@ -30,23 +30,72 @@ limitations under the License.
 }
 
 .main-header .header-group {
-  height: 50px;
+  height: 60px;
   background-color: #d2d6d6;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  /*box-shadow: 0 1px 2px rgba(0,0,0,0.2);*/
   z-index: 9;
 }
 
 .main-header .header-group .logo {
   float: left;
   font-size: 22px;
-  font-weight: bold;
+  font-weight: lighter;
   letter-spacing: -1px;
   color: #454545;
   margin: 0 20px;
-  line-height: 50px;
+  height: 60px;
+  line-height: 22px;
+  padding-top: 6px;
+}
+
+.main-header .logo-map {
+  font-weight: bold;
+  display: block;
+  font-size: 26px;
+}
+
+.main-header .search-box {
+  box-sizing: border-box;
+}
+
+.main-header .search-box {
+  position: relative;
+  float: left;
+  display: flex;
+  height: 60px;
+  padding: 7px 0;
+  margin: 0;
+}
+
+.main-header .search-box .search-query {
+  border: 0;
+  width: 550px;
+  font-size: 16px;
+  color: #333;
+  border: 1px solid #9daca9;
+  border-right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.main-header .search-box .btn-search {
+  margin-left: 5px;
+}
+
+.main-header .search-box .btn-search-options {
+  border-radius: 0 4px 4px 0;
+}
+
+.main-header .search-box-options {
+  position: absolute;
+  width: 100%;
+  top: 58px;
+  background-color: white;
+  border: 1px solid #9daca9;
+  border-radius: 4px;
 }
 
 .main-header .header-sub-group {
+  display: none;
   height: 60px;
   top: 50px;
   background-color: #ebecec;
@@ -54,44 +103,44 @@ limitations under the License.
   z-index: 5;
 }
 
-.header-sub-group .graph-buttons {
+.graph-buttons {
   float: left;
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
-  height: 60px;
-  padding: 0 20px;
-  border-right: 1px solid rgba(157, 172, 169, 0.35);
+  padding: 10px 20px;
 }
 
-.header-sub-group .graph-buttons button {
-  margin-right: 5px;
+.graph-buttons button {
+  margin: 0 8px 8px 0;
   text-shadow: none;
   color: white;
   font-weight: normal;
 }
 
-.header-sub-group .graph-buttons button:hover {
+.graph-buttons button:hover {
   box-shadow: none;
 }
 
-.header-sub-group .graph-buttons button.btn-disabled {
+.graph-buttons button.btn-disabled {
   opacity: 0.3;
 }
 
-.header-sub-group .collection-items {
+.collection-items {
   float: left;
   display: flex;
-  flex-flow: column wrap;
-  height: 60px;
-  padding: 9px 20px 0;
+  flex-flow: row wrap;
+  justify-content: left;
+  padding: 10px 20px;
   font-size: 12px;
   border-left: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-.header-sub-group .collection-items .item {
+.collection-items .item {
   margin: 0 15px 9px 0;
+  min-width: 140px;
 }
 
-.header-sub-group .collection-items .item.disabled {
+.collection-items .item.disabled {
   color: #b5b5b5;
 }
