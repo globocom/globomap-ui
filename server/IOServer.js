@@ -97,11 +97,11 @@ class IOServer {
 
     axios.get(url)
       .then((result) => {
-        let data = result.data.documents.map((doc) => {
+        result.data.documents.filter((doc) => {
           this.updateItemInfo(doc);
         });
 
-        fn(data);
+        fn(result.data);
       })
       .catch((error) => {
         let errorMsg = this.handleError(error);
