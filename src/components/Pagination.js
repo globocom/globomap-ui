@@ -76,7 +76,7 @@ class Pagination extends Component {
       return;
     }
 
-    this.props.findNodes(this.props.header.search.state.query, this.props.header.state.checkedCollections, null, pageNumber, (data) => {
+    this.props.findNodes(this.props.header.state.query, this.props.header.state.checkedCollections, null, pageNumber, (data) => {
       if (data.length === 0) {
         return;
       }
