@@ -26,7 +26,11 @@ import { traverseItems, uuid, sortByName } from '../utils';
 import './css/App.css';
 
 function uiSocket() {
-  return io();
+  var uiSocket = io()
+  uiSocket.on('error', function(err){
+    window.location.reload();
+  });
+  return uiSocket;
 }
 
 class App extends Component {
