@@ -127,19 +127,21 @@ class Header extends Component {
     event.preventDefault();
     this.props.clearStage();
     this.props.clearInfo(() => {
-      if (this.state.checkedCollections.length > 0) {
-        this.setState({ loading: true }, () => {
-          this.props.findNodes(this.state.query, this.state.checkedCollections, null, 1, (data) => {
-            this.setState({ loading: false });
-            this.props.searchContent.pagination.setState({
-              pageNumber: 1,
-              totalPages: data.total_pages,
-              total: data.total
-            });
-            this.closeSearchOptions();
-          });
-        });
+      let collections = this.state.checkedCollections;
+      if (collections.length === 0) {
+        collections = this.props.enabledCollections;
       }
+      this.setState({ loading: true }, () => {
+        this.props.findNodes(this.state.query, collections, null, 1, (data) => {
+          this.setState({ loading: false });
+          this.props.searchContent.pagination.setState({
+            pageNumber: 1,
+            totalPages: data.total_pages,
+            total: data.total
+          });
+          this.closeSearchOptions();
+        });
+      });
     });
   }
 

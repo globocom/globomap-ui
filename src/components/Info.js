@@ -51,27 +51,31 @@ class Info extends Component {
                       hasId={this.props.hasId} />
     });
 
-    return <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
-             <div className="info-title">
-               {this.state.node.name}
-               <button className="close-info-btn topcoat-button--quiet"
-                 onClick={this.onCloseInfo}>
-                 <i className="fa fa-close"></i>
-               </button>
-             </div>
+    return (
+      <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
+        <div className="info-header">
+          <span className="info-header-title" title={this.state.node.name}>
+            {this.state.node.name}
+          </span>
+          <button className="close-info-btn topcoat-icon-button--quiet"
+            onClick={this.onCloseInfo}>
+            <i className="fa fa-close"></i>
+          </button>
+        </div>
 
-             <div className="info-content">
-               <InfoContentHead node={this.state.node}
-                                hasId={this.props.hasId} />
-               <div className="info-graph-items">
-                 {this.state.loading &&
-                   <div className="items-loading">
-                     <i className="loading-cog fa fa-cog fa-spin fa-2x fa-fw"></i>
-                   </div>}
-                 {byGraph}
-               </div>
-             </div>
+        <div className="info-content">
+          <InfoContentHead node={this.state.node}
+                           hasId={this.props.hasId} />
+          <div className="info-graph-items">
+            {this.state.loading &&
+              <div className="items-loading">
+                <i className="loading-cog fa fa-cog fa-spin fa-2x fa-fw"></i>
+              </div>}
+            {byGraph}
           </div>
+        </div>
+      </div>
+    );
   }
 
   resetSubNodes() {

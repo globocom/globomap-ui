@@ -285,11 +285,6 @@ class App extends Component {
       return;
     }
 
-    if (co.length === 0) {
-      console.log('Select an item');
-      return;
-    }
-
     this.socket.emit('findnodes', { query: query, collections: co, per_page: per_page, page: page }, (data) => {
       if (fn === undefined) {
         fn = () => {};
