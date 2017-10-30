@@ -16,13 +16,81 @@ limitations under the License.
 
 const express = require('express');
 const path = require('path');
+const session = require('express-session')
+const oauthClient = require('./oauthClient');
+
+const redisHost = process.env.REDIS_HOST
+const redisPort = process.env.REDIS_PORT || 6379
+const redisPassword = process.env.REDIS_PASSWORD
+const oauthLogoutUrl = process.env.OAUTH_LOGOUT_URL
+const forceAuth = process.env.OAUTH_FORCE === 'true'
+const sessionSecret = process.env.SESSION_SECRET || 'secret'
 
 const app = express();
 
-app.use(express.static(path.resolve(__dirname, '..', 'build')));
+let sessionConfig = {
+  cookie: { path: '/', httpOnly: false, maxAge: 24*60*60*1000 },
+  secret: sessionSecret,
+  resave: false,
+  saveUninitialized: false,
+  unset: 'destroy'
+}
 
-app.get('*', (req, res) => {
+if(app.get('env') === 'production'){
+  let RedisStore = require('connect-redis')(session);
+  sessionConfig.store = new RedisStore({
+    host: redisHost, port: redisPort, pass: redisPassword
+  })
+} else {
+  app.set('disable-auth', !forceAuth)
+}
+
+sessionMiddleware = session(sessionConfig)
+app.use(sessionMiddleware)
+
+const isAuthenticated = (req, res, next) => {
+  if(app.get('disable-auth')){
+    return next()
+  }
+
+  if(req.session && req.session.tokenData){
+      oauthClient.isAuthenticated(req.session, isAuthenticated => {
+        if (isAuthenticated){
+          next()
+        } else {
+          return res.redirect('/logout')
+        }
+      })
+  } else {
+    return res.redirect('/auth')
+  }
+}
+
+app.get('/', isAuthenticated, (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });
+
+app.get('/auth', (req, res) => {
+  res.redirect(oauthClient.code.getUri())
+});
+
+app.get('/login', (req, res) => {
+    oauthClient.code.getToken(req.originalUrl).then(function (token) {
+      req.session.tokenData = token.data
+      return res.redirect('/')
+    }).catch(function(e) {
+      console.log("[Auth] Unexpected error on user token retrieval")
+      console.log(e);
+      return res.redirect('/logout')
+    })
+});
+
+app.get('/logout', (req, res) => {
+  redirectUri = req.protocol + "://" + req.get('Host')
+  req.session = null
+  res.redirect(oauthLogoutUrl + '?redirect_uri=' + redirectUri)
+});
+
+app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 module.exports = app;
