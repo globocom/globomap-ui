@@ -31,6 +31,55 @@ class Pagination extends Component {
     this.onSendSearchQuery = this.onSendSearchQuery.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.doFindNodes = this.doFindNodes.bind(this);
+  }
+
+  render() {
+    if (this.props.nodes.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="pagination">
+        <button className="btn-previous topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'previous')}
+          disabled={this.state.pageNumber === 1}>
+          <i className="fa fa-caret-left"></i> previous
+        </button>
+
+        <input className="page-number topcoat-text-input" type="text" name="pagination"
+          value={this.state.pageNumber} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
+
+        <button className="btn-next topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'next')}
+          disabled={this.state.pageNumber === this.state.totalPages}>
+          next <i className="fa fa-caret-right"></i>
+        </button>
+
+        <div className="pagination-info">
+          {this.state.totalPages} Page{this.state.totalPages > 1 && 's'}
+        </div>
+      </div>
+    )
+  }
+
+  doFindNodes(pageNumber) {
+    if (pageNumber <= 0 || pageNumber > this.state.totalPages) {
+      return;
+    }
+
+    // TODO: Remove this 2 references to Header component
+    let collections = this.props.header.state.checkedCollections,
+        query = this.props.header.state.query;
+
+    if (collections.length === 0) {
+      collections = this.props.enabledCollections;
+    }
+
+    this.props.findNodes(query, collections, null, pageNumber, (data) => {
+      if (data.length === 0) {
+        return;
+      }
+      this.setState({ pageNumber });
+    });
   }
 
   onSendSearchQuery(event, direction) {
@@ -38,12 +87,12 @@ class Pagination extends Component {
     event.preventDefault();
 
     if (direction === 'next') {
-      pageNumber = pageNumber + 1
+      pageNumber = pageNumber + 1;
     } else if (direction === 'previous') {
-      pageNumber = pageNumber - 1
+      pageNumber = pageNumber - 1;
     }
 
-    this.findNodes(pageNumber);
+    this.doFindNodes(pageNumber);
   }
 
   handleInputChange(event) {
@@ -68,45 +117,7 @@ class Pagination extends Component {
     event.preventDefault();
     pageNumber = parseInt(event.target.value, 10) || 1;
 
-    this.findNodes(pageNumber);
-  }
-
-  findNodes(pageNumber) {
-    if (pageNumber <= 0 || pageNumber > this.state.totalPages) {
-      return;
-    }
-
-    this.props.findNodes(this.props.header.state.query, this.props.header.state.checkedCollections, null, pageNumber, (data) => {
-      if (data.length === 0) {
-        return;
-      }
-      this.setState({
-        pageNumber
-      })
-    });
-  }
-
-  render() {
-    if (this.props.nodes.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className="pagination">
-        <span onClick={(e) => this.onSendSearchQuery(e, 'previous')}>
-          <i className="icon-left fa fa-caret-left"></i>
-        </span>
-        <input className="input topcoat-text-input--large"
-          type="text"
-          name="pagination"
-          onChange={this.handleInputChange}
-          onKeyPress={this.handleKeyPress}
-          value={this.state.pageNumber} />
-        <span onClick={(e) => this.onSendSearchQuery(e, 'next')}>
-          <i className="icon-right fa fa-caret-right"></i>
-        </span>
-      </div>
-    )
+    this.doFindNodes(pageNumber);
   }
 
 }
