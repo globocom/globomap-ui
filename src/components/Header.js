@@ -82,9 +82,11 @@ class Header extends Component {
 
                 {this.state.showOptions &&
                   <div className="search-box-options">
+                    <strong className="option-title">Graphs</strong>
                     <div className="graph-buttons">
                       {graphButtons}
                     </div>
+                    <strong className="option-title">Collections</strong>
                     <div className="collection-items">
                       {collectionItems}
                     </div>
