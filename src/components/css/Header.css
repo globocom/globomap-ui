@@ -32,21 +32,72 @@ limitations under the License.
 .main-header .header-group {
   height: 50px;
   background-color: #d2d6d6;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  /*box-shadow: 0 1px 2px rgba(0,0,0,0.2);*/
   z-index: 9;
 }
 
 .main-header .header-group .logo {
   float: left;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 17px;
+  font-weight: lighter;
   letter-spacing: -1px;
   color: #454545;
   margin: 0 20px;
-  line-height: 50px;
+  height: 50px;
+  line-height: 18px;
+  padding-top: 5px;
+}
+
+.main-header .logo-map {
+  font-weight: bold;
+  display: block;
+  font-size: 21px;
+}
+
+.main-header .search-box {
+  box-sizing: border-box;
+}
+
+.main-header .search-box {
+  display: flex;
+  position: relative;
+  width: 50%;
+  float: left;
+  height: 50px;
+  padding: 7px 0;
+  margin: 0;
+}
+
+.main-header .search-box .search-query {
+  border: 0;
+  width: 75%;
+  font-size: 16px;
+  color: #333;
+  border: 1px solid #9daca9;
+  border-right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.main-header .search-box .btn-search {
+  margin-left: 5px;
+}
+
+.main-header .search-box .btn-search-options {
+  border-radius: 0 4px 4px 0;
+}
+
+.main-header .search-box-options {
+  position: absolute;
+  width: 75%;
+  top: 46px;
+  background-color: white;
+  border: 1px solid #9daca9;
+  border-radius: 4px;
+  box-shadow: 0 3px 25px rgba(0,0,0,0.2);
 }
 
 .main-header .header-sub-group {
+  display: none;
   height: 60px;
   top: 50px;
   background-color: #ebecec;
@@ -54,44 +105,44 @@ limitations under the License.
   z-index: 5;
 }
 
-.header-sub-group .graph-buttons {
+.search-box-options .graph-buttons {
   float: left;
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
-  height: 60px;
-  padding: 0 20px;
-  border-right: 1px solid rgba(157, 172, 169, 0.35);
+  padding: 10px;
 }
 
-.header-sub-group .graph-buttons button {
-  margin-right: 5px;
+.search-box-options .graph-buttons button {
+  margin: 0 8px 8px 0;
   text-shadow: none;
   color: white;
   font-weight: normal;
 }
 
-.header-sub-group .graph-buttons button:hover {
+.search-box-options .graph-buttons button:hover {
   box-shadow: none;
 }
 
-.header-sub-group .graph-buttons button.btn-disabled {
+.search-box-options .graph-buttons button.btn-disabled {
   opacity: 0.3;
 }
 
-.header-sub-group .collection-items {
+.search-box-options .collection-items {
   float: left;
   display: flex;
-  flex-flow: column wrap;
-  height: 60px;
-  padding: 9px 20px 0;
+  flex-flow: row wrap;
+  justify-content: left;
+  padding: 10px;
   font-size: 12px;
   border-left: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-.header-sub-group .collection-items .item {
-  margin: 0 15px 9px 0;
+.search-box-options .collection-items .item {
+  margin: 0 2px 8px 0;
+  min-width: 140px;
 }
 
-.header-sub-group .collection-items .item.disabled {
+.search-box-options .collection-items .item.disabled {
   color: #b5b5b5;
 }

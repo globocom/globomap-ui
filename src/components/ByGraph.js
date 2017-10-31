@@ -90,33 +90,31 @@ class ByGraph extends Component {
                 </span>}
               </div>
               <div className="graph-items">
-              {this.buildCollectionTypes()}
-              {this.buildSubNodes(items)}
+                {this.buildCollectionTypes()}
+                {this.buildSubNodes(items)}
               </div>
             </div>;
   }
 
   buildCollectionTypes() {
-    let collectionsByGraphs = this.props.collectionsByGraphs;
-    let items = this.props.items;
-
     if (!this.state.filterIsOpen) {
       return null;
     }
 
-    return (
-      <div className="graph-types">
-        {collectionsByGraphs[items.graph].map((co) => {
+    let items = this.props.items;
+    let collectionsByGraphs = this.props.collectionsByGraphs[items.graph].map((co) => {
           return <label key={co} className="item topcoat-checkbox">
-            <input type="checkbox" name={co}
-              checked={!this.state.excludedTypes.includes(co)}
-              onChange={this.handleCheckItem} />
-            <div className="topcoat-checkbox__checkmark"></div>
-            &nbsp;{co}
-           </label>
-        })}
-      </div>
-    )
+                  <input type="checkbox" name={co}
+                    checked={!this.state.excludedTypes.includes(co)}
+                    onChange={this.handleCheckItem} />
+                  <div className="topcoat-checkbox__checkmark"></div>
+                  &nbsp;{co}
+                </label>
+        });
+
+    return <div className="graph-types">
+            {collectionsByGraphs}
+           </div>
   }
 
   buildSubNodes(nodesItem) {

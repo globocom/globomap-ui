@@ -15,20 +15,36 @@ limitations under the License.
 */
 
 .pagination {
-  align-self: flex-end;
-  padding: 10px;
-  text-align: center;
-  width: 100%;
+  box-sizing: border-box;
+
 }
 
-.pagination .input {
+.pagination {
+  display: flex;
+}
+
+.pagination .page-number {
   text-align: center;
   width: 60px;
+  border-radius: 0;
+  border-size: 1px 0 1px 0;
+  /*box-shadow: none;*/
 }
 
-.pagination .icon-left,
-.pagination .icon-right {
-  display: inline-block;
-  padding: 4px 10px;
-  font-size: 20px;
+.pagination .btn-previous {
+  border-right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.pagination .btn-next {
+  border-left: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.pagination-info {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: white;
+  margin: 0 15px;
 }

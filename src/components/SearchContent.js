@@ -31,6 +31,7 @@ class SearchContent extends Component {
       index = this.pagination.state.total * (this.pagination.state.pageNumber - 1);
       index = (index === 0 ? 1 : index + 1);
     }
+
     let allNodes = this.props.nodes.map((node, i) => {
       let current = (this.props.currentNode &&
                      node._id === this.props.currentNode._id);
@@ -43,30 +44,25 @@ class SearchContent extends Component {
              </tr>;
     });
 
-    return <div className="search-content">
-            {allNodes.length > 0 &&
-              <table>
-                <thead>
-                  <tr>
-                    <th width="3%">#</th>
-                    <th width="5%">Type</th>
-                    <th>Name</th>
-                  </tr>
-                </thead>
-                <tbody>{allNodes}</tbody>
-              </table>}
-              {allNodes.length === 0 &&
-                <span className="empty">
-                  {this.props.firstTimeSearch ?
-                    "Inicie sua busca." :
-                    "Nenhum resultado encontrado."}
-              </span>}
+    return <div className={'search-content' + (this.props.currentNode ? ' with-info' : '')}>
+            <table className="search-content-results">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Type</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>{allNodes.length > 0 && allNodes}</tbody>
+            </table>
+            <div className="search-content-base">
               <Pagination
                 ref={(pagination) => {this.pagination = pagination}}
                 nodes={this.props.nodes}
                 findNodes={this.props.findNodes}
                 enabledCollections={this.props.enabledCollections}
                 header={this.props.header} />
+            </div>
            </div>;
   }
 

@@ -26,7 +26,11 @@ import { traverseItems, uuid, sortByName } from '../utils';
 import './css/App.css';
 
 function uiSocket() {
-  return io();
+  var uiSocket = io()
+  uiSocket.on('error', function(err){
+    window.location.reload();
+  });
+  return uiSocket;
 }
 
 class App extends Component {
@@ -282,11 +286,6 @@ class App extends Component {
   findNodes(query, co, per_page, page, fn) {
     if (co !== undefined && !co instanceof Array)  {
       console.log('The 2nd argument must be an Array');
-      return;
-    }
-
-    if (co.length === 0) {
-      console.log('Select an item');
       return;
     }
 
