@@ -24,14 +24,18 @@ class ByGraph extends Component {
 
   constructor(props) {
     super(props);
+    this.throttleTime = 300;
     this.state = {
       isOpen: true,
       searchIsOpen: false,
       filterIsOpen: false,
       excludedTypes: [],
       query: "",
+      queryAmount: 2,
       searchIndex: [],
-      graphAmount: this.props.items.subnodes.length
+      graphAmount: this.props.items.subnodes.length,
+      pageNumber: 1,
+      pageSize: 10
     };
 
     this.onAddNode = this.onAddNode.bind(this);
@@ -85,13 +89,15 @@ class ByGraph extends Component {
                 {(this.state.searchIsOpen && subnodesAmount > 0) &&
                 <span className="graph-search">
                   <input type="search" name="query" className="topcoat-text-input graph-search-input"
-                    autoFocus value={this.state.query} onChange={this.handleInputChange} />
+                    autoFocus value={this.state.query} onChange={
+                      _.throttle(this.handleInputChange, this.throttleTime)} />
                   <i className="fa fa-search" onClick={this.onInputSearch}></i>
                 </span>}
               </div>
               <div className="graph-items">
                 {this.buildCollectionTypes()}
                 {this.buildSubNodes(items)}
+                {this.pagination()}
               </div>
             </div>;
   }
@@ -118,11 +124,18 @@ class ByGraph extends Component {
   }
 
   buildSubNodes(nodesItem) {
-    let hasQuery = this.state.query.trim().length > 0;
+    let queryLength = this.state.query.trim().length;
     let hasSearchIndex = this.state.searchIndex.length > 0;
+    let start = (this.state.pageNumber - 1) * this.state.pageSize;
+    let end = this.state.pageNumber * this.state.pageSize;
+    let subnodesSlice = nodesItem.subnodes.slice(start, end);
     let subnodes;
 
-    subnodes = nodesItem.subnodes.map((subnode, index) => {
+    if (queryLength > this.state.queryAmount) {
+      subnodesSlice = nodesItem.subnodes;
+    }
+
+    subnodes = subnodesSlice.map((subnode, index) => {
       let type = subnode.type.toLowerCase();
       let hasNode = false;
 
@@ -130,7 +143,7 @@ class ByGraph extends Component {
         return null;
       }
 
-      if (hasQuery) {
+      if (queryLength > this.state.queryAmount) {
         if (!hasSearchIndex) {
           return null;
         } else if (!this.state.searchIndex.includes(index)) {
@@ -158,6 +171,50 @@ class ByGraph extends Component {
     });
 
     return subnodes;
+  }
+
+  pagination() {
+    let queryLength = this.state.query.trim().length;
+    let subnodesAmount = this.props.items.subnodes.length;
+
+    if (queryLength > this.state.queryAmount ||
+      subnodesAmount <= this.state.pageSize) {
+      return;
+    }
+
+    return (
+      <div className="pagination">
+        <span onClick={(e) => this.previous()}>
+          <i className="icon-left fa fa-caret-left"></i>
+        </span>
+        <span>{this.state.pageNumber}</span>
+        <span onClick={(e) => this.next(e)}>
+          <i className="icon-right fa fa-caret-right"></i>
+        </span>
+      </div>
+    )
+  }
+
+  previous() {
+    let pageNumber = this.state.pageNumber;
+    if (pageNumber < 2) {
+      return;
+    }
+    this.setState({
+      pageNumber: pageNumber - 1
+    })
+  }
+
+  next(event) {
+    let totalPages = Math.ceil(this.state.graphAmount / this.state.pageSize);
+    let pageNumber = this.state.pageNumber;
+    event.preventDefault();
+    if (pageNumber >= totalPages) {
+      return;
+    }
+    this.setState({
+      pageNumber: pageNumber + 1
+    })
   }
 
   onOpenGraph(event) {
@@ -201,14 +258,22 @@ class ByGraph extends Component {
     if (this.props.items.subnodes.length === 0) {
       return;
     }
-
     this.setState({ filterIsOpen: !this.state.filterIsOpen });
   }
 
   handleInputChange(event) {
-    let value = event.target.value;
+    let value = event.target.value.trim();
     this.setState({ query: value }, () => {
-      this.onSendSearchQuery(event);
+      if (value.length === 0) {
+        this.setState({
+          query: "",
+          searchIndex: [],
+          graphAmount: this.props.items.subnodes.length
+        });
+      }
+      if (value.length > this.state.queryAmount) {
+        this.onSendSearchQuery(event);
+      }
     });
   }
 
@@ -219,7 +284,6 @@ class ByGraph extends Component {
     let hasQuery = query.length > 0;
     let graphAmount = 0;
     let index;
-
     if (target.checked) {
       index = excludedTypes.indexOf(target.name);
 
