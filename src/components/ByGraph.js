@@ -61,6 +61,10 @@ class ByGraph extends Component {
       return graph.name === items.graph;
     })[0].colorClass;
 
+    if (this.state.graphAmount === 0) {
+      return <div key={items.graph}></div>;
+    }
+
     return <div key={items.graph} className={'sub-nodes-by-graph' + (isOpen ? ' open' : '')}>
             <div className={'graph-header ' + colorCls}>
                 <span className="graph-name" onClick={this.onOpenGraph}>
