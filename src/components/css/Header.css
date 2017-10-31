@@ -93,7 +93,7 @@ limitations under the License.
   background-color: white;
   border: 1px solid #9daca9;
   border-radius: 4px;
-  box-shadow: 0 3px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 25px rgba(0, 0, 0, 0.2);
 }
 
 .main-header .header-sub-group {
@@ -105,16 +105,24 @@ limitations under the License.
   z-index: 5;
 }
 
+.search-box-options .option-title {
+  display: block;
+  font: lighter 16px sans-serif;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  margin: 15px 10px 0;
+}
+
 .search-box-options .graph-buttons {
-  float: left;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  padding: 10px;
+  padding: 5px 7px 10px;
 }
 
 .search-box-options .graph-buttons button {
-  margin: 0 8px 8px 0;
+  margin: 3px;
+  border-radius: 3px;
   text-shadow: none;
   color: white;
   font-weight: normal;
@@ -132,7 +140,7 @@ limitations under the License.
   float: left;
   display: flex;
   flex-flow: row wrap;
-  justify-content: left;
+  justify-content: space-between;
   padding: 10px;
   font-size: 12px;
   border-left: 1px solid rgba(255, 255, 255, 0.35);

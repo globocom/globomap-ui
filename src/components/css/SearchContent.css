@@ -22,7 +22,7 @@ limitations under the License.
 
 .search-content {
   position: absolute;
-  top: 60px;
+  top: 90px;
   right: 10px;
   left: 10px;
   bottom: 10px;
@@ -52,7 +52,7 @@ limitations under the License.
   left: 0;
   right: 0;
   top: 31px;
-  bottom: 42px;
+  bottom: 32px;
   overflow-y: auto;
   overflow-x: hidden;
 }
