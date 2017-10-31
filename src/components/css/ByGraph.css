@@ -49,22 +49,22 @@ limitations under the License.
   display: block;
 }
 
-.sub-nodes-by-graph.open .graph-types {
-  background-color: #dfe2e2;
+.sub-nodes-by-graph .graph-types {
+  box-sizing: border-box;
+  background-color: white;
   border-bottom: 1px solid rgba(157, 172, 169, 0.50);
-  z-index: 9;
   display: flex;
   flex-wrap: wrap;
-  padding: 16px;
+  justify-content: left;
+  padding: 10px;
+  width: 100%;
 }
 
 .sub-nodes-by-graph.open .graph-types .item {
-  box-sizing: border-box;
-  flex-grow: 1;
-  width: 50%;
-  overflow: hidden;
+  /*flex-grow: 1;*/
+  /*width: 50%;*/
   font-size: 12px;
-  height: 26px;
+  margin: 10px;
 }
 
 .sub-nodes-by-graph .graph-buttons {
@@ -115,6 +115,10 @@ limitations under the License.
 .info-graph-items .sub-node {
   box-sizing: border-box;
   position: relative;
+}
+
+.info-graph-items .sub-node {
+  width: 100%;
 }
 
 .info-graph-items .sub-node.disabled .sub-node-info {

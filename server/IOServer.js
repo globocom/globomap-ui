@@ -14,9 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+const app = require('./app');
 const axios = require('axios');
 const https = require('https');
 const fs = require('fs');
+const ioSession = require("express-socket.io-session");
+const oauthClient = require('./oauthClient');
 
 const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1';
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
@@ -30,6 +33,29 @@ class IOServer {
     if(io === undefined) {
       return;
     }
+
+    io.use(function(socket, next) {
+      sessionMiddleware(socket.request, socket.request.res, next);
+    });
+
+    io.use(function(socket, next) {
+      if(app.get('disable-auth')){
+        return next()
+      }
+
+      var session = socket.request.session
+      if(session && session.tokenData){
+        oauthClient.isAuthenticated(session, isAuthenticated => {
+          if (isAuthenticated){
+            next()
+          } else {
+            next(new Error('Authentication error'));
+          }
+        })
+      } else {
+        next(new Error('Authentication error'));
+      }
+    });
 
     io.on('connection', (socket) => {
       socket.on('getcollections', (data, fn) => {

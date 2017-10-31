@@ -14,53 +14,82 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.search-content {
+.search-content,
+.search-content-base,
+.search-content-results {
   box-sizing: border-box;
-
-  display: flex;
-  flex-flow: row wrap;
 }
 
 .search-content {
   position: absolute;
-  top: 110px;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  overflow: auto;
+  top: 60px;
+  right: 10px;
+  left: 10px;
+  bottom: 10px;
+  border: 1px solid #9daca9;
+  border-radius: 4px;
+  box-shadow: 0 3px 25px rgba(0,0,0,0.2);
 }
 
-.search-content table {
+.search-content.with-info {
+  width: 62.5%;
+}
+
+.search-content-results {
   width: 100%;
   border-spacing: 0;
-
-  align-items: flex-start;
 }
 
-.search-content table tr td {
+.search-content-results thead,
+.search-content-results tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.search-content-results tbody {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 31px;
+  bottom: 42px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.search-content-results th:first-child,
+.search-content-results td:first-child {
+  width: 10%;
+}
+
+.search-content-results th:nth-child(2),
+.search-content-results td:nth-child(2) {
+  width: 20%;
+}
+
+.search-content-results tr td {
   cursor: pointer;
 }
 
-.search-content table tr:nth-child(odd) {
+.search-content-results tr:nth-child(odd) {
   background-color: #efefef;
 }
 
-.search-content table tr.current td,
-.search-content table tr.current:hover td {
-  background-color: #9daca9;
-  color: white;
-}
-
-.search-content table tr:hover td {
+.search-content-results tr.current td,
+.search-content-results tr.current:hover td {
   background-color: #dbeae7;
 }
 
-.search-content table th {
+.search-content-results tr:hover td {
+  background-color: #dbeae7;
+}
+
+.search-content-results th {
   background-color: #d9dddd;
 }
 
-.search-content table th,
-.search-content table td {
+.search-content-results th,
+.search-content-results td {
   text-align: left;
   padding: 8px 14px;
   color: #454545;
@@ -71,9 +100,13 @@ limitations under the License.
   font-size: 16px;
 }
 
-.search-content .empty {
-  display: block;
-  padding: 15px;
-  text-align: center;
-  width: 100%;
+.search-content-base {
+  display: flex;
+  position: absolute;
+  padding: 4px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 32px;
+  background-color: #9daca9;
 }

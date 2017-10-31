@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import Search from './Search';
 import './css/Header.css';
 
 class Header extends Component {
@@ -23,10 +22,18 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkedCollections: []
+      checkedCollections: [],
+      query: "",
+      loading: false,
+      showOptions: false
     };
 
     this.handleCheckItem = this.handleCheckItem.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.onSendSearchQuery = this.onSendSearchQuery.bind(this);
+    this.onToggleSearchOptions = this.onToggleSearchOptions.bind(this);
+    this.closeSearchOptions = this.closeSearchOptions.bind(this);
   }
 
   render() {
@@ -54,23 +61,38 @@ class Header extends Component {
 
     return <header className="main-header">
             <div className="header-group">
-              <span className="logo">globomap</span>
-              <Search ref={(search) => {this.search = search}}
-                      findNodes={this.props.findNodes}
-                      clearStage={this.props.clearStage}
-                      clearCurrent={this.props.clearCurrent}
-                      checkedCollections={this.state.checkedCollections}
-                      clearInfo={this.props.clearInfo}
-                      searchContent={this.props.searchContent} />
-            </div>
-            <div className="header-sub-group">
-              <div className="graph-buttons">
-                {graphButtons}
+              <span className="logo">
+                globo<span className="logo-map">map</span>
+              </span>
+
+              <div className="search-box">
+                <input className="search-query topcoat-text-input--large" type="search" name="query"
+                  value={this.state.query} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
+
+                <button className="btn-search-options topcoat-button--large"
+                  onClick={(e) => this.onToggleSearchOptions(e)}>
+                  <i className="fa fa-list"></i>
+                </button>
+
+                <button className="btn-search topcoat-button--large"
+                        onClick={this.onSendSearchQuery}
+                        disabled={this.state.loading}>
+                  Search {this.state.loading && <i className="loading-cog fa fa-cog fa-spin fa-fw"></i>}
+                </button>
+
+                {this.state.showOptions &&
+                  <div className="search-box-options">
+                    <div className="graph-buttons">
+                      {graphButtons}
+                    </div>
+                    <div className="collection-items">
+                      {collectionItems}
+                    </div>
+                  </div>}
+
               </div>
-              <div className="collection-items">
-                {collectionItems}
-              </div>
             </div>
+            <div className="header-sub-group"></div>
            </header>;
   }
 
@@ -86,6 +108,50 @@ class Header extends Component {
     }
 
     this.setState({ checkedCollections: colls });
+  }
+
+  handleInputChange(event) {
+    let target = event.target;
+    let value = target.type === 'checkbox' ? target.checked : target.value;
+    this.setState({ [target.name]: value });
+  }
+
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.onSendSearchQuery(event);
+    }
+  }
+
+  onSendSearchQuery(event) {
+    event.preventDefault();
+    this.props.clearStage();
+    this.props.clearInfo(() => {
+      let collections = this.state.checkedCollections;
+      if (collections.length === 0) {
+        collections = this.props.enabledCollections;
+      }
+      this.setState({ loading: true }, () => {
+        this.props.findNodes(this.state.query, collections, null, 1, (data) => {
+          this.setState({ loading: false });
+          this.props.searchContent.pagination.setState({
+            pageNumber: 1,
+            totalPages: data.total_pages,
+            total: data.total
+          });
+          this.closeSearchOptions();
+        });
+      });
+    });
+  }
+
+  onToggleSearchOptions(event) {
+    event.preventDefault();
+    this.setState({ showOptions: !this.state.showOptions });
+  }
+
+  closeSearchOptions() {
+    this.setState({ showOptions: false });
   }
 
   componentWillReceiveProps(nextProps) {
