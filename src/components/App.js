@@ -47,7 +47,6 @@ class App extends Component {
       collections: [],
       nodes: [],
       stageNodes: [],
-      firstTimeSearch: true,
       hasId: false
     };
 
@@ -88,7 +87,6 @@ class App extends Component {
                        findNodes={this.findNodes}
                        addNodeToStage={this.addNodeToStage}
                        currentNode={this.state.currentNode}
-                       firstTimeSearch={this.state.firstTimeSearch}
                        enabledCollections={this.state.enabledCollections}
                        header={this.header} />
 
@@ -294,7 +292,7 @@ class App extends Component {
         fn = () => {};
       }
 
-      this.setState({ nodes: data.documents, firstTimeSearch: false }, fn(data));
+      this.setState({ nodes: data.documents}, fn(data));
     });
   }
 
