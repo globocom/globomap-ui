@@ -54,25 +54,22 @@ class Info extends Component {
     return (
       <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
         <div className="info-header">
-          <span className="info-header-title" title={this.state.node.name}>
+          <div className="info-header-title" title={this.state.node.name}>
             {this.state.node.name}
-          </span>
+          </div>
           <button className="close-info-btn topcoat-icon-button--quiet"
             onClick={this.onCloseInfo}>
             <i className="fa fa-close"></i>
           </button>
-        </div>
-
-        <div className="info-content">
           <InfoContentHead node={this.state.node}
                            hasId={this.props.hasId} />
-          <div className="info-graph-items">
-            {this.state.loading &&
-              <div className="items-loading">
-                <i className="loading-cog fa fa-cog fa-spin fa-2x fa-fw"></i>
-              </div>}
-            {byGraph}
-          </div>
+        </div>
+        <div className="info-graph-items">
+          {this.state.loading &&
+            <div className="items-loading">
+              <i className="loading-cog fa fa-cog fa-spin fa-2x fa-fw"></i>
+            </div>}
+          {byGraph}
         </div>
       </div>
     );

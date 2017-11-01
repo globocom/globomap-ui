@@ -34,8 +34,8 @@ limitations under the License.
 }
 
 .stage.open {
-  top: 90px;
   display: flex;
+  top: 60px;
   right: 10px;
 }
 
