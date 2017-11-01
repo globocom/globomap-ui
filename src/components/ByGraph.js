@@ -61,7 +61,9 @@ class ByGraph extends Component {
       return graph.name === items.graph;
     })[0].colorClass;
 
-    if (this.state.graphAmount === 0) {
+    if (this.state.graphAmount === 0 &&
+      this.state.excludedTypes.length === 0 &&
+      this.state.query.trim() === '') {
       return <div key={items.graph}></div>;
     }
 
