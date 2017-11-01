@@ -38,13 +38,14 @@ class Header extends Component {
 
   render() {
     let graphButtons = this.props.graphs.map((graph) => {
-      let disabledCls = !graph.enabled ? ' btn-disabled' : '';
+      let disabledCls = graph.enabled ? '' : ' disabled';
 
-      return <button key={"btn-" + graph.name}
-              className={"graph-btn topcoat-button--quiet " + graph.colorClass + disabledCls}
-              onClick={(e) => this.props.onToggleGraph(e, graph.name)}>
-              {graph.name}
-             </button>;
+      return <label key={"graph-" + graph.name} className={'item topcoat-checkbox' + disabledCls}>
+              <input type="checkbox" name={graph.name} checked={graph.enabled}
+                onChange={(e) => this.props.onToggleGraph(e, graph.name)} />
+              <div className="topcoat-checkbox__checkmark"></div>
+              &nbsp;<span className={'graph-name ' + graph.colorClass}>{graph.name}</span>
+             </label>;
     });
 
     let collectionItems = this.props.collections.map((co) => {
@@ -58,6 +59,19 @@ class Header extends Component {
               &nbsp;{co}
              </label>;
     });
+
+    let searchOptions = (
+      <div className="search-box-options">
+        <strong className="option-title">Graphs</strong>
+        <div className="graph-items">
+          {graphButtons}
+        </div>
+        <strong className="option-title">Collections</strong>
+        <div className="collection-items">
+          {collectionItems}
+        </div>
+      </div>
+    );
 
     return <header className="main-header">
             <div className="header-group">
@@ -80,18 +94,7 @@ class Header extends Component {
                   Search {this.state.loading && <i className="loading-cog fa fa-cog fa-spin fa-fw"></i>}
                 </button>
 
-                {this.state.showOptions &&
-                  <div className="search-box-options">
-                    <strong className="option-title">Graphs</strong>
-                    <div className="graph-buttons">
-                      {graphButtons}
-                    </div>
-                    <strong className="option-title">Collections</strong>
-                    <div className="collection-items">
-                      {collectionItems}
-                    </div>
-                  </div>}
-
+                {this.state.showOptions && searchOptions}
               </div>
             </div>
             <div className="header-sub-group"></div>

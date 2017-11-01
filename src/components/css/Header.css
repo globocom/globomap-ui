@@ -16,7 +16,7 @@ limitations under the License.
 
 .main-header .header-group,
 .main-header .header-sub-group,
-.header-sub-group .graph-buttons,
+.header-sub-group .graph-items,
 .header-sub-group .collection-items {
   box-sizing: border-box;
 }
@@ -32,7 +32,6 @@ limitations under the License.
 .main-header .header-group {
   height: 50px;
   background-color: #d2d6d6;
-  /*box-shadow: 0 1px 2px rgba(0,0,0,0.2);*/
   z-index: 9;
 }
 
@@ -74,16 +73,10 @@ limitations under the License.
   font-size: 16px;
   color: #333;
   border: 1px solid #9daca9;
-  border-right: 0;
-  border-radius: 4px 0 0 4px;
-}
-
-.main-header .search-box .btn-search {
-  margin-left: 5px;
 }
 
 .main-header .search-box .btn-search-options {
-  border-radius: 0 4px 4px 0;
+  margin: 0 5px;
 }
 
 .main-header .search-box-options {
@@ -110,34 +103,17 @@ limitations under the License.
   font: lighter 16px sans-serif;
   border-bottom: 1px solid #ccc;
   padding-bottom: 5px;
-  margin: 15px 10px 0;
+  margin: 10px 10px 0;
 }
 
-.search-box-options .graph-buttons {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  padding: 5px 7px 10px;
-}
-
-.search-box-options .graph-buttons button {
-  margin: 3px;
-  border-radius: 3px;
-  text-shadow: none;
+.search-box-options .graph-items .graph-name {
   color: white;
-  font-weight: normal;
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 
-.search-box-options .graph-buttons button:hover {
-  box-shadow: none;
-}
-
-.search-box-options .graph-buttons button.btn-disabled {
-  opacity: 0.3;
-}
-
+.search-box-options .graph-items,
 .search-box-options .collection-items {
-  float: left;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -146,11 +122,13 @@ limitations under the License.
   border-left: 1px solid rgba(255, 255, 255, 0.35);
 }
 
+.search-box-options .graph-items .item,
 .search-box-options .collection-items .item {
   margin: 0 2px 8px 0;
   min-width: 140px;
 }
 
+.search-box-options .graph-items .item.disabled,
 .search-box-options .collection-items .item.disabled {
   color: #b5b5b5;
 }

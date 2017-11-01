@@ -24,6 +24,7 @@ class Pagination extends Component {
 
     this.state = {
       pageNumber: 1,
+      currentPage: 1,
       totalPages: 0,
       total: 0
     };
@@ -42,7 +43,7 @@ class Pagination extends Component {
     return (
       <div className="pagination">
         <button className="btn-previous topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'previous')}
-          disabled={this.state.pageNumber === 1}>
+          disabled={this.state.currentPage === 1}>
           <i className="fa fa-caret-left"></i> previous
         </button>
 
@@ -50,7 +51,7 @@ class Pagination extends Component {
           value={this.state.pageNumber} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
 
         <button className="btn-next topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'next')}
-          disabled={this.state.pageNumber === this.state.totalPages}>
+          disabled={this.state.currentPage === this.state.totalPages}>
           next <i className="fa fa-caret-right"></i>
         </button>
 
@@ -78,7 +79,7 @@ class Pagination extends Component {
       if (data.length === 0) {
         return;
       }
-      this.setState({ pageNumber });
+      this.setState({ pageNumber, currentPage: pageNumber });
     });
   }
 
