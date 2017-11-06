@@ -70,6 +70,10 @@ app.get('/', isAuthenticated, (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });
 
+app.get('/admin', isAuthenticated, (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
+});
+
 app.get('/auth', (req, res) => {
   res.redirect(oauthClient.code.getUri())
 });

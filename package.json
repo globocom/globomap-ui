@@ -18,7 +18,8 @@
     "client-oauth2": "^4.1.0",
     "express-session": "^1.15.6",
     "express-socket.io-session": "^1.3.2",
-    "connect-redis": "^3.3.2"
+    "connect-redis": "^3.3.2",
+    "immutability-helper": "2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
