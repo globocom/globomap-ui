@@ -14,36 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.stage {
-  box-sizing: border-box;
+import React from 'react';
+import './css/Tools.css';
+
+class Tools extends React.Component {
+  render() {
+    return (
+      <div className={'tools' + (this.props.currentNode ? ' with-info' : '')}>
+        <button className="btn-save-graph topcoat-button">
+          <i className="fa fa-save"></i>
+        </button>
+        <button className="btn-restore-graph topcoat-button">
+          <i className="fa fa-folder-open-o"></i>
+        </button>
+      </div>
+    );
+  }
 }
 
-.stage {
-  display: none;
-  position: fixed;
-  top: 100px;
-  flex-direction: column;
-  overflow: auto;
-  bottom: 10px;
-  left: 10px;
-  padding: 20px;
-  /*border: 1px solid #9daca9;*/
-  border-radius: 4px;
-  background-color: #dfe2e2;
-  z-index: 5;
-  /*transition: all 0.1s cubic-bezier(0.70, 0, 0.175, 1);*/
-}
-
-.stage.open {
-  display: flex;
-  right: 10px;
-}
-
-.stage.with-info {
-  width: 62.6%;
-}
-
-.stage .node-item-group {
-  display: flex;
-  flex-flow: row nowrap;
-}
+export default Tools;

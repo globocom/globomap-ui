@@ -14,36 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.stage {
+.tools {
   box-sizing: border-box;
 }
 
-.stage {
-  display: none;
+.tools {
+  display: flex;
   position: fixed;
-  top: 100px;
-  flex-direction: column;
-  overflow: auto;
-  bottom: 10px;
+  top: 60px;
   left: 10px;
-  padding: 20px;
-  /*border: 1px solid #9daca9;*/
-  border-radius: 4px;
-  background-color: #dfe2e2;
-  z-index: 5;
-  /*transition: all 0.1s cubic-bezier(0.70, 0, 0.175, 1);*/
-}
-
-.stage.open {
-  display: flex;
   right: 10px;
+  height: 35px;
+  padding: 4px;
+  justify-content: flex-end;
 }
 
-.stage.with-info {
-  width: 62.6%;
+.tools.with-info {
+  width: 62.5%;
 }
 
-.stage .node-item-group {
-  display: flex;
-  flex-flow: row nowrap;
+.tools .btn-save-graph,
+.tools .btn-restore-graph {
+  margin-left: 5px;
 }
