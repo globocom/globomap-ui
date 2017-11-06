@@ -79,7 +79,8 @@ limitations under the License.
 
 .search-content-results tr.current td,
 .search-content-results tr.current:hover td {
-  background-color: #65dec6;
+  background-color: #50bea8;
+  color: white;
 }
 
 .search-content-results tr:hover td {
