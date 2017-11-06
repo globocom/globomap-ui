@@ -19,6 +19,7 @@ limitations under the License.
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import Header from './Header';
+import Tools from './Tools';
 import SearchContent from './SearchContent';
 import Stage from './Stage';
 import Info from './Info';
@@ -26,7 +27,7 @@ import { traverseItems, uuid, sortByName } from '../utils';
 import './css/App.css';
 
 function uiSocket() {
-  var uiSocket = io()
+  var uiSocket = io();
   uiSocket.on('error', function(err){
     window.location.reload();
   });
@@ -81,6 +82,8 @@ class App extends Component {
                 onToggleGraph={this.onToggleGraph}
                 clearInfo={this.clearInfo}
                 searchContent={this.searchContent} />
+
+        <Tools currentNode={this.state.currentNode} />
 
         <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
                        nodes={this.state.nodes}
