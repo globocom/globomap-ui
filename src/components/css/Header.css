@@ -17,7 +17,9 @@ limitations under the License.
 .main-header .header-group,
 .main-header .header-sub-group,
 .header-sub-group .graph-items,
-.header-sub-group .collection-items {
+.header-sub-group .collection-items,
+.search-box .btn-search,
+.search-box-options .options-base {
   box-sizing: border-box;
 }
 
@@ -70,9 +72,21 @@ limitations under the License.
 .main-header .search-box .search-query {
   border: 0;
   width: 75%;
+  /*opacity: 0.85;*/
   font-size: 16px;
   color: #333;
-  border: 1px solid #9daca9;
+  /*border: 1px solid #9daca9;*/
+}
+
+/*.main-header .search-box .search-query:focus {
+  opacity: 1;
+}*/
+
+.main-header .search-box .btn-search {
+  width: 40px;
+  margin-left: -40px;
+  border: 0;
+  background: none;
 }
 
 .main-header .search-box .btn-search-options {
@@ -81,12 +95,38 @@ limitations under the License.
 
 .main-header .search-box-options {
   position: absolute;
-  width: 75%;
-  top: 46px;
+  width: calc(75% + 48px);;
+  top: 48px;
+  left: 0;
+  padding-bottom: 40px;
   background-color: white;
-  border: 1px solid #9daca9;
+  /*border: 1px solid #9daca9;*/
   border-radius: 4px;
-  box-shadow: 0 3px 25px rgba(0, 0, 0, 0.2);
+  /*box-shadow: 0 3px 25px rgba(0, 0, 0, 0.2);*/
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.search-box-options .options-container {
+  max-height: 350px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.search-box-options .options-base {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  justify-content: flex-end;
+  padding: 8px;
+  border-radius: 0 0 4px 4px;
+  background-color: #d2d6d6;
+}
+
+.search-box-options .options-base button {
+  margin-left: 5px;
 }
 
 .main-header .header-sub-group {
@@ -119,7 +159,6 @@ limitations under the License.
   justify-content: space-between;
   padding: 10px;
   font-size: 12px;
-  border-left: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .search-box-options .graph-items .item,
@@ -131,4 +170,23 @@ limitations under the License.
 .search-box-options .graph-items .item.disabled,
 .search-box-options .collection-items .item.disabled {
   color: #b5b5b5;
+}
+
+.search-box-options .properties-items {
+  padding: 10px;
+}
+
+.search-box-options .properties-items .prop-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.search-box-options .properties-items .prop-query {
+  width: 49%;
+  font-size: 12px;
+}
+
+.search-box-options .properties-items .btn-add-prop {
+  font-size: 16px;
 }

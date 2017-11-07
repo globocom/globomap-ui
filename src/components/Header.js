@@ -23,9 +23,11 @@ class Header extends Component {
     super(props);
     this.state = {
       checkedCollections: [],
-      query: "",
+      query: '',
       loading: false,
-      showOptions: false
+      showOptions: false,
+      queryProps: [{'name': '', 'value': '', 'op': ''}],
+      propsOperators: ["LIKE", "==", "!=", ">", ">=", "<", "<="]
     };
 
     this.handleCheckItem = this.handleCheckItem.bind(this);
@@ -62,13 +64,31 @@ class Header extends Component {
 
     let searchOptions = (
       <div className="search-box-options">
-        <strong className="option-title">Graphs</strong>
-        <div className="graph-items">
-          {graphButtons}
+        <div className="options-container">
+          <strong className="option-title">Graphs</strong>
+          <div className="graph-items">
+            {graphButtons}
+          </div>
+
+          <strong className="option-title">Collections</strong>
+          <div className="collection-items">
+            {collectionItems}
+          </div>
+
+          <strong className="option-title">Search by Properties</strong>
+          <div className="properties-items">
+            <div className="prop-item">
+              <input className="prop-query topcoat-text-input--large" type="search" name="prop-name" value="" placeholder="name" />
+              <input className="prop-query topcoat-text-input--large" type="search" name="prop-value" value="" placeholder="value" />
+            </div>
+            <button className="btn-add-prop topcoat-button">+</button>
+          </div>
         </div>
-        <strong className="option-title">Collections</strong>
-        <div className="collection-items">
-          {collectionItems}
+        <div className="options-base">
+          <button className="topcoat-button--quiet"
+            onClick={() => this.closeSearchOptions()}>Cancel</button>
+          <button className="topcoat-button--cta"
+            onClick={this.onSendSearchQuery} disabled={this.state.loading}>Search</button>
         </div>
       </div>
     );
@@ -83,15 +103,15 @@ class Header extends Component {
                 <input className="search-query topcoat-text-input--large" type="search" name="query"
                   value={this.state.query} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
 
+                <button className="btn-search" onClick={this.onSendSearchQuery} disabled={this.state.loading}>
+                  {this.state.loading
+                    ? <i className="loading-cog fa fa-cog fa-spin fa-fw"></i>
+                    : <i className="fa fa-search"></i>}
+                </button>
+
                 <button className="btn-search-options topcoat-button--large"
                   onClick={(e) => this.onToggleSearchOptions(e)}>
                   <i className="fa fa-list"></i>
-                </button>
-
-                <button className="btn-search topcoat-button--large"
-                        onClick={this.onSendSearchQuery}
-                        disabled={this.state.loading}>
-                  Search {this.state.loading && <i className="loading-cog fa fa-cog fa-spin fa-fw"></i>}
                 </button>
 
                 {this.state.showOptions && searchOptions}
