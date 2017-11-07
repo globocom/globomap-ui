@@ -66,6 +66,10 @@ class IOServer {
         this.getGraphs(data, (result) => { fn(result); });
       });
 
+      socket.on('getnode', (data, fn) => {
+        this.getnode(data, (result) => { fn(result); });
+      });
+
       socket.on('findnodes', (data, fn) => {
         this.findNodes(data, (result) => { fn(result); });
       });
@@ -108,6 +112,22 @@ class IOServer {
       let errorMsg = this.handleError(error);
       fn({ error: true, message: errorMsg || 'Get Graphs Error' });
     });
+  }
+
+  getnode(data, fn) {
+    let { collection, id } = data;
+    let url = `${globomapApiUrl}/collections/${collection}/${id}`;
+
+    axios.get(url)
+      .then((result) => {
+        this.updateItemInfo(result.data);
+
+        fn(result.data);
+      })
+      .catch((error) => {
+        let errorMsg = this.handleError(error);
+        fn({ error: true, message: errorMsg || 'Get Node Error' });
+      });
   }
 
   findNodes(data, fn) {

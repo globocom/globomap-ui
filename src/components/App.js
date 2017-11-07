@@ -23,6 +23,7 @@ import Tools from './Tools';
 import SearchContent from './SearchContent';
 import Stage from './Stage';
 import Info from './Info';
+import PopMenu from './PopMenu';
 import { traverseItems, uuid, sortByName } from '../utils';
 import './css/App.css';
 
@@ -57,6 +58,7 @@ class App extends Component {
     this.stageHasNode = this.stageHasNode.bind(this);
     this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
     this.getCollectionByGraphs = this.getCollectionByGraphs.bind(this);
+    this.setStageNodes = this.setStageNodes.bind(this);
     this.setCurrent = this.setCurrent.bind(this);
     this.clearCurrent = this.clearCurrent.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -83,7 +85,10 @@ class App extends Component {
                 clearInfo={this.clearInfo}
                 searchContent={this.searchContent} />
 
-        <Tools currentNode={this.state.currentNode} />
+        <Tools currentNode={this.state.currentNode}
+               stageNodes={this.state.stageNodes}
+               setStageNodes={this.setStageNodes}
+               popMenu={this.popMenu} />
 
         <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
                        nodes={this.state.nodes}
@@ -111,6 +116,9 @@ class App extends Component {
               clearCurrent={this.clearCurrent}
               currentNode={this.state.currentNode}
               hasId={this.state.hasId} />
+
+        <PopMenu ref={(popMenu) => {this.popMenu = popMenu}}
+                 currentNode={this.state.currentNode} />
       </div>
     );
   }
@@ -297,6 +305,10 @@ class App extends Component {
 
       this.setState({ nodes: data.documents}, fn(data));
     });
+  }
+
+  setStageNodes(stageNodes, fn) {
+    this.setState({ stageNodes }, fn);
   }
 
   setCurrent(node, fn) {
