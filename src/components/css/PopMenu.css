@@ -14,62 +14,50 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.tools {
+.popmenu {
   box-sizing: border-box;
 }
 
-.tools {
-  display: flex;
-  position: fixed;
-  top: 60px;
-  left: 10px;
-  right: 10px;
-  height: 35px;
-  padding: 4px;
-  justify-content: flex-end;
-}
-
-.tools.with-info {
-  width: 62.5%;
-}
-
-.tools .message {
-  align-self: center;
-  margin-right: 10px;
-}
-
-.tools .btn-save-graph,
-.tools .btn-restore-graph {
-  margin-left: 5px;
-}
-
-.tools .btn-save-graph.disabled,
-.tools .btn-restore-graph.disabled {
-  color: #b5b5b5;
-}
-
-.remove-search-btn {
+.popmenu {
+  display: none;
   position: absolute;
+  top: 100px;
+  min-width: 100px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  text-align: left;
+  background-color: white;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  cursor: default;
+  right: 0.8%;
+  padding-right: 25px;
+}
+
+.popmenu.open {
+  display: block;
+}
+
+.popmenu.with-info {
+  right: 36.7%;
+}
+
+.popmenu-head {
+  text-align: left;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.close-tooltip-btn {
+  position: absolute;
+  top: 8px;
   right: 6px;
   border: 0;
   background-color: transparent;
   font-size: 14px;
-  color: #610b0b;
-  margin-top: -2px;
+  color: #aaa;
 }
 
-.content-list {
-  display: flex;
-  flex-direction: column;
-  list-style-type: none;
-  margin: 5px;
-  padding: 0 10px;
-}
-
-.content-list .content-item {
-  margin-bottom: 5px;
-}
-
-.content-list .content-title {
-  cursor: pointer;
+.close-tooltip-btn:hover {
+  color: #333;
 }

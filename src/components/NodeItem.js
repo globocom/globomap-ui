@@ -17,6 +17,7 @@ limitations under the License.
 /* global Stickyfill */
 
 import React, { Component } from 'react';
+import { uiSocket } from './App';
 import NodeEdges from './NodeEdges';
 import './css/NodeItem.css';
 
@@ -24,6 +25,7 @@ class NodeItem extends Component {
 
   constructor(props) {
     super(props);
+    this.socket = uiSocket();
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
   }
@@ -58,7 +60,27 @@ class NodeItem extends Component {
 
   onItemSelect(event) {
     event.stopPropagation();
-    this.props.setCurrent(this.props.node);
+
+    let params = {};
+    let collection = this.props.node._id.split('/')[0];
+    let id = this.props.node._id.split('/')[1];
+
+    params['collection'] = collection;
+    params['id'] = id;
+
+    this.socket.emit('getnode', params, (data) => {
+      if (data.error) {
+        console.log(data.message);
+        return;
+      }
+
+      if (Object.keys(data).length === 0) {
+        console.log('empty collection');
+        return;
+      }
+
+      this.props.setCurrent(this.props.node);
+    });
   }
 
   onSelfRemove(event) {
