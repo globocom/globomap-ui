@@ -118,8 +118,6 @@ class IOServer {
 
     let url = `${globomapApiUrl}/collections/search/?collections=${c}&query=${q}&per_page=${per_page || pageSize}&page=${page}`;
 
-    console.log(url);
-
     axios.get(url)
       .then((result) => {
         result.data.documents.filter((doc) => {

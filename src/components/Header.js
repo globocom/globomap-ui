@@ -27,11 +27,14 @@ class Header extends Component {
       loading: false,
       showOptions: false,
       queryProps: [{'name': '', 'value': '', 'op': ''}],
-      propsOperators: ["LIKE", "==", "!=", ">", ">=", "<", "<="]
+      propsOperators: ["==", "LIKE", "!=", ">", ">=", "<", "<="]
     };
 
+    this.addProp = this.addProp.bind(this);
+    this.removeProp = this.removeProp.bind(this);
+    this.buildPropItems = this.buildPropItems.bind(this);
     this.handleCheckItem = this.handleCheckItem.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.onSendSearchQuery = this.onSendSearchQuery.bind(this);
     this.onToggleSearchOptions = this.onToggleSearchOptions.bind(this);
@@ -77,18 +80,13 @@ class Header extends Component {
 
           <strong className="option-title">Search by Properties</strong>
           <div className="properties-items">
-            <div className="prop-item">
-              <input className="prop-query topcoat-text-input--large" type="search" name="prop-name" value="" placeholder="name" />
-              <input className="prop-query topcoat-text-input--large" type="search" name="prop-value" value="" placeholder="value" />
-            </div>
-            <button className="btn-add-prop topcoat-button">+</button>
+            {this.buildPropItems()}
+            <button className="btn-and-prop topcoat-button" onClick={this.addProp}>+</button>
           </div>
         </div>
         <div className="options-base">
-          <button className="topcoat-button--quiet"
-            onClick={() => this.closeSearchOptions()}>Cancel</button>
-          <button className="topcoat-button--cta"
-            onClick={this.onSendSearchQuery} disabled={this.state.loading}>Search</button>
+          <button className="topcoat-button--quiet" onClick={this.closeSearchOptions}>Cancel</button>
+          <button className="topcoat-button--cta" onClick={this.onSendSearchQuery} disabled={this.state.loading}>Search</button>
         </div>
       </div>
     );
@@ -101,7 +99,7 @@ class Header extends Component {
 
               <div className="search-box">
                 <input className="search-query topcoat-text-input--large" type="search" name="query"
-                  value={this.state.query} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
+                  value={this.state.query} onChange={this.handleSearchChange} onKeyPress={this.handleKeyPress} />
 
                 <button className="btn-search" onClick={this.onSendSearchQuery} disabled={this.state.loading}>
                   {this.state.loading
@@ -121,6 +119,54 @@ class Header extends Component {
            </header>;
   }
 
+  addProp() {
+    let qProps = this.state.queryProps.slice();
+    qProps.push({'name': '', 'value': '', 'op': ''});
+    this.setState({ queryProps: qProps });
+  }
+
+  removeProp(index) {
+    let qProps = this.state.queryProps.slice();
+    qProps.splice(index, 1);
+    this.setState({ queryProps: qProps });
+  }
+
+  buildPropItems() {
+    let items = this.state.queryProps.map((prop, i) => {
+      return (
+        <div key={'prop' + i} className="prop-item">
+          <input className="prop-query topcoat-text-input--large" type="search" name={'prop'+i+'-name'} placeholder="property name"
+            value={this.state.queryProps[i].name} onChange={(e) => this.handlePropChange(e, i, 'name')} />
+
+          <select className="prop-operator" name={'prop'+i+'-operator'}
+            value={this.state.queryProps[i].op} onChange={(e) => this.handlePropChange(e, i, 'op')}>
+            {this.state.propsOperators.map((op, j) => {
+              return <option key={'op'+j} value={op}>{op}</option>
+            })}
+          </select>
+
+          <input className="prop-query topcoat-text-input--large" type="search" name={'prop'+i+'-value'} placeholder="value"
+            value={this.state.queryProps[i].value} onChange={(e) => this.handlePropChange(e, i, 'value')} />
+
+          <button className="btn-remove-prop topcoat-button--quiet" onClick={() => this.removeProp(i)}>
+            <i className="fa fa-close"></i>
+          </button>
+        </div>
+      )
+    });
+
+    return items;
+  }
+
+  handlePropChange(event, index, item) {
+    let target = event.target;
+
+    let qProps = this.state.queryProps.slice();
+    qProps[index][item] = target.value;
+
+    this.setState({ queryProps: qProps });
+  }
+
   handleCheckItem(event) {
     let target = event.target,
         colls = this.state.checkedCollections.slice(),
@@ -135,7 +181,7 @@ class Header extends Component {
     this.setState({ checkedCollections: colls });
   }
 
-  handleInputChange(event) {
+  handleSearchChange(event) {
     let target = event.target;
     let value = target.type === 'checkbox' ? target.checked : target.value;
     this.setState({ [target.name]: value });

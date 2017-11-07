@@ -183,10 +183,19 @@ limitations under the License.
 }
 
 .search-box-options .properties-items .prop-query {
-  width: 49%;
+  margin-right: 5px;
   font-size: 12px;
 }
 
-.search-box-options .properties-items .btn-add-prop {
-  font-size: 16px;
+.search-box-options .properties-items .prop-operator {
+  font-size: 12px;
+}
+
+.search-box-options .properties-items .btn-or-prop,
+.search-box-options .properties-items .btn-and-prop {
+  margin-right: 5px;
+}
+
+.search-box-options .properties-items .btn-remove-prop {
+  margin-left: 5px;
 }
