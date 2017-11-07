@@ -17,10 +17,14 @@ limitations under the License.
 const express = require('express');
 const path = require('path');
 const session = require('express-session')
+const Redis = require('ioredis');
 const oauthClient = require('./oauthClient');
 
 const redisHost = process.env.REDIS_HOST
 const redisPort = process.env.REDIS_PORT || 6379
+const redisSentinelsHosts = process.env.REDIS_SENTINELS ? process.env.REDIS_SENTINELS.split(',') : null
+const redisSentinelsPort = process.env.REDIS_SENTINELS_PORT || 26379
+const redisSentinelsService = process.env.REDIS_SENTINELS_SERVICE
 const redisPassword = process.env.REDIS_PASSWORD
 const oauthLogoutUrl = process.env.OAUTH_LOGOUT_URL
 const forceAuth = process.env.OAUTH_FORCE === 'true'
@@ -37,10 +41,24 @@ let sessionConfig = {
 }
 
 if(app.get('env') === 'production'){
-  let RedisStore = require('connect-redis')(session);
-  sessionConfig.store = new RedisStore({
-    host: redisHost, port: redisPort, pass: redisPassword
-  })
+  if (redisSentinelsHosts){
+    let redisClient = new Redis({
+      name: redisSentinelsService,
+      password: redisPassword,
+      sentinels: redisSentinelsHosts.map(function(sentinelHost) {
+        return { host: sentinelHost, port: 26379 }
+      })
+    });
+    let RedisStore = require('connect-redis')(session);
+    sessionConfig.store = new RedisStore({
+      client: redisClient, host: redisHost, port: redisPort, pass: redisPassword
+    })
+  }else{
+    let RedisStore = require('connect-redis')(session);
+    sessionConfig.store = new RedisStore({
+      host: redisHost, port: redisPort, pass: redisPassword
+    })
+  }
 } else {
   app.set('disable-auth', !forceAuth)
 }
