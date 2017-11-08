@@ -26,13 +26,12 @@ class Header extends Component {
       query: '',
       loading: false,
       showOptions: false,
-      queryProps: [{'name': '', 'value': '', 'op': ''}],
+      queryProps: [],
       propsOperators: ["==", "LIKE", "!=", ">", ">=", "<", "<="]
     };
 
     this.addProp = this.addProp.bind(this);
     this.removeProp = this.removeProp.bind(this);
-    this.buildPropItems = this.buildPropItems.bind(this);
     this.handleCheckItem = this.handleCheckItem.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -65,6 +64,29 @@ class Header extends Component {
              </label>;
     });
 
+    let propItems = this.state.queryProps.map((prop, i) => {
+      return (
+        <div key={'prop' + i} className="prop-item">
+          <input className="prop-query topcoat-text-input--large" type="search"
+            name={'prop'+i+'-name'} placeholder="property name" value={this.state.queryProps[i].name}
+            onChange={(e) => this.handlePropChange(e, i, 'name')} />
+
+          <select className="prop-operator" name={'prop'+i+'-operator'}
+            value={this.state.queryProps[i].op} onChange={(e) => this.handlePropChange(e, i, 'op')}>
+            {this.state.propsOperators.map((op, j) => <option key={'op'+j} value={op}>{op}</option>)}
+          </select>
+
+          <input className="prop-query topcoat-text-input--large" type="search"
+            name={'prop'+i+'-value'} placeholder="value" value={this.state.queryProps[i].value}
+            onChange={(e) => this.handlePropChange(e, i, 'value')} />
+
+          <button className="btn-remove-prop topcoat-button--quiet" onClick={() => this.removeProp(i)}>
+            <i className="fa fa-close"></i>
+          </button>
+        </div>
+      )
+    });
+
     let searchOptions = (
       <div className="search-box-options">
         <div className="options-container">
@@ -78,50 +100,56 @@ class Header extends Component {
             {collectionItems}
           </div>
 
-          <strong className="option-title">Search by Properties</strong>
+          <strong className="option-title">Advanced Search</strong>
           <div className="properties-items">
-            {this.buildPropItems()}
+            {propItems}
             <button className="btn-and-prop topcoat-button" onClick={this.addProp}>+</button>
           </div>
         </div>
         <div className="options-base">
           <button className="topcoat-button--quiet" onClick={this.closeSearchOptions}>Cancel</button>
-          <button className="topcoat-button--cta" onClick={this.onSendSearchQuery} disabled={this.state.loading}>Search</button>
+          <button className="topcoat-button--cta" onClick={this.onSendSearchQuery}
+            disabled={this.state.loading}>Search</button>
         </div>
       </div>
     );
 
-    return <header className="main-header">
-            <div className="header-group">
-              <span className="logo">
-                globo<span className="logo-map">map</span>
-              </span>
+    let disabledMainSearch = this.state.queryProps.length > 0 && this.state.showOptions;
+    return (
+      <header className="main-header">
+        <div className="header-group">
+          <span className="logo">
+            globo<span className="logo-map">map</span>
+          </span>
 
-              <div className="search-box">
-                <input className="search-query topcoat-text-input--large" type="search" name="query"
-                  value={this.state.query} onChange={this.handleSearchChange} onKeyPress={this.handleKeyPress} />
+          <div className="search-box">
+            <input className="search-query topcoat-text-input--large" type="search" name="query"
+              disabled={disabledMainSearch} value={this.state.query}
+              onChange={this.handleSearchChange} onKeyPress={this.handleKeyPress} />
 
-                <button className="btn-search" onClick={this.onSendSearchQuery} disabled={this.state.loading}>
-                  {this.state.loading
-                    ? <i className="loading-cog fa fa-cog fa-spin fa-fw"></i>
-                    : <i className="fa fa-search"></i>}
-                </button>
+            <button className="btn-search" onClick={this.onSendSearchQuery}
+              disabled={this.state.loading || disabledMainSearch}>
+              {this.state.loading
+                ? <i className="loading-cog fa fa-cog fa-spin fa-fw"></i>
+                : <i className="fa fa-search"></i>}
+            </button>
 
-                <button className="btn-search-options topcoat-button--large"
-                  onClick={(e) => this.onToggleSearchOptions(e)}>
-                  <i className="fa fa-list"></i>
-                </button>
+            <button className="btn-search-options topcoat-button--large"
+              onClick={(e) => this.onToggleSearchOptions(e)}>
+              <i className="fa fa-list"></i>
+            </button>
 
-                {this.state.showOptions && searchOptions}
-              </div>
-            </div>
-            <div className="header-sub-group"></div>
-           </header>;
+            {this.state.showOptions && searchOptions}
+          </div>
+        </div>
+        <div className="header-sub-group"></div>
+      </header>
+    );
   }
 
   addProp() {
     let qProps = this.state.queryProps.slice();
-    qProps.push({'name': '', 'value': '', 'op': ''});
+    qProps.push({'name': '', 'value': '', 'op': 'LIKE'});
     this.setState({ queryProps: qProps });
   }
 
@@ -131,54 +159,24 @@ class Header extends Component {
     this.setState({ queryProps: qProps });
   }
 
-  buildPropItems() {
-    let items = this.state.queryProps.map((prop, i) => {
-      return (
-        <div key={'prop' + i} className="prop-item">
-          <input className="prop-query topcoat-text-input--large" type="search" name={'prop'+i+'-name'} placeholder="property name"
-            value={this.state.queryProps[i].name} onChange={(e) => this.handlePropChange(e, i, 'name')} />
-
-          <select className="prop-operator" name={'prop'+i+'-operator'}
-            value={this.state.queryProps[i].op} onChange={(e) => this.handlePropChange(e, i, 'op')}>
-            {this.state.propsOperators.map((op, j) => {
-              return <option key={'op'+j} value={op}>{op}</option>
-            })}
-          </select>
-
-          <input className="prop-query topcoat-text-input--large" type="search" name={'prop'+i+'-value'} placeholder="value"
-            value={this.state.queryProps[i].value} onChange={(e) => this.handlePropChange(e, i, 'value')} />
-
-          <button className="btn-remove-prop topcoat-button--quiet" onClick={() => this.removeProp(i)}>
-            <i className="fa fa-close"></i>
-          </button>
-        </div>
-      )
-    });
-
-    return items;
-  }
-
   handlePropChange(event, index, item) {
-    let target = event.target;
-
     let qProps = this.state.queryProps.slice();
-    qProps[index][item] = target.value;
-
+    qProps[index][item] = event.target.value;
     this.setState({ queryProps: qProps });
   }
 
   handleCheckItem(event) {
     let target = event.target,
-        colls = this.state.checkedCollections.slice(),
-        itemIndex = colls.indexOf(target.name);
+        co = this.state.checkedCollections.slice(),
+        itemIndex = co.indexOf(target.name);
 
     if(itemIndex < 0) {
-      colls.push(target.name);
+      co.push(target.name);
     } else {
-      colls.splice(itemIndex, 1);
+      co.splice(itemIndex, 1);
     }
 
-    this.setState({ checkedCollections: colls });
+    this.setState({ checkedCollections: co });
   }
 
   handleSearchChange(event) {
@@ -197,21 +195,30 @@ class Header extends Component {
   onSendSearchQuery(event) {
     event.preventDefault();
     this.props.clearStage();
+
     this.props.clearInfo(() => {
-      let collections = this.state.checkedCollections;
-      if (collections.length === 0) {
-        collections = this.props.enabledCollections;
+      let co = this.state.checkedCollections;
+      if (co.length === 0) {
+        co = this.props.enabledCollections;
       }
+
       this.setState({ loading: true }, () => {
-        this.props.findNodes(this.state.query, collections, null, 1, (data) => {
-          this.setState({ loading: false });
-          this.props.searchContent.pagination.setState({
-            pageNumber: 1,
-            totalPages: data.total_pages,
-            total: data.total
+        this.props.findNodes({
+            query: this.state.query,
+            queryProps: this.state.queryProps,
+            collections: co
+          }, (data) => {
+            // TODO: Remove ref to SearchContent
+            this.props.searchContent.pagination.setState({
+              pageNumber: 1,
+              currentPage: 1,
+              totalPages: data.total_pages,
+              total: data.total
+            });
+
+            this.setState({ loading: false });
+            this.closeSearchOptions();
           });
-          this.closeSearchOptions();
-        });
       });
     });
   }
@@ -226,15 +233,21 @@ class Header extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let checkedCollections = [];
+    let co = this.state.checkedCollections.slice();
 
     this.state.checkedCollections.forEach((item) => {
       if (nextProps.enabledCollections.includes(item)) {
-        checkedCollections.push(item);
+        if(!co.includes(item)) {
+          co.push(item);
+        }
       }
     });
 
-    this.setState({ checkedCollections });
+    this.setState({ checkedCollections: co });
+  }
+
+  componentDidMount() {
+    this.setState({ checkedCollections: this.props.collections });
   }
 }
 

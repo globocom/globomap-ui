@@ -55,7 +55,7 @@ class Info extends Component {
       <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
         <div className="info-header">
           <div className="info-header-title" title={this.state.node.name}>
-            {this.state.node.name}
+            <span className="title-limit">{this.state.node.name}</span>
           </div>
           <button className="close-info-btn topcoat-icon-button--quiet"
             onClick={this.onCloseInfo}>
