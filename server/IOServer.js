@@ -39,19 +39,19 @@ class IOServer {
     });
 
     io.use(function(socket, next) {
-      if(app.get('disable-auth')){
+      if (app.get('disable-auth')) {
         return next()
       }
 
-      var session = socket.request.session
-      if(session && session.tokenData){
+      let session = socket.request.session;
+      if (session && session.tokenData) {
         oauthClient.isAuthenticated(session, isAuthenticated => {
-          if (isAuthenticated){
-            next()
+          if (isAuthenticated) {
+            next();
           } else {
             next(new Error('Authentication error'));
           }
-        })
+        });
       } else {
         next(new Error('Authentication error'));
       }
@@ -130,20 +130,29 @@ class IOServer {
       });
   }
 
-  findNodes(data, fn) {
-    let { query, collections, per_page, page } = data;
+  findNodes(options, fn) {
+    let { query, queryProps, collections, per_page, page } = options;
+    let co = collections.toString();
 
-    let c = collections.toString(),
-        q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}], [{"field":"properties","value":"${query}","operator":"LIKE"}]]`;
+    let q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}],` +
+             `[{"field": "properties", "value": "${query}", "operator": "LIKE"}]]`;
 
-    let url = `${globomapApiUrl}/collections/search/?collections=${c}&query=${q}&per_page=${per_page || pageSize}&page=${page}`;
+    if (queryProps.length > 0) {
+      let byProps = queryProps.map((prop) => {
+        let f = prop.name === 'name' ? prop.name : `properties.${prop.name}`;
+        return `{"field": "${f}", "value": "${prop.value}", "operator": "${prop.op}"}`;
+      });
+      q = `[[${byProps.join(',')}]]`;
+    }
+
+    let url = `${globomapApiUrl}/collections/search/?collections=${co}&` +
+              `query=${q}&per_page=${per_page || pageSize}&page=${page}`;
 
     axios.get(url)
       .then((result) => {
         result.data.documents.filter((doc) => {
           this.updateItemInfo(doc);
         });
-
         fn(result.data);
       })
       .catch((error) => {
@@ -231,10 +240,6 @@ class IOServer {
     return msg;
   }
 
-  logMemory() {
-      let memory = process.memoryUsage();
-      console.log('[IOServer] ', 'RSS (Resident Set Size) ', memory.rss, ', Heap Used (Heap actually Used) ', memory.heapUsed, ' Heap Total (Total Size of the Heap) ', memory.heapTotal);
-  }
 }
 
 module.exports = IOServer;
