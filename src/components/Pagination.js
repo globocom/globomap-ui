@@ -67,20 +67,26 @@ class Pagination extends Component {
       return;
     }
 
-    // TODO: Remove this 2 references to Header component
-    let collections = this.props.header.state.checkedCollections,
+    // TODO: Remove refs to Header
+    let co = this.props.header.state.checkedCollections,
+        queryProps = this.props.header.state.queryProps,
         query = this.props.header.state.query;
 
-    if (collections.length === 0) {
-      collections = this.props.enabledCollections;
+    if (co.length === 0) {
+      co = this.props.enabledCollections;
     }
 
-    this.props.findNodes(query, collections, null, pageNumber, (data) => {
-      if (data.length === 0) {
-        return;
-      }
-      this.setState({ pageNumber, currentPage: pageNumber });
-    });
+    this.props.findNodes({
+        query: query,
+        collections: co,
+        queryProps: queryProps,
+        page: pageNumber
+      }, (data) => {
+        if (data.length === 0) {
+          return;
+        }
+        this.setState({ pageNumber, currentPage: pageNumber });
+      });
   }
 
   onSendSearchQuery(event, direction) {
