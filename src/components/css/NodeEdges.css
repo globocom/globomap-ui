@@ -41,10 +41,10 @@ limitations under the License.
   top: 35px;
   min-width: 100px;
   margin-bottom: 20px;
-  border-radius: 2px;
+  border-radius: 4px;
   text-align: left;
   background-color: white;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   z-index: 9;
   cursor: default;
 }
@@ -63,9 +63,10 @@ limitations under the License.
 
 .sub-node-edges .edge-item .item-properties {
   display: none;
-  background-color: #dfe2e2;
+  background-color: #efefef;
   padding: 4px 0;
-  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 4px 4px;
+  /*box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);*/
 }
 
 .sub-node-edges .edge-item.open .item-properties {
@@ -102,13 +103,13 @@ limitations under the License.
 .sub-node-edges.left .edges-content { left: 0; }
 .sub-node-edges.left .edges-content .v-line {
   left: -3px;
-  border-radius: 3px 0 0 3px;
+  /*border-radius: 3px 0 0 3px;*/
 }
 
 .sub-node-edges.right .edges-content { right: 0; }
 .sub-node-edges.right .edges-content .v-line {
   right: -3px;
-  border-radius: 0 3px 3px 0;
+  /*border-radius: 0 3px 3px 0;*/
 }
 
 .sub-node-edges .tooltip-arrow {
@@ -121,6 +122,14 @@ limitations under the License.
   border-bottom: 8px solid white;
 }
 
+.sub-node-edges.left .edges-content {
+  border-radius: 0 4px 4px 0;
+}
+
+.sub-node-edges.right .edges-content {
+  border-radius: 4px 0 0 4px;
+}
+
 .sub-node-edges.left .tooltip-arrow {
   left: 4px;
 }
@@ -131,7 +140,7 @@ limitations under the License.
 
 .sub-node-edges .edges-content-head {
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
   padding: 10px;
 }
 
