@@ -94,7 +94,7 @@ class Info extends Component {
       let byGraph = [];
 
       if (data.error) {
-        console.log(data.error.message);
+        console.log(data.message);
 
         byGraph = params.graphs.map((graph) => {
           return {
