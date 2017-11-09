@@ -43,11 +43,6 @@ limitations under the License.
   margin-left: 5px;
 }
 
-.tools .btn-save-graph.disabled,
-.tools .btn-restore-graph.disabled {
-  color: #b5b5b5;
-}
-
 .remove-search-btn {
   position: absolute;
   right: 6px;
