@@ -26,6 +26,7 @@ class PopMenu extends Component {
       title: '',
       content: () => {}
     };
+
     this.openPopMenu = this.openPopMenu.bind(this);
     this.closePopMenu = this.closePopMenu.bind(this);
   }
@@ -49,8 +50,7 @@ class PopMenu extends Component {
         (this.props.currentNode ? ' with-info' : '')}>
         <div className="popmenu-head">
           {this.state.title}
-          <button className="close-tooltip-btn"
-                  onClick={this.closePopMenu}>
+          <button className="close-btn" onClick={this.closePopMenu}>
             <i className="fa fa-close"></i>
           </button>
         </div>
