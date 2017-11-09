@@ -127,6 +127,8 @@ class Tools extends React.Component {
       resolve()
     }).then(() => {
       this.equalizeNodes(key, (storages) => {
+        this.props.info.props.clearCurrent();
+        this.props.info.resetByGraph(() => {});
         this.props.setStageNodes(storages);
       })
     })
