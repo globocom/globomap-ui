@@ -74,6 +74,7 @@ class App extends Component {
       <div className="main">
         <span className="main-xxxx"
               onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
+
         <Header ref={(header) => {this.header = header}}
                 graphs={this.state.graphs}
                 enabledCollections={this.state.enabledCollections}
@@ -292,18 +293,21 @@ class App extends Component {
     this.info.resetByGraph(fn);
   }
 
-  findNodes(query, co, per_page, page, fn) {
-    if (co !== undefined && !co instanceof Array)  {
-      console.log('The 2nd argument must be an Array');
-      return;
+  findNodes(opts, fn) {
+    let options = _.merge({
+      query: '',
+      queryProps: [],
+      collections: [],
+      per_page: null,
+      page: 1
+    }, opts);
+
+    if (typeof fn !== 'function') {
+      fn = () => {};
     }
 
-    this.socket.emit('findnodes', { query: query, collections: co, per_page: per_page, page: page }, (data) => {
-      if (fn === undefined) {
-        fn = () => {};
-      }
-
-      this.setState({ nodes: data.documents}, fn(data));
+    this.socket.emit('findnodes', options, (data) => {
+      this.setState({ nodes: data.documents }, fn(data));
     });
   }
 
