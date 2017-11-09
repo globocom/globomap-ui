@@ -25,7 +25,7 @@ class PopMenu extends Component {
       open: false,
       title: '',
       content: () => {}
-    }
+    };
     this.openPopMenu = this.openPopMenu.bind(this);
     this.closePopMenu = this.closePopMenu.bind(this);
   }
@@ -39,7 +39,6 @@ class PopMenu extends Component {
   }
 
   closePopMenu() {
-    // event.stopPropagation();
     this.setState({ open: false });
   }
 
