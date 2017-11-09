@@ -17,7 +17,6 @@ limitations under the License.
 /* global Stickyfill */
 
 import React, { Component } from 'react';
-import { uiSocket } from './App';
 import NodeEdges from './NodeEdges';
 import './css/NodeItem.css';
 
@@ -25,7 +24,6 @@ class NodeItem extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = uiSocket();
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
   }
@@ -39,9 +37,10 @@ class NodeItem extends Component {
     let { _id, name, type, edges, uuid, id } = this.props.node;
     let cNode = this.props.currentNode,
         current = cNode && _id === cNode._id ? ' current' : '',
-        thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '';
+        thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '',
+        disabled = this.props.node.exist !== undefined && !this.props.node.exist ? ' disabled' : '';
 
-    return <div className={'node-item' + current + thisnode} onClick={this.onItemSelect}>
+    return <div key={this.props.node.id} className={'node-item' + disabled + current + thisnode} onClick={this.onItemSelect}>
             {!this.props.node.root &&
               <button className="close-node-btn" onClick={this.onSelfRemove}>
                 <i className="fa fa-close"></i>
@@ -60,27 +59,7 @@ class NodeItem extends Component {
 
   onItemSelect(event) {
     event.stopPropagation();
-
-    let params = {};
-    let collection = this.props.node._id.split('/')[0];
-    let id = this.props.node._id.split('/')[1];
-
-    params['collection'] = collection;
-    params['id'] = id;
-
-    this.socket.emit('getnode', params, (data) => {
-      if (data.error) {
-        console.log(data.message);
-        return;
-      }
-
-      if (Object.keys(data).length === 0) {
-        console.log('empty collection');
-        return;
-      }
-
-      this.props.setCurrent(this.props.node);
-    });
+    this.props.setCurrent(this.props.node);
   }
 
   onSelfRemove(event) {
