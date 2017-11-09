@@ -89,8 +89,7 @@ class App extends Component {
         <Tools currentNode={this.state.currentNode}
                stageNodes={this.state.stageNodes}
                setStageNodes={this.setStageNodes}
-               popMenu={this.popMenu}
-               info={this.info} />
+               popMenu={this.popMenu} />
 
         <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
                        nodes={this.state.nodes}

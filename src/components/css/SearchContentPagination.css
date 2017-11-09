@@ -14,34 +14,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.pagination {
+.search-content-pagination {
   box-sizing: border-box;
-
 }
 
-.pagination {
+.search-content-pagination {
   display: flex;
 }
 
-.pagination .page-number {
+.search-content-pagination .page-number {
   text-align: center;
   width: 60px;
   border-radius: 0;
   border-size: 1px 0 1px 0;
-  /*box-shadow: none;*/
+  box-shadow: none;
 }
 
-.pagination .btn-previous {
+.search-content-pagination .btn-previous {
   border-right: 0;
   border-radius: 4px 0 0 4px;
 }
 
-.pagination .btn-next {
+.search-content-pagination .btn-next {
   border-left: 0;
   border-radius: 0 4px 4px 0;
 }
 
-.pagination-info {
+.search-content-pagination .pagination-info {
   display: flex;
   align-items: center;
   font-size: 12px;
