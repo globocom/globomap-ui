@@ -18,6 +18,7 @@ limitations under the License.
 
 import React from 'react';
 import { uiSocket } from './App';
+import { traverseItems } from '../utils';
 import './css/Tools.css';
 
 class Tools extends React.Component {
@@ -91,27 +92,16 @@ class Tools extends React.Component {
   }
 
   equalizeNodes(key, fn) {
-    let items = this.storages[key];
-    let length = items.length;
     let promises = [];
 
-    let equalizeNodes = () => {
-      items.forEach((item) => {
-        promises.push(new Promise((resolve) => {
-          this.checkNodeExistence(item).then((result) => {
-            item.exist = result;
-            resolve(this.storages[key]);
-          })
-        }))
-      })
-
-      items = items[0].items;
-      length = items.length;
-    };
-
-    while (length > 0) {
-      equalizeNodes();
-    }
+    traverseItems(this.storages[key], (node) => {
+      promises.push(new Promise((resolve) => {
+        this.checkNodeExistence(node).then((result) => {
+          node.exist = result;
+          resolve(this.storages[key]);
+        })
+      }))
+    });
 
     Promise.all(promises)
       .then((storages) => {
@@ -179,8 +169,6 @@ class Tools extends React.Component {
   onSaveGraph() {
     let key = '';
     let stageNodes = [];
-    let items = [];
-    let length = 0;
 
     if (this.props.stageNodes.length === 0 ||
       this.props.stageNodes[0].items.length === 0) {
@@ -189,17 +177,10 @@ class Tools extends React.Component {
 
     stageNodes = this.props.stageNodes;
     key = stageNodes[0].type + '/' + stageNodes[0].name;
-    items = stageNodes;
-    length = items.length;
 
-    while (length > 0) {
-      items.forEach((item) => {
-        item.exist = true;
-      });
-
-      items = items[0].items;
-      length = items.length;
-    }
+    traverseItems(stageNodes, (node) => {
+      node.exist = true;
+    });
 
     this.storages[key] = stageNodes;
     this.setLocalStorage(this.key, this.storages);
