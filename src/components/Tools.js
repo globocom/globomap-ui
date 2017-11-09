@@ -68,7 +68,7 @@ class Tools extends React.Component {
     try {
       localStorage.setItem(key, JSON.stringify(data));
     } catch(error) {
-      console.log('Erro ao tentar salvar o grafico no localStorage,', error);
+      console.log('localStorage save error,', error);
     }
     return data;
   }
@@ -204,7 +204,6 @@ class Tools extends React.Component {
 
   onDeleteGraph(event, key) {
     event.preventDefault();
-
     if (window.confirm('Are you sure to delete this item?')) {
       this.clearLocalStorage(key);
     }

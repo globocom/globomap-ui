@@ -30,10 +30,10 @@ limitations under the License.
   z-index: 10;
   cursor: default;
   right: 0.8%;
+  overflow: hidden;
 }
 
 .popmenu .popmenu-content {
-  border-radius: 0 0 4px 4px;
   background-color: #efefef;
 }
 

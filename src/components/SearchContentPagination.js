@@ -17,7 +17,7 @@ limitations under the License.
 import React, { Component } from 'react';
 import './css/SearchContentPagination.css';
 
-class Pagination extends Component {
+class SearchContentPagination extends Component {
 
   constructor(props) {
     super(props);
@@ -36,7 +36,7 @@ class Pagination extends Component {
   }
 
   render() {
-    if (this.props.nodes.length === 0) {
+    if (this.props.nodes === undefined || this.props.nodes.length === 0) {
       return null;
     }
 
@@ -129,4 +129,4 @@ class Pagination extends Component {
 
 }
 
-export default Pagination;
+export default SearchContentPagination;
