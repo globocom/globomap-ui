@@ -32,6 +32,10 @@ class SearchContent extends Component {
       index = (index === 0 ? 1 : index + 1);
     }
 
+    if (!this.props.nodes) {
+      return null;
+    }
+
     let allNodes = this.props.nodes.map((node, i) => {
       let current = (this.props.currentNode &&
                      node._id === this.props.currentNode._id);
@@ -44,26 +48,28 @@ class SearchContent extends Component {
              </tr>;
     });
 
-    return <div className={'search-content' + (this.props.currentNode ? ' with-info' : '')}>
-            <table className="search-content-results">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Type</th>
-                  <th>Name</th>
-                </tr>
-              </thead>
-              <tbody>{allNodes.length > 0 && allNodes}</tbody>
-            </table>
-            <div className="search-content-base">
-              <Pagination
-                ref={(pagination) => {this.pagination = pagination}}
-                nodes={this.props.nodes}
-                findNodes={this.props.findNodes}
-                enabledCollections={this.props.enabledCollections}
-                header={this.props.header} />
-            </div>
-           </div>;
+    return (
+      <div className={'search-content' + (this.props.currentNode ? ' with-info' : '')}>
+        <table className="search-content-results">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Type</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>{allNodes.length > 0 && allNodes}</tbody>
+        </table>
+        <div className="search-content-base">
+          <Pagination
+            ref={(pagination) => {this.pagination = pagination}}
+            nodes={this.props.nodes}
+            findNodes={this.props.findNodes}
+            enabledCollections={this.props.enabledCollections}
+            header={this.props.header} />
+        </div>
+      </div>
+    );
   }
 
   onNodeSelect(event, node) {
