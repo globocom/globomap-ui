@@ -149,7 +149,7 @@ class Header extends Component {
 
   addProp() {
     let qProps = this.state.queryProps.slice();
-    qProps.push({'name': '', 'value': '', 'op': 'LIKE'});
+    qProps.push({ 'name': '', 'value': '', 'op': 'LIKE' });
     this.setState({ queryProps: qProps });
   }
 

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import Pagination from './Pagination';
+import SearchContentPagination from './SearchContentPagination';
 import './css/SearchContent.css';
 
 class SearchContent extends Component {
@@ -61,7 +61,7 @@ class SearchContent extends Component {
           <tbody>{allNodes.length > 0 && allNodes}</tbody>
         </table>
         <div className="search-content-base">
-          <Pagination
+          <SearchContentPagination
             ref={(pagination) => {this.pagination = pagination}}
             nodes={this.props.nodes}
             findNodes={this.props.findNodes}

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import './css/Pagination.css';
+import './css/SearchContentPagination.css';
 
 class Pagination extends Component {
 
@@ -41,7 +41,7 @@ class Pagination extends Component {
     }
 
     return (
-      <div className="pagination">
+      <div className="search-content-pagination">
         <button className="btn-previous topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'previous')}
           disabled={this.state.currentPage === 1}>
           <i className="fa fa-caret-left"></i> previous

@@ -198,3 +198,26 @@ limitations under the License.
 .info-graph-items .items-loading .loading-cog {
   color: rgba(255, 255, 255, 0.6)
 }
+
+.info-graph-items .graph-items-pagination {
+  padding: 10px;
+  text-align: center;
+}
+
+.graph-items-pagination .items-page-number {
+  text-align: center;
+  width: 40px;
+  border-radius: 0;
+  border-size: 1px 0 1px 0;
+  box-shadow: none;
+}
+
+.graph-items-pagination .btn-previous {
+  border-right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.graph-items-pagination .btn-next {
+  border-left: 0;
+  border-radius: 0 4px 4px 0;
+}
