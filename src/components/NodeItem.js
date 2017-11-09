@@ -38,8 +38,8 @@ class NodeItem extends Component {
     let cNode = this.props.currentNode,
         current = cNode && _id === cNode._id ? ' current' : '',
         thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '',
-        exist = this.props.node.exist !== undefined && !this.props.node.exist,
-        disabled = !exist ? ' disabled' : '';
+        exist = this.props.node.exist === undefined ? false : this.props.node.exist,
+        disabled = this.props.node.exist !== undefined && !this.props.node.exist ? ' disabled' : '';
 
     return <div key={this.props.node.id} className={'node-item' + disabled + current + thisnode} onClick={exist && this.onItemSelect}>
             {!this.props.node.root &&
