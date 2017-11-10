@@ -31,7 +31,7 @@ class ByGraph extends Component {
       filterIsOpen: false,
       excludedTypes: [],
       query: "",
-      queryAmount: 2,
+      queryAmount: 1,
       searchIndex: [],
       graphAmount: this.props.items.subnodes.length,
       pageNumber: 1,
