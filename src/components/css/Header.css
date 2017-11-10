@@ -74,6 +74,7 @@ limitations under the License.
   width: 75%;
   font-size: 16px;
   color: #333;
+  box-shadow: none;
 }
 
 .main-header .search-box .btn-search {
@@ -191,4 +192,12 @@ limitations under the License.
 
 .search-box-options .properties-items .btn-remove-prop {
   margin-left: 5px;
+}
+
+.main-header .user-items {
+  display: flex;
+  float: right;
+  height: 50px;
+  align-items: center;
+  padding: 0 10px;
 }

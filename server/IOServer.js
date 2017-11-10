@@ -41,7 +41,7 @@ class IOServer {
 
     io.use(function(socket, next) {
       if (app.get('disable-auth')) {
-        return next()
+        return next();
       }
 
       let session = socket.request.session;
