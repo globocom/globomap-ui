@@ -40,7 +40,7 @@ class Tools extends React.Component {
 
   componentDidMount() {
     this.socket.emit('getEnvironment', (environment) => {
-      this.key = 'GLOBOMAP_SCREENSHOT_' + environment;
+      this.key = 'GSNAP_' + environment;
       this.storages = this.getLocalStorage(this.key) || {};
     });
   }
