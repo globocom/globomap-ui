@@ -25,6 +25,7 @@ const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
 const certificates = process.env.CERTIFICATES || `${process.cwd()}/server/ca-certificates.crt`;
 const pageSize = process.env.PAGE_SIZE || 20;
+const environment = process.env.ENVIRONMENT || 'DEV';
 
 class IOServer {
   constructor(io) {
@@ -80,6 +81,10 @@ class IOServer {
 
       socket.on('getmonitoring', (data, fn) => {
         this.getMonitoring(data, (result) => { fn(result); });
+      });
+
+      socket.on('getEnvironment', (fn) => {
+        fn(environment);
       });
     });
   }
@@ -227,7 +232,7 @@ class IOServer {
     let msg = false;
 
     if(error.response) {
-      msg = `Response Error: ${error.response.data.errors}`;
+      msg = `Response Error: ${error.response.status} ${error.response.statusText}`;
       console.log(msg);
     } else if (error.request) {
       console.log(error.request);
