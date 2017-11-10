@@ -28,6 +28,7 @@ class Tools extends React.Component {
     this.state = {
       message: ''
     }
+
     this.socket = uiSocket();
     this.key = 'screenshot';
     this.onRestoreGraph = this.onRestoreGraph.bind(this);
@@ -44,21 +45,39 @@ class Tools extends React.Component {
     });
   }
 
+  render() {
+    return (
+      <div className={'tools' + (this.props.currentNode ? ' with-info' : '')}>
+        <span className="message">{this.state.message}</span>
+        <button className={'btn-save-graph topcoat-button'}
+                onClick={this.onSaveGraph}
+                disabled={(this.props.stageNodes.length === 0 ||
+                this.props.stageNodes[0].items.length === 0 ? 'disabled' : '')}>
+          <i className="fa fa-save"></i>
+        </button>
+        <button className={'btn-restore-graph topcoat-button'}
+                onClick={this.onRestoreGraph}
+                disabled={(!this.storages ||
+                Object.keys(this.storages).length === 0 ? 'disabled' : '')}>
+          <i className="fa fa-folder-open-o"></i>
+        </button>
+      </div>
+    );
+  }
+
   getLocalStorage(key) {
     let data = localStorage.getItem(key);
     if (data) {
       return JSON.parse(data);
     }
-    else {
-      return null;
-    }
+    return null;
   }
 
   setLocalStorage(key, data) {
     try {
       localStorage.setItem(key, JSON.stringify(data));
     } catch(error) {
-      console.log('Erro ao tentar salvar o grafico no localStorage,', error);
+      console.log('localStorage save error,', error);
     }
     return data;
   }
@@ -66,13 +85,13 @@ class Tools extends React.Component {
   clearLocalStorage(key) {
     delete this.storages[key];
     this.setLocalStorage(this.key, this.storages);
-    this.setState({ message: 'Apagado.' }, () => {
+    this.setState({ message: 'deleted' }, () => {
       this.clearMessage();
       if (Object.keys(this.storages).length === 0) {
         this.props.popMenu.closePopMenu();
         return;
       }
-      this.props.popMenu.openPopMenu('Consultas salvas', this.getContent);
+      this.props.popMenu.openPopMenu('Saved searches', this.getContent);
     });
   }
 
@@ -83,8 +102,8 @@ class Tools extends React.Component {
           return (
             <li key={index} className="content-item">
               <span  className="content-title" onClick={(e) => {this.applyGraph(e, key)}}>{key}</span>
-              <button className="remove-search-btn"
-                      onClick={() => {this.clearLocalStorage(key)}}>
+              <button className="remove-btn" onClick={(e) => {this.onDeleteGraph(e, key)}}
+                title="Delete this item">
                 <i className="fa fa-close"></i>
               </button>
             </li>
@@ -165,7 +184,7 @@ class Tools extends React.Component {
     }
 
     this.setState({ storages: this.storages }, () => {
-      this.props.popMenu.openPopMenu('Consultas salvas', this.getContent);
+      this.props.popMenu.openPopMenu('Saved searches', this.getContent);
     });
   }
 
@@ -187,32 +206,20 @@ class Tools extends React.Component {
 
     this.storages[key] = stageNodes;
     this.setLocalStorage(this.key, this.storages);
-    this.setState({
-      message: 'Salvo.',
-      storages: this.storages
-    }, () => {
+    this.setState({ message: 'saved', storages: this.storages }, () => {
       this.clearMessage();
     });
   }
 
-  render() {
-    return (
-      <div className={'tools' + (this.props.currentNode ? ' with-info' : '')}>
-        <span className="message">{this.state.message}</span>
-        <button className={'btn-save-graph topcoat-button'}
-                onClick={this.onSaveGraph}
-                disabled={(this.props.stageNodes.length === 0 ||
-                this.props.stageNodes[0].items.length === 0 ? 'disabled' : '')}>
-          <i className="fa fa-save"></i>
-        </button>
-        <button className={'btn-restore-graph topcoat-button'}
-                onClick={this.onRestoreGraph}
-                disabled={(!this.storages ||
-                Object.keys(this.storages).length === 0 ? 'disabled' : '')}>
-          <i className="fa fa-folder-open-o"></i>
-        </button>
-      </div>
-    );
+  onDeleteGraph(event, key) {
+    event.preventDefault();
+    if (window.confirm('Are you sure to delete this item?')) {
+      this.clearLocalStorage(key);
+    }
+  }
+
+  componentDidMount() {
+    this.storages = this.getLocalStorage(this.key) || {};
   }
 }
 

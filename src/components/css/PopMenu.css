@@ -20,18 +20,21 @@ limitations under the License.
 
 .popmenu {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 100px;
   min-width: 100px;
-  margin-bottom: 20px;
-  border-radius: 2px;
+  border-radius: 4px;
   text-align: left;
   background-color: white;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   z-index: 10;
   cursor: default;
   right: 0.8%;
-  padding-right: 25px;
+  overflow: hidden;
+}
+
+.popmenu .popmenu-content {
+  background-color: #efefef;
 }
 
 .popmenu.open {
@@ -43,12 +46,13 @@ limitations under the License.
 }
 
 .popmenu-head {
+  position: relative;
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
   padding: 10px;
 }
 
-.close-tooltip-btn {
+.popmenu-head .close-btn {
   position: absolute;
   top: 8px;
   right: 6px;
@@ -58,6 +62,6 @@ limitations under the License.
   color: #aaa;
 }
 
-.close-tooltip-btn:hover {
+.popmenu-head .close-btn:hover {
   color: #333;
 }

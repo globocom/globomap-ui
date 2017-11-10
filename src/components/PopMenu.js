@@ -26,31 +26,18 @@ class PopMenu extends Component {
       title: '',
       content: () => {}
     };
+
     this.openPopMenu = this.openPopMenu.bind(this);
     this.closePopMenu = this.closePopMenu.bind(this);
-  }
-
-  openPopMenu(title, content) {
-    this.setState({
-      open: true,
-      title: title,
-      content: content
-    });
-  }
-
-  closePopMenu() {
-    this.setState({ open: false });
+    // this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
   render() {
     return (
-      <div className={'popmenu' +
-        (this.state.open ? ' open' : '') +
-        (this.props.currentNode ? ' with-info' : '')}>
+      <div className={'popmenu' + (this.state.open ? ' open' : '') + (this.props.currentNode ? ' with-info' : '')}>
         <div className="popmenu-head">
           {this.state.title}
-          <button className="close-tooltip-btn"
-                  onClick={this.closePopMenu}>
+          <button className="close-btn" onClick={this.closePopMenu}>
             <i className="fa fa-close"></i>
           </button>
         </div>
@@ -60,6 +47,35 @@ class PopMenu extends Component {
       </div>
     )
   }
+
+  openPopMenu(title, content) {
+    this.setState({ open: true, title: title, content: content });
+  }
+
+  closePopMenu() {
+    this.setState({ open: false });
+  }
+
+  // handleOutsideClick(e) {
+  //   if (this.state.open === false) {
+  //     return;
+  //   }
+
+  //   if (this.popmenu && this.popmenu.contains(e.target)) {
+  //     return;
+  //   }
+
+  //   this.closePopMenu();
+  // }
+
+  // componentDidMount() {
+  //   document.addEventListener('click', this.handleOutsideClick, false);
+  // }
+
+  // componentWillUnmount() {
+  //   document.removeEventListener('click', this.handleOutsideClick, false);
+  // }
+
 }
 
 export default PopMenu;
