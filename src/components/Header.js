@@ -141,6 +141,13 @@ class Header extends Component {
 
             {this.state.showOptions && searchOptions}
           </div>
+
+          <div className="user-items">
+            <button className="logout-btn topcoat-button" href="/logout"
+              onClick={() => { window.location.href = '/logout' }}>
+              logout <i className="fa fa-sign-out"></i>
+            </button>
+          </div>
         </div>
         <div className="header-sub-group"></div>
       </header>

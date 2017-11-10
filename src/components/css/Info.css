@@ -24,16 +24,12 @@ limitations under the License.
   position: fixed;
   display: flex;
   flex-direction: column;
-  top: 8px;
-  right: -40%;
+  top: 60px;
+  right: -9999px;
   bottom: 10px;
   width: 35%;
   min-width: 250px;
-  /*background-color: #dfe2e2;*/
-  /*padding: 50px 0;*/
-  /*border: 1px solid #9daca9;*/
   border-radius: 4px;
-  /*box-shadow: 0 6px 25px rgba(0,0,0,0.2);*/
   z-index: 10;
   transition: all 0.1s cubic-bezier(0.70, 0, 0.175, 1);
 }
