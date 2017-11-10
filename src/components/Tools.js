@@ -217,10 +217,6 @@ class Tools extends React.Component {
       this.clearLocalStorage(key);
     }
   }
-
-  componentDidMount() {
-    this.storages = this.getLocalStorage(this.key) || {};
-  }
 }
 
 export default Tools;
