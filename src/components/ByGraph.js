@@ -189,38 +189,38 @@ class ByGraph extends Component {
     }
 
     return (
-      <div className="pagination">
-        <span onClick={(e) => this.previous()}>
+      <div className="graph-items-pagination">
+        <button onClick={(e) => this.previous(e)} className="btn-previous topcoat-button">
           <i className="icon-left fa fa-caret-left"></i>
-        </span>
-        <span>{this.state.pageNumber}</span>
-        <span onClick={(e) => this.next(e)}>
+        </button>
+
+        <input className="items-page-number topcoat-text-input" type="text"
+          readOnly value={this.state.pageNumber} />
+
+        <button onClick={(e) => this.next(e)} className="btn-next topcoat-button">
           <i className="icon-right fa fa-caret-right"></i>
-        </span>
+        </button>
       </div>
     )
   }
 
-  previous() {
+  previous(event) {
+    event.preventDefault();
     let pageNumber = this.state.pageNumber;
     if (pageNumber < 2) {
       return;
     }
-    this.setState({
-      pageNumber: pageNumber - 1
-    })
+    this.setState({ pageNumber: pageNumber - 1 });
   }
 
   next(event) {
+    event.preventDefault();
     let totalPages = Math.ceil(this.state.graphAmount / this.state.pageSize);
     let pageNumber = this.state.pageNumber;
-    event.preventDefault();
     if (pageNumber >= totalPages) {
       return;
     }
-    this.setState({
-      pageNumber: pageNumber + 1
-    })
+    this.setState({ pageNumber: pageNumber + 1 });
   }
 
   onOpenGraph(event) {
