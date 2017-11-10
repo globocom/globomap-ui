@@ -39,23 +39,30 @@ class NodeItem extends Component {
         current = cNode && _id === cNode._id ? ' current' : '',
         thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '',
         exist = this.props.node.exist === undefined ? true : this.props.node.exist,
-        disabled = this.props.node.exist !== undefined && !this.props.node.exist ? ' disabled' : '';
+        disabled = !exist ? ' disabled' : '';
 
-    return <div key={this.props.node.id} className={'node-item' + disabled + current + thisnode} onClick={exist && _.debounce(this.onItemSelect, 100, true)}>
-            {!this.props.node.root &&
-              <button className="close-node-btn" onClick={this.onSelfRemove}>
-                <i className="fa fa-close"></i>
-              </button>}
-            <div className="node-info sticky">
-              <span className="type">{type}</span>
-              <span className="name">{name}</span>
-              {this.props.hasId && <span>{id}</span>}
-            </div>
-            <NodeEdges edges={edges}
-                       graphs={this.props.graphs}
-                       position={'left'}
-                       hasId={this.props.hasId} />
-           </div>;
+    return (
+      <div key={this.props.node.id}
+           className={'node-item' + disabled + current + thisnode}
+           onClick={exist && _.debounce(this.onItemSelect, 100, true)}>
+
+        {!this.props.node.root &&
+          <button className="close-node-btn" onClick={this.onSelfRemove}>
+            <i className="fa fa-close"></i>
+          </button>}
+
+        <div className="node-info sticky">
+          <span className="type">{type}</span>
+          <span className="name">{name}</span>
+          {this.props.hasId && <span>{id}</span>}
+        </div>
+
+        <NodeEdges edges={edges}
+                   graphs={this.props.graphs}
+                   position={'left'}
+                   hasId={this.props.hasId} />
+      </div>
+    );
   }
 
   onItemSelect(event) {
@@ -66,7 +73,6 @@ class NodeItem extends Component {
     event.stopPropagation();
     this.props.removeNode(this.props.node);
   }
-
 }
 
 export default NodeItem;

@@ -36,10 +36,6 @@ limitations under the License.
   padding: 10px 15px;
 }
 
-.node-item.disabled {
-  background-color: #b5b5b5;
-}
-
 .sticky {
   position: -webkit-sticky;
   position: sticky;
@@ -69,6 +65,19 @@ limitations under the License.
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 6px;
+}
+
+.node-item.disabled {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(157, 172, 169, 0.4);
+}
+
+.node-item.disabled .type {
+  color: rgba(51, 51, 51, 0.4);
+}
+
+.node-item.disabled .name {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .node-item.current {
