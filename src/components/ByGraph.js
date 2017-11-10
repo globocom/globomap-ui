@@ -46,7 +46,6 @@ class ByGraph extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleCheckItem = this.handleCheckItem.bind(this);
     this.onSendSearchQuery = this.onSendSearchQuery.bind(this);
-    this.clearSearchIndex = this.clearSearchIndex.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
   }
 
@@ -131,31 +130,26 @@ class ByGraph extends Component {
 
   buildSubNodes(nodesItem) {
     let queryLength = this.state.query.trim().length;
-    let hasSearchIndex = this.state.searchIndex.length > 0;
     let start = (this.state.pageNumber - 1) * this.state.pageSize;
     let end = this.state.pageNumber * this.state.pageSize;
     let subnodesSlice = nodesItem.subnodes.slice(start, end);
-    let subnodes;
+    let subnodes = nodesItem.subnodes;
 
     if (queryLength > this.state.queryAmount) {
-      subnodes = nodesItem.subnodes.filter((item, index) => { return this.state.searchIndex.includes(index); });
-      subnodesSlice = subnodes.slice(start, end);
+      subnodes = subnodes.filter((node, index) => {
+        return this.state.searchIndex.includes(index);
+      });
     }
+    if (this.state.excludedTypes.length > 0) {
+      subnodes = subnodes.filter((node, index) => {
+        let type = node.type.toLowerCase();
+        return !this.state.excludedTypes.includes(type);
+      });
+    }
+    subnodesSlice = subnodes.slice(start, end);
 
     subnodes = subnodesSlice.map((subnode, index) => {
-      let type = subnode.type.toLowerCase();
-      let hasNode = false;
-
-      if (this.state.excludedTypes.includes(type)) {
-        return null;
-      }
-
-      if (queryLength > this.state.queryAmount) {
-        if (!hasSearchIndex) {
-          return null;
-        }
-      }
-      hasNode = this.props.stageHasNode(subnode._id, this.props.node.uuid);
+      let hasNode = this.props.stageHasNode(subnode._id, this.props.node.uuid);
 
       return <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
                <div className="sub-node-btn">
@@ -179,13 +173,10 @@ class ByGraph extends Component {
   }
 
   pagination() {
-    let queryLength = this.state.query.trim().length;
-    let subnodesAmount = this.props.items.subnodes.length;
-    let searchIndexAmount = this.state.searchIndex.length;
+    let graphAmount = this.state.graphAmount;
+    let pageSize = this.state.pageSize;
 
-    if (subnodesAmount <= this.state.pageSize ||
-       (queryLength > this.state.queryAmount &&
-       searchIndexAmount <= this.state.pageSize)) {
+    if (graphAmount <= pageSize) {
       return;
     }
 
@@ -231,13 +222,11 @@ class ByGraph extends Component {
 
   onAddNode(event, node, makeCurrent) {
     event.stopPropagation();
-    this.clearSearchIndex();
     this.props.addNodeToStage(node, this.props.node.uuid || this.props.node._id, makeCurrent);
   }
 
   onAddAllNodes(event, makeCurrent) {
     event.stopPropagation();
-    this.clearSearchIndex();
     this.props.items.subnodes.map((node, index) => {
       let searchIndex = this.state.searchIndex;
       let excludedTypes = this.state.excludedTypes;
@@ -343,14 +332,6 @@ class ByGraph extends Component {
     this.setState({
       searchIndex: searchIndex,
       graphAmount: searchIndex.length
-    });
-  }
-
-  clearSearchIndex() {
-    this.setState({
-      searchIsOpen: false,
-      query: "",
-      searchIndex: []
     });
   }
 
