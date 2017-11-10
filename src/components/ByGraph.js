@@ -138,7 +138,8 @@ class ByGraph extends Component {
     let subnodes;
 
     if (queryLength > this.state.queryAmount) {
-      subnodesSlice = nodesItem.subnodes;
+      subnodes = nodesItem.subnodes.filter((item, index) => { return this.state.searchIndex.includes(index); });
+      subnodesSlice = subnodes.slice(start, end);
     }
 
     subnodes = subnodesSlice.map((subnode, index) => {
@@ -151,8 +152,6 @@ class ByGraph extends Component {
 
       if (queryLength > this.state.queryAmount) {
         if (!hasSearchIndex) {
-          return null;
-        } else if (!this.state.searchIndex.includes(index)) {
           return null;
         }
       }
@@ -182,9 +181,11 @@ class ByGraph extends Component {
   pagination() {
     let queryLength = this.state.query.trim().length;
     let subnodesAmount = this.props.items.subnodes.length;
+    let searchIndexAmount = this.state.searchIndex.length;
 
-    if (queryLength > this.state.queryAmount ||
-      subnodesAmount <= this.state.pageSize) {
+    if (subnodesAmount <= this.state.pageSize ||
+       (queryLength > this.state.queryAmount &&
+       searchIndexAmount <= this.state.pageSize)) {
       return;
     }
 
@@ -278,7 +279,9 @@ class ByGraph extends Component {
         });
       }
       if (value.length > this.state.queryAmount) {
-        this.onSendSearchQuery(event);
+        this.setState({ pageNumber: 1 }, () => {
+          this.onSendSearchQuery(event);
+        });
       }
     });
   }
@@ -290,6 +293,7 @@ class ByGraph extends Component {
     let hasQuery = query.length > 0;
     let graphAmount = 0;
     let index;
+
     if (target.checked) {
       index = excludedTypes.indexOf(target.name);
 
@@ -315,6 +319,7 @@ class ByGraph extends Component {
     });
 
     this.setState({
+      pageNumber: 1,
       excludedTypes: excludedTypes,
       graphAmount: graphAmount
     });
