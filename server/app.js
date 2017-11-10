@@ -38,10 +38,10 @@ let sessionConfig = {
   resave: false,
   saveUninitialized: false,
   unset: 'destroy'
-}
+};
 
-if(app.get('env') === 'production'){
-  if (redisSentinelsHosts){
+if (app.get('env') === 'production') {
+  if (redisSentinelsHosts) {
     let redisClient = new Redis({
       name: redisSentinelsService,
       password: redisPassword,
@@ -49,38 +49,39 @@ if(app.get('env') === 'production'){
         return { host: sentinelHost, port: 26379 }
       })
     });
+
     let RedisStore = require('connect-redis')(session);
     sessionConfig.store = new RedisStore({
       client: redisClient, host: redisHost, port: redisPort, pass: redisPassword
-    })
-  }else{
+    });
+  } else {
     let RedisStore = require('connect-redis')(session);
     sessionConfig.store = new RedisStore({
       host: redisHost, port: redisPort, pass: redisPassword
-    })
+    });
   }
 } else {
-  app.set('disable-auth', !forceAuth)
+  app.set('disable-auth', !forceAuth);
 }
 
-sessionMiddleware = session(sessionConfig)
-app.use(sessionMiddleware)
+sessionMiddleware = session(sessionConfig);
+app.use(sessionMiddleware);
 
 const isAuthenticated = (req, res, next) => {
-  if(app.get('disable-auth')){
-    return next()
+  if (app.get('disable-auth')) {
+    return next();
   }
 
-  if(req.session && req.session.tokenData){
-      oauthClient.isAuthenticated(req.session, isAuthenticated => {
-        if (isAuthenticated){
-          next()
-        } else {
-          return res.redirect('/logout')
-        }
-      })
+  if (req.session && req.session.tokenData) {
+    oauthClient.isAuthenticated(req.session, isAuthenticated => {
+      if (isAuthenticated) {
+        next();
+      } else {
+        return res.redirect('/logout');
+      }
+    });
   } else {
-    return res.redirect('/auth')
+    return res.redirect('/auth');
   }
 }
 
