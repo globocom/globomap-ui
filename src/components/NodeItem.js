@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/* global Stickyfill */
+/* global Stickyfill, _ */
 
 import React, { Component } from 'react';
 import NodeEdges from './NodeEdges';
@@ -41,7 +41,7 @@ class NodeItem extends Component {
         exist = this.props.node.exist === undefined ? true : this.props.node.exist,
         disabled = this.props.node.exist !== undefined && !this.props.node.exist ? ' disabled' : '';
 
-    return <div key={this.props.node.id} className={'node-item' + disabled + current + thisnode} onClick={exist && this.onItemSelect}>
+    return <div key={this.props.node.id} className={'node-item' + disabled + current + thisnode} onClick={exist && _.debounce(this.onItemSelect, 100, true)}>
             {!this.props.node.root &&
               <button className="close-node-btn" onClick={this.onSelfRemove}>
                 <i className="fa fa-close"></i>
@@ -59,7 +59,6 @@ class NodeItem extends Component {
   }
 
   onItemSelect(event) {
-    event.stopPropagation();
     this.props.setCurrent(this.props.node);
   }
 
