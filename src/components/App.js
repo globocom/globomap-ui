@@ -49,7 +49,8 @@ class App extends Component {
       collections: [],
       nodes: [],
       stageNodes: [],
-      hasId: false
+      hasId: false,
+      currentTab: "Search Results"
     };
 
     this.findNodes = this.findNodes.bind(this);
@@ -324,12 +325,9 @@ class App extends Component {
     this.setState({ currentNode: false }, fn);
   }
 
-  handleKeyDown(event) {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      this.clearCurrent();
-    }
-  };
+  setCurrentTab(tabName) {
+    this.setState({ currentTab: tabName });
+  }
 
   onToggleGraph(event, graphName) {
     event.stopPropagation();
@@ -349,6 +347,13 @@ class App extends Component {
       });
     });
   }
+
+  handleKeyDown(event) {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.clearCurrent();
+    }
+  };
 
   handleDoubleClick() {
     this.setState({

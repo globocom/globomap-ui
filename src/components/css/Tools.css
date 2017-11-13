@@ -25,7 +25,7 @@ limitations under the License.
   left: 10px;
   right: 10px;
   height: 35px;
-  padding: 4px;
+  /*padding: 4px;*/
   justify-content: flex-end;
 }
 
