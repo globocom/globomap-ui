@@ -21,7 +21,7 @@ limitations under the License.
 .popmenu {
   display: none;
   position: fixed;
-  top: 100px;
+  top: 90px;
   min-width: 100px;
   border-radius: 4px;
   text-align: left;

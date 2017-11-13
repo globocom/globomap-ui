@@ -48,9 +48,9 @@ limitations under the License.
 .info .info-header-title {
   display: flex;
   align-items: center;
-  height: 40px;
+  height: 35px;
   padding: 0 10px;
-  font: lighter 16px sans-serif;
+  font: lighter 14px sans-serif;
   color: white;
   border-radius: 4px 4px 0 0;
   background-color: #50bea8;
@@ -66,7 +66,7 @@ limitations under the License.
 
 .info .info-header .close-info-btn {
   position: absolute;
-  top: 8px;
+  top: 6px;
   right: 10px;
   font-size: 16px;
   color: white;

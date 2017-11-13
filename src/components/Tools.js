@@ -48,19 +48,29 @@ class Tools extends React.Component {
   render() {
     return (
       <div className={'tools' + (this.props.currentNode ? ' with-info' : '')}>
-        <span className="message">{this.state.message}</span>
-        <button className={'btn-save-graph topcoat-button'}
-                onClick={this.onSaveGraph}
-                disabled={(this.props.stageNodes.length === 0 ||
-                this.props.stageNodes[0].items.length === 0 ? 'disabled' : '')}>
-          <i className="fa fa-save"></i>
-        </button>
-        <button className={'btn-restore-graph topcoat-button'}
-                onClick={this.onRestoreGraph}
-                disabled={(!this.storages ||
-                Object.keys(this.storages).length === 0 ? 'disabled' : '')}>
-          <i className="fa fa-folder-open-o"></i>
-        </button>
+
+        <nav className="tools-tabs">
+          <ul>
+            <li></li>
+          </ul>
+        </nav>
+
+        <div className="tools-buttons">
+          <span className="message">{this.state.message}</span>
+          <button className={'btn-save-graph topcoat-button'}
+                  onClick={this.onSaveGraph}
+                  disabled={(this.props.stageNodes.length === 0 ||
+                  this.props.stageNodes[0].items.length === 0 ? 'disabled' : '')}>
+            <i className="fa fa-save"></i>
+          </button>
+          <button className={'btn-restore-graph topcoat-button'}
+                  onClick={this.onRestoreGraph}
+                  disabled={(!this.storages ||
+                  Object.keys(this.storages).length === 0 ? 'disabled' : '')}>
+            <i className="fa fa-folder-open-o"></i>
+          </button>
+        </div>
+
       </div>
     );
   }
