@@ -25,6 +25,7 @@ class ByGraph extends Component {
   constructor(props) {
     super(props);
     this.throttleTime = 300;
+    this.regexp = /^\d+$/;
     this.state = {
       isOpen: true,
       searchIsOpen: false,
@@ -33,7 +34,7 @@ class ByGraph extends Component {
       query: "",
       queryAmount: 1,
       searchIndex: [],
-      graphAmount: this.props.items.subnodes.length,
+      graphAmount: null,
       pageNumber: 1,
       pageSize: 10
     };
@@ -52,15 +53,18 @@ class ByGraph extends Component {
   render() {
     let items = this.props.items,
         subnodesAmount = this.props.items.subnodes.length,
-        isOpen = items.subnodes.length > 0
+        isOpen = (items.subnodes.length > 0
                  ? this.state.isOpen
-                 : false;
+                 : false),
+        graphAmount = (this.regexp.test(this.state.graphAmount)
+                      ? this.state.graphAmount
+                      : items.subnodes.length);
 
     let colorCls = this.props.graphs.filter((graph) => {
       return graph.name === items.graph;
     })[0].colorClass;
 
-    if (this.state.graphAmount === 0 &&
+    if (graphAmount === 0 &&
       this.state.excludedTypes.length === 0 &&
       this.state.query.trim() === '') {
       return <div key={items.graph}></div>;
@@ -74,7 +78,7 @@ class ByGraph extends Component {
                 </span>
 
                 <span className="graph-amount">
-                  {this.state.graphAmount}
+                  {graphAmount}
                 </span>
 
                 <span className="graph-buttons">
@@ -173,8 +177,10 @@ class ByGraph extends Component {
   }
 
   pagination() {
-    let graphAmount = this.state.graphAmount;
-    let pageSize = this.state.pageSize;
+    let graphAmount = (this.regexp.test(this.state.graphAmount)
+                      ? this.state.graphAmount
+                      : this.props.items.subnodes.length),
+        pageSize = this.state.pageSize;
 
     if (graphAmount <= pageSize) {
       return;
@@ -206,9 +212,13 @@ class ByGraph extends Component {
   }
 
   next(event) {
+    let graphAmount = (this.regexp.test(this.state.graphAmount)
+                      ? this.state.graphAmount
+                      : this.props.items.subnodes.length),
+        totalPages = Math.ceil(graphAmount / this.state.pageSize),
+        pageNumber = this.state.pageNumber;
+
     event.preventDefault();
-    let totalPages = Math.ceil(this.state.graphAmount / this.state.pageSize);
-    let pageNumber = this.state.pageNumber;
     if (pageNumber >= totalPages) {
       return;
     }
