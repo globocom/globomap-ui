@@ -45,6 +45,7 @@ class App extends Component {
       currentNode: false,
       graphs: [],
       enabledCollections: [],
+      selectedCollections: [],
       collectionsByGraphs: {},
       collections: [],
       nodes: [],
@@ -79,7 +80,8 @@ class App extends Component {
 
         <Header ref={(header) => {this.header = header}}
                 graphs={this.state.graphs}
-                enabledCollections={this.state.enabledCollections}
+                collectionsByGraphs={this.state.collectionsByGraphs}
+                selectedCollections={this.state.selectedCollections}
                 clearStage={this.clearStage}
                 clearCurrent={this.clearCurrent}
                 collections={this.state.collections}
@@ -167,7 +169,7 @@ class App extends Component {
         graphs.push({
           name: item.name,
           colorClass: 'graph-color' + index,
-          enabled: true
+          enabled: false
         });
 
         enabledCollections = enabledCollections.concat(collections);
@@ -183,20 +185,19 @@ class App extends Component {
   }
 
   getCollectionByGraphs(graphsCopy, fn) {
-    let enabledCollections = [];
+    let selectedCollections = [];
 
     this.socket.emit('getgraphs', {}, (items) => {
       items = sortByName(items);
 
       items.forEach((item, index) => {
-        if (!graphsCopy[index].enabled) {
-          return;
+        if (graphsCopy[index].enabled) {
+          selectedCollections = selectedCollections.concat(
+            this.getEdgeLinks(item));
         }
-        enabledCollections = enabledCollections.concat(
-          this.getEdgeLinks(item));
       });
 
-      fn(_.uniq(enabledCollections));
+      fn(_.uniq(selectedCollections));
     });
   }
 
@@ -346,8 +347,7 @@ class App extends Component {
     this.setState({ currentTab: tabName });
   }
 
-  onToggleGraph(event, graphName) {
-    event.stopPropagation();
+  onToggleGraph(graphName, fn) {
     let graphsCopy = this.state.graphs.map((graph) => {
       if(graph.name === graphName) {
         graph.enabled = !graph.enabled;
@@ -355,12 +355,13 @@ class App extends Component {
       return graph;
     });
 
-    this.getCollectionByGraphs(graphsCopy, (enabledCollections) => {
+    this.getCollectionByGraphs(graphsCopy, (selectedCollections) => {
       this.setState({
         graphs: graphsCopy,
-        enabledCollections: enabledCollections
+        selectedCollections: selectedCollections
       }, () => {
         this.info.onTraversalSearch();
+        fn();
       });
     });
   }
