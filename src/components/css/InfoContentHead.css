@@ -16,7 +16,6 @@ limitations under the License.
 
 .info-header .tabs-nav {
   padding: 10px 0 0;
-  /*border-bottom: 1px solid #f8f8f8;*/
   background-color: #d2d6d6;
   overflow: hidden;
 }
@@ -24,7 +23,7 @@ limitations under the License.
 .info-header .tabs-nav ul {
   padding: 0;
   margin: 0;
-  list-style-type: none;
+  list-style: none;
 }
 
 .info-header .tabs-nav ul li {

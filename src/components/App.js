@@ -50,7 +50,7 @@ class App extends Component {
       nodes: [],
       stageNodes: [],
       hasId: false,
-      currentTab: "Search Results"
+      currentTab: 'Search Results'
     };
 
     this.findNodes = this.findNodes.bind(this);
@@ -68,6 +68,7 @@ class App extends Component {
     this.removeNode = this.removeNode.bind(this);
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
     this.clearInfo = this.clearInfo.bind(this);
+    this.setCurrentTab = this.setCurrentTab.bind(this);
   }
 
   render() {
@@ -91,23 +92,30 @@ class App extends Component {
                stageNodes={this.state.stageNodes}
                setStageNodes={this.setStageNodes}
                popMenu={this.popMenu}
+               currentTab={this.state.currentTab}
+               setCurrentTab={this.setCurrentTab}
                info={this.info} />
 
-        <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
-                       nodes={this.state.nodes}
-                       findNodes={this.findNodes}
-                       addNodeToStage={this.addNodeToStage}
-                       currentNode={this.state.currentNode}
-                       enabledCollections={this.state.enabledCollections}
-                       header={this.header} />
-
-        <Stage graphs={this.state.graphs}
-               stageNodes={this.state.stageNodes}
-               currentNode={this.state.currentNode}
-               clearCurrent={this.clearCurrent}
-               removeNode={this.removeNode}
-               setCurrent={this.setCurrent}
-               hasId={this.state.hasId} />
+        <div className="tabs-container">
+          <div className={'tab-content' + (this.state.currentTab === 'Search Results' ? ' active' : '')}>
+            <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
+                           nodes={this.state.nodes}
+                           findNodes={this.findNodes}
+                           addNodeToStage={this.addNodeToStage}
+                           currentNode={this.state.currentNode}
+                           enabledCollections={this.state.enabledCollections}
+                           header={this.header} />
+          </div>
+          <div className={'tab-content' + (this.state.currentTab === 'Navigation' ? ' active' : '')}>
+            <Stage graphs={this.state.graphs}
+                   stageNodes={this.state.stageNodes}
+                   currentNode={this.state.currentNode}
+                   clearCurrent={this.clearCurrent}
+                   removeNode={this.removeNode}
+                   setCurrent={this.setCurrent}
+                   hasId={this.state.hasId} />
+          </div>
+        </div>
 
         <Info ref={(Info) => {this.info = Info}}
               getNode={this.getNode}
@@ -211,10 +219,18 @@ class App extends Component {
       });
     } else {
       node.root = true;
+      node.items = [];
       currentNodes = [node];
+
+      return this.setState({ stageNodes: currentNodes }, () => {
+        if(makeCurrent) {
+          this.setCurrent(node);
+        }
+      });
     }
 
-    return this.setState({ stageNodes: currentNodes }, () => {
+    return this.setState({ currentTab: 'Navigation',
+                           stageNodes: currentNodes }, () => {
       if(makeCurrent) {
         this.setCurrent(node);
       }
@@ -309,12 +325,13 @@ class App extends Component {
     }
 
     this.socket.emit('findnodes', options, (data) => {
-      this.setState({ nodes: data.documents }, fn(data));
+      this.setState({ nodes: data.documents,
+                      currentTab: 'Search Results' }, fn(data));
     });
   }
 
   setStageNodes(stageNodes, fn) {
-    this.setState({ stageNodes }, fn);
+    this.setState({ stageNodes, currentTab: 'Navigation' }, fn);
   }
 
   setCurrent(node, fn) {

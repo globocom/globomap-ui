@@ -31,6 +31,8 @@ class Tools extends React.Component {
 
     this.socket = uiSocket();
     this.key = 'screenshot';
+    this.tabs = [{ name: 'Search Results' }, { name: 'Navigation' }];
+
     this.onRestoreGraph = this.onRestoreGraph.bind(this);
     this.onSaveGraph = this.onSaveGraph.bind(this);
     this.getContent = this.getContent.bind(this);
@@ -38,35 +40,41 @@ class Tools extends React.Component {
     this.checkNodeExistence = this.checkNodeExistence.bind(this);
   }
 
-  componentDidMount() {
-    this.socket.emit('getEnvironment', (environment) => {
-      this.key = 'GSNAP_' + environment;
-      this.storages = this.getLocalStorage(this.key) || {};
-    });
-  }
-
   render() {
+    let rootNodeHasItens = false;
+    if (this.props.stageNodes[0] !== undefined &&
+        this.props.stageNodes[0].items.length > 0) {
+      rootNodeHasItens = true;
+    }
+
+    let tabsButtons = this.tabs.map((tab, index) => {
+      let active = this.props.currentTab === tab.name ? ' active' : '';
+
+      return (
+        <button key={'tab' + index} className={'tab-btn' + active}
+          disabled={tab.name === 'Navigation' && !rootNodeHasItens}
+          onClick={(e) => this.props.setCurrentTab( tab.name )}>
+          {tab.name}
+        </button>
+      );
+    });
+
     return (
       <div className={'tools' + (this.props.currentNode ? ' with-info' : '')}>
 
         <nav className="tools-tabs">
-          <ul>
-            <li></li>
-          </ul>
+          {tabsButtons}
         </nav>
 
         <div className="tools-buttons">
           <span className="message">{this.state.message}</span>
           <button className={'btn-save-graph topcoat-button'}
-                  onClick={this.onSaveGraph}
-                  disabled={(this.props.stageNodes.length === 0 ||
-                  this.props.stageNodes[0].items.length === 0 ? 'disabled' : '')}>
+                  onClick={this.onSaveGraph} disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
           <button className={'btn-restore-graph topcoat-button'}
                   onClick={this.onRestoreGraph}
-                  disabled={(!this.storages ||
-                  Object.keys(this.storages).length === 0 ? 'disabled' : '')}>
+                  disabled={(!this.storages || Object.keys(this.storages).length === 0)}>
             <i className="fa fa-folder-open-o"></i>
           </button>
         </div>
@@ -117,7 +125,7 @@ class Tools extends React.Component {
                 <i className="fa fa-close"></i>
               </button>
             </li>
-          )
+          );
         })}
       </ul>
     )
@@ -143,7 +151,6 @@ class Tools extends React.Component {
 
   applyGraph(e, key) {
     this.props.popMenu.closePopMenu();
-
     new Promise((resolve) => {
       this.storages = this.getLocalStorage(this.key) || {};
       resolve()
@@ -167,24 +174,24 @@ class Tools extends React.Component {
 
   checkNodeExistence(node) {
     return new Promise((resolve) => {
-      let params = {};
-      let collection = node._id.split('/')[0];
-      let id = node._id.split('/')[1];
+      let params = {
+        collection: node._id.split('/')[0],
+        id: node._id.split('/')[1]
+      };
 
-      params['collection'] = collection;
-      params['id'] = id;
+      resolve(true);
 
-      this.socket.emit('getnode', params, (data) => {
-        if (data.error) {
-          console.log(data.message);
-          resolve(false);
-        }
-        if (Object.keys(data).length === 0) {
-          console.log('empty collection');
-          resolve(false);
-        }
-        resolve(true);
-      });
+      // this.socket.emit('getnode', params, (data) => {
+      //   if (data.error) {
+      //     console.log(data.message);
+      //     resolve(false);
+      //   }
+      //   if (Object.keys(data).length === 0) {
+      //     console.log('empty collection');
+      //     resolve(false);
+      //   }
+      //   resolve(true);
+      // });
     });
   }
 
@@ -226,6 +233,13 @@ class Tools extends React.Component {
     if (window.confirm('Are you sure to delete this item?')) {
       this.clearLocalStorage(key);
     }
+  }
+
+  componentDidMount() {
+    this.socket.emit('getEnvironment', (environment) => {
+      this.key = 'GSNAP_' + environment;
+      this.storages = this.getLocalStorage(this.key) || {};
+    });
   }
 }
 
