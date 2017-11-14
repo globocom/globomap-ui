@@ -78,6 +78,7 @@ class App extends Component {
 
         <Header ref={(header) => {this.header = header}}
                 graphs={this.state.graphs}
+                collectionsByGraphs={this.state.collectionsByGraphs}
                 enabledCollections={this.state.enabledCollections}
                 clearStage={this.clearStage}
                 clearCurrent={this.clearCurrent}
@@ -329,8 +330,7 @@ class App extends Component {
     this.setState({ currentTab: tabName });
   }
 
-  onToggleGraph(event, graphName) {
-    event.stopPropagation();
+  onToggleGraph(graphName, fn) {
     let graphsCopy = this.state.graphs.map((graph) => {
       if(graph.name === graphName) {
         graph.enabled = !graph.enabled;
@@ -344,6 +344,7 @@ class App extends Component {
         enabledCollections: enabledCollections
       }, () => {
         this.info.onTraversalSearch();
+        fn();
       });
     });
   }
