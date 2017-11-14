@@ -100,7 +100,7 @@ class Header extends Component {
             {collectionItems}
           </div>
 
-          <strong className="option-title">Advanced Search</strong>
+          <strong className="option-title">Search by Properties</strong>
           <div className="properties-items">
             {propItems}
             <button className="btn-and-prop topcoat-button" onClick={this.addProp}>+</button>
