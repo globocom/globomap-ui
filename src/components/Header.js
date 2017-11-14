@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* global _ */
+
 import React, { Component } from 'react';
 import './css/Header.css';
 
@@ -22,7 +24,8 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      unCheckedCollections: [],
+      checkedGraphs: [],
+      checkedCollections: [],
       query: '',
       loading: false,
       showOptions: false,
@@ -46,7 +49,7 @@ class Header extends Component {
       let disabledCls = graph.enabled ? '' : ' disabled';
 
       return <label key={"graph-" + graph.name} className={'item topcoat-checkbox' + disabledCls}>
-              <input type="checkbox" name={graph.name}
+              <input type="checkbox" name={graph.name} checked={graph.enabled}
                 onChange={(e) => this.onToggleGraph(e, graph.name)} />
               <div className="topcoat-checkbox__checkmark"></div>
               &nbsp;<span className={'graph-name ' + graph.colorClass}>{graph.name}</span>
@@ -54,14 +57,13 @@ class Header extends Component {
     });
 
     let collectionItems = this.props.collections.map((co) => {
-      let hasCollection = this.props.enabledCollections.includes(co),
-          disabledCls = hasCollection ? ' disabled' : '',
-          unCheckedCollections = this.state.unCheckedCollections;
+      let selectedCollection = this.props.selectedCollections.includes(co),
+          checkedCollection = this.state.checkedCollections.includes(co),
+          disabledCls = !selectedCollection ? ' disabled' : '';
 
       return <label key={co} className={"item topcoat-checkbox" + disabledCls}>
-              <input type="checkbox" name={co} checked={!hasCollection
-                && !unCheckedCollections.includes(co)}
-                onChange={this.handleCheckItem} disabled={hasCollection} />
+              <input type="checkbox" name={co} checked={checkedCollection && selectedCollection}
+                onChange={this.handleCheckItem} disabled={!selectedCollection} />
               <div className="topcoat-checkbox__checkmark"></div>
               &nbsp;{co}
              </label>;
@@ -177,16 +179,16 @@ class Header extends Component {
 
   handleCheckItem(event) {
     let target = event.target,
-        co = this.state.unCheckedCollections.slice(),
+        co = this.state.checkedCollections.slice(),
         itemIndex = co.indexOf(target.name);
 
-    if(itemIndex < 0) {
+    if (itemIndex < 0) {
       co.push(target.name);
     } else {
       co.splice(itemIndex, 1);
     }
 
-    this.setState({ unCheckedCollections: co });
+    this.setState({ checkedCollections: co });
   }
 
   handleSearchChange(event) {
@@ -207,16 +209,24 @@ class Header extends Component {
     this.props.clearStage();
 
     this.props.clearInfo(() => {
-      let co = this.state.unCheckedCollections;
-      if (co.length === 0) {
-        co = this.props.enabledCollections;
+
+      let checkedGraphs = this.state.checkedGraphs,
+          checkedCollections = this.state.checkedCollections;
+
+      if (checkedCollections.length === 0
+          && checkedGraphs.length === 0) {
+        checkedCollections = this.props.collections;
+      }
+
+      if (checkedCollections.length === 0) {
+        return;
       }
 
       this.setState({ loading: true }, () => {
         this.props.findNodes({
             query: this.state.query,
             queryProps: this.state.queryProps,
-            collections: co
+            collections: checkedCollections
           }, (data) => {
             // TODO: Remove ref to SearchContent
             this.props.searchContent.pagination.setState({
@@ -239,44 +249,50 @@ class Header extends Component {
   }
 
   onToggleGraph(event, graphName) {
-    let collectionsByGraphs = this.props.collectionsByGraphs,
+    let collectionsByGraphs = Object.assign({}, this.props.collectionsByGraphs),
         collectionsByGraph = collectionsByGraphs[graphName],
-        unCheckedCollections = this.state.unCheckedCollections.slice();
+        checkedGraphs = this.state.checkedGraphs.slice(),
+        checkedCollections = this.state.checkedCollections.slice(),
+        target = event.target,
+        index = checkedGraphs.indexOf(target.name);
 
     event.stopPropagation();
 
-    collectionsByGraph.forEach((collection) => {
-      if (unCheckedCollections.includes(collection)) {
-        let index = unCheckedCollections.indexOf(collection);
-        unCheckedCollections.splice(index, 1);
-      }
-    });
+    if (index < 0) {
+      checkedGraphs.push(target.name);
+    } else {
+      checkedGraphs.splice(index, 1);
+    }
+
+    if (target.checked) {
+      checkedCollections = checkedCollections.concat(collectionsByGraph);
+    } else {
+      collectionsByGraph.forEach((collection) => {
+        let hasCheckedGraphs = false;
+        for (let i = 0; i < checkedGraphs.length; i++) {
+          if (this.props.collectionsByGraphs[checkedGraphs[i]].includes(collection)) {
+            hasCheckedGraphs = true;
+            break;
+          }
+        }
+
+        if (!hasCheckedGraphs) {
+          index = checkedCollections.indexOf(collection);
+          checkedCollections.splice(index, 1);
+        }
+      });
+    }
 
     this.props.onToggleGraph(graphName, () => {
-      this.setState({ unCheckedCollections: unCheckedCollections });
+      this.setState({
+        checkedGraphs: checkedGraphs,
+        checkedCollections: _.uniq(checkedCollections)
+      });
     });
   }
 
   closeSearchOptions() {
     this.setState({ showOptions: false });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    let co = this.state.unCheckedCollections.slice();
-
-    this.state.unCheckedCollections.forEach((item) => {
-      if (nextProps.enabledCollections.includes(item)) {
-        if(!co.includes(item)) {
-          co.push(item);
-        }
-      }
-    });
-
-    this.setState({ unCheckedCollections: co });
-  }
-
-  componentDidMount() {
-    this.setState({ unCheckedCollections: this.props.collections });
   }
 }
 
