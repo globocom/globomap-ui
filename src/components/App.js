@@ -29,7 +29,7 @@ import './css/App.css';
 
 function uiSocket() {
   var uiSocket = io();
-  uiSocket.on('error', function(err){
+  uiSocket.on('error', function(err) {
     window.location.reload();
   });
   return uiSocket;
@@ -297,6 +297,12 @@ class App extends Component {
       });
     }
 
+    if (stageNodes.length > 0 && stageNodes[0].items !== undefined) {
+      if (stageNodes[0].items.length === 0) {
+        this.setCurrentTab('Search Results');
+      }
+    }
+
     this.setState({ stageNodes: stageNodes }, () => {
       this.clearCurrent();
     });
@@ -326,13 +332,14 @@ class App extends Component {
     }
 
     this.socket.emit('findnodes', options, (data) => {
-      this.setState({ nodes: data.documents,
-                      currentTab: 'Search Results' }, fn(data));
+      this.setCurrentTab('Search Results');
+      this.setState({ nodes: data.documents }, fn(data));
     });
   }
 
   setStageNodes(stageNodes, fn) {
-    this.setState({ stageNodes, currentTab: 'Navigation' }, fn);
+    this.setCurrentTab('Navigation');
+    this.setState({ stageNodes }, fn);
   }
 
   setCurrent(node, fn) {
