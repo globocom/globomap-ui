@@ -18,7 +18,7 @@ npm run build
 node server
 ```
 
-Now you have a up and running Globo Map UI app (http://localhost:8888)
+Now you have an up and running Globo Map UI app (http://localhost:8888)
 
 ## Developing
 
