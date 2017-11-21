@@ -30,7 +30,7 @@ const redisPassword = process.env.REDIS_PASSWORD
 const oauthLogoutUrl = process.env.OAUTH_LOGOUT_URL
 const forceAuth = process.env.OAUTH_FORCE === 'true'
 const sessionSecret = process.env.SESSION_SECRET || 'secret'
-const environment = process.env.ENVIRONMENT || 'DEV';
+const environment = process.env.ENVIRONMENT || 'development';
 
 const app = express();
 

@@ -25,7 +25,7 @@ const globomapApiUrl = process.env.GLOBOMAP_API_URL || 'http://localhost:8000/v1
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
 const certificates = process.env.CERTIFICATES || `${process.cwd()}/server/ca-certificates.crt`;
 const pageSize = process.env.PAGE_SIZE || 20;
-const environment = process.env.ENVIRONMENT || 'DEV';
+const environment = process.env.ENVIRONMENT || 'development';
 
 class IOServer {
   constructor(io) {
