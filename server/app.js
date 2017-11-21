@@ -30,6 +30,7 @@ const redisPassword = process.env.REDIS_PASSWORD
 const oauthLogoutUrl = process.env.OAUTH_LOGOUT_URL
 const forceAuth = process.env.OAUTH_FORCE === 'true'
 const sessionSecret = process.env.SESSION_SECRET || 'secret'
+const environment = process.env.ENVIRONMENT || 'DEV';
 
 const app = express();
 
@@ -98,7 +99,7 @@ app.get('/info', (req, res) => {
   return res.status(200).json({
     project: project.name,
     version: project.version,
-    environment: app.get('env'),
+    environment: environment,
     'node-version': project.engines.node,
     dependencies: project.dependencies
   });
