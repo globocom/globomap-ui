@@ -70,6 +70,7 @@ class App extends Component {
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
     this.clearInfo = this.clearInfo.bind(this);
     this.setCurrentTab = this.setCurrentTab.bind(this);
+    this.resetGraphsCollections = this.resetGraphsCollections.bind(this);
   }
 
   render() {
@@ -83,7 +84,6 @@ class App extends Component {
                 collectionsByGraphs={this.state.collectionsByGraphs}
                 selectedCollections={this.state.selectedCollections}
                 clearStage={this.clearStage}
-                clearCurrent={this.clearCurrent}
                 collections={this.state.collections}
                 findNodes={this.findNodes}
                 onToggleGraph={this.onToggleGraph}
@@ -96,6 +96,7 @@ class App extends Component {
                popMenu={this.popMenu}
                currentTab={this.state.currentTab}
                setCurrentTab={this.setCurrentTab}
+               resetGraphsCollections={this.resetGraphsCollections}
                info={this.info} />
 
         <div className="tabs-container">
@@ -111,8 +112,8 @@ class App extends Component {
           <div className={'tab-content' + (this.state.currentTab === 'Navigation' ? ' active' : '')}>
             <Stage graphs={this.state.graphs}
                    stageNodes={this.state.stageNodes}
+                   setStageNodes={this.setStageNodes}
                    currentNode={this.state.currentNode}
-                   clearCurrent={this.clearCurrent}
                    removeNode={this.removeNode}
                    setCurrent={this.setCurrent}
                    hasId={this.state.hasId} />
@@ -121,7 +122,6 @@ class App extends Component {
 
         <Info ref={(Info) => {this.info = Info}}
               getNode={this.getNode}
-              stageNodes={this.state.stageNodes}
               graphs={this.state.graphs}
               collectionsByGraphs={this.state.collectionsByGraphs}
               stageHasNode={this.stageHasNode}
@@ -336,7 +336,8 @@ class App extends Component {
   }
 
   setCurrent(node, fn) {
-    this.setState({ currentNode: { _id: node._id, uuid: node.uuid } }, fn);
+    let currentNode = { _id: node._id, uuid: node.uuid };
+    this.setState({ currentNode }, fn);
   }
 
   clearCurrent(fn) {
@@ -345,6 +346,20 @@ class App extends Component {
 
   setCurrentTab(tabName) {
     this.setState({ currentTab: tabName });
+  }
+
+  resetGraphsCollections() {
+    let graphsCopy = this.state.graphs.map((graph) => {
+      graph.enabled = false;
+      return graph;
+    });
+
+    this.getCollectionByGraphs(graphsCopy, (selectedCollections) => {
+      this.setState({
+        graphs: graphsCopy,
+        selectedCollections: selectedCollections
+      });
+    });
   }
 
   onToggleGraph(graphName, fn) {
@@ -360,7 +375,6 @@ class App extends Component {
         graphs: graphsCopy,
         selectedCollections: selectedCollections
       }, () => {
-        this.info.onTraversalSearch();
         fn();
       });
     });

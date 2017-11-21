@@ -17,6 +17,8 @@ limitations under the License.
 /* global Stickyfill, _ */
 
 import React, { Component } from 'react';
+import { uiSocket } from './App';
+import { traverseItems } from '../utils';
 import NodeEdges from './NodeEdges';
 import './css/NodeItem.css';
 
@@ -24,8 +26,10 @@ class NodeItem extends Component {
 
   constructor(props) {
     super(props);
+    this.socket = uiSocket();
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
+    this.checkNodeExistence = this.checkNodeExistence.bind(this);
   }
 
   componentDidMount() {
@@ -65,8 +69,40 @@ class NodeItem extends Component {
     );
   }
 
+  checkNodeExistence() {
+    return new Promise((resolve) => {
+      let stageNodes = Object.assign([], this.props.stageNodes);
+      let params = {
+        collection: this.props.node._id.split('/')[0],
+        id: this.props.node._id.split('/')[1]
+      };
+
+      this.socket.emit('getnode', params, (data) => {
+        let exist = Math.random() >= 0.5;
+        if (data.error) {
+          exist = false;
+        }
+        if (Object.keys(data).length === 0) {
+          exist = false;
+        }
+        traverseItems(stageNodes, (node) => {
+          if (node._id === this.props.node._id) {
+            node.exist = exist;
+          }
+        });
+        this.props.setStageNodes(stageNodes, () => {
+          resolve(exist);
+        });
+      });
+    });
+  }
+
   onItemSelect(event) {
-    this.props.setCurrent(this.props.node);
+    this.checkNodeExistence().then((exist) => {
+      if (exist) {
+        this.props.setCurrent(this.props.node);
+      }
+    });
   }
 
   onSelfRemove(event) {

@@ -40,7 +40,7 @@ class Info extends Component {
   render() {
     let byGraph = this.state.byGraph.map((items, index) => {
       return <ByGraph ref={(ByGraph) => {this.byGraph = ByGraph}}
-                      key={index + '_' + this.state.node.id + '_' + items.nodes.length}
+                      key={index + '_' + items.graph + '_' + items.nodes.length}
                       items={items}
                       graphs={this.props.graphs}
                       collectionsByGraphs={this.props.collectionsByGraphs}
@@ -86,8 +86,24 @@ class Info extends Component {
   }
 
   traversalSearch(node) {
-    let graphs = this.props.graphs.filter(g => g.enabled).map(g => g.name),
-        params = { start: (node._id || ''), graphs: graphs }
+    let hasChecked = false;
+    let graphs = [];
+    let params = {};
+
+    for (var i=0; i < this.props.graphs.length; i++) {
+      if (this.props.graphs[i].enabled) {
+        hasChecked = true;
+        break;
+      }
+    }
+
+    if (hasChecked) {
+      graphs = this.props.graphs.filter(g => g.enabled).map(g => g.name);
+    } else {
+      graphs = this.props.graphs.map(g => g.name);
+    }
+
+    params = { start: (node._id || ''), graphs: graphs }
 
     this.socket.emit('traversalsearch', params, (data) => {
       let byGraph = [];
