@@ -78,7 +78,7 @@ class NodeItem extends Component {
       };
 
       this.socket.emit('getnode', params, (data) => {
-        let exist = Math.random() >= 0.5;
+        let exist = true;
         if (data.error) {
           exist = false;
         }
