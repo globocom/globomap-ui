@@ -48,6 +48,8 @@ class Stage extends Component {
       return <div key={'n' + i} className="node-item-group">
                <NodeItem node={node}
                          graphs={this.props.graphs}
+                         stageNodes={this.props.stageNodes}
+                         setStageNodes={this.props.setStageNodes}
                          currentNode={this.props.currentNode}
                          removeNode={this.props.removeNode}
                          setCurrent={this.props.setCurrent}

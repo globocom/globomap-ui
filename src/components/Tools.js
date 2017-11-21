@@ -37,7 +37,6 @@ class Tools extends React.Component {
     this.onSaveGraph = this.onSaveGraph.bind(this);
     this.getContent = this.getContent.bind(this);
     this.clearMessage = this.clearMessage.bind(this);
-    this.checkNodeExistence = this.checkNodeExistence.bind(this);
   }
 
   render() {
@@ -131,35 +130,16 @@ class Tools extends React.Component {
     )
   }
 
-  equalizeNodes(key, fn) {
-    let promises = [];
-
-    traverseItems(this.storages[key], (node) => {
-      promises.push(new Promise((resolve) => {
-        this.checkNodeExistence(node).then((result) => {
-          node.exist = result;
-          resolve(this.storages[key]);
-        })
-      }))
-    });
-
-    Promise.all(promises)
-      .then((storages) => {
-        fn(storages[storages.length - 1]);
-      })
-  }
-
   applyGraph(e, key) {
     this.props.popMenu.closePopMenu();
     new Promise((resolve) => {
       this.storages = this.getLocalStorage(this.key) || {};
       resolve()
     }).then(() => {
-      this.equalizeNodes(key, (storages) => {
         this.props.info.props.clearCurrent();
         this.props.info.resetByGraph(() => {});
-        this.props.setStageNodes(storages);
-      })
+        this.props.resetGraphsCollections();
+        this.props.setStageNodes(this.storages[key])
     })
   }
 
@@ -170,29 +150,6 @@ class Tools extends React.Component {
     this.message = window.setTimeout(function() {
       this.setState({ message: '' });
     }.bind(this), 3000);
-  }
-
-  checkNodeExistence(node) {
-    return new Promise((resolve) => {
-      let params = {
-        collection: node._id.split('/')[0],
-        id: node._id.split('/')[1]
-      };
-
-      resolve(true);
-
-      // this.socket.emit('getnode', params, (data) => {
-      //   if (data.error) {
-      //     console.log(data.message);
-      //     resolve(false);
-      //   }
-      //   if (Object.keys(data).length === 0) {
-      //     console.log('empty collection');
-      //     resolve(false);
-      //   }
-      //   resolve(true);
-      // });
-    });
   }
 
   onRestoreGraph() {
