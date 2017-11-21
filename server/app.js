@@ -19,6 +19,7 @@ const path = require('path');
 const session = require('express-session')
 const Redis = require('ioredis');
 const oauthClient = require('./oauthClient');
+const project = require('../package.json');
 
 const redisHost = process.env.REDIS_HOST
 const redisPort = process.env.REDIS_PORT || 6379
@@ -87,6 +88,20 @@ const isAuthenticated = (req, res, next) => {
 
 app.get('/', isAuthenticated, (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
+});
+
+app.get('/healthcheck', (req, res) => {
+  return res.status(200).send('WORKING');
+});
+
+app.get('/info', (req, res) => {
+  return res.status(200).json({
+    project: project.name,
+    version: project.version,
+    environment: app.get('env'),
+    'node-version': project.engines.node,
+    dependencies: project.dependencies
+  });
 });
 
 app.get('/auth', (req, res) => {
