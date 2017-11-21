@@ -30,7 +30,6 @@ class Tools extends React.Component {
     }
 
     this.socket = uiSocket();
-    this.key = 'screenshot';
     this.tabs = [{ name: 'Search Results' }, { name: 'Navigation' }];
 
     this.onRestoreGraph = this.onRestoreGraph.bind(this);
@@ -194,7 +193,7 @@ class Tools extends React.Component {
 
   componentDidMount() {
     this.socket.emit('getEnvironment', (environment) => {
-      this.key = 'GSNAP_' + environment;
+      this.key = 'GSNAP_' + environment.toUpperCase();
       this.storages = this.getLocalStorage(this.key) || {};
     });
   }
