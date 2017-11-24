@@ -27,7 +27,7 @@ class ByGraph extends Component {
     this.throttleTime = 300;
     this.regexp = /^\d+$/;
     this.state = {
-      isOpen: true,
+      isOpen: false,
       searchIsOpen: false,
       filterIsOpen: false,
       excludedTypes: [],

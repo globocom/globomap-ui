@@ -68,6 +68,7 @@ class Properties extends Component {
   buildProps(obj, level) {
     return Object.keys(obj).map((key, index) => {
       let value = obj[key];
+      let itemKey = key + level;
       let isObject = (value instanceof Object);
 
       if (isObject) {
@@ -76,19 +77,19 @@ class Properties extends Component {
             <div className="item-prop">
               <span>{key}</span>
               <span>
-                <a href="#" onClick={(e) => this.toggleProps(e, key+level)}>
-                  {!this.state.subProps.includes(key+level)
+                <a href="#sup-props" onClick={(e) => this.toggleProps(e, itemKey)}>
+                  {!this.state.subProps.includes(itemKey)
                     ? <span><i className="icon fa fa-caret-right"></i> show</span>
                     : <span><i className="icon fa fa-caret-down"></i> close</span>}
                 </a>
               </span>
             </div>
-            {this.state.subProps.includes(key+level) &&
+            {this.state.subProps.includes(itemKey) &&
               <div className="sub-item-prop">
                 {this.buildProps(value, level+1)}
               </div>}
           </div>
-        )
+        );
       }
 
       if (typeof value === 'boolean') {
