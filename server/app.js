@@ -111,7 +111,7 @@ app.get('/auth', (req, res) => {
 
 app.get('/login', (req, res) => {
     oauthClient.code.getToken(req.originalUrl).then(function (token) {
-      req.session.tokenData = token.data
+      req.session['tokenData'] = token.data
       return res.redirect('/')
     }).catch(function(e) {
       console.log("[Auth] Unexpected error on user token retrieval")

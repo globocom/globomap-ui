@@ -86,6 +86,10 @@ class IOServer {
       socket.on('getEnvironment', (fn) => {
         fn(environment);
       });
+
+      socket.on('getZabbixGraph', (data, fn) => {
+        this.getZabbixGraph(data, (result) => { fn(result); });
+      });
     });
   }
 
@@ -214,6 +218,23 @@ class IOServer {
 
     let ips = Array.from(data.properties['ips'] || '');
     let url = `${globomapApiUrl}/plugin_data/zabbix?ips=` + ips.join();
+
+    axios.get(url, {
+      responseType: 'json',
+      timeout: 20000
+    })
+    .then((response) => {
+      fn(response.data);
+    })
+    .catch((error) => {
+      let errorMsg = this.handleError(error);
+      fn({ error: true, message: errorMsg || 'Get Monitoring Error' });
+    });
+  }
+
+  getZabbixGraph(data, fn) {
+    let { graphId } = data;
+    let url = `${globomapApiUrl}/plugin_data/zabbix/?encoded=1&graphid=` + graphId;
 
     axios.get(url, {
       responseType: 'json',
