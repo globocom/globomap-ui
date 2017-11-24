@@ -28,4 +28,6 @@
   color: rgba(255, 255, 255, 0.3);
 }
 
-.modal .modal-content {  }
+.modal .modal-content {
+  z-index: 101;
+}
