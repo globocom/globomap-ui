@@ -52,7 +52,7 @@ limitations under the License.
 .node-item .type {
   display: block;
   font-size: 10px;
-  margin-bottom: 6px;
+  margin: 0 10px 6px 0;
   text-transform: uppercase;
 }
 
@@ -108,7 +108,7 @@ limitations under the License.
   color: transparent;
   position: absolute;
   top: 5px;
-  right: 5px;
+  right: 2px;
   border: 0;
   background-color: transparent;
   font-size: 12px;
