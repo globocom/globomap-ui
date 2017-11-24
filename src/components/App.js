@@ -129,7 +129,9 @@ class App extends Component {
               addNodeToStage={this.addNodeToStage}
               clearCurrent={this.clearCurrent}
               currentNode={this.state.currentNode}
-              hasId={this.state.hasId} />
+              hasId={this.state.hasId}
+              showModal={this.showModal}
+              closeModal={this.closeModal} />
 
         <PopMenu ref={(popMenu) => {this.popMenu = popMenu}}
                  currentNode={this.state.currentNode} />

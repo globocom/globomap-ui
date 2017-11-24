@@ -15,17 +15,25 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { uiSocket } from './App';
 import Monit from './Monit';
 import Properties from './Properties';
+import Modal from './Modal';
 import './css/InfoContentHead.css';
 
 class InfoContentHead extends Component {
 
   constructor(props) {
     super(props);
+    this.socket = uiSocket();
     this.state = {
-      currentTab: 'Properties'
+      currentTab: 'Properties',
+      modalVisible: false,
+      modalContent: null
     }
+
+    this.showModal = this.showModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   render() {
@@ -38,29 +46,64 @@ class InfoContentHead extends Component {
       let active = this.state.currentTab === tabItem.name ? ' active' : '',
           disabled = tabItem.name === 'Monitoring' && this.props.node.type !== 'comp_unit';
 
-      return <li key={'tab' + tabItem.name} className={active}>
-              <button className="tab-btn topcoat-button--quiet" disabled={disabled}
-                onClick={(e) => this.setState({ currentTab: tabItem.name })}>
-                {tabItem.name}
-              </button>
-            </li>
+      return (<li key={'tab' + tabItem.name} className={active}>
+                <button className="tab-btn topcoat-button--quiet" disabled={disabled}
+                  onClick={(e) => this.setState({ currentTab: tabItem.name })}>
+                  {tabItem.name}
+                </button>
+              </li>);
     });
 
     let tabsContent = tabs.map((tabItem) => {
       let active = this.state.currentTab === tabItem.name ? ' active' : '';
-      return <div key={'content' + tabItem.name} className={'tab-content' + active}>
-              {tabItem.content}
-            </div>
+      return (<div key={'content' + tabItem.name} className={'tab-content' + active}>
+                {tabItem.content}
+              </div>);
     });
 
-    return <div className="info-content-head">
-            <nav className="tabs-nav">
-              <ul>{tabsButtons}</ul>
-            </nav>
-            <div className="tabs-container">
-              {tabsContent}
-            </div>
-           </div>;
+    let zbxGraphButton = (
+      <button className="topcoat-button--cta" onClick={(e) => this.openZbxGraph(e)}>
+        <i className="fa fa-bar-chart"></i>
+      </button>
+    );
+
+    return (<div className="info-content-head">
+              <nav className="tabs-nav">
+                <ul>{tabsButtons}</ul>
+              </nav>
+              <div className="plugins-buttons">
+                {this.props.node.type === 'zabbix_graph' &&
+                  zbxGraphButton}
+              </div>
+              <div className="tabs-container">
+                {tabsContent}
+              </div>
+              <Modal visible={this.state.modalVisible}
+                     content={this.state.modalContent}
+                     closeModal={this.closeModal} />
+            </div>);
+  }
+
+  openZbxGraph(event) {
+    let data = { graphId: this.props.node.id };
+    this.showModal(null);
+    this.socket.emit('getZabbixGraph', data, (base64data) => {
+      if (base64data.error) {
+        console.log(base64data.message);
+        this.closeModal();
+        return;
+      }
+      let imgData = 'data:image/png;base64,' + base64data.toString();
+      this.setState({ modalContent: <img src={imgData} alt={this.props.node.name} /> });
+    });
+  }
+
+  showModal(content) {
+    this.setState({ modalContent: content, modalVisible: true });
+  }
+
+  closeModal() {
+    this.setState({ modalContent: '', modalVisible: false });
   }
 
   componentWillReceiveProps(nextProps){
@@ -71,7 +114,6 @@ class InfoContentHead extends Component {
       this.setState({ currentTab: 'Properties' });
     }
   }
-
 }
 
 export default InfoContentHead;
