@@ -30,7 +30,8 @@ import './css/App.css';
 function uiSocket() {
   var uiSocket = io();
   uiSocket.on('error', function(err) {
-    window.location.reload();
+    // window.location.reload();
+    console.log('uiSocket error');
   });
   return uiSocket;
 }
