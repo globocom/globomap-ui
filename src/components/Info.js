@@ -86,23 +86,10 @@ class Info extends Component {
   }
 
   traversalSearch(node) {
-    let hasChecked = false;
     let graphs = [];
     let params = {};
 
-    for (var i=0; i < this.props.graphs.length; i++) {
-      if (this.props.graphs[i].enabled) {
-        hasChecked = true;
-        break;
-      }
-    }
-
-    if (hasChecked) {
-      graphs = this.props.graphs.filter(g => g.enabled).map(g => g.name);
-    } else {
-      graphs = this.props.graphs.map(g => g.name);
-    }
-
+    graphs = this.props.graphs.map(g => g.name);
     params = { start: (node._id || ''), graphs: graphs }
 
     this.socket.emit('traversalsearch', params, (data) => {
