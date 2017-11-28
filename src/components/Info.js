@@ -61,7 +61,9 @@ class Info extends Component {
             <i className="fa fa-close"></i>
           </button>
           <InfoContentHead node={this.state.node}
-                           hasId={this.props.hasId} />
+                           hasId={this.props.hasId}
+                           showModal={this.props.showModal}
+                           closeModal={this.props.closeModal} />
         </div>
         <div className="info-graph-items">
           {this.state.loading &&

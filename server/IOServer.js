@@ -238,14 +238,23 @@ class IOServer {
 
     axios.get(url, {
       responseType: 'json',
-      timeout: 20000
+      timeout: 1000
     })
     .then((response) => {
       fn(response.data);
     })
     .catch((error) => {
-      let errorMsg = this.handleError(error);
-      fn({ error: true, message: errorMsg || 'Get Monitoring Error' });
+      // retry
+      axios.get(url, {
+        responseType: 'json',
+        timeout: 1000
+      })
+      .then((response) => {
+        fn(response.data);
+      }).catch((error) => {
+        let errorMsg = this.handleError(error);
+        fn({ error: true, message: errorMsg || 'Get Monitoring Error' });
+      });
     });
   }
 
