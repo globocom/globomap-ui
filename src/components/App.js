@@ -30,7 +30,8 @@ import './css/App.css';
 function uiSocket() {
   var uiSocket = io();
   uiSocket.on('error', function(err) {
-    window.location.reload();
+    // window.location.reload();
+    console.log('uiSocket error');
   });
   return uiSocket;
 }
@@ -128,7 +129,9 @@ class App extends Component {
               addNodeToStage={this.addNodeToStage}
               clearCurrent={this.clearCurrent}
               currentNode={this.state.currentNode}
-              hasId={this.state.hasId} />
+              hasId={this.state.hasId}
+              showModal={this.showModal}
+              closeModal={this.closeModal} />
 
         <PopMenu ref={(popMenu) => {this.popMenu = popMenu}}
                  currentNode={this.state.currentNode} />

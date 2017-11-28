@@ -18,28 +18,44 @@ limitations under the License.
   padding: 8px 0;
 }
 
-.item-properties table {
-  width: 100%;
-  border-spacing: 0;
+.item-properties .item-prop {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
 }
 
-.item-properties th {
-  text-align: right;
-  width: 36%;
-  vertical-align: top;
-}
-
-.item-properties th,
-.item-properties td {
+.item-properties .item-prop > span,
+.item-properties .item-prop > span:first-child {
   font-size: 12px;
   padding: 4px 8px;
 }
 
-.item-properties td span {
-  display: block;
+.item-properties .item-prop > span:first-child {
+  font-weight: bold;
+  text-align: right;
+  min-width: 35%;
+  vertical-align: top;
+}
+
+.item-properties .item-prop a {
+  text-decoration: none;
+}
+
+.item-properties .item-prop .icon {
+  display: inline-block;
+  margin-right: 2px;
+  width: 5px;
+}
+
+.item-properties .sub-item-prop {
+  box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.2);
 }
 
 .item-properties .btn-show-more {
   margin: 8px 0;
   background-color: #efefef;
 }
+
+.item-properties .l-0 .sub-item-prop { background-color: #fffddd; }
+.item-properties .l-1 .sub-item-prop { background-color: #f8f6cb; }
+.item-properties .l-2 .sub-item-prop { background-color: #efedb8; }
