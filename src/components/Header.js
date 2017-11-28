@@ -256,8 +256,6 @@ class Header extends Component {
         target = event.target,
         index = checkedGraphs.indexOf(target.name);
 
-    event.stopPropagation();
-
     if (index < 0) {
       checkedGraphs.push(target.name);
     } else {
