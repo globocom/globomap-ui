@@ -1,4 +1,6 @@
-![Logo of the project](./public/images/logo.png)
+<p align="center">
+  <img src="https://github.com/globocom/globomap-ui/blob/master/public/images/logo.png?raw=true" alt="GloboMap logo" />
+</p>
 
 # Globo Map UI
 
