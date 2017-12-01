@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/* global Stickyfill, _ */
-
 import React, { Component } from 'react';
+import { debounce } from "lodash"
+import Stickyfill from 'stickyfill';
 import { uiSocket } from './App';
 import { traverseItems } from '../utils';
 import NodeEdges from './NodeEdges';
@@ -30,11 +30,12 @@ class NodeItem extends Component {
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
     this.checkNodeExistence = this.checkNodeExistence.bind(this);
+    this.stickyfill = Stickyfill();
   }
 
   componentDidMount() {
     let element = document.getElementsByClassName('sticky');
-    Stickyfill.add(element);
+    this.stickyfill.add(element);
   }
 
   render() {
@@ -48,7 +49,7 @@ class NodeItem extends Component {
     return (
       <div key={this.props.node.id}
            className={'node-item' + disabled + current + thisnode}
-           onClick={exist && _.debounce(this.onItemSelect, 100, true)}>
+           onClick={exist && debounce(this.onItemSelect, 100, true)}>
 
         {!this.props.node.root &&
           <button className="close-node-btn" onClick={this.onSelfRemove}>
