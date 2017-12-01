@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/* global _ */
-
 import React, { Component } from 'react';
+import { throttle, uniq } from "lodash"
 import NodeEdges from './NodeEdges';
 import './css/ByGraph.css';
 
@@ -99,7 +98,7 @@ class ByGraph extends Component {
                 <span className="graph-search">
                   <input type="search" name="query" className="topcoat-text-input graph-search-input"
                     autoFocus value={this.state.query} onChange={
-                      _.throttle(this.handleInputChange, this.throttleTime)} />
+                      throttle(this.handleInputChange, this.throttleTime)} />
                   <i className="fa fa-search" onClick={this.onInputSearch}></i>
                 </span>}
               </div>
@@ -287,7 +286,7 @@ class ByGraph extends Component {
 
   handleCheckItem(event) {
     let target = event.target;
-    let excludedTypes = _.uniq(this.state.excludedTypes);
+    let excludedTypes = uniq(this.state.excludedTypes);
     let query = this.state.query.trim().toLowerCase();
     let hasQuery = query.length > 0;
     let graphAmount = 0;

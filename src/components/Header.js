@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/* global _ */
-
 import React, { Component } from 'react';
+import { uniq } from "lodash"
 import './css/Header.css';
 
 class Header extends Component {
@@ -284,7 +283,7 @@ class Header extends Component {
     this.props.onToggleGraph(graphName, () => {
       this.setState({
         checkedGraphs: checkedGraphs,
-        checkedCollections: _.uniq(checkedCollections)
+        checkedCollections: uniq(checkedCollections)
       });
     });
   }
