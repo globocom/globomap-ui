@@ -14,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/* global _ */
-
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import { throttle, merge, uniq } from "lodash"
 import Header from './Header';
 import Tools from './Tools';
 import SearchContent from './SearchContent';
@@ -176,12 +175,12 @@ class App extends Component {
         });
 
         enabledCollections = enabledCollections.concat(collections);
-        collectionsByGraphs[item.name] = _.uniq(collections);
+        collectionsByGraphs[item.name] = uniq(collections);
       });
 
       this.setState({
         graphs: graphs,
-        enabledCollections: _.uniq(enabledCollections),
+        enabledCollections: uniq(enabledCollections),
         collectionsByGraphs: collectionsByGraphs
       });
     });
@@ -200,7 +199,7 @@ class App extends Component {
         }
       });
 
-      fn(_.uniq(selectedCollections));
+      fn(uniq(selectedCollections));
     });
   }
 
@@ -322,7 +321,7 @@ class App extends Component {
   }
 
   findNodes(opts, fn) {
-    let options = _.merge({
+    let options = merge({
       query: '',
       queryProps: [],
       collections: [],
@@ -405,7 +404,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getGraphsAndCollections();
-    document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100))
+    document.addEventListener('keydown', throttle(this.handleKeyDown, 100))
   }
 
   componentWillUnmount() {
