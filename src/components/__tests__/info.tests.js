@@ -13,7 +13,7 @@ import Info from '../Info';
 describe("Info", function() {
 
   test('Render the entire Info', () => {
-    const getNode = (node, parentUuid) => {return true}
+    const getNode = jest.fn((node, parentUuid) => {return true});
     const wrapper = shallow(
       <Info
         getNode={getNode} />
