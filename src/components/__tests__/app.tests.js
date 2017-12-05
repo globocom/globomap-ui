@@ -27,7 +27,6 @@ describe("App", function() {
   });
 
   test('Render the entire App', () => {
-    // const todo = { id: 1, done: false, name: 'Buy Milk' };
     const wrapper = shallow(
       <App />
     );

@@ -1,5 +1,7 @@
 ![Logo of the project](./public/images/logo.png)
 
+[![build status](https://travis-ci.org/globocom/globomap-ui.svg?branch=master)](http://travis-ci.org/globocom/globomap-ui)
+
 # Globo Map UI
 
 This is the UI part of the Globo Map project that consists of mapping any structure in the form of a graph.
