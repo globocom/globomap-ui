@@ -49,7 +49,7 @@ export GLOBOMAP_API_URL=<api_endpoint>/v1
 # Start server
 node server
 
-# On an other terminal, run the app in dev mode
+# On another terminal, run the app in dev mode
 npm start
 ```
 
