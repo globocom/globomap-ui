@@ -2,6 +2,8 @@
   <img src="https://github.com/globocom/globomap-ui/blob/master/public/images/logo.png?raw=true" alt="GloboMap logo" />
 </p>
 
+[![build status](https://travis-ci.org/globocom/globomap-ui.svg?branch=master)](http://travis-ci.org/globocom/globomap-ui)
+
 # Globo Map UI
 
 This is the UI part of the Globo Map project that consists of mapping any structure in the form of a graph.
