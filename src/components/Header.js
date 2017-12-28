@@ -30,7 +30,7 @@ class Header extends Component {
       loading: false,
       showOptions: false,
       queryProps: [],
-      propsOperators: ["==", "LIKE", "!=", ">", ">=", "<", "<="]
+      propsOperators: ["==", "LIKE", "IN", "!=", ">", ">=", "<", "<="]
     };
 
     this.addProp = this.addProp.bind(this);
