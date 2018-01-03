@@ -16,15 +16,31 @@ limitations under the License.
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import reducers from './redux/reducers';
+import socketMiddleware from './redux/middlewares/socketMiddleware';
+import SocketClient from './helpers/SocketClient';
+
 import App from './components/App';
 import NotFound from './components/NotFound';
 
+const socketClient = new SocketClient();
+
+const store = createStore(
+  reducers,
+  applyMiddleware(socketMiddleware(socketClient))
+);
+
 ReactDOM.render(
-  <Router>
-    <Switch>
-      <Route path="/" exact component={App} />
-      <Route component={NotFound} />
-    </Switch>
-  </Router>, document.getElementById('root')
+  <Provider store={store}>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" exact component={App} />
+        <Route component={NotFound} />
+      </Switch>
+    </BrowserRouter>
+  </Provider>, document.getElementById('root')
 );

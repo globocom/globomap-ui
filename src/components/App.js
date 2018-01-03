@@ -27,9 +27,8 @@ import { traverseItems, uuid, sortByName } from '../utils';
 import './css/App.css';
 
 function uiSocket() {
-  var uiSocket = io();
+  var uiSocket = io('http://localhost:8888');
   uiSocket.on('error', function(err) {
-    // window.location.reload();
     console.log('uiSocket error');
   });
   return uiSocket;
