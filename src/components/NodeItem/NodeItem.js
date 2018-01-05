@@ -14,13 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import _ from "lodash";
 import React, { Component } from 'react';
-import { debounce } from "lodash"
 import Stickyfill from 'stickyfill';
-import { uiSocket } from './App';
-import { traverseItems } from '../utils';
-import NodeEdges from './NodeEdges';
-import './css/NodeItem.css';
+import { traverseItems, uiSocket } from '../../utils';
+import { NodeEdges } from '../';
+import './NodeItem.css';
 
 class NodeItem extends Component {
 
@@ -31,43 +30,6 @@ class NodeItem extends Component {
     this.onSelfRemove = this.onSelfRemove.bind(this);
     this.checkNodeExistence = this.checkNodeExistence.bind(this);
     this.stickyfill = Stickyfill();
-  }
-
-  componentDidMount() {
-    let element = document.getElementsByClassName('sticky');
-    this.stickyfill.add(element);
-  }
-
-  render() {
-    let { _id, name, type, edges, uuid, id } = this.props.node;
-    let cNode = this.props.currentNode,
-        current = cNode && _id === cNode._id ? ' current' : '',
-        thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '',
-        exist = this.props.node.exist === undefined ? true : this.props.node.exist,
-        disabled = !exist ? ' disabled' : '';
-
-    return (
-      <div key={this.props.node.id}
-           className={'node-item' + disabled + current + thisnode}
-           onClick={exist && debounce(this.onItemSelect, 100, true)}>
-
-        {!this.props.node.root &&
-          <button className="close-node-btn" onClick={this.onSelfRemove}>
-            <i className="fa fa-close"></i>
-          </button>}
-
-        <div className="node-info sticky">
-          <span className="type">{type}</span>
-          <span className="name">{name}</span>
-          {this.props.hasId && <span>{id}</span>}
-        </div>
-
-        <NodeEdges edges={edges}
-                   graphs={this.props.graphs}
-                   position={'left'}
-                   hasId={this.props.hasId} />
-      </div>
-    );
   }
 
   checkNodeExistence() {
@@ -109,6 +71,42 @@ class NodeItem extends Component {
   onSelfRemove(event) {
     event.stopPropagation();
     this.props.removeNode(this.props.node);
+  }
+
+  componentDidMount() {
+    let element = document.getElementsByClassName('sticky');
+    this.stickyfill.add(element);
+  }
+
+  render() {
+    let { _id, name, type, edges, uuid, id } = this.props.node;
+    let cNode = this.props.currentNode,
+        current = cNode && _id === cNode._id ? ' current' : '',
+        thisnode = cNode && uuid === cNode.uuid ? ' this-node' : '',
+        exist = this.props.node.exist === undefined ? true : this.props.node.exist,
+        disabled = !exist ? ' disabled' : '';
+
+    return (
+      <div key={this.props.node.id}
+           className={'node-item' + disabled + current + thisnode}
+           onClick={exist && _.debounce(this.onItemSelect, 100, true)}>
+
+        {!this.props.node.root &&
+          <button className="close-node-btn" onClick={this.onSelfRemove}>
+            <i className="fa fa-close"></i>
+          </button>}
+
+        <div className="node-info sticky">
+          <span className="type">{type}</span>
+          <span className="name">{name}</span>
+          {this.props.hasId && <span>{id}</span>}
+        </div>
+
+        <NodeEdges edges={edges}
+                   position={'left'}
+                   hasId={this.props.hasId} />
+      </div>
+    );
   }
 }
 

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import React from 'react';
-import './css/Modal.css';
+import './Modal.css';
 
 class Modal extends React.Component {
 

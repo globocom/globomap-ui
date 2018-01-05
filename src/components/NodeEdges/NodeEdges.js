@@ -15,8 +15,9 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import Properties from './Properties';
-import './css/NodeEdges.css';
+import { connect } from 'react-redux';
+import { Properties } from '../';
+import './NodeEdges.css';
 
 class NodeEdges extends Component {
 
@@ -33,47 +34,6 @@ class NodeEdges extends Component {
     this.onOpenProp = this.onOpenProp.bind(this);
     this.closeAll = this.closeAll.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
-  }
-
-  render() {
-    let edges = this.props.edges;
-    if(edges === undefined) {
-      return <div className="sub-node-edges"></div>;
-    }
-
-    let colorCls = this.props.graphs.filter((graph) => {
-        return graph.name === edges.graph;
-    })[0].colorClass;
-
-    let edgesInOut = [
-      { dir: 'in', toggleFn: this.onOpenIn, openState: this.state.inOpen, items: this.buildEdgeItems(edges.in) },
-      { dir: 'out', toggleFn: this.onOpenOut, openState: this.state.outOpen, items: this.buildEdgeItems(edges.out) }
-    ].map((elem) => {
-      return elem.items.length > 0
-              ? (<div key={elem.dir} className={'edges-' + elem.dir}>
-                  <button className={'edges-btn ' + colorCls} onClick={elem.toggleFn}>
-                    <i className={'fa fa-arrow-'+ (elem.dir === 'in' ? 'right' : 'left')}></i>
-                  </button>
-                  {elem.openState &&
-                    <div className="edges-content" onClick={e => e.stopPropagation()}>
-                      <div className="tooltip-arrow"></div>
-                      <div className={'v-line ' + colorCls}></div>
-                      <div className="edges-content-head">
-                        Links
-                        <button className="close-tooltip-btn" onClick={elem.toggleFn}>
-                          <i className="fa fa-close"></i>
-                        </button>
-                      </div>
-                      {elem.items}
-                    </div>}
-                  </div>)
-              : null;
-    });
-
-    return <div className={'sub-node-edges ' + this.props.position}
-                ref={node => { this.node = node; }}>
-             {edgesInOut}
-           </div>;
   }
 
   buildEdgeItems(edges) {
@@ -134,6 +94,51 @@ class NodeEdges extends Component {
     document.removeEventListener('click', this.handleOutsideClick, false);
   }
 
+  render() {
+    let edges = this.props.edges;
+    if(edges === undefined) {
+      return <div className="sub-node-edges"></div>;
+    }
+
+    let colorCls = this.props.graphs.filter((graph) => {
+        return graph.name === edges.graph;
+    })[0].colorClass;
+
+    let edgesInOut = [
+      { dir: 'in', toggleFn: this.onOpenIn, openState: this.state.inOpen, items: this.buildEdgeItems(edges.in) },
+      { dir: 'out', toggleFn: this.onOpenOut, openState: this.state.outOpen, items: this.buildEdgeItems(edges.out) }
+    ].map((elem) => {
+      return elem.items.length > 0
+              ? (<div key={elem.dir} className={'edges-' + elem.dir}>
+                  <button className={'edges-btn ' + colorCls} onClick={elem.toggleFn}>
+                    <i className={'fa fa-arrow-'+ (elem.dir === 'in' ? 'right' : 'left')}></i>
+                  </button>
+                  {elem.openState &&
+                    <div className="edges-content" onClick={e => e.stopPropagation()}>
+                      <div className="tooltip-arrow"></div>
+                      <div className={'v-line ' + colorCls}></div>
+                      <div className="edges-content-head">
+                        Links
+                        <button className="close-tooltip-btn" onClick={elem.toggleFn}>
+                          <i className="fa fa-close"></i>
+                        </button>
+                      </div>
+                      {elem.items}
+                    </div>}
+                  </div>)
+              : null;
+    });
+
+    return <div className={'sub-node-edges ' + this.props.position}
+                ref={node => { this.node = node; }}>
+             {edgesInOut}
+           </div>;
+  }
+
 }
 
-export default NodeEdges;
+function mapStateToProps({ graphs }) {
+  return { graphs };
+}
+
+export default connect(mapStateToProps, null)(NodeEdges);

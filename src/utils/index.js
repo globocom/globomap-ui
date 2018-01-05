@@ -14,6 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import io from 'socket.io-client';
+
+function uiSocket() {
+  var uiSocket = io('http://localhost:8888');
+  uiSocket.on('error', function(err) {
+    console.log('uiSocket error');
+  });
+  return uiSocket;
+}
+
 function traverseItems(nList, fn) {
   for (let i in nList) {
     let node = nList[i];
@@ -58,8 +68,9 @@ function sortByName(arr) {
   return arrCopy;
 }
 
-module.exports = {
+export {
+  sortByName,
   traverseItems,
-  uuid,
-  sortByName
+  uiSocket,
+  uuid
 };

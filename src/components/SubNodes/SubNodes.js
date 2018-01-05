@@ -15,12 +15,12 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import { uiSocket } from './App';
-import ByGraph from './ByGraph';
-import InfoContentHead from './InfoContentHead';
-import './css/Info.css';
+import { connect } from 'react-redux';
+import { uiSocket } from '../../utils';
+import { ByGraph, InfoContentHead } from '../';
+import './SubNodes.css';
 
-class Info extends Component {
+class SubNodes extends Component {
 
   constructor(props) {
     super(props);
@@ -31,7 +31,7 @@ class Info extends Component {
       byGraph: []
     }
 
-    this.onCloseInfo = this.onCloseInfo.bind(this);
+    this.onCloseSubNodes = this.onCloseSubNodes.bind(this);
     this.composeEdges = this.composeEdges.bind(this);
     this.onTraversalSearch = this.onTraversalSearch.bind(this);
     this.resetByGraph = this.resetByGraph.bind(this);
@@ -42,7 +42,6 @@ class Info extends Component {
       return <ByGraph ref={(ByGraph) => {this.byGraph = ByGraph}}
                       key={index + '_' + items.graph + '_' + items.nodes.length}
                       items={items}
-                      graphs={this.props.graphs}
                       collectionsByGraphs={this.props.collectionsByGraphs}
                       stageHasNode={this.props.stageHasNode}
                       node={this.state.node}
@@ -51,13 +50,13 @@ class Info extends Component {
     });
 
     return (
-      <div className={'info ' + (this.props.currentNode ? 'open' : '')}>
-        <div className="info-header">
-          <div className="info-header-title" title={this.state.node.name}>
+      <div className={'subnodes ' + (this.props.currentNode ? 'open' : '')}>
+        <div className="subnodes-header">
+          <div className="subnodes-header-title" title={this.state.node.name}>
             <span className="title-limit">{this.state.node.name}</span>
           </div>
-          <button className="close-info-btn topcoat-icon-button--quiet"
-            onClick={this.onCloseInfo}>
+          <button className="close-subnodes-btn topcoat-icon-button--quiet"
+            onClick={this.onCloseSubNodes}>
             <i className="fa fa-close"></i>
           </button>
           <InfoContentHead node={this.state.node}
@@ -65,7 +64,7 @@ class Info extends Component {
                            showModal={this.props.showModal}
                            closeModal={this.props.closeModal} />
         </div>
-        <div className="info-graph-items">
+        <div className="subnodes-graph-items">
           {this.state.loading &&
             <div className="items-loading">
               <i className="loading-cog fa fa-cog fa-spin fa-2x fa-fw"></i>
@@ -145,7 +144,7 @@ class Info extends Component {
     return nEdges;
   }
 
-  onCloseInfo(event) {
+  onCloseSubNodes(event) {
     event.stopPropagation();
     this.props.clearCurrent();
     this.resetByGraph(() => {});
@@ -191,4 +190,8 @@ class Info extends Component {
   }
 }
 
-export default Info;
+function mapStateToProps({ graphs }) {
+  return { graphs };
+}
+
+export default connect(mapStateToProps, null)(SubNodes);

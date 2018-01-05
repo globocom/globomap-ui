@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.info,
-.info .info-header,
-.info .info-graph-items {
+.subnodes,
+.subnodes .subnodes-header,
+.subnodes .subnodes-graph-items {
   box-sizing: border-box;
 }
 
-.info {
+.subnodes {
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -34,18 +34,18 @@ limitations under the License.
   transition: all 0.1s cubic-bezier(0.70, 0, 0.175, 1);
 }
 
-.info.open {
+.subnodes.open {
   right: 10px;
 }
 
-.info .info-header {
+.subnodes .subnodes-header {
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   border-radius: 4px;
   margin-bottom: 10px;
   z-index: 9;
 }
 
-.info .info-header-title {
+.subnodes .subnodes-header-title {
   display: flex;
   align-items: center;
   height: 35px;
@@ -56,7 +56,7 @@ limitations under the License.
   background-color: #50bea8;
 }
 
-.info .info-header-title .title-limit {
+.subnodes .subnodes-header-title .title-limit {
   display: block;
   width: 94%;
   overflow: hidden;
@@ -64,7 +64,7 @@ limitations under the License.
   white-space: nowrap;
 }
 
-.info .info-header .close-info-btn {
+.subnodes .subnodes-header .close-subnodes-btn {
   position: absolute;
   top: 6px;
   right: 10px;
@@ -72,11 +72,11 @@ limitations under the License.
   color: white;
 }
 
-.info .info-header .close-info-btn:hover {
+.subnodes .subnodes-header .close-subnodes-btn:hover {
   color: #555;
 }
 
-.info .info-graph-items {
+.subnodes .subnodes-graph-items {
   flex-grow: 1;
   /*border: 1px solid #9daca9;*/
   border-radius: 4px;
@@ -86,7 +86,7 @@ limitations under the License.
   overflow-x: hidden;
 }
 
-.info .info-content {
+.subnodes .subnodes-content {
   position: absolute;
   top: 40px;
   right: 0;

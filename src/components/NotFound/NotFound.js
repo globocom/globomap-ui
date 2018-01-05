@@ -16,7 +16,7 @@ limitations under the License.
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './css/NotFound.css';
+import './NotFound.css';
 
 
 class NotFound extends React.Component {

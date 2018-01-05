@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import { uiSocket } from './App';
-import './css/Monit.css';
+import { uiSocket } from '../../utils';
+import './Monit.css';
 
 class Monit extends Component {
   monitItems = ['comp_unit'];
