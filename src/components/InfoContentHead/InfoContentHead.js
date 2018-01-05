@@ -15,11 +15,9 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import { uiSocket } from './App';
-import Monit from './Monit';
-import Properties from './Properties';
-import Modal from './Modal';
-import './css/InfoContentHead.css';
+import { uiSocket } from '../../utils';
+import { Properties, Modal, Monit } from '../';
+import './InfoContentHead.css';
 
 class InfoContentHead extends Component {
 

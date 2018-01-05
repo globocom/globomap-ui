@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import NodeItem from './NodeItem';
-import './css/Stage.css';
+import { NodeItem } from '../';
+import './Stage.css';
 
 class Stage extends Component {
 
@@ -47,7 +47,6 @@ class Stage extends Component {
     return nodeList.map((node, i) => {
       return <div key={'n' + i} className="node-item-group">
                <NodeItem node={node}
-                         graphs={this.props.graphs}
                          stageNodes={this.props.stageNodes}
                          setStageNodes={this.props.setStageNodes}
                          currentNode={this.props.currentNode}

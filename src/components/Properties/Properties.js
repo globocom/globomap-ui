@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import './css/Properties.css';
+import './Properties.css';
 
 const DATE_FORMAT_LANGUAGE = 'pt-BR';
 

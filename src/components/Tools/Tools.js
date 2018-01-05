@@ -17,9 +17,8 @@ limitations under the License.
 /* global localStorage, JSON */
 
 import React from 'react';
-import { uiSocket } from './App';
-import { traverseItems } from '../utils';
-import './css/Tools.css';
+import { traverseItems, uiSocket } from '../../utils';
+import './Tools.css';
 
 class Tools extends React.Component {
 
@@ -36,49 +35,6 @@ class Tools extends React.Component {
     this.onSaveGraph = this.onSaveGraph.bind(this);
     this.getContent = this.getContent.bind(this);
     this.clearMessage = this.clearMessage.bind(this);
-  }
-
-  render() {
-    let rootNodeHasItens = false;
-    if (this.props.stageNodes[0] !== undefined &&
-        this.props.stageNodes[0].items.length > 0) {
-      rootNodeHasItens = true;
-    }
-
-    let tabsButtons = this.tabs.map((tab, index) => {
-      let active = this.props.currentTab === tab.name ? ' active' : '';
-
-      return (
-        <button key={'tab' + index} className={'tab-btn' + active}
-          disabled={tab.name === 'Navigation' && !rootNodeHasItens}
-          onClick={(e) => this.props.setCurrentTab( tab.name )}>
-          {tab.name}
-        </button>
-      );
-    });
-
-    return (
-      <div className={'tools' + (this.props.currentNode ? ' with-info' : '')}>
-
-        <nav className="tools-tabs">
-          {tabsButtons}
-        </nav>
-
-        <div className="tools-buttons">
-          <span className="message">{this.state.message}</span>
-          <button className={'btn-save-graph topcoat-button'}
-                  onClick={this.onSaveGraph} disabled={!rootNodeHasItens}>
-            <i className="fa fa-save"></i>
-          </button>
-          <button className={'btn-restore-graph topcoat-button'}
-                  onClick={this.onRestoreGraph}
-                  disabled={(!this.storages || Object.keys(this.storages).length === 0)}>
-            <i className="fa fa-folder-open-o"></i>
-          </button>
-        </div>
-
-      </div>
-    );
   }
 
   getLocalStorage(key) {
@@ -197,6 +153,50 @@ class Tools extends React.Component {
       this.storages = this.getLocalStorage(this.key) || {};
     });
   }
+
+  render() {
+    let rootNodeHasItens = false;
+    if (this.props.stageNodes[0] !== undefined &&
+        this.props.stageNodes[0].items.length > 0) {
+      rootNodeHasItens = true;
+    }
+
+    let tabsButtons = this.tabs.map((tab, index) => {
+      let active = this.props.currentTab === tab.name ? ' active' : '';
+
+      return (
+        <button key={'tab' + index} className={'tab-btn' + active}
+          disabled={tab.name === 'Navigation' && !rootNodeHasItens}
+          onClick={(e) => this.props.setCurrentTab( tab.name )}>
+          {tab.name}
+        </button>
+      );
+    });
+
+    return (
+      <div className={'tools' + (this.props.currentNode ? ' with-info' : '')}>
+
+        <nav className="tools-tabs">
+          {tabsButtons}
+        </nav>
+
+        <div className="tools-buttons">
+          <span className="message">{this.state.message}</span>
+          <button className={'btn-save-graph topcoat-button'}
+                  onClick={this.onSaveGraph} disabled={!rootNodeHasItens}>
+            <i className="fa fa-save"></i>
+          </button>
+          <button className={'btn-restore-graph topcoat-button'}
+                  onClick={this.onRestoreGraph}
+                  disabled={(!this.storages || Object.keys(this.storages).length === 0)}>
+            <i className="fa fa-folder-open-o"></i>
+          </button>
+        </div>
+
+      </div>
+    );
+  }
+
 }
 
 export default Tools;

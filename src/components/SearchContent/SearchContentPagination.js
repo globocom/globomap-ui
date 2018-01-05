@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import './css/SearchContentPagination.css';
+import './SearchContentPagination.css';
 
 class SearchContentPagination extends Component {
 

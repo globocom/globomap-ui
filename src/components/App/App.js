@@ -14,25 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import _ from "lodash";
 import React, { Component } from 'react';
-import io from 'socket.io-client';
-import { throttle, merge, uniq } from "lodash"
-import Header from './Header';
-import Tools from './Tools';
-import SearchContent from './SearchContent';
-import Stage from './Stage';
-import Info from './Info';
-import PopMenu from './PopMenu';
-import { traverseItems, uuid, sortByName } from '../utils';
-import './css/App.css';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-function uiSocket() {
-  var uiSocket = io('http://localhost:8888');
-  uiSocket.on('error', function(err) {
-    console.log('uiSocket error');
-  });
-  return uiSocket;
-}
+import { fetchGraphs } from '../../redux/modules/graphs';
+import { fetchCollections } from '../../redux/modules/collections';
+
+import { Header, Tools, SearchContent, Stage, SubNodes, PopMenu } from '../';
+
+import { traverseItems, uuid, sortByName, uiSocket } from '../../utils';
+import './App.css';
 
 class App extends Component {
 
@@ -42,11 +35,9 @@ class App extends Component {
 
     this.state = {
       currentNode: false,
-      graphs: [],
       enabledCollections: [],
       selectedCollections: [],
       collectionsByGraphs: {},
-      collections: [],
       nodes: [],
       stageNodes: [],
       hasId: false,
@@ -64,77 +55,12 @@ class App extends Component {
     this.clearCurrent = this.clearCurrent.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.clearStage = this.clearStage.bind(this);
-    this.onToggleGraph = this.onToggleGraph.bind(this);
+    // this.onToggleGraph = this.onToggleGraph.bind(this);
     this.removeNode = this.removeNode.bind(this);
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
     this.clearInfo = this.clearInfo.bind(this);
     this.setCurrentTab = this.setCurrentTab.bind(this);
     this.resetGraphsCollections = this.resetGraphsCollections.bind(this);
-  }
-
-  render() {
-    return (
-      <div className="main">
-        <span className="main-xxxx"
-              onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
-
-        <Header ref={(header) => {this.header = header}}
-                graphs={this.state.graphs}
-                collectionsByGraphs={this.state.collectionsByGraphs}
-                selectedCollections={this.state.selectedCollections}
-                clearStage={this.clearStage}
-                collections={this.state.collections}
-                findNodes={this.findNodes}
-                onToggleGraph={this.onToggleGraph}
-                clearInfo={this.clearInfo}
-                searchContent={this.searchContent} />
-
-        <Tools currentNode={this.state.currentNode}
-               stageNodes={this.state.stageNodes}
-               setStageNodes={this.setStageNodes}
-               popMenu={this.popMenu}
-               currentTab={this.state.currentTab}
-               setCurrentTab={this.setCurrentTab}
-               resetGraphsCollections={this.resetGraphsCollections}
-               info={this.info} />
-
-        <div className="tabs-container">
-          <div className={'tab-content' + (this.state.currentTab === 'Search Results' ? ' active' : '')}>
-            <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
-                           nodes={this.state.nodes}
-                           findNodes={this.findNodes}
-                           addNodeToStage={this.addNodeToStage}
-                           currentNode={this.state.currentNode}
-                           enabledCollections={this.state.enabledCollections}
-                           header={this.header} />
-          </div>
-          <div className={'tab-content' + (this.state.currentTab === 'Navigation' ? ' active' : '')}>
-            <Stage graphs={this.state.graphs}
-                   stageNodes={this.state.stageNodes}
-                   setStageNodes={this.setStageNodes}
-                   currentNode={this.state.currentNode}
-                   removeNode={this.removeNode}
-                   setCurrent={this.setCurrent}
-                   hasId={this.state.hasId} />
-          </div>
-        </div>
-
-        <Info ref={(Info) => {this.info = Info}}
-              getNode={this.getNode}
-              graphs={this.state.graphs}
-              collectionsByGraphs={this.state.collectionsByGraphs}
-              stageHasNode={this.stageHasNode}
-              addNodeToStage={this.addNodeToStage}
-              clearCurrent={this.clearCurrent}
-              currentNode={this.state.currentNode}
-              hasId={this.state.hasId}
-              showModal={this.showModal}
-              closeModal={this.closeModal} />
-
-        <PopMenu ref={(popMenu) => {this.popMenu = popMenu}}
-                 currentNode={this.state.currentNode} />
-      </div>
-    );
   }
 
   getEdgeLinks(graph) {
@@ -174,12 +100,12 @@ class App extends Component {
         });
 
         enabledCollections = enabledCollections.concat(collections);
-        collectionsByGraphs[item.name] = uniq(collections);
+        collectionsByGraphs[item.name] = _.uniq(collections);
       });
 
       this.setState({
         graphs: graphs,
-        enabledCollections: uniq(enabledCollections),
+        enabledCollections: _.uniq(enabledCollections),
         collectionsByGraphs: collectionsByGraphs
       });
     });
@@ -198,7 +124,7 @@ class App extends Component {
         }
       });
 
-      fn(uniq(selectedCollections));
+      fn(_.uniq(selectedCollections));
     });
   }
 
@@ -316,11 +242,11 @@ class App extends Component {
   }
 
   clearInfo(fn) {
-    this.info.resetByGraph(fn);
+    this.subnodes.resetByGraph(fn);
   }
 
   findNodes(opts, fn) {
-    let options = merge({
+    let options = _.merge({
       query: '',
       queryProps: [],
       collections: [],
@@ -370,23 +296,23 @@ class App extends Component {
     });
   }
 
-  onToggleGraph(graphName, fn) {
-    let graphsCopy = this.state.graphs.map((graph) => {
-      if(graph.name === graphName) {
-        graph.enabled = !graph.enabled;
-      }
-      return graph;
-    });
+  // onToggleGraph(graphName, fn) {
+  //   let graphsCopy = this.state.graphs.map((graph) => {
+  //     if(graph.name === graphName) {
+  //       graph.enabled = !graph.enabled;
+  //     }
+  //     return graph;
+  //   });
 
-    this.getCollectionByGraphs(graphsCopy, (selectedCollections) => {
-      this.setState({
-        graphs: graphsCopy,
-        selectedCollections: selectedCollections
-      }, () => {
-        fn();
-      });
-    });
-  }
+  //   this.getCollectionByGraphs(graphsCopy, (selectedCollections) => {
+  //     this.setState({
+  //       graphs: graphsCopy,
+  //       selectedCollections: selectedCollections
+  //     }, () => {
+  //       fn();
+  //     });
+  //   });
+  // }
 
   handleKeyDown(event) {
     if (event.key === 'Escape') {
@@ -402,15 +328,91 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getGraphsAndCollections();
-    document.addEventListener('keydown', throttle(this.handleKeyDown, 100))
+    // this.getGraphsAndCollections();
+
+    this.props.fetchGraphs();
+    this.props.fetchCollections();
+
+    document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100));
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyDown)
+    document.removeEventListener('keydown', this.handleKeyDown);
     this.socket.disconnect();
+  }
+
+render() {
+    return (
+      <div className="main">
+        <span className="main-xxxx"
+              onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
+
+        <Header ref={(header) => {this.header = header}}
+                collectionsByGraphs={this.state.collectionsByGraphs}
+                selectedCollections={this.state.selectedCollections}
+                clearStage={this.clearStage}
+                findNodes={this.findNodes}
+                // onToggleGraph={this.onToggleGraph}
+                clearInfo={this.clearInfo}
+                searchContent={this.searchContent} />
+
+        <Tools currentNode={this.state.currentNode}
+               stageNodes={this.state.stageNodes}
+               setStageNodes={this.setStageNodes}
+               popMenu={this.popMenu}
+               currentTab={this.state.currentTab}
+               setCurrentTab={this.setCurrentTab}
+               resetGraphsCollections={this.resetGraphsCollections}
+               info={this.subnodes} />
+
+        <div className="tabs-container">
+          <div className={'tab-content' + (this.state.currentTab === 'Search Results' ? ' active' : '')}>
+            <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
+                           nodes={this.state.nodes}
+                           findNodes={this.findNodes}
+                           addNodeToStage={this.addNodeToStage}
+                           currentNode={this.state.currentNode}
+                           enabledCollections={this.state.enabledCollections}
+                           header={this.header} />
+          </div>
+          <div className={'tab-content' + (this.state.currentTab === 'Navigation' ? ' active' : '')}>
+            <Stage stageNodes={this.state.stageNodes}
+                   setStageNodes={this.setStageNodes}
+                   currentNode={this.state.currentNode}
+                   removeNode={this.removeNode}
+                   setCurrent={this.setCurrent}
+                   hasId={this.state.hasId} />
+          </div>
+        </div>
+
+        <SubNodes ref={(SubNodes) => {this.subnodes = SubNodes}}
+              getNode={this.getNode}
+              graphs={this.state.graphs}
+              collectionsByGraphs={this.state.collectionsByGraphs}
+              stageHasNode={this.stageHasNode}
+              addNodeToStage={this.addNodeToStage}
+              clearCurrent={this.clearCurrent}
+              currentNode={this.state.currentNode}
+              hasId={this.state.hasId}
+              showModal={this.showModal}
+              closeModal={this.closeModal} />
+
+        <PopMenu ref={(popMenu) => {this.popMenu = popMenu}}
+                 currentNode={this.state.currentNode} />
+      </div>
+    );
   }
 
 }
 
-export { App as default, uiSocket };
+function mapStateToProps({ graphs, collections }) {
+  return { graphs, collections };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchGraphs, fetchCollections }, dispatch);
+}
+
+let app = connect(mapStateToProps, mapDispatchToProps)(App);
+
+export { app as default, uiSocket };

@@ -20,17 +20,16 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import reducers from './redux/reducers';
+import reducer from './redux/modules/reducer';
 import socketMiddleware from './redux/middlewares/socketMiddleware';
 import SocketClient from './helpers/SocketClient';
 
-import App from './components/App';
-import NotFound from './components/NotFound';
+import { App, NotFound } from './components';
 
-const socketClient = new SocketClient();
+const socketClient = new SocketClient({ connect: true });
 
 const store = createStore(
-  reducers,
+  reducer,
   applyMiddleware(socketMiddleware(socketClient))
 );
 

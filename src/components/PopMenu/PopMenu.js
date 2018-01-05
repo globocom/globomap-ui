@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import './css/PopMenu.css';
+import './PopMenu.css';
 
 class PopMenu extends Component {
 

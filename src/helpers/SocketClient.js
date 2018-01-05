@@ -4,6 +4,12 @@ import config from '../config';
 export default class socketAPI {
   socket;
 
+  constructor(options = { connect: false }) {
+    if (options.connect) {
+      this.socket = io(config.host);
+    }
+  }
+
   connect() {
     this.socket = io.connect(config.host, { path: config.socketPath });
     return new Promise((resolve, reject) => {
@@ -23,7 +29,9 @@ export default class socketAPI {
 
   emit(event, data) {
     return new Promise((resolve, reject) => {
-      if (!this.socket) return reject('No socket connection.');
+      if (!this.socket) {
+        return reject('No socket connection.');
+      }
 
       return this.socket.emit(event, data, (response) => {
         if (response.error) {
@@ -31,16 +39,18 @@ export default class socketAPI {
           return reject(response.error);
         }
 
-        return resolve();
+        return resolve(response);
       });
     });
   }
 
-  on(event, fun) {
+  on(event, fn) {
     return new Promise((resolve, reject) => {
-      if (!this.socket) return reject('No socket connection.');
+      if (!this.socket) {
+        return reject('No socket connection.');
+      }
 
-      this.socket.on(event, fun);
+      this.socket.on(event, fn);
       resolve();
     });
   }
