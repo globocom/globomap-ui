@@ -18,9 +18,9 @@ import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NodeEdges } from '../';
-import './ByGraph.css';
+import './SubNodesByGraph.css';
 
-class ByGraph extends Component {
+class SubNodesByGraph extends Component {
 
   constructor(props) {
     super(props);
@@ -355,4 +355,4 @@ function mapStateToProps({ graphs }) {
   return { graphs };
 }
 
-export default connect(mapStateToProps, null)(ByGraph);
+export default connect(mapStateToProps, null)(SubNodesByGraph);

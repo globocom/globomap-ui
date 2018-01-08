@@ -17,7 +17,11 @@ limitations under the License.
 import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { toggleGraph } from '../../redux/modules/graphs';
+
+import { toggleGraph } from '../../redux/modules/app';
+import { resetSubNodes, findNodes } from '../../redux/modules/nodes';
+import { cleanStageNodes } from '../../redux/modules/stage';
+
 import './Header.css';
 
 class Header extends Component {
@@ -92,40 +96,50 @@ class Header extends Component {
 
   onSendSearchQuery(event) {
     event.preventDefault();
-    this.props.clearStage();
 
-    this.props.clearInfo(() => {
-      let checkedGraphs = this.state.checkedGraphs,
-          checkedCollections = this.state.checkedCollections;
+    this.props.cleanStageNodes();
+    // this.props.clearStage();
 
-      if (checkedCollections.length === 0 && checkedGraphs.length === 0) {
-        checkedCollections = this.props.collections;
-      }
+    this.props.resetSubNodes();
 
-      if (checkedCollections.length === 0) {
-        return;
-      }
+    // this.props.clearInfo(() => {
+    let checkedGraphs = this.state.checkedGraphs,
+        checkedCollections = this.state.checkedCollections;
 
-      this.setState({ loading: true }, () => {
-        this.props.findNodes({
-            query: this.state.query,
-            queryProps: this.state.queryProps,
-            collections: checkedCollections
-          }, (data) => {
-            // TODO: Remove ref to SearchContent
-            this.props.searchContent.pagination.setState({
-              pageNumber: 1,
-              currentPage: 1,
-              totalPages: data.total_pages,
-              total: data.total
-            });
+    if (checkedCollections.length === 0 && checkedGraphs.length === 0) {
+      checkedCollections = this.props.collections;
+    }
 
-            this.setState({ loading: false });
-            this.closeSearchOptions();
-          });
-      });
+    if (checkedCollections.length === 0) {
+      return;
+    }
 
+    this.props.findNodes({
+      query: this.state.query,
+      queryProps: this.state.queryProps,
+      collections: checkedCollections
     });
+
+    // this.setState({ loading: true }, () => {
+    //   this.props.findNodes({
+    //       query: this.state.query,
+    //       queryProps: this.state.queryProps,
+    //       collections: checkedCollections
+    //     }, (data) => {
+    //       // TODO: Remove ref to SearchContent
+    //       this.props.searchContent.pagination.setState({
+    //         pageNumber: 1,
+    //         currentPage: 1,
+    //         totalPages: data.total_pages,
+    //         total: data.total
+    //       });
+
+    //       this.setState({ loading: false });
+    //       this.closeSearchOptions();
+    //     });
+    // });
+
+    // });
   }
 
   onToggleSearchOptions(event) {
@@ -145,7 +159,7 @@ class Header extends Component {
       return graph.name;
     });
 
-    let index = checkedGraphs.indexOf(target.name);
+    // let index = checkedGraphs.indexOf(target.name);
 
     // if (index < 0) {
     //   checkedGraphs.push(target.name);
@@ -153,24 +167,24 @@ class Header extends Component {
     //   checkedGraphs.splice(index, 1);
     // }
 
-    if (target.checked) {
-      checkedCollections = checkedCollections.concat(collectionsByGraph);
-    } else {
-      collectionsByGraph.forEach((collection) => {
-        let hasCheckedGraphs = false;
-        for (let i = 0; i < checkedGraphs.length; i++) {
-          if (this.props.collectionsByGraphs[checkedGraphs[i]].includes(collection)) {
-            hasCheckedGraphs = true;
-            break;
-          }
-        }
+    // if (target.checked) {
+    //   checkedCollections = checkedCollections.concat(collectionsByGraph);
+    // } else {
+    //   collectionsByGraph.forEach((collection) => {
+    //     let hasCheckedGraphs = false;
+    //     for (let i = 0; i < checkedGraphs.length; i++) {
+    //       if (this.props.collectionsByGraphs[checkedGraphs[i]].includes(collection)) {
+    //         hasCheckedGraphs = true;
+    //         break;
+    //       }
+    //     }
 
-        if (!hasCheckedGraphs) {
-          index = checkedCollections.indexOf(collection);
-          checkedCollections.splice(index, 1);
-        }
-      });
-    }
+    //     if (!hasCheckedGraphs) {
+    //       index = checkedCollections.indexOf(collection);
+    //       checkedCollections.splice(index, 1);
+    //     }
+    //   });
+    // }
 
     // this.props.onToggleGraph(graphName, () => {
     //   this.setState({
@@ -303,8 +317,17 @@ class Header extends Component {
 
 }
 
-function mapStateToProps({ graphs, collections }) {
+function mapStateToProps(state) {
+  const { graphs, collections } = state.app;
   return { graphs, collections };
 }
 
-export default connect(mapStateToProps, { toggleGraph })(Header);
+export default connect(
+  mapStateToProps,
+  {
+    toggleGraph,
+    resetSubNodes,
+    findNodes,
+    cleanStageNodes
+  }
+)(Header);

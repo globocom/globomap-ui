@@ -171,11 +171,11 @@ class IOServer {
   }
 
   traversalSearch(data, fn) {
-    let { start, graphs, depth } = data;
+    const { node, graphs, depth } = data;
     let urlPromisseList = [];
 
     for(let i=0, l=graphs.length; i<l; ++i) {
-      let url = `${globomapApiUrl}/graphs/${graphs[i]}/traversal?start_vertex=${start}&max_depth=1&direction=any`;
+      let url = `${globomapApiUrl}/graphs/${graphs[i]}/traversal?start_vertex=${node._id}&max_depth=${depth}&direction=any`;
       urlPromisseList.push(axios.get(url));
     }
 

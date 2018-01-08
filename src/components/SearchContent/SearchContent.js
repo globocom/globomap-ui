@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setCurrentNode } from '../../redux/modules/nodes';
 import SearchContentPagination from './SearchContentPagination';
 import './SearchContent.css';
 
@@ -26,11 +28,8 @@ class SearchContent extends Component {
   }
 
   render() {
-    let index = 1;
-    if (this.pagination) {
-      index = this.pagination.state.total * (this.pagination.state.pageNumber - 1);
-      index = (index === 0 ? 1 : index + 1);
-    }
+    let index = this.props.perPage * (this.props.currentPage - 1);
+    index = (index === 0 ? 1 : index + 1);
 
     let allNodes = [];
     if (this.props.nodes !== undefined) {
@@ -61,9 +60,9 @@ class SearchContent extends Component {
         </table>
         <div className="search-content-base">
           <SearchContentPagination
-            ref={(pagination) => {this.pagination = pagination}}
-            nodes={this.props.nodes}
-            findNodes={this.props.findNodes}
+            // ref={(pagination) => {this.pagination = pagination}}
+            // nodes={this.props.nodes}
+            // findNodes={this.props.findNodes}
             enabledCollections={this.props.enabledCollections}
             header={this.props.header} />
         </div>
@@ -73,9 +72,19 @@ class SearchContent extends Component {
 
   onNodeSelect(event, node) {
     event.stopPropagation();
-    this.props.addNodeToStage(node, false, true);
+    // this.props.addNodeToStage(node, false, true);
+    this.props.setCurrentNode(node);
   }
 
 }
 
-export default SearchContent;
+function mapStateToProps(state) {
+  return {
+    nodes: state.nodes.nodeList,
+    currentNode: state.nodes.currentNode,
+    perPage: state.nodes.perPage,
+    currentPage: state.nodes.currentPage
+  };
+}
+
+export default connect(mapStateToProps, { setCurrentNode })(SearchContent);

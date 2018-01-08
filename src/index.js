@@ -18,6 +18,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import reducer from './redux/modules/reducer';
@@ -30,7 +31,10 @@ const socketClient = new SocketClient({ connect: true });
 
 const store = createStore(
   reducer,
-  applyMiddleware(socketMiddleware(socketClient))
+  applyMiddleware(
+    ReduxThunk,
+    socketMiddleware(socketClient)
+  )
 );
 
 ReactDOM.render(
