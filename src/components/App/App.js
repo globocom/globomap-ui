@@ -19,9 +19,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchGraphs } from '../../redux/modules/graphs';
-import { fetchCollections } from '../../redux/modules/collections';
-
+import { fetchGraphs, fetchCollections } from '../../redux/modules/app';
 import { Header, Tools, SearchContent, Stage, SubNodes, PopMenu } from '../';
 
 import { traverseItems, uuid, sortByName, uiSocket } from '../../utils';
@@ -34,11 +32,11 @@ class App extends Component {
     this.socket = uiSocket();
 
     this.state = {
-      currentNode: false,
+      // currentNode: false,
       enabledCollections: [],
       selectedCollections: [],
       collectionsByGraphs: {},
-      nodes: [],
+      // nodes: [],
       stageNodes: [],
       hasId: false,
       currentTab: 'Search Results'
@@ -51,10 +49,10 @@ class App extends Component {
     this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
     this.getCollectionByGraphs = this.getCollectionByGraphs.bind(this);
     this.setStageNodes = this.setStageNodes.bind(this);
-    this.setCurrent = this.setCurrent.bind(this);
-    this.clearCurrent = this.clearCurrent.bind(this);
+    // this.setCurrent = this.setCurrent.bind(this);
+    // this.clearCurrent = this.clearCurrent.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.clearStage = this.clearStage.bind(this);
+    // this.clearStage = this.clearStage.bind(this);
     // this.onToggleGraph = this.onToggleGraph.bind(this);
     this.removeNode = this.removeNode.bind(this);
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
@@ -116,11 +114,9 @@ class App extends Component {
 
     this.socket.emit('getgraphs', {}, (items) => {
       items = sortByName(items);
-
       items.forEach((item, index) => {
         if (graphsCopy[index].enabled) {
-          selectedCollections = selectedCollections.concat(
-            this.getEdgeLinks(item));
+          selectedCollections = selectedCollections.concat(this.getEdgeLinks(item));
         }
       });
 
@@ -235,11 +231,11 @@ class App extends Component {
     });
   }
 
-  clearStage() {
-    return this.setState({ stageNodes: [] }, () => {
-      this.clearCurrent();
-    });
-  }
+  // clearStage() {
+  //   return this.setState({ stageNodes: [] }, () => {
+  //     this.clearCurrent();
+  //   });
+  // }
 
   clearInfo(fn) {
     this.subnodes.resetByGraph(fn);
@@ -269,14 +265,14 @@ class App extends Component {
     this.setState({ stageNodes }, fn);
   }
 
-  setCurrent(node, fn) {
-    let currentNode = { _id: node._id, uuid: node.uuid };
-    this.setState({ currentNode }, fn);
-  }
+  // setCurrent(node, fn) {
+  //   let currentNode = { _id: node._id, uuid: node.uuid };
+  //   this.setState({ currentNode }, fn);
+  // }
 
-  clearCurrent(fn) {
-    this.setState({ currentNode: false }, fn);
-  }
+  // clearCurrent(fn) {
+  //   this.setState({ currentNode: false }, fn);
+  // }
 
   setCurrentTab(tabName) {
     this.setState({ currentTab: tabName });
@@ -349,12 +345,12 @@ render() {
 
         <Header ref={(header) => {this.header = header}}
                 collectionsByGraphs={this.state.collectionsByGraphs}
-                selectedCollections={this.state.selectedCollections}
-                clearStage={this.clearStage}
-                findNodes={this.findNodes}
+                // findNodes={this.findNodes}
                 // onToggleGraph={this.onToggleGraph}
-                clearInfo={this.clearInfo}
-                searchContent={this.searchContent} />
+                // clearInfo={this.clearInfo}
+                // searchContent={this.searchContent}
+                // clearStage={this.clearStage}
+                selectedCollections={this.state.selectedCollections} />
 
         <Tools currentNode={this.state.currentNode}
                stageNodes={this.state.stageNodes}
@@ -368,19 +364,19 @@ render() {
         <div className="tabs-container">
           <div className={'tab-content' + (this.state.currentTab === 'Search Results' ? ' active' : '')}>
             <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
-                           nodes={this.state.nodes}
-                           findNodes={this.findNodes}
+                           // nodes={this.state.nodes}
+                           // findNodes={this.findNodes}
                            addNodeToStage={this.addNodeToStage}
-                           currentNode={this.state.currentNode}
+                           // currentNode={this.state.currentNode}
                            enabledCollections={this.state.enabledCollections}
                            header={this.header} />
           </div>
           <div className={'tab-content' + (this.state.currentTab === 'Navigation' ? ' active' : '')}>
             <Stage stageNodes={this.state.stageNodes}
                    setStageNodes={this.setStageNodes}
-                   currentNode={this.state.currentNode}
+                   // currentNode={this.state.currentNode}
                    removeNode={this.removeNode}
-                   setCurrent={this.setCurrent}
+                   // setCurrent={this.setCurrent}
                    hasId={this.state.hasId} />
           </div>
         </div>

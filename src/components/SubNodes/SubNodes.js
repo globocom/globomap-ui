@@ -17,7 +17,9 @@ limitations under the License.
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { uiSocket } from '../../utils';
-import { ByGraph, InfoContentHead } from '../';
+import { traversalSearch, resetSubNodes, clearCurrentNode } from '../../redux/modules/nodes';
+import { InfoContentHead } from '../';
+import SubNodesByGraph from './SubNodesByGraph';
 import './SubNodes.css';
 
 class SubNodes extends Component {
@@ -32,22 +34,135 @@ class SubNodes extends Component {
     }
 
     this.onCloseSubNodes = this.onCloseSubNodes.bind(this);
-    this.composeEdges = this.composeEdges.bind(this);
+    // this.composeEdges = this.composeEdges.bind(this);
     this.onTraversalSearch = this.onTraversalSearch.bind(this);
-    this.resetByGraph = this.resetByGraph.bind(this);
+    // this.resetByGraph = this.resetByGraph.bind(this);
   }
+
+  // resetSubNodes() {
+  //   let byGraphCopy = this.state.byGraph.slice();
+
+  //   byGraphCopy = byGraphCopy.map((nodesItem) => {
+  //     nodesItem.subnodes = [];
+  //     return nodesItem;
+  //   });
+
+  //   this.setState({ byGraph: byGraphCopy });
+  // }
+
+  // traversalSearch(node) {
+  //   let graphs = [];
+  //   let params = {};
+
+  //   graphs = this.props.graphs.map(g => g.name);
+  //   params = { start: (node._id || ''), graphs: graphs }
+
+  //   this.socket.emit('traversalsearch', params, (data) => {
+  //     let byGraph = [];
+
+  //     if (data.error) {
+  //       console.log(data.message);
+
+  //       byGraph = params.graphs.map((graph) => {
+  //         return {
+  //           "graph": graph,
+  //           "edges": [],
+  //           "nodes": [],
+  //           "subnodes": []
+  //         }
+  //       });
+
+  //       return this.setState({ byGraph: byGraph, loading: false });
+  //     }
+
+  //     byGraph = data.map((gData) => {
+  //       gData.subnodes = gData.nodes.filter(n => n._id !== node._id).map((n) => {
+  //         n.edges = this.composeEdges(n, gData.edges)
+  //         n.edges.graph = gData.graph;
+  //         return n;
+  //       });
+  //       return gData;
+  //     });
+
+  //     this.setState({ byGraph: byGraph, loading: false });
+  //   });
+  // }
+
+  // composeEdges(node, edges) {
+  //   let nEdges = { in: [], out: [] };
+
+  //   for(let i=0, l=edges.length; i<l; ++i) {
+  //     let edge = edges[i];
+
+  //     if(node._id === edge._to) {
+  //       edge.dir = 'in';
+  //       nEdges.in.push(edge);
+  //     }
+
+  //     if(node._id === edge._from) {
+  //       edge.dir = 'out';
+  //       nEdges.out.push(edge);
+  //     }
+  //   }
+
+  //   return nEdges;
+  // }
+
+  onCloseSubNodes(event) {
+    event.stopPropagation();
+    this.props.clearCurrentNode();
+    this.props.resetSubNodes();
+    // this.resetByGraph(() => {});
+  }
+
+  // resetByGraph(fn) {
+  //   let byGraph = [];
+
+  //   this.state.byGraph.forEach((graph, index) => {
+  //     byGraph[index] = Object.assign({}, graph, { edges: [], nodes: [], subnodes: [] });
+  //   });
+
+  //   this.setState({ byGraph }, () => {
+  //     fn();
+  //   });
+  // }
+
+  onTraversalSearch() {
+    let node = this.state.node;
+    if (node) {
+      this.props.traversalSearch(node);
+    }
+  }
+
+  // componentWillReceiveProps(nextProps) {
+  //   let current = this.props.currentNode,
+  //       next = nextProps.currentNode;
+
+  //   if(current._id !== next._id || current.uuid !== next.uuid) {
+  //     this.props.resetSubNodes();
+  //     let node = this.props.getNode(next);
+
+  //     if(node) {
+  //       this.setState({ node: node, loading: true }, () => {
+  //         this.props.traversalSearch(node);
+  //       });
+  //     }
+  //   }
+  // }
 
   render() {
     let byGraph = this.state.byGraph.map((items, index) => {
-      return <ByGraph ref={(ByGraph) => {this.byGraph = ByGraph}}
-                      key={index + '_' + items.graph + '_' + items.nodes.length}
-                      items={items}
-                      collectionsByGraphs={this.props.collectionsByGraphs}
-                      stageHasNode={this.props.stageHasNode}
-                      node={this.state.node}
-                      addNodeToStage={this.props.addNodeToStage}
-                      hasId={this.props.hasId} />
+      return <SubNodesByGraph ref={(ByGraph) => {this.byGraph = ByGraph}}
+                              key={index + '_' + items.graph + '_' + items.nodes.length}
+                              items={items}
+                              collectionsByGraphs={this.props.collectionsByGraphs}
+                              stageHasNode={this.props.stageHasNode}
+                              node={this.state.node}
+                              addNodeToStage={this.props.addNodeToStage}
+                              hasId={this.props.hasId} />
     });
+
+    console.log(this.props.node);
 
     return (
       <div className={'subnodes ' + (this.props.currentNode ? 'open' : '')}>
@@ -75,123 +190,19 @@ class SubNodes extends Component {
     );
   }
 
-  resetSubNodes() {
-    let byGraphCopy = this.state.byGraph.slice();
-
-    byGraphCopy = byGraphCopy.map((nodesItem) => {
-      nodesItem.subnodes = [];
-      return nodesItem;
-    });
-
-    this.setState({ byGraph: byGraphCopy });
-  }
-
-  traversalSearch(node) {
-    let graphs = [];
-    let params = {};
-
-    graphs = this.props.graphs.map(g => g.name);
-    params = { start: (node._id || ''), graphs: graphs }
-
-    this.socket.emit('traversalsearch', params, (data) => {
-      let byGraph = [];
-
-      if (data.error) {
-        console.log(data.message);
-
-        byGraph = params.graphs.map((graph) => {
-          return {
-            "graph": graph,
-            "edges": [],
-            "nodes": [],
-            "subnodes": []
-          }
-        });
-
-        return this.setState({ byGraph: byGraph, loading: false });
-      }
-
-      byGraph = data.map((gData) => {
-        gData.subnodes = gData.nodes.filter(n => n._id !== node._id).map((n) => {
-          n.edges = this.composeEdges(n, gData.edges)
-          n.edges.graph = gData.graph;
-          return n;
-        });
-        return gData;
-      });
-
-      this.setState({ byGraph: byGraph, loading: false });
-    });
-  }
-
-  composeEdges(node, edges) {
-    let nEdges = { in: [], out: [] };
-
-    for(let i=0, l=edges.length; i<l; ++i) {
-      let edge = edges[i];
-
-      if(node._id === edge._to) {
-        edge.dir = 'in';
-        nEdges.in.push(edge);
-      }
-
-      if(node._id === edge._from) {
-        edge.dir = 'out';
-        nEdges.out.push(edge);
-      }
-    }
-
-    return nEdges;
-  }
-
-  onCloseSubNodes(event) {
-    event.stopPropagation();
-    this.props.clearCurrent();
-    this.resetByGraph(() => {});
-  }
-
-  resetByGraph(fn) {
-    let byGraph = [];
-
-    this.state.byGraph.forEach((graph, index) => {
-      byGraph[index] = Object.assign({}, graph, { edges: [], nodes: [], subnodes: [] });
-    });
-
-    this.setState({ byGraph }, () => {
-      fn();
-    });
-  }
-
-  onTraversalSearch() {
-    let node = this.state.node;
-    if (node) {
-      this.traversalSearch(node);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    let current = this.props.currentNode,
-        next = nextProps.currentNode;
-
-    if(current._id !== next._id || current.uuid !== next.uuid) {
-      this.resetSubNodes();
-      let node = this.props.getNode(next);
-
-      if(node) {
-        let byGraphInitial = this.props.graphs.map((graph) => {
-          return { graph: graph.name, edges: [], nodes: [], subnodes: [] };
-        });
-
-        this.setState({ node: node, loading: true, byGraph: byGraphInitial }, () => {
-          this.traversalSearch(node);
-        });
-      }
-    }
-  }
 }
 
-function mapStateToProps({ graphs }) {
-  return { graphs };
+function mapStateToProps(state) {
+  return {
+    currentNode: state.nodes.currentNode
+  };
 }
 
-export default connect(mapStateToProps, null)(SubNodes);
+export default connect(
+  mapStateToProps,
+  {
+    traversalSearch,
+    resetSubNodes,
+    clearCurrentNode
+  }
+)(SubNodes);

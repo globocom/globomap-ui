@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { findNodes } from '../../redux/modules/nodes';
 import './SearchContentPagination.css';
 
 class SearchContentPagination extends Component {
@@ -24,9 +26,9 @@ class SearchContentPagination extends Component {
 
     this.state = {
       pageNumber: 1,
-      currentPage: 1,
-      totalPages: 0,
-      total: 0
+      currentPage: 1
+      // totalPages: 0,
+      // total: 0
     };
 
     this.onSendSearchQuery = this.onSendSearchQuery.bind(this);
@@ -51,19 +53,19 @@ class SearchContentPagination extends Component {
           value={this.state.pageNumber} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
 
         <button className="btn-next topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'next')}
-          disabled={this.state.currentPage === this.state.totalPages}>
+          disabled={this.state.currentPage === this.props.totalPages}>
           next <i className="fa fa-caret-right"></i>
         </button>
 
         <div className="pagination-info">
-          {this.state.totalPages} Page{this.state.totalPages > 1 && 's'}
+          {this.props.totalPages} Page{this.props.totalPages > 1 && 's'}
         </div>
       </div>
     )
   }
 
   doFindNodes(pageNumber) {
-    if (pageNumber <= 0 || pageNumber > this.state.totalPages) {
+    if (pageNumber <= 0 || pageNumber > this.props.totalPages) {
       return;
     }
 
@@ -76,17 +78,20 @@ class SearchContentPagination extends Component {
       co = this.props.enabledCollections;
     }
 
-    this.props.findNodes({
-        query: query,
-        collections: co,
-        queryProps: queryProps,
-        page: pageNumber
-      }, (data) => {
-        if (data.length === 0) {
-          return;
-        }
-        this.setState({ pageNumber, currentPage: pageNumber });
-      });
+    this.props.findNodes({ query: query, collections: co,
+                           queryProps: queryProps, page: pageNumber });
+
+    // this.props.findNodes({
+    //     query: query,
+    //     collections: co,
+    //     queryProps: queryProps,
+    //     page: pageNumber
+    //   }, (data) => {
+    //     if (data.length === 0) {
+    //       return;
+    //     }
+    //     this.setState({ pageNumber, currentPage: pageNumber });
+    //   });
   }
 
   onSendSearchQuery(event, direction) {
@@ -129,4 +134,10 @@ class SearchContentPagination extends Component {
 
 }
 
-export default SearchContentPagination;
+function mapStateToProps(state) {
+  return {
+    totalPages: state.nodes.totalPages
+  };
+}
+
+export default connect(mapStateToProps, { findNodes })(SearchContentPagination);

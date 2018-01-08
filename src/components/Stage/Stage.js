@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { cleanStageNodes } from '../../redux/modules/stage';
 import { NodeItem } from '../';
 import './Stage.css';
 
@@ -62,4 +64,10 @@ class Stage extends Component {
 
 }
 
-export default Stage;
+function mapStateToProps(state) {
+  return {
+    currentNode: state.nodes.currentNode
+  };
+}
+
+export default connect(mapStateToProps, { cleanStageNodes })(Stage);

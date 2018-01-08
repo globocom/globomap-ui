@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import App from './App/App';
-import ByGraph from './ByGraph/ByGraph';
 import Header from './Header/Header';
 import InfoContentHead from './InfoContentHead/InfoContentHead';
 import Modal from './Modal/Modal';
@@ -32,7 +31,6 @@ import Tools from './Tools/Tools';
 
 export {
   App,
-  ByGraph,
   Header,
   InfoContentHead,
   Modal,
