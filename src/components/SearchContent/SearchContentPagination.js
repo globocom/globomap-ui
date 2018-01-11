@@ -25,8 +25,8 @@ class SearchContentPagination extends Component {
     super(props);
 
     this.state = {
-      pageNumber: 1,
-      currentPage: 1
+      pageNumber: 1
+      // currentPage: 1
       // totalPages: 0,
       // total: 0
     };
@@ -37,49 +37,27 @@ class SearchContentPagination extends Component {
     this.doFindNodes = this.doFindNodes.bind(this);
   }
 
-  render() {
-    if (this.props.nodes === undefined || this.props.nodes.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className="search-content-pagination">
-        <button className="btn-previous topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'previous')}
-          disabled={this.state.currentPage === 1}>
-          <i className="fa fa-caret-left"></i> previous
-        </button>
-
-        <input className="page-number topcoat-text-input" type="text" name="pagination"
-          value={this.state.pageNumber} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
-
-        <button className="btn-next topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'next')}
-          disabled={this.state.currentPage === this.props.totalPages}>
-          next <i className="fa fa-caret-right"></i>
-        </button>
-
-        <div className="pagination-info">
-          {this.props.totalPages} Page{this.props.totalPages > 1 && 's'}
-        </div>
-      </div>
-    )
-  }
-
   doFindNodes(pageNumber) {
     if (pageNumber <= 0 || pageNumber > this.props.totalPages) {
       return;
     }
 
+    this.props.findNodes({
+      ...this.props.searchOptions,
+      page: pageNumber
+    });
+
     // TODO: Remove refs to Header
-    let co = this.props.header.state.checkedCollections,
-        queryProps = this.props.header.state.queryProps,
-        query = this.props.header.state.query;
+    // let co = this.props.header.state.checkedCollections,
+    //     queryProps = this.props.header.state.queryProps,
+    //     query = this.props.header.state.query;
 
-    if (co.length === 0) {
-      co = this.props.enabledCollections;
-    }
+    // if (co.length === 0) {
+    //   co = this.props.enabledCollections;
+    // }
 
-    this.props.findNodes({ query: query, collections: co,
-                           queryProps: queryProps, page: pageNumber });
+    // this.props.findNodes({ query: query, collections: co,
+    //                        queryProps: queryProps, page: pageNumber });
 
     // this.props.findNodes({
     //     query: query,
@@ -94,17 +72,17 @@ class SearchContentPagination extends Component {
     //   });
   }
 
-  onSendSearchQuery(event, direction) {
-    let pageNumber = this.state.pageNumber;
+  onSendSearchQuery(event, dir) {
     event.preventDefault();
+    let page = this.state.pageNumber;
 
-    if (direction === 'next') {
-      pageNumber = pageNumber + 1;
-    } else if (direction === 'previous') {
-      pageNumber = pageNumber - 1;
+    if (dir === 'next') {
+      page = page + 1;
+    } else if (dir === 'previous') {
+      page = page - 1;
     }
 
-    this.doFindNodes(pageNumber);
+    this.doFindNodes(page);
   }
 
   handleInputChange(event) {
@@ -121,23 +99,62 @@ class SearchContentPagination extends Component {
 
   handleKeyPress(event) {
     let pageNumber = 0;
-
     if (event.key !== 'Enter') {
       return;
     }
 
     event.preventDefault();
     pageNumber = parseInt(event.target.value, 10) || 1;
-
     this.doFindNodes(pageNumber);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(this.props.currentPage !== nextProps.currentPage) {
+      this.setState({ pageNumber: nextProps.currentPage });
+    }
+  }
+
+  render() {
+    if (this.props.nodeList === undefined || this.props.nodeList.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="search-content-pagination">
+        <button className="btn-previous topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'previous')}
+          disabled={this.props.currentPage === 1}>
+          <i className="fa fa-caret-left"></i> previous
+        </button>
+
+        <input className="page-number topcoat-text-input" type="text" name="pagination"
+          value={this.state.pageNumber} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
+
+        <button className="btn-next topcoat-button" onClick={(e) => this.onSendSearchQuery(e, 'next')}
+          disabled={this.props.currentPage === this.props.totalPages}>
+          next <i className="fa fa-caret-right"></i>
+        </button>
+
+        <div className="pagination-info">
+          {this.props.totalPages} Page{this.props.totalPages > 1 && 's'}
+        </div>
+      </div>
+    );
   }
 
 }
 
 function mapStateToProps(state) {
+  const { nodeList, totalPages,
+          currentPage, searchOptions } = state.nodes;
   return {
-    totalPages: state.nodes.totalPages
+    nodeList,
+    totalPages,
+    currentPage,
+    searchOptions
   };
 }
 
-export default connect(mapStateToProps, { findNodes })(SearchContentPagination);
+export default connect(
+  mapStateToProps,
+  { findNodes }
+)(SearchContentPagination);
