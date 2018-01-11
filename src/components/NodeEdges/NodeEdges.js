@@ -101,7 +101,7 @@ class NodeEdges extends Component {
     }
 
     let colorCls = this.props.graphs.filter((graph) => {
-        return graph.name === edges.graph;
+      return graph.name === edges.graph;
     })[0].colorClass;
 
     let edgesInOut = [
@@ -137,8 +137,10 @@ class NodeEdges extends Component {
 
 }
 
-function mapStateToProps({ graphs }) {
-  return { graphs };
+function mapStateToProps(state) {
+  return {
+    graphs: state.app.graphs
+  };
 }
 
 export default connect(mapStateToProps, null)(NodeEdges);

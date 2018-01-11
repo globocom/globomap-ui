@@ -95,8 +95,8 @@ limitations under the License.
   left: 0;
   padding-bottom: 40px;
   background-color: white;
-  border-radius: 0 0 4px 4px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  /*border-radius: 0 0 4px 4px;*/
+  box-shadow: 0 1px 1px rgba(0,0,0,0.3);
 }
 
 .search-box-options .options-container {
@@ -114,7 +114,7 @@ limitations under the License.
   height: 40px;
   justify-content: flex-end;
   padding: 8px;
-  border-radius: 0 0 4px 4px;
+  /*border-radius: 0 0 4px 4px;*/
   background-color: #d2d6d6;
 }
 

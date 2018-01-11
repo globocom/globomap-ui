@@ -14,52 +14,52 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.info-header .tabs-nav {
+.subnodes-header .tabs-nav {
   padding: 10px 0 0;
   background-color: #d2d6d6;
   overflow: hidden;
 }
 
-.info-header .tabs-nav ul {
+.subnodes-header .tabs-nav ul {
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-.info-header .tabs-nav ul li {
+.subnodes-header .tabs-nav ul li {
   display: inline-block;
 }
 
-.info-header .tabs-nav .tab-btn {
+.subnodes-header .tabs-nav .tab-btn {
   margin-left: 6px;
 }
 
-.info-header .tabs-nav .active .tab-btn {
+.subnodes-header .tabs-nav .active .tab-btn {
   background-color: #f8f8f8;
 }
 
-.info-header .tabs-nav .tab-btn,
-.info-header .tabs-nav .tab-btn:hover {
+.subnodes-header .tabs-nav .tab-btn,
+.subnodes-header .tabs-nav .tab-btn:hover {
   border-radius: 4px 4px 0 0;
   border-bottom-width: 0;
   padding: 3px 12px;
 }
 
-.info-header .tabs-nav .tab-btn:focus {
+.subnodes-header .tabs-nav .tab-btn:focus {
   border: 1px solid transparent;
 }
 
-.info-header .tabs-nav .tab-btn:active {
+.subnodes-header .tabs-nav .tab-btn:active {
   border: 1px solid #9daca9;
 }
 
-.info-header .tabs-nav .tab-btn:focus,
-.info-header .tabs-nav .tab-btn:active {
+.subnodes-header .tabs-nav .tab-btn:focus,
+.subnodes-header .tabs-nav .tab-btn:active {
   box-shadow: inset 0 1px rgba(255, 255, 255, .36);
   border-bottom-width: 0;
 }
 
-.info-header .tab-content {
+.subnodes-header .tab-content {
   display: none;
   min-height: 40px;
   max-height: 180px;
@@ -67,12 +67,12 @@ limitations under the License.
   overflow-x: hidden;
 }
 
-.info-header .tab-content.active {
+.subnodes-header .tab-content.active {
   display: block;
   background-color: #f8f8f8;
 }
 
-.info-header .plugins-buttons {
+.subnodes-header .plugins-buttons {
   position: absolute;
   top: 43px;
   right: 10px;
