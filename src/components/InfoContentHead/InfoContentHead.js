@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { uiSocket } from '../../utils';
 import { Properties, Modal, Monit } from '../';
 import './InfoContentHead.css';
@@ -35,14 +36,19 @@ class InfoContentHead extends Component {
   }
 
   render() {
+    const node = this.props.currentNode;
+    if (!node) {
+      return null;
+    }
+
     let tabs = [{ name: 'Properties', content: <Properties key="properties-info"
-                                                           item={this.props.node}
+                                                           item={node}
                                                            hasId={this.props.hasId} /> },
-                { name: 'Monitoring', content: <Monit node={this.props.node} /> }];
+                { name: 'Monitoring', content: <Monit node={node} /> }];
 
     let tabsButtons = tabs.map((tabItem) => {
       let active = this.state.currentTab === tabItem.name ? ' active' : '',
-          disabled = tabItem.name === 'Monitoring' && this.props.node.type !== 'comp_unit';
+          disabled = tabItem.name === 'Monitoring' && node.type !== 'comp_unit';
 
       return (<li key={'tab' + tabItem.name} className={active}>
                 <button className="tab-btn topcoat-button--quiet" disabled={disabled}
@@ -70,7 +76,7 @@ class InfoContentHead extends Component {
                 <ul>{tabsButtons}</ul>
               </nav>
               <div className="plugins-buttons">
-                {this.props.node.type === 'zabbix_graph' &&
+                {node.type === 'zabbix_graph' &&
                   zbxGraphButton}
               </div>
               <div className="tabs-container">
@@ -83,7 +89,12 @@ class InfoContentHead extends Component {
   }
 
   openZbxGraph(event) {
-    let data = { graphId: this.props.node.id };
+    const node = this.props.currentNode;
+    if (!node) {
+      return;
+    }
+
+    let data = { graphId: node.id };
     this.showModal(null);
     this.socket.emit('getZabbixGraph', data, (base64data) => {
       if (base64data.error) {
@@ -92,7 +103,7 @@ class InfoContentHead extends Component {
         return;
       }
       let imgData = 'data:image/png;base64,' + base64data.toString();
-      this.setState({ modalContent: <img src={imgData} alt={this.props.node.name} /> });
+      this.setState({ modalContent: <img src={imgData} alt={node.name} /> });
     });
   }
 
@@ -104,14 +115,23 @@ class InfoContentHead extends Component {
     this.setState({ modalContent: '', modalVisible: false });
   }
 
-  componentWillReceiveProps(nextProps){
-    let current = this.props.node,
-        next = nextProps.node;
+  // componentWillReceiveProps(nextProps){
+  //   let current = this.props.currentNode,
+  //       next = nextProps.node;
 
-    if(current._id !== next._id) {
-      this.setState({ currentTab: 'Properties' });
-    }
-  }
+  //   if(current._id !== next._id) {
+  //     this.setState({ currentTab: 'Properties' });
+  //   }
+  // }
 }
 
-export default InfoContentHead;
+function mapStateToProps(state) {
+  return {
+    currentNode: state.nodes.currentNode
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { }
+)(InfoContentHead);
