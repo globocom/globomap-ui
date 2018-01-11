@@ -22,7 +22,7 @@ import { bindActionCreators } from 'redux';
 import { fetchGraphs, fetchCollections } from '../../redux/modules/app';
 import { Header, Tools, SearchContent, Stage, SubNodes, PopMenu } from '../';
 
-import { traverseItems, uuid, sortByName, uiSocket } from '../../utils';
+import { traverseItems, sortByName, uiSocket } from '../../utils';
 import './App.css';
 
 class App extends Component {
@@ -37,18 +37,18 @@ class App extends Component {
       selectedCollections: [],
       collectionsByGraphs: {},
       // nodes: [],
-      stageNodes: [],
+      // stageNodes: [],
       hasId: false,
       currentTab: 'Search Results'
     };
 
-    this.findNodes = this.findNodes.bind(this);
-    this.getNode = this.getNode.bind(this);
-    this.addNodeToStage = this.addNodeToStage.bind(this);
-    this.stageHasNode = this.stageHasNode.bind(this);
-    this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
+    // this.findNodes = this.findNodes.bind(this);
+    // this.getNode = this.getNode.bind(this);
+    // this.addNodeToStage = this.addNodeToStage.bind(this);
+    // this.stageHasNode = this.stageHasNode.bind(this);
+    // this.setStageNodes = this.setStageNodes.bind(this);
+    // this.getGraphsAndCollections = this.getGraphsAndCollections.bind(this);
     this.getCollectionByGraphs = this.getCollectionByGraphs.bind(this);
-    this.setStageNodes = this.setStageNodes.bind(this);
     // this.setCurrent = this.setCurrent.bind(this);
     // this.clearCurrent = this.clearCurrent.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -76,38 +76,37 @@ class App extends Component {
     return collections;
   }
 
-  getGraphsAndCollections() {
-    this.socket.emit('getcollections', {}, (data) => {
-      this.setState({ collections: data });
-    });
+  // getGraphsAndCollections() {
+  //   this.socket.emit('getcollections', {}, (data) => {
+  //     this.setState({ collections: data });
+  //   });
 
-    this.socket.emit('getgraphs', {}, (items) => {
-      let graphs = [];
-      let enabledCollections = [];
-      let collectionsByGraphs = {};
-      let collections = [];
-      items = sortByName(items);
+  //   this.socket.emit('getgraphs', {}, (items) => {
+  //     let graphs = [];
+  //     let enabledCollections = [];
+  //     let collectionsByGraphs = {};
+  //     items = sortByName(items);
 
-      items.forEach((item, index) => {
-        collections = this.getEdgeLinks(item);
+  //     items.forEach((item, index) => {
+  //       let collections = this.getEdgeLinks(item);
 
-        graphs.push({
-          name: item.name,
-          colorClass: 'graph-color' + index,
-          enabled: false
-        });
+  //       graphs.push({
+  //         name: item.name,
+  //         colorClass: 'graph-color' + index,
+  //         enabled: false
+  //       });
 
-        enabledCollections = enabledCollections.concat(collections);
-        collectionsByGraphs[item.name] = _.uniq(collections);
-      });
+  //       enabledCollections = enabledCollections.concat(collections);
+  //       collectionsByGraphs[item.name] = _.uniq(collections);
+  //     });
 
-      this.setState({
-        graphs: graphs,
-        enabledCollections: _.uniq(enabledCollections),
-        collectionsByGraphs: collectionsByGraphs
-      });
-    });
-  }
+  //     this.setState({
+  //       graphs: graphs,
+  //       enabledCollections: _.uniq(enabledCollections),
+  //       collectionsByGraphs: collectionsByGraphs
+  //     });
+  //   });
+  // }
 
   getCollectionByGraphs(graphsCopy, fn) {
     let selectedCollections = [];
@@ -124,42 +123,42 @@ class App extends Component {
     });
   }
 
-  addNodeToStage(node, parentUuid, makeCurrent=false) {
-    if(this.stageHasNode(node._id, parentUuid)) {
-      let n = this.getNode(node, parentUuid);
-      this.setCurrent(n);
-      return;
-    }
+  // addNodeToStage(node, parentUuid, makeCurrent=false) {
+  //   if(this.stageHasNode(node._id, parentUuid)) {
+  //     let n = this.getNode(node, parentUuid);
+  //     this.setCurrent(n);
+  //     return;
+  //   }
 
-    node.uuid = uuid();
-    node.items = node.items || [];
-    let currentNodes = this.state.stageNodes.slice();
+  //   node.uuid = uuid();
+  //   node.items = node.items || [];
+  //   let currentNodes = this.state.stageNodes.slice();
 
-    if(parentUuid) {
-      traverseItems(currentNodes, (n) => {
-        if(n.uuid === parentUuid) {
-          n.items.push(node);
-        }
-      });
-    } else {
-      node.root = true;
-      node.items = [];
-      currentNodes = [node];
+  //   if(parentUuid) {
+  //     traverseItems(currentNodes, (n) => {
+  //       if(n.uuid === parentUuid) {
+  //         n.items.push(node);
+  //       }
+  //     });
+  //   } else {
+  //     node.root = true;
+  //     node.items = [];
+  //     currentNodes = [node];
 
-      return this.setState({ stageNodes: currentNodes }, () => {
-        if(makeCurrent) {
-          this.setCurrent(node);
-        }
-      });
-    }
+  //     return this.setState({ stageNodes: currentNodes }, () => {
+  //       if(makeCurrent) {
+  //         this.setCurrent(node);
+  //       }
+  //     });
+  //   }
 
-    return this.setState({ currentTab: 'Navigation',
-                           stageNodes: currentNodes }, () => {
-      if(makeCurrent) {
-        this.setCurrent(node);
-      }
-    });
-  }
+  //   return this.setState({ currentTab: 'Navigation',
+  //                          stageNodes: currentNodes }, () => {
+  //     if(makeCurrent) {
+  //       this.setCurrent(node);
+  //     }
+  //   });
+  // }
 
   stageHasNode(nodeId, parentUuid) {
     let stageNodes = this.state.stageNodes,
@@ -176,30 +175,30 @@ class App extends Component {
     return !(ids.indexOf(nodeId) < 0);
   }
 
-  getNode(node, parentUuid) {
-    let stageNodes = this.state.stageNodes.slice(),
-        nodeFound = false;
+  // getNode(node, parentUuid) {
+  //   let stageNodes = this.state.stageNodes.slice(),
+  //       nodeFound = false;
 
-    traverseItems(stageNodes, (n) => {
-      if(n.uuid === node.uuid) {
-        nodeFound = n;
-      }
-    });
+  //   traverseItems(stageNodes, (n) => {
+  //     if(n.uuid === node.uuid) {
+  //       nodeFound = n;
+  //     }
+  //   });
 
-    if(!nodeFound && parentUuid !== undefined) {
-      traverseItems(stageNodes, (n) => {
-        if(n.uuid === parentUuid) {
-          for(let i in n.items) {
-            if(node._id === n.items[i]._id) {
-              nodeFound = n.items[i];
-            }
-          }
-        }
-      });
-    }
+  //   if(!nodeFound && parentUuid !== undefined) {
+  //     traverseItems(stageNodes, (n) => {
+  //       if(n.uuid === parentUuid) {
+  //         for(let i in n.items) {
+  //           if(node._id === n.items[i]._id) {
+  //             nodeFound = n.items[i];
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
 
-    return nodeFound;
-  }
+  //   return nodeFound;
+  // }
 
   removeNode(node) {
     let stageNodes = this.state.stageNodes.slice();
@@ -241,29 +240,29 @@ class App extends Component {
     this.subnodes.resetByGraph(fn);
   }
 
-  findNodes(opts, fn) {
-    let options = _.merge({
-      query: '',
-      queryProps: [],
-      collections: [],
-      per_page: null,
-      page: 1
-    }, opts);
+  // findNodes(opts, fn) {
+  //   let options = _.merge({
+  //     query: '',
+  //     queryProps: [],
+  //     collections: [],
+  //     per_page: null,
+  //     page: 1
+  //   }, opts);
 
-    if (typeof fn !== 'function') {
-      fn = () => {};
-    }
+  //   if (typeof fn !== 'function') {
+  //     fn = () => {};
+  //   }
 
-    this.socket.emit('findnodes', options, (data) => {
-      this.setCurrentTab('Search Results');
-      this.setState({ nodes: data.documents }, fn(data));
-    });
-  }
+  //   this.socket.emit('findnodes', options, (data) => {
+  //     this.setCurrentTab('Search Results');
+  //     this.setState({ nodes: data.documents }, fn(data));
+  //   });
+  // }
 
-  setStageNodes(stageNodes, fn) {
-    this.setCurrentTab('Navigation');
-    this.setState({ stageNodes }, fn);
-  }
+  // setStageNodes(stageNodes, fn) {
+  //   this.setCurrentTab('Navigation');
+  //   this.setState({ stageNodes }, fn);
+  // }
 
   // setCurrent(node, fn) {
   //   let currentNode = { _id: node._id, uuid: node.uuid };
@@ -352,10 +351,10 @@ render() {
                 // clearStage={this.clearStage}
                 selectedCollections={this.state.selectedCollections} />
 
-        <Tools currentNode={this.state.currentNode}
-               stageNodes={this.state.stageNodes}
-               setStageNodes={this.setStageNodes}
-               popMenu={this.popMenu}
+        <Tools popMenu={this.popMenu}
+               // currentNode={this.state.currentNode}
+               // stageNodes={this.state.stageNodes}
+               // setStageNodes={this.setStageNodes}
                currentTab={this.state.currentTab}
                setCurrentTab={this.setCurrentTab}
                resetGraphsCollections={this.resetGraphsCollections}
@@ -366,29 +365,30 @@ render() {
             <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
                            // nodes={this.state.nodes}
                            // findNodes={this.findNodes}
-                           addNodeToStage={this.addNodeToStage}
+                           // addNodeToStage={this.addNodeToStage}
                            // currentNode={this.state.currentNode}
-                           enabledCollections={this.state.enabledCollections}
-                           header={this.header} />
+                           // enabledCollections={this.state.enabledCollections}
+                           // header={this.header}
+                           />
           </div>
           <div className={'tab-content' + (this.state.currentTab === 'Navigation' ? ' active' : '')}>
-            <Stage stageNodes={this.state.stageNodes}
-                   setStageNodes={this.setStageNodes}
-                   // currentNode={this.state.currentNode}
-                   removeNode={this.removeNode}
+            <Stage hasId={this.state.hasId}
+                   // stageNodes={this.state.stageNodes}
+                   // setStageNodes={this.setStageNodes}
                    // setCurrent={this.setCurrent}
-                   hasId={this.state.hasId} />
+                   // currentNode={this.state.currentNode}
+                   removeNode={this.removeNode} />
           </div>
         </div>
 
         <SubNodes ref={(SubNodes) => {this.subnodes = SubNodes}}
-              getNode={this.getNode}
-              graphs={this.state.graphs}
-              collectionsByGraphs={this.state.collectionsByGraphs}
-              stageHasNode={this.stageHasNode}
-              addNodeToStage={this.addNodeToStage}
-              clearCurrent={this.clearCurrent}
-              currentNode={this.state.currentNode}
+              // getNode={this.getNode}
+              // graphs={this.state.graphs}
+              // collectionsByGraphs={this.state.collectionsByGraphs}
+              // stageHasNode={this.stageHasNode}
+              // addNodeToStage={this.addNodeToStage}
+              // clearCurrent={this.clearCurrent}
+              // currentNode={this.state.currentNode}
               hasId={this.state.hasId}
               showModal={this.showModal}
               closeModal={this.closeModal} />
