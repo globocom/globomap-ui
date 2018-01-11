@@ -16,7 +16,8 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setCurrentNode } from '../../redux/modules/nodes';
+import { setCurrentNode, traversalSearch } from '../../redux/modules/nodes';
+import { addStageNode } from '../../redux/modules/stage';
 import SearchContentPagination from './SearchContentPagination';
 import './SearchContent.css';
 
@@ -32,17 +33,18 @@ class SearchContent extends Component {
     index = (index === 0 ? 1 : index + 1);
 
     let allNodes = [];
-    if (this.props.nodes !== undefined) {
-      allNodes = this.props.nodes.map((node, i) => {
+    if (this.props.nodeList !== undefined) {
+      allNodes = this.props.nodeList.map((node, i) => {
         let current = (this.props.currentNode &&
                        node._id === this.props.currentNode._id);
-
-        return <tr key={node._id} className={current ? 'current' : ''}
-                   onClick={(e) => this.onNodeSelect(e, node)}>
-                <td>{i + index}</td>
-                <td>{node.type}</td>
-                <td>{node.name}</td>
-               </tr>;
+        return (
+          <tr key={node._id} className={current ? 'current' : ''}
+              onClick={(e) => this.onNodeSelect(e, node)}>
+            <td>{i + index}</td>
+            <td>{node.type}</td>
+            <td>{node.name}</td>
+          </tr>
+        );
       });
     }
 
@@ -63,8 +65,9 @@ class SearchContent extends Component {
             // ref={(pagination) => {this.pagination = pagination}}
             // nodes={this.props.nodes}
             // findNodes={this.props.findNodes}
-            enabledCollections={this.props.enabledCollections}
-            header={this.props.header} />
+            // enabledCollections={this.props.enabledCollections}
+            // header={this.props.header}
+            />
         </div>
       </div>
     );
@@ -73,18 +76,22 @@ class SearchContent extends Component {
   onNodeSelect(event, node) {
     event.stopPropagation();
     // this.props.addNodeToStage(node, false, true);
-    this.props.setCurrentNode(node);
+    this.props.addStageNode(node, null, true);
+    this.props.traversalSearch({ node });
   }
 
 }
 
 function mapStateToProps(state) {
   return {
-    nodes: state.nodes.nodeList,
+    nodeList: state.nodes.nodeList,
     currentNode: state.nodes.currentNode,
     perPage: state.nodes.perPage,
     currentPage: state.nodes.currentPage
   };
 }
 
-export default connect(mapStateToProps, { setCurrentNode })(SearchContent);
+export default connect(
+  mapStateToProps,
+  { setCurrentNode, traversalSearch, addStageNode }
+)(SearchContent);
