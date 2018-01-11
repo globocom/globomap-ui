@@ -36,6 +36,41 @@ function traverseItems(nList, fn) {
   }
 }
 
+function composeEdges(node, edges) {
+  let nEdges = { in: [], out: [] };
+
+  for(let i=0, l=edges.length; i<l; ++i) {
+    let edge = edges[i];
+
+    if(node._id === edge._to) {
+      edge.dir = 'in';
+      nEdges.in.push(edge);
+    }
+
+    if(node._id === edge._from) {
+      edge.dir = 'out';
+      nEdges.out.push(edge);
+    }
+  }
+
+  return nEdges;
+}
+
+function getEdgeLinks(graph) {
+  let collections = [];
+
+  graph.links.forEach((edge) => {
+    edge.from_collections.forEach((key) => {
+      collections.push(key);
+    })
+    edge.to_collections.forEach((key) => {
+      collections.push(key);
+    })
+  });
+
+  return collections;
+}
+
 function uuidv4() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0, v = c === 'x' ? r : ((r & 0x3) | 0x8);
@@ -71,6 +106,8 @@ function sortByName(arr) {
 export {
   sortByName,
   traverseItems,
+  composeEdges,
+  getEdgeLinks,
   uiSocket,
   uuid
 };
