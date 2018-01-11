@@ -1,6 +1,7 @@
 import { uuid, traverseItems } from '../../utils';
+import { setCurrentNode } from './nodes';
 
-const STAGE_ADD_NODE = 'stage_add_node';
+const STAGE_ADD_NEW_NODE = 'stage_add_new_node';
 const STAGE_REMOVE_NODE = 'stage_remove_node';
 const STAGE_SET_NODES = 'stage_set_nodes';
 const STAGE_CLEAN_NODES = 'stage_clean_nodes';
@@ -12,15 +13,8 @@ const initialState = {
 export default function reducer(state=initialState, action={}) {
   switch (action.type) {
 
-    case STAGE_ADD_NODE:
+    case STAGE_ADD_NEW_NODE:
       const { node, parentUuid } = action;
-
-      if(stageHasNode(state, { node, parentUuid })) {
-        return state;
-      }
-
-      node.uuid = uuid();
-      node.items = node.items || [];
       let currentNodes = state.stageNodes.slice();
 
       if(parentUuid) {
@@ -31,7 +25,6 @@ export default function reducer(state=initialState, action={}) {
         });
       } else {
         node.root = true;
-        node.items = [];
         currentNodes = [node];
       }
 
@@ -87,12 +80,28 @@ export default function reducer(state=initialState, action={}) {
   }
 }
 
-export function addStageNode(node, parentUuid) {
+export function addNewStageNode(node, parentUuid) {
   return {
-    type: STAGE_ADD_NODE,
+    type: STAGE_ADD_NEW_NODE,
     node,
     parentUuid
   };
+}
+
+export function addStageNode(node, parentUuid, setCurrent=false) {
+  return (dispatch, getState) => {
+    if(stageHasNode(getState().stage, { node, parentUuid })) {
+      dispatch(setCurrentNode(node));
+      return;
+    }
+
+    node.uuid = uuid();
+    node.items = node.items || [];
+    dispatch(addNewStageNode(node, parentUuid));
+    if (setCurrent) {
+      dispatch(setCurrentNode(node));
+    }
+  }
 }
 
 export function removeStageNode(node) {

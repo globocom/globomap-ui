@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { composeEdges } from '../../utils';
 
 const SOCKET = 'socket';
 
@@ -21,6 +22,7 @@ const initialState = {
   totalPages: 1,
   perPage: 10,
   currentPage: 1,
+  searchOptions: {},
   subNodesByGraph: [],
   findLoaded: false,
   traversalLoaded: false
@@ -31,7 +33,7 @@ export default function reducer(state=initialState, action={}) {
     case SET_CURRENT_NODE:
       return {
         ...state,
-        currentNode: { _id: action.node._id, uuid: action.node.uuid }
+        currentNode: action.node
       }
 
     case CLEAR_CURRENT_NODE:
@@ -48,14 +50,15 @@ export default function reducer(state=initialState, action={}) {
       };
 
     case FIND_NODES_SUCCESS:
-      const { result, page } = action;
+      const { result, options } = action;
 
       return {
         ...state,
         nodeList: result.documents,
         totalPages: result.total_pages,
         perPage: result.total,
-        currentPage: page,
+        currentPage: options.page,
+        searchOptions: options,
         findLoaded: true,
         findLoading: false
       };
@@ -78,38 +81,20 @@ export default function reducer(state=initialState, action={}) {
       }
 
     case TRAVERSAL_SUCCESS:
-      const composeEdges = (node, edges) => {
-        let nEdges = { in: [], out: [] };
-        for(let i=0, l=edges.length; i<l; ++i) {
-          let edge = edges[i];
-
-          if(node._id === edge._to) {
-            edge.dir = 'in';
-            nEdges.in.push(edge);
-          }
-
-          if(node._id === edge._from) {
-            edge.dir = 'out';
-            nEdges.out.push(edge);
-          }
-        }
-        return nEdges;
-      }
-
-      const data = action.result;
+      const byGraphData = action.result.map((gData) => {
+        gData.subnodes = gData.nodes.filter(n => n._id !== action.node._id).map((n) => {
+          n.edges = composeEdges(n, gData.edges);
+          n.edges.graph = gData.graph;
+          return n;
+        });
+        return gData;
+      });
 
       return {
         ...state,
         traversalLoaded: true,
         traversalLoading: false,
-        subNodesByGraph: data.map((gData) => {
-          gData.subnodes = gData.nodes.filter(n => n._id !== action.node._id).map((n) => {
-            n.edges = composeEdges(n, gData.edges);
-            n.edges.graph = gData.graph;
-            return n;
-          });
-          return gData;
-        })
+        subNodesByGraph: byGraphData
       }
 
     case TRAVERSAL_FAIL:
@@ -119,7 +104,7 @@ export default function reducer(state=initialState, action={}) {
         traversalLoaded: false,
         traversalLoading: false,
         subNodesByGraph: action.graphs.map((graph) => {
-          return { graph: graph, edges: [], nodes: [], subnodes: [] };
+          return { graph: graph.name, edges: [], nodes: [], subnodes: [] };
         })
       }
 
@@ -127,7 +112,7 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         subNodesByGraph: action.graphs.map((graph) => {
-          return { graph: graph, edges: [], nodes: [], subnodes: [] };
+          return { graph: graph.name, edges: [], nodes: [], subnodes: [] };
         })
       }
 
@@ -162,11 +147,11 @@ export function findNodes(opts) {
     type: SOCKET,
     types: [FIND_NODES, FIND_NODES_SUCCESS, FIND_NODES_FAIL],
     promise: (socket) => socket.emit('findnodes', options),
-    page: options.page
+    options
   };
 }
 
-export function traversalSearch(opts) {
+export function traversalSearchWithGraphs(opts) {
   const options = _.merge({
     node: null,
     graphs: [],
@@ -177,8 +162,17 @@ export function traversalSearch(opts) {
     type: SOCKET,
     types: [TRAVERSAL, TRAVERSAL_SUCCESS, TRAVERSAL_FAIL],
     promise: (socket) => socket.emit('traversalsearch', options),
-    node: options.node,
-    graphs: options.graphs
+    graphs: options.graphs,
+    node: options.node
+  }
+}
+
+export function traversalSearch(opts) {
+  return (dispatch, getState) => {
+    const options = _.merge({
+      graphs: getState().app.graphs.map(g => g.name)
+    }, opts);
+    dispatch(traversalSearchWithGraphs(options))
   }
 }
 
