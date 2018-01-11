@@ -1,60 +1,71 @@
+import _ from 'lodash';
+import { sortByName, getEdgeLinks } from '../../utils';
+
 const SOCKET = 'socket';
 
-const GET_GRAPHS = 'fetch_graphs';
-const GET_GRAPHS_SUCCESS = 'fetch_graphs_success';
-const GET_GRAPHS_FAIL = 'fetch_graphs_fail';
+const FETCH_GRAPHS = 'fetch_graphs';
+const FETCH_GRAPHS_SUCCESS = 'fetch_graphs_success';
+const FETCH_GRAPHS_FAIL = 'fetch_graphs_fail';
 
-const GET_COLLECTIONS = 'fetch_collections';
-const GET_COLLECTIONS_SUCCESS = 'fetch_collections_success';
-const GET_COLLECTIONS_FAIL = 'fetch_collections_fail';
+const FETCH_COLLECTIONS = 'fetch_collections';
+const FETCH_COLLECTIONS_SUCCESS = 'fetch_collections_success';
+const FETCH_COLLECTIONS_FAIL = 'fetch_collections_fail';
 
 const TOGGLE_GRAPH = 'toggle_graph';
 
 const initialState = {
   graphs: [],
-  collections: []
+  collections: [],
+  collectionsByGraphs: {},
+  enabledCollections: []
 }
 
 export default function reducer(state=initialState, action={}) {
   switch (action.type) {
-    case GET_GRAPHS:
-      console.log('fetching graphs...');
+    case FETCH_GRAPHS:
+      console.log('fetch graphs...');
       return state;
 
-    case GET_GRAPHS_SUCCESS:
-      let graphs = [];
+    case FETCH_GRAPHS_SUCCESS:
+      let graphs = sortByName(action.result);
+      let collectionsByGraphs = {};
+      let enabledCollections = [];
 
-      action.result.forEach((item, index) => {
-        graphs.push({
-          name: item.name,
-          colorClass: 'graph-color' + index,
-          enabled: false
-        });
+      graphs.forEach((graph, index) => {
+        let colls = getEdgeLinks(graph);
+
+        graphs[index].colorClass = 'graph-color-' + index;
+        graphs[index].enabled = false;
+
+        enabledCollections = enabledCollections.concat(colls);
+        collectionsByGraphs[graph.name] = _.uniq(colls);
       });
 
       return {
         ...state,
-        graphs
+        graphs,
+        collectionsByGraphs,
+        enabledCollections
       };
 
-    case GET_GRAPHS_FAIL:
+    case FETCH_GRAPHS_FAIL:
       console.log(action.error);
       return {
         ...state,
         error: action.error
       };
 
-    case GET_COLLECTIONS:
-      console.log('fetching collections...');
+    case FETCH_COLLECTIONS:
+      console.log('fetch collections...');
       return state;
 
-    case GET_COLLECTIONS_SUCCESS:
+    case FETCH_COLLECTIONS_SUCCESS:
       return {
         ...state,
         collections: action.result
       };
 
-    case GET_COLLECTIONS_FAIL:
+    case FETCH_COLLECTIONS_FAIL:
       console.log(action.error);
       return {
         ...state,
@@ -82,7 +93,7 @@ export default function reducer(state=initialState, action={}) {
 export function fetchGraphs() {
   return {
     type: SOCKET,
-    types: [GET_GRAPHS, GET_GRAPHS_SUCCESS, GET_GRAPHS_FAIL],
+    types: [FETCH_GRAPHS, FETCH_GRAPHS_SUCCESS, FETCH_GRAPHS_FAIL],
     promise: (socket) => socket.emit('getgraphs', {})
   };
 }
@@ -90,7 +101,7 @@ export function fetchGraphs() {
 export function fetchCollections() {
   return {
     type: SOCKET,
-    types: [GET_COLLECTIONS, GET_COLLECTIONS_SUCCESS, GET_COLLECTIONS_FAIL],
+    types: [FETCH_COLLECTIONS, FETCH_COLLECTIONS_SUCCESS, FETCH_COLLECTIONS_FAIL],
     promise: (socket) => socket.emit('getcollections', {})
   };
 }
