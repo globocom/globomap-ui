@@ -28,14 +28,14 @@ class SubNodes extends Component {
     super(props);
     this.socket = uiSocket();
     this.state = {
-      node: this.props.getNode(this.props.currentNode),
-      loading: true,
-      byGraph: []
+      // node: this.props.currentNode,
+      // loading: true,
+      // byGraph: []
     }
 
     this.onCloseSubNodes = this.onCloseSubNodes.bind(this);
     // this.composeEdges = this.composeEdges.bind(this);
-    this.onTraversalSearch = this.onTraversalSearch.bind(this);
+    // this.onTraversalSearch = this.onTraversalSearch.bind(this);
     // this.resetByGraph = this.resetByGraph.bind(this);
   }
 
@@ -127,60 +127,65 @@ class SubNodes extends Component {
   //   });
   // }
 
-  onTraversalSearch() {
-    let node = this.state.node;
-    if (node) {
-      this.props.traversalSearch(node);
-    }
-  }
+  // onTraversalSearch() {
+  //   let node = this.state.node;
+  //   if (node) {
+  //     this.props.traversalSearch(node);
+  //   }
+  // }
 
   // componentWillReceiveProps(nextProps) {
   //   let current = this.props.currentNode,
   //       next = nextProps.currentNode;
 
-  //   if(current._id !== next._id || current.uuid !== next.uuid) {
-  //     this.props.resetSubNodes();
-  //     let node = this.props.getNode(next);
+  //   if (!current) {
+  //     return;
+  //   }
 
-  //     if(node) {
-  //       this.setState({ node: node, loading: true }, () => {
-  //         this.props.traversalSearch(node);
-  //       });
+  //   if(current._id !== next._id || current.uuid !== next.uuid) {
+  //     // this.props.resetSubNodes();
+  //     if(next) {
+  //       this.props.traversalSearch(next);
+  //       // this.setState({ node: next, loading: true }, () => {
+  //       //   this.props.traversalSearch(next);
+  //       // });
   //     }
   //   }
   // }
 
   render() {
-    let byGraph = this.state.byGraph.map((items, index) => {
-      return <SubNodesByGraph ref={(ByGraph) => {this.byGraph = ByGraph}}
-                              key={index + '_' + items.graph + '_' + items.nodes.length}
+    let byGraph = this.props.subNodesByGraph.map((items, index) => {
+      return <SubNodesByGraph key={index + '_' + items.graph + '_' + items.nodes.length}
+                              // ref={(ByGraph) => {this.byGraph = ByGraph}}
                               items={items}
-                              collectionsByGraphs={this.props.collectionsByGraphs}
-                              stageHasNode={this.props.stageHasNode}
-                              node={this.state.node}
-                              addNodeToStage={this.props.addNodeToStage}
+                              // collectionsByGraphs={this.props.collectionsByGraphs}
+                              // stageHasNode={this.props.stageHasNode}
+                              // node={this.state.node}
+                              // addNodeToStage={this.props.addNodeToStage}
                               hasId={this.props.hasId} />
     });
 
-    console.log(this.props.node);
+    const headerTitle = this.props.currentNode ? this.props.currentNode.name : '';
 
     return (
-      <div className={'subnodes ' + (this.props.currentNode ? 'open' : '')}>
+      <div className="subnodes">
         <div className="subnodes-header">
-          <div className="subnodes-header-title" title={this.state.node.name}>
-            <span className="title-limit">{this.state.node.name}</span>
+          <div className="subnodes-header-title" title={headerTitle}>
+            <span className="title-limit">{headerTitle}</span>
           </div>
+          {/*
           <button className="close-subnodes-btn topcoat-icon-button--quiet"
             onClick={this.onCloseSubNodes}>
             <i className="fa fa-close"></i>
           </button>
-          <InfoContentHead node={this.state.node}
-                           hasId={this.props.hasId}
+          */}
+          <InfoContentHead hasId={this.props.hasId}
+                           // node={this.state.node}
                            showModal={this.props.showModal}
                            closeModal={this.props.closeModal} />
         </div>
         <div className="subnodes-graph-items">
-          {this.state.loading &&
+          {this.props.traversalLoading &&
             <div className="items-loading">
               <i className="loading-cog fa fa-cog fa-spin fa-2x fa-fw"></i>
             </div>}
@@ -194,15 +199,13 @@ class SubNodes extends Component {
 
 function mapStateToProps(state) {
   return {
-    currentNode: state.nodes.currentNode
+    currentNode: state.nodes.currentNode,
+    traversalLoading: state.nodes.traversalLoading,
+    subNodesByGraph: state.nodes.subNodesByGraph
   };
 }
 
 export default connect(
   mapStateToProps,
-  {
-    traversalSearch,
-    resetSubNodes,
-    clearCurrentNode
-  }
+  { traversalSearch, resetSubNodes, clearCurrentNode }
 )(SubNodes);
