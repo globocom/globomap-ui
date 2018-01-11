@@ -17,6 +17,8 @@ limitations under the License.
 /* global localStorage, JSON */
 
 import React from 'react';
+import { connect } from 'react-redux';
+import { setStageNodes } from '../../redux/modules/stage';
 import { traverseItems, uiSocket } from '../../utils';
 import './Tools.css';
 
@@ -73,23 +75,26 @@ class Tools extends React.Component {
         {Object.keys(this.storages).map((key, index) => {
           return (
             <li key={index} className="content-item">
-              <span  className="content-title" onClick={(e) => {this.applyGraph(e, key)}}>{key}</span>
-              <button className="remove-btn" onClick={(e) => {this.onDeleteGraph(e, key)}}
-                title="Delete this item">
+              <span  className="content-title"
+                     onClick={(e) => {this.applyGraph(e, key)}}>{key}</span>
+              <button className="remove-btn"
+                      onClick={(e) => {this.onDeleteGraph(e, key)}}
+                      title="Delete this item">
                 <i className="fa fa-close"></i>
               </button>
             </li>
           );
         })}
       </ul>
-    )
+    );
   }
 
   applyGraph(e, key) {
     this.props.popMenu.closePopMenu();
+
     new Promise((resolve) => {
       this.storages = this.getLocalStorage(this.key) || {};
-      resolve()
+      resolve();
     }).then(() => {
         this.props.info.props.clearCurrent();
         this.props.info.resetByGraph(() => {});
@@ -163,7 +168,6 @@ class Tools extends React.Component {
 
     let tabsButtons = this.tabs.map((tab, index) => {
       let active = this.props.currentTab === tab.name ? ' active' : '';
-
       return (
         <button key={'tab' + index} className={'tab-btn' + active}
           disabled={tab.name === 'Navigation' && !rootNodeHasItens}
@@ -174,12 +178,10 @@ class Tools extends React.Component {
     });
 
     return (
-      <div className={'tools' + (this.props.currentNode ? ' with-info' : '')}>
-
+      <div className="tools">
         <nav className="tools-tabs">
           {tabsButtons}
         </nav>
-
         <div className="tools-buttons">
           <span className="message">{this.state.message}</span>
           <button className={'btn-save-graph topcoat-button'}
@@ -192,11 +194,19 @@ class Tools extends React.Component {
             <i className="fa fa-folder-open-o"></i>
           </button>
         </div>
-
       </div>
     );
   }
 
 }
 
-export default Tools;
+function mapStateToProps(state) {
+  return {
+    stageNodes: state.stage.stageNodes
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { setStageNodes }
+)(Tools);

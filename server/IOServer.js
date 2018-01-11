@@ -175,14 +175,14 @@ class IOServer {
     let urlPromisseList = [];
 
     for(let i=0, l=graphs.length; i<l; ++i) {
-      let url = `${globomapApiUrl}/graphs/${graphs[i]}/traversal?start_vertex=${node._id}&max_depth=${depth}&direction=any`;
+      const url = `${globomapApiUrl}/graphs/${graphs[i]}/traversal?start_vertex=${node._id}&max_depth=${depth}&direction=any`;
       urlPromisseList.push(axios.get(url));
     }
 
     axios.all(urlPromisseList)
       .then((results) => {
         results = results.map((resp) => {
-          let data = {graph: resp.data.graph};
+          let data = { graph: resp.data.graph };
 
           data.edges = resp.data.edges.map((edge) => {
             return this.updateItemInfo(edge);
