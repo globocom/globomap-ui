@@ -17,6 +17,7 @@ limitations under the License.
 import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { addStageNode } from '../../redux/modules/stage';
 import { NodeEdges } from '../';
 import './SubNodesByGraph.css';
 
@@ -50,67 +51,6 @@ class SubNodesByGraph extends Component {
     this.clearFilter = this.clearFilter.bind(this);
   }
 
-  render() {
-    let items = this.props.items,
-        subnodesAmount = this.props.items.subnodes.length,
-        isOpen = (items.subnodes.length > 0
-                 ? this.state.isOpen
-                 : false),
-        graphAmount = (this.regexp.test(this.state.graphAmount)
-                      ? this.state.graphAmount
-                      : items.subnodes.length);
-
-    let colorCls = this.props.graphs.filter((graph) => {
-      return graph.name === items.graph;
-    })[0].colorClass;
-
-    if (graphAmount === 0 &&
-      this.state.excludedTypes.length === 0 &&
-      this.state.query.trim() === '') {
-      return <div key={items.graph}></div>;
-    }
-
-    return <div key={items.graph} className={'sub-nodes-by-graph' + (isOpen ? ' open' : '')}>
-            <div className={'graph-header ' + colorCls}>
-                <span className="graph-name" onClick={this.onOpenGraph}>
-                  <i className={isOpen ? 'icon-down fa fa-caret-down' : 'icon-right fa fa-caret-right'}></i>
-                  &nbsp;{items.graph}
-                </span>
-
-                <span className="graph-amount">
-                  {graphAmount}
-                </span>
-
-                <span className="graph-buttons">
-                  <button className="btn btn-search" onClick={this.onInputSearch}>
-                    <i className="fa fa-search"></i>
-                  </button>
-                  <button className={"btn btn-filter" + (
-                      this.state.filterIsOpen ? " active" : "")}
-                    onClick={this.onInputFilter}>
-                    <i className="fa fa-filter"></i>
-                  </button>
-                  <button className="btn btn-add-all" onClick={this.onAddAllNodes}>
-                    <i className="fa fa-plus-square"></i>
-                  </button>
-                </span>
-
-                {(this.state.searchIsOpen && subnodesAmount > 0) &&
-                <span className="graph-search">
-                  <input type="search" name="query" className="topcoat-text-input graph-search-input"
-                    autoFocus value={this.state.query} onChange={
-                      _.throttle(this.handleInputChange, this.throttleTime)} />
-                  <i className="fa fa-search" onClick={this.onInputSearch}></i>
-                </span>}
-              </div>
-              <div className="graph-items">
-                {this.buildCollectionTypes()}
-                {this.buildSubNodes(items)}
-                {this.pagination()}
-              </div>
-            </div>;
-  }
-
   buildCollectionTypes() {
     if (!this.state.filterIsOpen) {
       return null;
@@ -118,25 +58,28 @@ class SubNodesByGraph extends Component {
 
     let items = this.props.items;
     let collectionsByGraphs = this.props.collectionsByGraphs[items.graph].map((co) => {
-          return <label key={co} className="item topcoat-checkbox">
-                  <input type="checkbox" name={co}
-                    checked={!this.state.excludedTypes.includes(co)}
-                    onChange={this.handleCheckItem} />
-                  <div className="topcoat-checkbox__checkmark"></div>
-                  &nbsp;{co}
-                </label>
+          return (
+            <label key={co} className="item topcoat-checkbox">
+              <input type="checkbox" name={co}
+                checked={!this.state.excludedTypes.includes(co)}
+                onChange={this.handleCheckItem} />
+              <div className="topcoat-checkbox__checkmark"></div>
+              &nbsp;{co}
+            </label>
+          );
         });
 
-    return <div className="graph-types">
-            {collectionsByGraphs}
-           </div>
+    return (
+      <div className="graph-types">
+        {collectionsByGraphs}
+      </div>
+    );
   }
 
   buildSubNodes(nodesItem) {
     let queryLength = this.state.query.trim().length;
     let start = (this.state.pageNumber - 1) * this.state.pageSize;
     let end = this.state.pageNumber * this.state.pageSize;
-    let subnodesSlice = nodesItem.subnodes.slice(start, end);
     let subnodes = nodesItem.subnodes;
 
     if (queryLength > this.state.queryAmount) {
@@ -144,42 +87,47 @@ class SubNodesByGraph extends Component {
         return this.state.searchIndex.includes(index);
       });
     }
+
     if (this.state.excludedTypes.length > 0) {
       subnodes = subnodes.filter((node, index) => {
         let type = node.type.toLowerCase();
         return !this.state.excludedTypes.includes(type);
       });
     }
-    subnodesSlice = subnodes.slice(start, end);
 
+    let subnodesSlice = subnodes.slice(start, end);
     subnodes = subnodesSlice.map((subnode, index) => {
-      let hasNode = this.props.stageHasNode(subnode._id, this.props.node.uuid);
+      // let hasNode = this.props.stageHasNode(subnode._id, this.props.node.uuid);
 
-      return <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
-               <div className="sub-node-btn">
-                 <button className="btn-add-node topcoat-button"
-                   onClick={(e) => this.onAddNode(e, subnode)} disabled={hasNode}>+</button>
-               </div>
+      // return <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
+      return (
+        <div key={subnode._id} className="sub-node">
+          <div className="sub-node-btn">
+            <button className="btn-add-node topcoat-button"
+                    // disabled={hasNode}
+                    onClick={(e) => this.onAddNode(e, subnode)}>+</button>
+          </div>
 
-               <div className="sub-node-info" onClick={(e) => this.onAddNode(e, subnode, true)}>
-                 <span className="sub-node-type">{subnode.type}</span>
-                 <span className="sub-node-name" title={subnode.name}>{subnode.name}</span>
-               </div>
+          <div className="sub-node-info" onClick={(e) => this.onAddNode(e, subnode, true)}>
+            <span className="sub-node-type">{subnode.type}</span>
+            <span className="sub-node-name" title={subnode.name}>{subnode.name}</span>
+          </div>
 
-               <NodeEdges edges={subnode.edges}
-                          position={'right'}
-                          hasId={this.props.hasId} />
-             </div>;
+          <NodeEdges edges={subnode.edges}
+                     position={'right'}
+                     hasId={this.props.hasId} />
+        </div>
+      );
     });
 
     return subnodes;
   }
 
   pagination() {
-    let graphAmount = (this.regexp.test(this.state.graphAmount)
-                      ? this.state.graphAmount
-                      : this.props.items.subnodes.length),
-        pageSize = this.state.pageSize;
+    let graphAmount = this.regexp.test(this.state.graphAmount)
+                        ? this.state.graphAmount
+                        : this.props.items.subnodes.length;
+    let pageSize = this.state.pageSize;
 
     if (graphAmount <= pageSize) {
       return;
@@ -198,7 +146,7 @@ class SubNodesByGraph extends Component {
           <i className="icon-right fa fa-caret-right"></i>
         </button>
       </div>
-    )
+    );
   }
 
   previous(event) {
@@ -229,25 +177,29 @@ class SubNodesByGraph extends Component {
     return this.setState({ isOpen: !this.state.isOpen });
   }
 
-  onAddNode(event, node, makeCurrent) {
+  onAddNode(event, node, setCurrent) {
     event.stopPropagation();
-    this.props.addNodeToStage(node, this.props.node.uuid || this.props.node._id, makeCurrent);
+    const currentNode = this.props.currentNode;
+    this.props.addStageNode(node, currentNode.uuid || currentNode._id, setCurrent);
   }
 
-  onAddAllNodes(event, makeCurrent) {
+  onAddAllNodes(event) {
     event.stopPropagation();
+    const currentNode = this.props.currentNode;
+
     this.props.items.subnodes.map((node, index) => {
-      let searchIndex = this.state.searchIndex;
-      let excludedTypes = this.state.excludedTypes;
-      let type = node.type.toLowerCase();
-      if (excludedTypes.includes(type)) {
+      const searchIndex = this.state.searchIndex;
+      const excludedTypes = this.state.excludedTypes;
+
+      if (excludedTypes.includes(node.type.toLowerCase())) {
         return null;
       }
-      if (searchIndex.length > 0 &&
-        !searchIndex.includes(index)) {
+
+      if (searchIndex.length > 0 && !searchIndex.includes(index)) {
         return false;
       }
-      return this.props.addNodeToStage(node, this.props.node.uuid || this.props.node._id, makeCurrent);
+
+      return this.props.addStageNode(node, currentNode.uuid || currentNode._id);
     });
   }
 
@@ -349,10 +301,81 @@ class SubNodesByGraph extends Component {
       filterIsOpen: false
     });
   }
+
+  render() {
+    const items = this.props.items;
+    const subnodesAmount = this.props.items.subnodes.length;
+    let isOpen = items.subnodes.length > 0 ? this.state.isOpen : false;
+    let graphAmount = this.regexp.test(this.state.graphAmount)
+                        ? this.state.graphAmount
+                        : items.subnodes.length;
+
+    const parentGraph = this.props.graphs.filter((graph) => {
+      return graph.name === items.graph;
+    });
+    const colorCls = parentGraph.length > 0 ? parentGraph[0].colorClass : '';
+
+    if (graphAmount === 0 &&
+      this.state.excludedTypes.length === 0 &&
+      this.state.query.trim() === '') {
+      return <div key={items.graph}></div>;
+    }
+
+    return (
+      <div key={items.graph} className={'sub-nodes-by-graph' + (isOpen ? ' open' : '')}>
+        <div className={'graph-header ' + colorCls}>
+          <span className="graph-name" onClick={this.onOpenGraph}>
+            <i className={isOpen ? 'icon-down fa fa-caret-down' : 'icon-right fa fa-caret-right'}></i>
+            &nbsp;{items.graph}
+          </span>
+
+          <span className="graph-amount">
+            {graphAmount}
+          </span>
+
+          <span className="graph-buttons">
+            <button className="btn btn-search" onClick={this.onInputSearch}>
+              <i className="fa fa-search"></i>
+            </button>
+            <button className={"btn btn-filter" + (
+                this.state.filterIsOpen ? " active" : "")}
+              onClick={this.onInputFilter}>
+              <i className="fa fa-filter"></i>
+            </button>
+            <button className="btn btn-add-all" onClick={this.onAddAllNodes}>
+              <i className="fa fa-plus-square"></i>
+            </button>
+          </span>
+
+          {(this.state.searchIsOpen && subnodesAmount > 0) &&
+          <span className="graph-search">
+            <input type="search" name="query" className="topcoat-text-input graph-search-input"
+              autoFocus value={this.state.query} onChange={
+                _.throttle(this.handleInputChange, this.throttleTime)} />
+            <i className="fa fa-search" onClick={this.onInputSearch}></i>
+          </span>}
+        </div>
+
+        <div className="graph-items">
+          {this.buildCollectionTypes()}
+          {this.buildSubNodes(items)}
+          {this.pagination()}
+        </div>
+      </div>
+    );
+  }
+
 }
 
-function mapStateToProps({ graphs }) {
-  return { graphs };
+function mapStateToProps(state) {
+  return {
+    currentNode: state.nodes.currentNode,
+    graphs: state.app.graphs,
+    collectionsByGraphs: state.app.collectionsByGraphs
+  };
 }
 
-export default connect(mapStateToProps, null)(SubNodesByGraph);
+export default connect(
+  mapStateToProps,
+  { addStageNode }
+)(SubNodesByGraph);
