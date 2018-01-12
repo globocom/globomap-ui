@@ -12,12 +12,16 @@ const FETCH_COLLECTIONS_SUCCESS = 'fetch_collections_success';
 const FETCH_COLLECTIONS_FAIL = 'fetch_collections_fail';
 
 const TOGGLE_GRAPH = 'toggle_graph';
+const SHOW_MODAL = 'show_modal';
+const CLOSE_MODAL = 'close_modal';
 
 const initialState = {
   graphs: [],
   collections: [],
   collectionsByGraphs: {},
-  enabledCollections: []
+  enabledCollections: [],
+  modalVisible: false,
+  modalContent: null
 }
 
 export default function reducer(state=initialState, action={}) {
@@ -85,6 +89,20 @@ export default function reducer(state=initialState, action={}) {
         graphs: newGraphs
       };
 
+    case SHOW_MODAL:
+      return {
+        ...state,
+        modalVisible: true,
+        modalContent: action.content
+      }
+
+    case CLOSE_MODAL:
+      return {
+        ...state,
+        modalVisible: false,
+        modalContent: null
+      }
+
     default:
       return state;
   }
@@ -111,4 +129,17 @@ export function toggleGraph(name) {
     type: TOGGLE_GRAPH,
     name
   };
+}
+
+export function showModal(content) {
+  return {
+    type: SHOW_MODAL,
+    content
+  }
+}
+
+export function closeModal() {
+  return {
+    type: CLOSE_MODAL
+  }
 }
