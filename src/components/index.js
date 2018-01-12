@@ -17,6 +17,7 @@ limitations under the License.
 import App from './App/App';
 import Header from './Header/Header';
 import InfoContentHead from './InfoContentHead/InfoContentHead';
+import Loading from './Loading/Loading';
 import Modal from './Modal/Modal';
 import Monit from './Monit/Monit';
 import NodeEdges from './NodeEdges/NodeEdges';
@@ -30,18 +31,7 @@ import SubNodes from './SubNodes/SubNodes';
 import Tools from './Tools/Tools';
 
 export {
-  App,
-  Header,
-  InfoContentHead,
-  Modal,
-  Monit,
-  NodeEdges,
-  NodeItem,
-  NotFound,
-  PopMenu,
-  Properties,
-  SearchContent,
-  Stage,
-  SubNodes,
-  Tools
+  App, Header, InfoContentHead, Loading, Modal,
+  Monit, NodeEdges, NodeItem, NotFound, PopMenu,
+  Properties, SearchContent, Stage, SubNodes, Tools
 }
