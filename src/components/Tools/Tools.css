@@ -24,8 +24,8 @@ limitations under the License.
   top: 50px;
   left: 0;
   height: 35px;
-  width: 65%;
-  border-bottom: 1px solid #50bea8;
+  width: 70%;
+  border-bottom: 1px solid #e2e2e2;
   justify-content: space-between;
 }
 
@@ -98,8 +98,8 @@ limitations under the License.
   margin-right: 1px;
   border: 0;
   padding: 0 10px;
-  color: white;
-  background-color: #50bea8;
+  color: #333;
+  background-color: #e2e2e2;
   /*border-radius: 4px 4px 0 0;*/
   opacity: 0.5;
 }

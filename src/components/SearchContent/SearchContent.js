@@ -18,6 +18,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setCurrentNode, traversalSearch } from '../../redux/modules/nodes';
 import { addStageNode } from '../../redux/modules/stage';
+import { Loading } from '../';
 import SearchContentPagination from './SearchContentPagination';
 import './SearchContent.css';
 
@@ -50,16 +51,21 @@ class SearchContent extends Component {
 
     return (
       <div className={'search-content' + (this.props.currentNode ? ' with-info' : '')}>
-        <table className="search-content-results">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Type</th>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody>{allNodes.length > 0 && allNodes}</tbody>
-        </table>
+        {allNodes.length > 0 && allNodes &&
+          <table className="search-content-results">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>{allNodes}</tbody>
+          </table>}
+
+        {this.props.findLoading &&
+          <Loading iconSize="big" />}
+
         <div className="search-content-base">
           <SearchContentPagination
             // ref={(pagination) => {this.pagination = pagination}}
@@ -87,6 +93,7 @@ function mapStateToProps(state) {
     nodeList: state.nodes.nodeList,
     currentNode: state.nodes.currentNode,
     perPage: state.nodes.perPage,
+    findLoading: state.nodes.findLoading,
     currentPage: state.nodes.currentPage
   };
 }
