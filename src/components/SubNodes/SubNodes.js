@@ -16,9 +16,9 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { uiSocket } from '../../utils';
-import { traversalSearch, resetSubNodes, clearCurrentNode } from '../../redux/modules/nodes';
-import { InfoContentHead } from '../';
+// import { uiSocket } from '../../utils';
+import { resetSubNodes, clearCurrentNode } from '../../redux/modules/nodes';
+import { Loading, InfoContentHead } from '../';
 import SubNodesByGraph from './SubNodesByGraph';
 import './SubNodes.css';
 
@@ -26,14 +26,17 @@ class SubNodes extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = uiSocket();
+    // this.socket = uiSocket();
     this.state = {
       // node: this.props.currentNode,
       // loading: true,
       // byGraph: []
     }
 
-    this.onCloseSubNodes = this.onCloseSubNodes.bind(this);
+    // this.onCloseSubNodes = this.onCloseSubNodes.bind(this);
+
+    this.onColapseSubNodes = this.onColapseSubNodes.bind(this);
+
     // this.composeEdges = this.composeEdges.bind(this);
     // this.onTraversalSearch = this.onTraversalSearch.bind(this);
     // this.resetByGraph = this.resetByGraph.bind(this);
@@ -108,13 +111,6 @@ class SubNodes extends Component {
   //   return nEdges;
   // }
 
-  onCloseSubNodes(event) {
-    event.stopPropagation();
-    this.props.clearCurrentNode();
-    this.props.resetSubNodes();
-    // this.resetByGraph(() => {});
-  }
-
   // resetByGraph(fn) {
   //   let byGraph = [];
 
@@ -153,8 +149,19 @@ class SubNodes extends Component {
   //   }
   // }
 
+  onCloseSubNodes(event) {
+    event.stopPropagation();
+    this.props.clearCurrentNode();
+    this.props.resetSubNodes();
+    // this.resetByGraph(() => {});
+  }
+
+  onColapseSubNodes(event) {
+    event.stopPropagation();
+  }
+
   render() {
-    let byGraph = this.props.subNodesByGraph.map((items, index) => {
+    const byGraph = this.props.subNodesByGraph.map((items, index) => {
       return <SubNodesByGraph key={index + '_' + items.graph + '_' + items.nodes.length}
                               // ref={(ByGraph) => {this.byGraph = ByGraph}}
                               items={items}
@@ -173,22 +180,17 @@ class SubNodes extends Component {
           <div className="subnodes-header-title" title={headerTitle}>
             <span className="title-limit">{headerTitle}</span>
           </div>
-          {/*
-          <button className="close-subnodes-btn topcoat-icon-button--quiet"
-            onClick={this.onCloseSubNodes}>
-            <i className="fa fa-close"></i>
+          <button className="btn colapse-subnodes-btn" onClick={this.onColapseSubNodes}>
+            <i className="fa fa-angle-right"></i>
           </button>
-          */}
           <InfoContentHead hasId={this.props.hasId}
                            // node={this.state.node}
-                           showModal={this.props.showModal}
-                           closeModal={this.props.closeModal} />
+                           // showModal={this.props.showModal}
+                           // closeModal={this.props.closeModal}
+                           />
         </div>
         <div className="subnodes-graph-items">
-          {this.props.traversalLoading &&
-            <div className="items-loading">
-              <i className="loading-cog fa fa-cog fa-spin fa-2x fa-fw"></i>
-            </div>}
+          {this.props.traversalLoading && <Loading iconSize="medium" />}
           {byGraph}
         </div>
       </div>
@@ -207,5 +209,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { traversalSearch, resetSubNodes, clearCurrentNode }
+  { resetSubNodes, clearCurrentNode }
 )(SubNodes);

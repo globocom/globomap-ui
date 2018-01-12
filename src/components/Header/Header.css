@@ -32,17 +32,18 @@ limitations under the License.
 }
 
 .main-header .header-group {
+  display: flex;
+  justify-content: space-between;
   height: 50px;
-  background-color: #d2d6d6;
+  background-color: #3872d2;
   z-index: 9;
 }
 
 .main-header .header-group .logo {
-  float: left;
   font-size: 17px;
   font-weight: lighter;
   letter-spacing: -1px;
-  color: #454545;
+  color: white;
   margin: 0 20px;
   height: 50px;
   line-height: 18px;
@@ -71,38 +72,48 @@ limitations under the License.
 
 .main-header .search-box .search-query {
   border: 0;
-  width: 75%;
+  width: 100%;
   font-size: 16px;
-  color: #333;
+  font-weight: lighter;
+  color: white;
   box-shadow: none;
+  padding: 0 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.main-header .search-box .btn-search,
+.main-header .search-box .btn-search-options {
+  width: 40px;
+  border: 0;
+  background: none;
+  color: white;
 }
 
 .main-header .search-box .btn-search {
-  width: 40px;
   margin-left: -40px;
-  border: 0;
-  background: none;
 }
 
 .main-header .search-box .btn-search-options {
-  margin: 0 5px;
+  margin-left: -80px;
 }
 
 .main-header .search-box-options {
   position: absolute;
-  width: calc(75% + 48px);
+  width: 100%;
   top: 50px;
   left: 0;
   padding-bottom: 40px;
   background-color: white;
-  /*border-radius: 0 0 4px 4px;*/
-  box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 1px 25px rgba(0,0,0,0.2);
+  z-index: 19
 }
 
 .search-box-options .options-container {
   max-height: 350px;
   overflow: hidden;
   overflow-y: auto;
+  padding: 10px 20px;
 }
 
 .search-box-options .options-base {
@@ -201,4 +212,11 @@ limitations under the License.
   height: 50px;
   align-items: center;
   padding: 0 10px;
+}
+
+.main-header .user-items .logout-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 14px;
 }

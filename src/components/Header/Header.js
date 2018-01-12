@@ -294,23 +294,23 @@ class Header extends Component {
               disabled={disabledMainSearch} value={this.state.query}
               onChange={this.handleSearchChange} onKeyPress={this.handleKeyPress} />
 
-            <button className="btn-search" onClick={this.onSendSearchQuery}
+            <button className="btn btn-search" onClick={this.onSendSearchQuery}
               disabled={this.props.findLoading || disabledMainSearch}>
               {this.props.findLoading
                 ? <i className="loading-cog fa fa-cog fa-spin fa-fw"></i>
                 : <i className="fa fa-search"></i>}
             </button>
 
-            <button className="btn-search-options topcoat-button--large"
+            <button className="btn btn-search-options"
               onClick={(e) => this.onToggleSearchOptions(e)}>
-              <i className="fa fa-list"></i>
+              <i className="fa fa-caret-down"></i>
             </button>
 
             {this.state.showOptions && searchOptions}
           </div>
 
           <div className="user-items">
-            <button className="logout-btn topcoat-button" href="/logout"
+            <button className="btn logout-btn" href="/logout"
               onClick={() => { window.location.href = '/logout' }}>
               logout <i className="fa fa-sign-out"></i>
             </button>
