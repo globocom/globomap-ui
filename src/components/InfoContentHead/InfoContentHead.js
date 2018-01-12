@@ -17,7 +17,8 @@ limitations under the License.
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { uiSocket } from '../../utils';
-import { Properties, Modal, Monit } from '../';
+import { showModal, closeModal } from '../../redux/modules/app';
+import { Properties, Monit } from '../';
 import './InfoContentHead.css';
 
 class InfoContentHead extends Component {
@@ -26,13 +27,13 @@ class InfoContentHead extends Component {
     super(props);
     this.socket = uiSocket();
     this.state = {
-      currentTab: 'Properties',
-      modalVisible: false,
-      modalContent: null
+      currentTab: 'Properties'
+      // modalVisible: false,
+      // modalContent: null
     }
 
-    this.showModal = this.showModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    // this.showModal = this.showModal.bind(this);
+    // this.closeModal = this.closeModal.bind(this);
   }
 
   render() {
@@ -50,19 +51,23 @@ class InfoContentHead extends Component {
       let active = this.state.currentTab === tabItem.name ? ' active' : '',
           disabled = tabItem.name === 'Monitoring' && node.type !== 'comp_unit';
 
-      return (<li key={'tab' + tabItem.name} className={active}>
-                <button className="tab-btn topcoat-button--quiet" disabled={disabled}
-                  onClick={(e) => this.setState({ currentTab: tabItem.name })}>
-                  {tabItem.name}
-                </button>
-              </li>);
+      return (
+        <li key={'tab' + tabItem.name} className={active}>
+          <button className="tab-btn topcoat-button--quiet" disabled={disabled}
+            onClick={(e) => this.setState({ currentTab: tabItem.name })}>
+            {tabItem.name}
+          </button>
+        </li>
+      );
     });
 
     let tabsContent = tabs.map((tabItem) => {
       let active = this.state.currentTab === tabItem.name ? ' active' : '';
-      return (<div key={'content' + tabItem.name} className={'tab-content' + active}>
-                {tabItem.content}
-              </div>);
+      return (
+        <div key={'content' + tabItem.name} className={'tab-content' + active}>
+          {tabItem.content}
+        </div>
+      );
     });
 
     let zbxGraphButton = (
@@ -71,21 +76,20 @@ class InfoContentHead extends Component {
       </button>
     );
 
-    return (<div className="info-content-head">
-              <nav className="tabs-nav">
-                <ul>{tabsButtons}</ul>
-              </nav>
-              <div className="plugins-buttons">
-                {node.type === 'zabbix_graph' &&
-                  zbxGraphButton}
-              </div>
-              <div className="tabs-container">
-                {tabsContent}
-              </div>
-              <Modal visible={this.state.modalVisible}
-                     content={this.state.modalContent}
-                     closeModal={this.closeModal} />
-            </div>);
+    return (
+      <div className="info-content-head">
+        <nav className="tabs-nav">
+          <ul>{tabsButtons}</ul>
+        </nav>
+        <div className="plugins-buttons">
+          {node.type === 'zabbix_graph' &&
+            zbxGraphButton}
+        </div>
+        <div className="tabs-container">
+          {tabsContent}
+        </div>
+      </div>
+    );
   }
 
   openZbxGraph(event) {
@@ -93,27 +97,26 @@ class InfoContentHead extends Component {
     if (!node) {
       return;
     }
-
-    let data = { graphId: node.id };
-    this.showModal(null);
-    this.socket.emit('getZabbixGraph', data, (base64data) => {
+    this.props.showModal(null);
+    this.socket.emit('getZabbixGraph', { graphId: node.id }, (base64data) => {
       if (base64data.error) {
         console.log(base64data.message);
         this.closeModal();
         return;
       }
-      let imgData = 'data:image/png;base64,' + base64data.toString();
-      this.setState({ modalContent: <img src={imgData} alt={node.name} /> });
+      this.props.showModal(<img src={`data:image/png;base64,${base64data.toString()}`}
+                                alt={node.name} />);
+      // this.setState({ modalContent: <img src={imgData} alt={node.name} /> });
     });
   }
 
-  showModal(content) {
-    this.setState({ modalContent: content, modalVisible: true });
-  }
+  // showModal(content) {
+  //   this.setState({ modalContent: content, modalVisible: true });
+  // }
 
-  closeModal() {
-    this.setState({ modalContent: '', modalVisible: false });
-  }
+  // closeModal() {
+  //   this.setState({ modalContent: '', modalVisible: false });
+  // }
 
   // componentWillReceiveProps(nextProps){
   //   let current = this.props.currentNode,
@@ -133,5 +136,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { }
+  { showModal, closeModal }
 )(InfoContentHead);

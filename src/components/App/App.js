@@ -20,7 +20,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { fetchGraphs, fetchCollections } from '../../redux/modules/app';
-import { Header, Tools, SearchContent, Stage, SubNodes, PopMenu } from '../';
+import { Header, Modal, PopMenu, SearchContent,
+         Stage, SubNodes, Tools } from '../';
 
 import { traverseItems, sortByName, uiSocket } from '../../utils';
 import './App.css';
@@ -390,11 +391,14 @@ render() {
               // clearCurrent={this.clearCurrent}
               // currentNode={this.state.currentNode}
               hasId={this.state.hasId}
-              showModal={this.showModal}
-              closeModal={this.closeModal} />
+              // showModal={this.showModal}
+              // closeModal={this.closeModal}
+              />
 
         <PopMenu ref={(popMenu) => {this.popMenu = popMenu}}
                  currentNode={this.state.currentNode} />
+
+        <Modal />
       </div>
     );
   }

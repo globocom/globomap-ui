@@ -15,32 +15,37 @@ limitations under the License.
 */
 
 import React from 'react';
+import { connect } from 'react-redux';
+import { closeModal } from '../../redux/modules/app';
+import { Loading } from '../';
 import './Modal.css';
 
 class Modal extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: this.props.content
-    }
-  }
-
   render() {
-    return this.props.visible
-            ? <div className="modal" onClick={(e) => this.props.closeModal()}>
-                <button className="close-modal-btn topcoat-button--quiet"
-                  onClick={(e) => this.props.closeModal()}>
-                  <i className="fa fa-times"></i>
-                </button>
-                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                  {this.props.content !== null
-                    ? this.props.content
-                    : <i className="modal-loading fa fa-cog fa-spin fa-2x fa-fw"></i>}
-                </div>
-              </div>
-            : null
+    return this.props.modalVisible
+      ? <div className="modal" onClick={(e) => this.props.closeModal()}>
+          <button className="close-modal-btn topcoat-button--quiet"
+            onClick={(e) => this.props.closeModal()}>
+            <i className="fa fa-times"></i>
+          </button>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            {this.props.modalContent !== null
+              ? this.props.modalContent
+              : <Loading iconSize="big" />}
+          </div>
+        </div>
+      : null
   }
 }
 
-export default Modal;
+function mapStateToProps(state) {
+  return {
+    modalVisible: state.app.modalVisible,
+    modalContent: state.app.modalContent
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { closeModal }
+)(Modal);
