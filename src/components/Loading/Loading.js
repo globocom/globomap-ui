@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import React from 'react';
+import { CSSTransitionGroup } from 'react-transition-group'
 import './Loading.css';
 
 class Loading extends React.Component {
@@ -23,14 +24,19 @@ class Loading extends React.Component {
       'small': 'fa-1x',
       'medium': 'fa-2x',
       'big': 'fa-3x'
-    }
+    };
     const iconSize = Object.keys(iconSizes).includes(this.props.iconSize)
                      ? iconSizes[this.props.iconSize]
                      : iconSizes['medium'];
     return (
-      <div className="ui-loading">
-        <i className={`ui-loading-cog fa fa-cog fa-spin ${iconSize} fa-fw`}></i>
-      </div>
+      <CSSTransitionGroup transitionName="ui-loading"
+                          transitionEnterTimeout={200}
+                          transitionLeaveTimeout={200}>
+        {this.props.isLoading &&
+          <div className="ui-loading">
+            <i className={`ui-loading-cog fa fa-cog fa-spin ${iconSize} fa-fw`}></i>
+          </div>}
+      </CSSTransitionGroup>
     );
   }
 }
