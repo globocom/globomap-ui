@@ -59,7 +59,7 @@ limitations under the License.
 .content-list .content-item:hover {
   cursor: pointer;
   color: #333;
-  background-color: #dbeae7;
+  background-color: rgba(56, 114, 210, 0.1);
 }
 
 .content-list .content-item .remove-btn {

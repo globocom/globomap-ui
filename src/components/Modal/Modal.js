@@ -29,9 +29,8 @@ class Modal extends React.Component {
             <i className="fa fa-times"></i>
           </button>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            {this.props.modalContent !== null
-              ? this.props.modalContent
-              : <Loading iconSize="big" />}
+            <Loading isLoading={this.props.modalContent === null} iconSize="big" />
+            {this.props.modalContent}
           </div>
         </div>
       : null

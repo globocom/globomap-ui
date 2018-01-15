@@ -99,7 +99,7 @@ class InfoContentHead extends Component {
     this.socket.emit('getZabbixGraph', { graphId: node.id }, (base64data) => {
       if (base64data.error) {
         console.log(base64data.message);
-        this.closeModal();
+        this.props.closeModal();
         return;
       }
       this.props.showModal(<img src={`data:image/png;base64,${base64data.toString()}`}

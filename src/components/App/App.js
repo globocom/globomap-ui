@@ -17,7 +17,6 @@ limitations under the License.
 import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { fetchGraphs, fetchCollections,
          toggleHasId } from '../../redux/modules/app';
 import { clearCurrentNode } from '../../redux/modules/nodes';
@@ -34,13 +33,13 @@ class App extends Component {
 
     this.state = {
       // currentNode: false,
-      enabledCollections: [],
-      selectedCollections: [],
-      collectionsByGraphs: {},
       // nodes: [],
       // stageNodes: [],
-      hasId: false,
-      currentTab: 'Search Results'
+      // hasId: false,
+      // currentTab: 'Search Results',
+      enabledCollections: [],
+      selectedCollections: [],
+      collectionsByGraphs: {}
     };
 
     // this.findNodes = this.findNodes.bind(this);
@@ -58,7 +57,7 @@ class App extends Component {
     // this.removeNode = this.removeNode.bind(this);
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
     // this.clearInfo = this.clearInfo.bind(this);
-    this.setCurrentTab = this.setCurrentTab.bind(this);
+    // this.setCurrentTab = this.setCurrentTab.bind(this);
     this.resetGraphsCollections = this.resetGraphsCollections.bind(this);
   }
 
@@ -274,9 +273,9 @@ class App extends Component {
   //   this.setState({ currentNode: false }, fn);
   // }
 
-  setCurrentTab(tabName) {
-    this.setState({ currentTab: tabName });
-  }
+  // setCurrentTab(tabName) {
+  //   this.setState({ currentTab: tabName });
+  // }
 
   resetGraphsCollections() {
     let graphsCopy = this.state.graphs.map((graph) => {
@@ -319,9 +318,6 @@ class App extends Component {
 
   handleDoubleClick() {
     this.props.toggleHasId();
-    // this.setState({
-    //   hasId: !this.state.hasId
-    // });
   }
 
   componentDidMount() {
@@ -357,35 +353,30 @@ render() {
                // stageNodes={this.state.stageNodes}
                // setStageNodes={this.setStageNodes}
                currentTab={this.state.currentTab}
-               setCurrentTab={this.setCurrentTab}
+               // setCurrentTab={this.setCurrentTab}
                resetGraphsCollections={this.resetGraphsCollections}
                info={this.subnodes} />
 
+        {/*<Tabs>
+          <Tab name="Search Results">
+            <SearchContent />
+          </Tab>
+          <Tab name="Navigation">
+            <Stage />
+          </Tab>
+        </Tabs>*/}
+
         <div className="tabs-container">
-          <div className={'tab-content' + (this.state.currentTab === 'Search Results' ? ' active' : '')}>
-            <SearchContent
-                           // ref={(searchContent) => {this.searchContent = searchContent}}
-                           // nodes={this.state.nodes}
-                           // findNodes={this.findNodes}
-                           // addNodeToStage={this.addNodeToStage}
-                           // currentNode={this.state.currentNode}
-                           // enabledCollections={this.state.enabledCollections}
-                           // header={this.header}
-                           />
+          <div className={'tab-content' + (this.props.currentMainTab === 'Search Results' ? ' active' : '')}>
+            <SearchContent />
           </div>
-          <div className={'tab-content' + (this.state.currentTab === 'Navigation' ? ' active' : '')}>
-            <Stage
-                   // hasId={this.state.hasId}
-                   // stageNodes={this.state.stageNodes}
-                   // setStageNodes={this.setStageNodes}
-                   // setCurrent={this.setCurrent}
-                   // currentNode={this.state.currentNode}
-                   // removeNode={this.removeNode}
-                   />
+          <div className={'tab-content' + (this.props.currentMainTab === 'Navigation' ? ' active' : '')}>
+            <Stage />
           </div>
         </div>
 
-        <SubNodes ref={(SubNodes) => {this.subnodes = SubNodes}}
+        <SubNodes
+              // ref={(SubNodes) => {this.subnodes = SubNodes}}
               // getNode={this.getNode}
               // graphs={this.state.graphs}
               // collectionsByGraphs={this.state.collectionsByGraphs}
@@ -410,7 +401,10 @@ render() {
 
 function mapStateToProps(state) {
   const { graphs, collections, hasId } = state.app;
-  return { graphs, collections, hasId };
+  return {
+    graphs, collections, hasId,
+    currentMainTab: state.tabs.currentMainTab
+  };
 }
 
 let app = connect(

@@ -19,6 +19,8 @@ limitations under the License.
 import React from 'react';
 import { connect } from 'react-redux';
 import { setStageNodes } from '../../redux/modules/stage';
+import { clearCurrentNode, resetSubNodes } from '../../redux/modules/nodes';
+import { setMainTab } from '../../redux/modules/tabs';
 import { traverseItems, uiSocket } from '../../utils';
 import './Tools.css';
 
@@ -96,8 +98,8 @@ class Tools extends React.Component {
       this.storages = this.getLocalStorage(this.key) || {};
       resolve();
     }).then(() => {
-        this.props.info.props.clearCurrent();
-        this.props.info.resetByGraph(() => {});
+        this.props.clearCurrentNode();
+        this.props.resetSubNodes();
         this.props.resetGraphsCollections();
         this.props.setStageNodes(this.storages[key])
     })
@@ -167,11 +169,11 @@ class Tools extends React.Component {
     }
 
     let tabsButtons = this.tabs.map((tab, index) => {
-      let active = this.props.currentTab === tab.name ? ' active' : '';
+      let active = this.props.currentMainTab === tab.name ? ' active' : '';
       return (
         <button key={'tab' + index} className={'tab-btn' + active}
           disabled={tab.name === 'Navigation' && !rootNodeHasItens}
-          onClick={(e) => this.props.setCurrentTab( tab.name )}>
+          onClick={(e) => this.props.setMainTab( tab.name )}>
           {tab.name}
         </button>
       );
@@ -202,11 +204,13 @@ class Tools extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    stageNodes: state.stage.stageNodes
+    stageNodes: state.stage.stageNodes,
+    currentMainTab: state.tabs.currentMainTab
   };
 }
 
 export default connect(
   mapStateToProps,
-  { setStageNodes }
+  { setStageNodes, clearCurrentNode, resetSubNodes,
+    setMainTab }
 )(Tools);

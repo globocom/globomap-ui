@@ -17,6 +17,7 @@ limitations under the License.
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { cleanStageNodes, setStageNodes } from '../../redux/modules/stage';
+import { setMainTab } from '../../redux/modules/tabs';
 import { NodeItem } from '../';
 import './Stage.css';
 
@@ -25,25 +26,6 @@ class Stage extends Component {
   constructor(props) {
     super(props);
     this.renderNodes = this.renderNodes.bind(this);
-  }
-
-  render() {
-    let sNodes = this.props.stageNodes,
-        sItems = [];
-
-    if(sNodes.length > 0) {
-      sItems = sNodes[0].items;
-    }
-
-    const open = sItems.length > 0 ? ' open' : '';
-
-    return (
-      <div className={"stage" + open}>
-        <div className="stage-container">
-          {this.renderNodes(this.props.stageNodes)}
-        </div>
-      </div>
-    );
   }
 
   renderNodes(nodeList) {
@@ -59,6 +41,30 @@ class Stage extends Component {
     });
   }
 
+  render() {
+    const sNodes = this.props.stageNodes;
+    let sItems = [];
+
+    if(sNodes.length > 0) {
+      sItems = sNodes[0].items;
+    }
+
+    let open = '';
+    if (sItems.length > 0) {
+      open = ' open';
+      this.props.setMainTab('Navigation');
+    } else {
+      this.props.setMainTab('Search Results');
+    }
+
+    return (
+      <div className={"stage" + open}>
+        <div className="stage-container">
+          {this.renderNodes(this.props.stageNodes)}
+        </div>
+      </div>
+    );
+  }
 }
 
 function mapStateToProps(state) {
@@ -70,5 +76,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { cleanStageNodes, setStageNodes }
+  { cleanStageNodes, setStageNodes, setMainTab }
 )(Stage);
