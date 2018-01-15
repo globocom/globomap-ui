@@ -184,14 +184,14 @@ class Tools extends React.Component {
         </nav>
         <div className="tools-buttons">
           <span className="message">{this.state.message}</span>
-          <button className={'btn-save-graph topcoat-button'}
+          <button className={'btn btn-save-graph topcoat-button'}
                   onClick={this.onSaveGraph} disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
-          <button className={'btn-restore-graph topcoat-button'}
+          <button className={'btn btn-restore-graph topcoat-button'}
                   onClick={this.onRestoreGraph}
                   disabled={(!this.storages || Object.keys(this.storages).length === 0)}>
-            <i className="fa fa-folder-open-o"></i>
+            <i className="fa fa-folder"></i>
           </button>
         </div>
       </div>

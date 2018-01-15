@@ -36,7 +36,7 @@ export default function reducer(state=initialState, action={}) {
     case STAGE_REMOVE_NODE:
       currentNodes = state.stageNodes.slice();
       const i = currentNodes.findIndex((n) => {
-        return n.uuid === node.uuid;
+        return n.uuid === action.node.uuid;
       });
 
       if (i >= 0) {
@@ -44,7 +44,7 @@ export default function reducer(state=initialState, action={}) {
       } else {
         traverseItems(currentNodes, (n) => {
           const j = n.items.findIndex((n) => {
-            return n.uuid === node.uuid;
+            return n.uuid === action.node.uuid;
           });
           if (j >= 0) {
             n.items.splice(j, 1);

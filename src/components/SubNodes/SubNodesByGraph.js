@@ -113,9 +113,7 @@ class SubNodesByGraph extends Component {
             <span className="sub-node-name" title={subnode.name}>{subnode.name}</span>
           </div>
 
-          <NodeEdges edges={subnode.edges}
-                     position={'right'}
-                     hasId={this.props.hasId} />
+          <NodeEdges edges={subnode.edges} position={'right'} />
         </div>
       );
     });

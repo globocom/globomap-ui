@@ -12,6 +12,7 @@ const FETCH_COLLECTIONS_SUCCESS = 'fetch_collections_success';
 const FETCH_COLLECTIONS_FAIL = 'fetch_collections_fail';
 
 const TOGGLE_GRAPH = 'toggle_graph';
+const TOGGLE_HASID = 'toggle_hasid';
 const SHOW_MODAL = 'show_modal';
 const CLOSE_MODAL = 'close_modal';
 
@@ -21,7 +22,8 @@ const initialState = {
   collectionsByGraphs: {},
   enabledCollections: [],
   modalVisible: false,
-  modalContent: null
+  modalContent: null,
+  hasId: false
 }
 
 export default function reducer(state=initialState, action={}) {
@@ -89,6 +91,12 @@ export default function reducer(state=initialState, action={}) {
         graphs: newGraphs
       };
 
+    case TOGGLE_HASID:
+      return {
+        ...state,
+        hasId: !state.hasId
+      };
+
     case SHOW_MODAL:
       return {
         ...state,
@@ -128,6 +136,12 @@ export function toggleGraph(name) {
   return {
     type: TOGGLE_GRAPH,
     name
+  };
+}
+
+export function toggleHasId() {
+  return {
+    type: TOGGLE_HASID
   };
 }
 

@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './Properties.css';
 
 const DATE_FORMAT_LANGUAGE = 'pt-BR';
@@ -111,7 +112,6 @@ class Properties extends Component {
 
   toggleProps(event, item) {
     event.preventDefault();
-
     let sub = this.state.subProps.slice();
 
     if (sub.includes(item)) {
@@ -149,4 +149,13 @@ class Properties extends Component {
 
 }
 
-export default Properties;
+function mapStateToProps(state) {
+  return {
+    hasId: state.app.hasId
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(Properties);

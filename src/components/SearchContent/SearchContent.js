@@ -62,10 +62,6 @@ class SearchContent extends Component {
             </thead>
             <tbody>{allNodes}</tbody>
           </table>}
-
-        {this.props.findLoading &&
-          <Loading iconSize="big" />}
-
         <div className="search-content-base">
           <SearchContentPagination
             // ref={(pagination) => {this.pagination = pagination}}
@@ -75,6 +71,7 @@ class SearchContent extends Component {
             // header={this.props.header}
             />
         </div>
+        <Loading isLoading={this.props.findLoading} iconSize="big" />
       </div>
     );
   }

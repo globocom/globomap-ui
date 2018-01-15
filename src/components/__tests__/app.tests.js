@@ -46,7 +46,7 @@ describe("App", function() {
     const wrapper = shallow(
       <App />
     );
-    const element = wrapper.find('.main-xxxx');
+    const element = wrapper.find('.has-id');
     expect(element.text() === " ");
   });
 

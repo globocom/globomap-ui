@@ -25,7 +25,7 @@ limitations under the License.
   left: 0;
   height: 35px;
   width: 70%;
-  border-bottom: 1px solid #e2e2e2;
+  border-bottom: 1px solid #d2d2d2;
   justify-content: space-between;
 }
 
@@ -41,6 +41,7 @@ limitations under the License.
   margin-left: 8px;
   min-width: 35px;
   min-height: 25px;
+  /*font-size: 18px;*/
 }
 
 .content-list {
@@ -99,7 +100,7 @@ limitations under the License.
   border: 0;
   padding: 0 10px;
   color: #333;
-  background-color: #e2e2e2;
+  background-color: #d2d2d2;
   /*border-radius: 4px 4px 0 0;*/
   opacity: 0.5;
 }
