@@ -17,7 +17,8 @@ limitations under the License.
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { uiSocket } from '../../utils';
-import { resetSubNodes, clearCurrentNode } from '../../redux/modules/nodes';
+import { resetSubNodes, clearCurrentNode,
+         traversalSearch } from '../../redux/modules/nodes';
 import { Loading, InfoContentHead } from '../';
 import SubNodesByGraph from './SubNodesByGraph';
 import './SubNodes.css';
@@ -130,24 +131,24 @@ class SubNodes extends Component {
   //   }
   // }
 
-  // componentWillReceiveProps(nextProps) {
-  //   let current = this.props.currentNode,
-  //       next = nextProps.currentNode;
+  componentWillReceiveProps(nextProps) {
+    let current = this.props.currentNode,
+        next = nextProps.currentNode;
 
-  //   if (!current) {
-  //     return;
-  //   }
+    if (!current || !next) {
+      return;
+    }
 
-  //   if(current._id !== next._id || current.uuid !== next.uuid) {
-  //     // this.props.resetSubNodes();
-  //     if(next) {
-  //       this.props.traversalSearch(next);
-  //       // this.setState({ node: next, loading: true }, () => {
-  //       //   this.props.traversalSearch(next);
-  //       // });
-  //     }
-  //   }
-  // }
+    if(current._id !== next._id || current.uuid !== next.uuid) {
+      // this.props.resetSubNodes();
+      if(next) {
+        this.props.traversalSearch({ node: next });
+        // this.setState({ node: next, loading: true }, () => {
+        //   this.props.traversalSearch(next);
+        // });
+      }
+    }
+  }
 
   onCloseSubNodes(event) {
     event.stopPropagation();
@@ -169,7 +170,7 @@ class SubNodes extends Component {
                               // stageHasNode={this.props.stageHasNode}
                               // node={this.state.node}
                               // addNodeToStage={this.props.addNodeToStage}
-                              hasId={this.props.hasId} />
+                              />
     });
 
     const headerTitle = this.props.currentNode ? this.props.currentNode.name : '';
@@ -183,16 +184,17 @@ class SubNodes extends Component {
           <button className="btn colapse-subnodes-btn" onClick={this.onColapseSubNodes}>
             <i className="fa fa-angle-right"></i>
           </button>
-          <InfoContentHead hasId={this.props.hasId}
+          <InfoContentHead
+                           // hasId={this.props.hasId}
                            // node={this.state.node}
                            // showModal={this.props.showModal}
                            // closeModal={this.props.closeModal}
                            />
         </div>
         <div className="subnodes-graph-items">
-          {this.props.traversalLoading && <Loading iconSize="medium" />}
           {byGraph}
         </div>
+        <Loading isLoading={this.props.traversalLoading} iconSize="medium" />
       </div>
     );
   }
@@ -209,5 +211,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { resetSubNodes, clearCurrentNode }
+  { resetSubNodes, clearCurrentNode, traversalSearch }
 )(SubNodes);
