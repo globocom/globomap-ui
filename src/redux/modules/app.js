@@ -24,7 +24,7 @@ const initialState = {
   modalVisible: false,
   modalContent: null,
   hasId: false
-}
+};
 
 export default function reducer(state=initialState, action={}) {
   switch (action.type) {

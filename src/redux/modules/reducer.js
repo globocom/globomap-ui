@@ -4,12 +4,14 @@ import { reducer as form } from 'redux-form';
 import app from './app';
 import nodes from './nodes';
 import stage, * as fromStage from './stage';
+import tabs from './tabs';
 
 const rootReducer = combineReducers({
   form,
   app,
   nodes,
-  stage
+  stage,
+  tabs
 });
 
 export default rootReducer;
