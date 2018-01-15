@@ -14,3 +14,21 @@
 .ui-loading .ui-loading-cog {
   color: rgba(255, 255, 255, 0.75)
 }
+
+.ui-loading-enter {
+  opacity: 0.01;
+}
+
+.ui-loading-enter.ui-loading-enter-active {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+
+.ui-loading-leave {
+  opacity: 1;
+}
+
+.ui-loading-leave.ui-loading-leave-active {
+  opacity: 0.01;
+  transition: opacity 200ms ease-in;
+}
