@@ -16,7 +16,10 @@ limitations under the License.
 
 import _ from "lodash";
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Stickyfill from 'stickyfill';
+import { setCurrentNode } from '../../redux/modules/nodes';
+import { removeStageNode, setStageNodes } from '../../redux/modules/stage';
 import { traverseItems, uiSocket } from '../../utils';
 import { NodeEdges } from '../';
 import './NodeItem.css';
@@ -63,14 +66,14 @@ class NodeItem extends Component {
   onItemSelect(event) {
     this.checkNodeExistence().then((exist) => {
       if (exist) {
-        this.props.setCurrent(this.props.node);
+        this.props.setCurrentNode(this.props.node);
       }
     });
   }
 
   onSelfRemove(event) {
     event.stopPropagation();
-    this.props.removeNode(this.props.node);
+    this.props.removeStageNode(this.props.node);
   }
 
   componentDidMount() {
@@ -102,12 +105,21 @@ class NodeItem extends Component {
           {this.props.hasId && <span>{id}</span>}
         </div>
 
-        <NodeEdges edges={edges}
-                   position={'left'}
-                   hasId={this.props.hasId} />
+        <NodeEdges edges={edges} position={'left'} />
       </div>
     );
   }
 }
 
-export default NodeItem;
+function mapStateToProps(state) {
+  return {
+    currentNode: state.nodes.currentNode,
+    stageNodes: state.stage.stageNodes,
+    hasId: state.app.hasId
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { setCurrentNode, removeStageNode, setStageNodes }
+)(NodeItem);

@@ -18,11 +18,11 @@ import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import { fetchGraphs, fetchCollections } from '../../redux/modules/app';
+import { fetchGraphs, fetchCollections,
+         toggleHasId } from '../../redux/modules/app';
+import { clearCurrentNode } from '../../redux/modules/nodes';
 import { Header, Modal, PopMenu, SearchContent,
          Stage, SubNodes, Tools } from '../';
-
 import { traverseItems, sortByName, uiSocket } from '../../utils';
 import './App.css';
 
@@ -55,9 +55,9 @@ class App extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     // this.clearStage = this.clearStage.bind(this);
     // this.onToggleGraph = this.onToggleGraph.bind(this);
-    this.removeNode = this.removeNode.bind(this);
+    // this.removeNode = this.removeNode.bind(this);
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
-    this.clearInfo = this.clearInfo.bind(this);
+    // this.clearInfo = this.clearInfo.bind(this);
     this.setCurrentTab = this.setCurrentTab.bind(this);
     this.resetGraphsCollections = this.resetGraphsCollections.bind(this);
   }
@@ -201,35 +201,35 @@ class App extends Component {
   //   return nodeFound;
   // }
 
-  removeNode(node) {
-    let stageNodes = this.state.stageNodes.slice();
-    let i = stageNodes.findIndex((n) => {
-        return n.uuid === node.uuid;
-    });
+  // removeNode(node) {
+  //   let stageNodes = this.state.stageNodes.slice();
+  //   let i = stageNodes.findIndex((n) => {
+  //       return n.uuid === node.uuid;
+  //   });
 
-    if (i >= 0) {
-      stageNodes.splice(i, 1);
-    } else {
-      traverseItems(stageNodes, (n) => {
-        let j = n.items.findIndex((n) => {
-          return n.uuid === node.uuid;
-        });
-        if (j >= 0) {
-          n.items.splice(j, 1);
-        }
-      });
-    }
+  //   if (i >= 0) {
+  //     stageNodes.splice(i, 1);
+  //   } else {
+  //     traverseItems(stageNodes, (n) => {
+  //       let j = n.items.findIndex((n) => {
+  //         return n.uuid === node.uuid;
+  //       });
+  //       if (j >= 0) {
+  //         n.items.splice(j, 1);
+  //       }
+  //     });
+  //   }
 
-    if (stageNodes.length > 0 && stageNodes[0].items !== undefined) {
-      if (stageNodes[0].items.length === 0) {
-        this.setCurrentTab('Search Results');
-      }
-    }
+  //   if (stageNodes.length > 0 && stageNodes[0].items !== undefined) {
+  //     if (stageNodes[0].items.length === 0) {
+  //       this.setCurrentTab('Search Results');
+  //     }
+  //   }
 
-    this.setState({ stageNodes: stageNodes }, () => {
-      this.clearCurrent();
-    });
-  }
+  //   this.setState({ stageNodes: stageNodes }, () => {
+  //     this.clearCurrent();
+  //   });
+  // }
 
   // clearStage() {
   //   return this.setState({ stageNodes: [] }, () => {
@@ -237,9 +237,9 @@ class App extends Component {
   //   });
   // }
 
-  clearInfo(fn) {
-    this.subnodes.resetByGraph(fn);
-  }
+  // clearInfo(fn) {
+  //   this.subnodes.resetByGraph(fn);
+  // }
 
   // findNodes(opts, fn) {
   //   let options = _.merge({
@@ -313,14 +313,15 @@ class App extends Component {
   handleKeyDown(event) {
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.clearCurrent();
+      this.props.clearCurrentNode();
     }
   };
 
   handleDoubleClick() {
-    this.setState({
-      hasId: !this.state.hasId
-    });
+    this.props.toggleHasId();
+    // this.setState({
+    //   hasId: !this.state.hasId
+    // });
   }
 
   componentDidMount() {
@@ -328,7 +329,6 @@ class App extends Component {
 
     this.props.fetchGraphs();
     this.props.fetchCollections();
-
     document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100));
   }
 
@@ -340,7 +340,7 @@ class App extends Component {
 render() {
     return (
       <div className="main">
-        <span className="main-xxxx"
+        <span className="has-id"
               onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
 
         <Header ref={(header) => {this.header = header}}
@@ -363,7 +363,8 @@ render() {
 
         <div className="tabs-container">
           <div className={'tab-content' + (this.state.currentTab === 'Search Results' ? ' active' : '')}>
-            <SearchContent ref={(searchContent) => {this.searchContent = searchContent}}
+            <SearchContent
+                           // ref={(searchContent) => {this.searchContent = searchContent}}
                            // nodes={this.state.nodes}
                            // findNodes={this.findNodes}
                            // addNodeToStage={this.addNodeToStage}
@@ -373,12 +374,14 @@ render() {
                            />
           </div>
           <div className={'tab-content' + (this.state.currentTab === 'Navigation' ? ' active' : '')}>
-            <Stage hasId={this.state.hasId}
+            <Stage
+                   // hasId={this.state.hasId}
                    // stageNodes={this.state.stageNodes}
                    // setStageNodes={this.setStageNodes}
                    // setCurrent={this.setCurrent}
                    // currentNode={this.state.currentNode}
-                   removeNode={this.removeNode} />
+                   // removeNode={this.removeNode}
+                   />
           </div>
         </div>
 
@@ -390,7 +393,7 @@ render() {
               // addNodeToStage={this.addNodeToStage}
               // clearCurrent={this.clearCurrent}
               // currentNode={this.state.currentNode}
-              hasId={this.state.hasId}
+              // hasId={this.state.hasId}
               // showModal={this.showModal}
               // closeModal={this.closeModal}
               />
@@ -405,14 +408,15 @@ render() {
 
 }
 
-function mapStateToProps({ graphs, collections }) {
-  return { graphs, collections };
+function mapStateToProps(state) {
+  const { graphs, collections, hasId } = state.app;
+  return { graphs, collections, hasId };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchGraphs, fetchCollections }, dispatch);
-}
-
-let app = connect(mapStateToProps, mapDispatchToProps)(App);
+let app = connect(
+  mapStateToProps,
+  { fetchGraphs, fetchCollections, clearCurrentNode,
+    toggleHasId }
+)(App);
 
 export { app as default, uiSocket };

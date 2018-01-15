@@ -122,10 +122,6 @@ limitations under the License.
   position: relative;
 }
 
-.subnodes-graph-items .sub-node {
-  width: 100%;
-}
-
 .subnodes-graph-items .sub-node.disabled .sub-node-info {
   opacity: 0.5;
 }
@@ -146,7 +142,10 @@ limitations under the License.
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(157, 172, 169, 0.35);
+  background: white;
+  border-radius: 5px;
+  margin: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 .subnodes-graph-items .sub-node-info {

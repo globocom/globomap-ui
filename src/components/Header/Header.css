@@ -87,10 +87,17 @@ limitations under the License.
   border: 0;
   background: none;
   color: white;
+  font-size: 20px;
+}
+
+.main-header .search-box .btn-search:hover,
+.main-header .search-box .btn-search-options:hover {
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 .main-header .search-box .btn-search {
-  margin-left: -40px;
+  margin-left: -46px;
 }
 
 .main-header .search-box .btn-search-options {
@@ -104,9 +111,9 @@ limitations under the License.
   left: 0;
   padding-bottom: 40px;
   background-color: white;
-  border-radius: 0 0 4px 4px;
-  box-shadow: 0 1px 25px rgba(0,0,0,0.2);
-  z-index: 19
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.25);
+  z-index: 19;
 }
 
 .search-box-options .options-container {
@@ -125,8 +132,8 @@ limitations under the License.
   height: 40px;
   justify-content: flex-end;
   padding: 8px;
-  /*border-radius: 0 0 4px 4px;*/
-  background-color: #d2d6d6;
+  border-radius: 0 0 5px 5px;
+  background-color: #d2d2d2;
 }
 
 .search-box-options .options-base button {

@@ -303,7 +303,7 @@ class Header extends Component {
 
             <button className="btn btn-search-options"
               onClick={(e) => this.onToggleSearchOptions(e)}>
-              <i className="fa fa-caret-down"></i>
+              <i className="fa fa-sliders"></i>
             </button>
 
             {this.state.showOptions && searchOptions}

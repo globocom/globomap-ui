@@ -50,7 +50,7 @@ class NodeEdges extends Component {
                  &nbsp;<strong>{edge.type}</strong>: {edge.name}
                </span>
                {edge.properties &&
-                <Properties key="properties-node" item={edge} hasId={this.props.hasId} />}
+                <Properties key="properties-node" item={edge} />}
              </span>;
     });
   }
@@ -143,4 +143,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, null)(NodeEdges);
+export default connect(
+  mapStateToProps,
+  null
+)(NodeEdges);
