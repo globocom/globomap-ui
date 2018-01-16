@@ -16,7 +16,7 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setCurrentNode, traversalSearch } from '../../redux/modules/nodes';
+import { traversalSearch } from '../../redux/modules/nodes';
 import { addStageNode } from '../../redux/modules/stage';
 import { Loading } from '../';
 import SearchContentPagination from './SearchContentPagination';
@@ -27,6 +27,12 @@ class SearchContent extends Component {
   constructor(props) {
     super(props);
     this.onNodeSelect = this.onNodeSelect.bind(this);
+  }
+
+  onNodeSelect(event, node) {
+    event.stopPropagation();
+    this.props.addStageNode(node, null, true);
+    this.props.traversalSearch({ node });
   }
 
   render() {
@@ -63,26 +69,12 @@ class SearchContent extends Component {
             <tbody>{allNodes}</tbody>
           </table>}
         <div className="search-content-base">
-          <SearchContentPagination
-            // ref={(pagination) => {this.pagination = pagination}}
-            // nodes={this.props.nodes}
-            // findNodes={this.props.findNodes}
-            // enabledCollections={this.props.enabledCollections}
-            // header={this.props.header}
-            />
+          <SearchContentPagination />
         </div>
         <Loading isLoading={this.props.findLoading} iconSize="big" />
       </div>
     );
   }
-
-  onNodeSelect(event, node) {
-    event.stopPropagation();
-    // this.props.addNodeToStage(node, false, true);
-    this.props.addStageNode(node, null, true);
-    this.props.traversalSearch({ node });
-  }
-
 }
 
 function mapStateToProps(state) {
@@ -97,5 +89,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { setCurrentNode, traversalSearch, addStageNode }
+  { traversalSearch, addStageNode }
 )(SearchContent);
