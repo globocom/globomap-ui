@@ -31,44 +31,45 @@ class NodeItem extends Component {
     this.socket = uiSocket();
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
-    this.checkNodeExistence = this.checkNodeExistence.bind(this);
+    // this.checkNodeExistence = this.checkNodeExistence.bind(this);
     this.stickyfill = Stickyfill();
   }
 
-  checkNodeExistence() {
-    return new Promise((resolve) => {
-      let stageNodes = Object.assign([], this.props.stageNodes);
-      let params = {
-        collection: this.props.node._id.split('/')[0],
-        id: this.props.node._id.split('/')[1]
-      };
+  // checkNodeExistence() {
+  //   return new Promise((resolve) => {
+  //     let stageNodes = Object.assign([], this.props.stageNodes);
+  //     let params = {
+  //       collection: this.props.node._id.split('/')[0],
+  //       id: this.props.node._id.split('/')[1]
+  //     };
 
-      this.socket.emit('getnode', params, (data) => {
-        let exist = true;
-        if (data.error) {
-          exist = false;
-        }
-        if (Object.keys(data).length === 0) {
-          exist = false;
-        }
-        traverseItems(stageNodes, (node) => {
-          if (node._id === this.props.node._id) {
-            node.exist = exist;
-          }
-        });
-        this.props.setStageNodes(stageNodes, () => {
-          resolve(exist);
-        });
-      });
-    });
-  }
+  //     this.socket.emit('getnode', params, (data) => {
+  //       let exist = true;
+  //       if (data.error) {
+  //         exist = false;
+  //       }
+  //       if (Object.keys(data).length === 0) {
+  //         exist = false;
+  //       }
+  //       traverseItems(stageNodes, (node) => {
+  //         if (node._id === this.props.node._id) {
+  //           node.exist = exist;
+  //         }
+  //       });
+  //       this.props.setStageNodes(stageNodes, () => {
+  //         resolve(exist);
+  //       });
+  //     });
+  //   });
+  // }
 
   onItemSelect(event) {
-    this.checkNodeExistence().then((exist) => {
-      if (exist) {
-        this.props.setCurrentNode(this.props.node);
-      }
-    });
+    // this.checkNodeExistence().then((exist) => {
+    //   if (exist) {
+    //     this.props.setCurrentNode(this.props.node);
+    //   }
+    // });
+    this.props.setCurrentNode(this.props.node);
   }
 
   onSelfRemove(event) {
