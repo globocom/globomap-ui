@@ -194,7 +194,7 @@ class SubNodes extends Component {
         <div className="subnodes-graph-items">
           {byGraph}
         </div>
-        <Loading isLoading={this.props.traversalLoading} iconSize="medium" />
+        <Loading isLoading={this.props.traversalLoading} iconSize="big" />
       </div>
     );
   }

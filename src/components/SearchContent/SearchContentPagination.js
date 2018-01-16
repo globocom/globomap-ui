@@ -26,9 +26,6 @@ class SearchContentPagination extends Component {
 
     this.state = {
       pageNumber: 1
-      // currentPage: 1
-      // totalPages: 0,
-      // total: 0
     };
 
     this.onSendSearchQuery = this.onSendSearchQuery.bind(this);
@@ -46,30 +43,6 @@ class SearchContentPagination extends Component {
       ...this.props.searchOptions,
       page: pageNumber
     });
-
-    // TODO: Remove refs to Header
-    // let co = this.props.header.state.checkedCollections,
-    //     queryProps = this.props.header.state.queryProps,
-    //     query = this.props.header.state.query;
-
-    // if (co.length === 0) {
-    //   co = this.props.enabledCollections;
-    // }
-
-    // this.props.findNodes({ query: query, collections: co,
-    //                        queryProps: queryProps, page: pageNumber });
-
-    // this.props.findNodes({
-    //     query: query,
-    //     collections: co,
-    //     queryProps: queryProps,
-    //     page: pageNumber
-    //   }, (data) => {
-    //     if (data.length === 0) {
-    //       return;
-    //     }
-    //     this.setState({ pageNumber, currentPage: pageNumber });
-    //   });
   }
 
   onSendSearchQuery(event, dir) {
@@ -140,7 +113,6 @@ class SearchContentPagination extends Component {
       </div>
     );
   }
-
 }
 
 function mapStateToProps(state) {
