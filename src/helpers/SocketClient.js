@@ -6,7 +6,7 @@ export default class socketAPI {
 
   constructor(options = { connect: false }) {
     if (options.connect) {
-      this.socket = io(config.host);
+      this.socket = io();
     }
   }
 
