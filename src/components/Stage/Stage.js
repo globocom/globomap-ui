@@ -31,7 +31,7 @@ class Stage extends Component {
   renderNodes(nodeList) {
     return nodeList.map((node, i) => {
       return (
-        <div key={'n' + i} className="node-item-group">
+        <div key={`n${i}`} className="node-item-group">
           <NodeItem node={node} />
           <div className="node-item-content">
             {node.items.length > 0 ? this.renderNodes(node.items) : ''}
@@ -41,24 +41,26 @@ class Stage extends Component {
     });
   }
 
-  render() {
-    const sNodes = this.props.stageNodes;
+  hasMinimumStageNodes(sNodes) {
     let sItems = [];
-
     if(sNodes.length > 0) {
       sItems = sNodes[0].items;
     }
+    return sItems.length > 0;
+  }
 
-    let open = '';
-    if (sItems.length > 0) {
-      open = ' open';
-      this.props.setMainTab('Navigation');
-    } else {
+  componentWillReceiveProps(nextProps) {
+    if (!this.hasMinimumStageNodes(nextProps.stageNodes)) {
       this.props.setMainTab('Search Results');
+    } else {
+      this.props.setMainTab('Navigation');
     }
+  }
 
+  render() {
+    const open = this.hasMinimumStageNodes(this.props.stageNodes);
     return (
-      <div className={"stage" + open}>
+      <div className={`stage ${open ? 'open' : ''}`}>
         <div className="stage-container">
           {this.renderNodes(this.props.stageNodes)}
         </div>
