@@ -32,7 +32,9 @@ class SearchContent extends Component {
   onNodeSelect(event, node) {
     event.stopPropagation();
     this.props.addStageNode(node, null, true);
-    this.props.traversalSearch({ node });
+    if (this.props.currentNode === null) {
+      this.props.traversalSearch({ node });
+    }
   }
 
   render() {
@@ -56,7 +58,7 @@ class SearchContent extends Component {
     }
 
     return (
-      <div className={'search-content' + (this.props.currentNode ? ' with-info' : '')}>
+      <div className="search-content">
         {allNodes.length > 0 && allNodes &&
           <table className="search-content-results">
             <thead>
