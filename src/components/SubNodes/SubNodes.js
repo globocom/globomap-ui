@@ -16,7 +16,6 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { uiSocket } from '../../utils';
 import { resetSubNodes, clearCurrentNode,
          traversalSearch } from '../../redux/modules/nodes';
 import { Loading, InfoContentHead } from '../';
@@ -27,109 +26,8 @@ class SubNodes extends Component {
 
   constructor(props) {
     super(props);
-    // this.socket = uiSocket();
-    this.state = {
-      // node: this.props.currentNode,
-      // loading: true,
-      // byGraph: []
-    }
-
-    // this.onCloseSubNodes = this.onCloseSubNodes.bind(this);
-
     this.onColapseSubNodes = this.onColapseSubNodes.bind(this);
-
-    // this.composeEdges = this.composeEdges.bind(this);
-    // this.onTraversalSearch = this.onTraversalSearch.bind(this);
-    // this.resetByGraph = this.resetByGraph.bind(this);
   }
-
-  // resetSubNodes() {
-  //   let byGraphCopy = this.state.byGraph.slice();
-
-  //   byGraphCopy = byGraphCopy.map((nodesItem) => {
-  //     nodesItem.subnodes = [];
-  //     return nodesItem;
-  //   });
-
-  //   this.setState({ byGraph: byGraphCopy });
-  // }
-
-  // traversalSearch(node) {
-  //   let graphs = [];
-  //   let params = {};
-
-  //   graphs = this.props.graphs.map(g => g.name);
-  //   params = { start: (node._id || ''), graphs: graphs }
-
-  //   this.socket.emit('traversalsearch', params, (data) => {
-  //     let byGraph = [];
-
-  //     if (data.error) {
-  //       console.log(data.message);
-
-  //       byGraph = params.graphs.map((graph) => {
-  //         return {
-  //           "graph": graph,
-  //           "edges": [],
-  //           "nodes": [],
-  //           "subnodes": []
-  //         }
-  //       });
-
-  //       return this.setState({ byGraph: byGraph, loading: false });
-  //     }
-
-  //     byGraph = data.map((gData) => {
-  //       gData.subnodes = gData.nodes.filter(n => n._id !== node._id).map((n) => {
-  //         n.edges = this.composeEdges(n, gData.edges)
-  //         n.edges.graph = gData.graph;
-  //         return n;
-  //       });
-  //       return gData;
-  //     });
-
-  //     this.setState({ byGraph: byGraph, loading: false });
-  //   });
-  // }
-
-  // composeEdges(node, edges) {
-  //   let nEdges = { in: [], out: [] };
-
-  //   for(let i=0, l=edges.length; i<l; ++i) {
-  //     let edge = edges[i];
-
-  //     if(node._id === edge._to) {
-  //       edge.dir = 'in';
-  //       nEdges.in.push(edge);
-  //     }
-
-  //     if(node._id === edge._from) {
-  //       edge.dir = 'out';
-  //       nEdges.out.push(edge);
-  //     }
-  //   }
-
-  //   return nEdges;
-  // }
-
-  // resetByGraph(fn) {
-  //   let byGraph = [];
-
-  //   this.state.byGraph.forEach((graph, index) => {
-  //     byGraph[index] = Object.assign({}, graph, { edges: [], nodes: [], subnodes: [] });
-  //   });
-
-  //   this.setState({ byGraph }, () => {
-  //     fn();
-  //   });
-  // }
-
-  // onTraversalSearch() {
-  //   let node = this.state.node;
-  //   if (node) {
-  //     this.props.traversalSearch(node);
-  //   }
-  // }
 
   componentWillReceiveProps(nextProps) {
     let current = this.props.currentNode,
@@ -140,12 +38,9 @@ class SubNodes extends Component {
     }
 
     if(current._id !== next._id || current.uuid !== next.uuid) {
-      // this.props.resetSubNodes();
+      this.props.resetSubNodes();
       if(next) {
         this.props.traversalSearch({ node: next });
-        // this.setState({ node: next, loading: true }, () => {
-        //   this.props.traversalSearch(next);
-        // });
       }
     }
   }
@@ -154,26 +49,19 @@ class SubNodes extends Component {
     event.stopPropagation();
     this.props.clearCurrentNode();
     this.props.resetSubNodes();
-    // this.resetByGraph(() => {});
   }
 
   onColapseSubNodes(event) {
     event.stopPropagation();
+    console.log('Colapse SubNodes...');
   }
 
   render() {
-    const byGraph = this.props.subNodesByGraph.map((items, index) => {
-      return <SubNodesByGraph key={index + '_' + items.graph + '_' + items.nodes.length}
-                              // ref={(ByGraph) => {this.byGraph = ByGraph}}
-                              items={items}
-                              // collectionsByGraphs={this.props.collectionsByGraphs}
-                              // stageHasNode={this.props.stageHasNode}
-                              // node={this.state.node}
-                              // addNodeToStage={this.props.addNodeToStage}
-                              />
-    });
-
     const headerTitle = this.props.currentNode ? this.props.currentNode.name : '';
+    const byGraph = this.props.subNodesByGraph.map((items, index) => {
+      return <SubNodesByGraph key={`index_${items.graph}_${items.nodes.length}`}
+                              items={items}/>
+    });
 
     return (
       <div className="subnodes">
@@ -184,12 +72,7 @@ class SubNodes extends Component {
           <button className="btn colapse-subnodes-btn" onClick={this.onColapseSubNodes}>
             <i className="fa fa-angle-right"></i>
           </button>
-          <InfoContentHead
-                           // hasId={this.props.hasId}
-                           // node={this.state.node}
-                           // showModal={this.props.showModal}
-                           // closeModal={this.props.closeModal}
-                           />
+          <InfoContentHead />
         </div>
         <div className="subnodes-graph-items">
           {byGraph}
