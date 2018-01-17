@@ -160,20 +160,20 @@ class App extends Component {
   //   });
   // }
 
-  stageHasNode(nodeId, parentUuid) {
-    let stageNodes = this.state.stageNodes,
-        ids = stageNodes.map(n => n._id);
+  // stageHasNode(nodeId, parentUuid) {
+  //   let stageNodes = this.state.stageNodes,
+  //       ids = stageNodes.map(n => n._id);
 
-    if(parentUuid !== undefined) {
-      traverseItems(stageNodes, (n) => {
-        if(n.uuid === parentUuid) {
-          ids = n.items.map(n => n._id);
-        }
-      });
-    }
+  //   if(parentUuid !== undefined) {
+  //     traverseItems(stageNodes, (n) => {
+  //       if(n.uuid === parentUuid) {
+  //         ids = n.items.map(n => n._id);
+  //       }
+  //     });
+  //   }
 
-    return !(ids.indexOf(nodeId) < 0);
-  }
+  //   return !(ids.indexOf(nodeId) < 0);
+  // }
 
   // getNode(node, parentUuid) {
   //   let stageNodes = this.state.stageNodes.slice(),
@@ -340,7 +340,7 @@ render() {
               onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
 
         <Header ref={(header) => {this.header = header}}
-                collectionsByGraphs={this.state.collectionsByGraphs}
+                // collectionsByGraphs={this.state.collectionsByGraphs}
                 // findNodes={this.findNodes}
                 // onToggleGraph={this.onToggleGraph}
                 // clearInfo={this.clearInfo}
