@@ -18,6 +18,7 @@ import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addStageNode } from '../../redux/modules/stage';
+import { traverseItems } from '../../utils';
 import { NodeEdges } from '../';
 import './SubNodesByGraph.css';
 
@@ -76,10 +77,25 @@ class SubNodesByGraph extends Component {
     );
   }
 
+  stageHasNode(nodeId, parentUuid) {
+    const stageNodes = this.props.stageNodes;
+    let ids = stageNodes.map(n => n._id);
+
+    if(parentUuid !== undefined) {
+      traverseItems(stageNodes, (n) => {
+        if(n.uuid === parentUuid) {
+          ids = n.items.map(n => n._id);
+        }
+      });
+    }
+
+    return !(ids.indexOf(nodeId) < 0);
+  }
+
   buildSubNodes(nodesItem) {
-    let queryLength = this.state.query.trim().length;
-    let start = (this.state.pageNumber - 1) * this.state.pageSize;
-    let end = this.state.pageNumber * this.state.pageSize;
+    const queryLength = this.state.query.trim().length;
+    const start = (this.state.pageNumber - 1) * this.state.pageSize;
+    const end = this.state.pageNumber * this.state.pageSize;
     let subnodes = nodesItem.subnodes;
 
     if (queryLength > this.state.queryAmount) {
@@ -97,14 +113,12 @@ class SubNodesByGraph extends Component {
 
     let subnodesSlice = subnodes.slice(start, end);
     subnodes = subnodesSlice.map((subnode, index) => {
-      // let hasNode = this.props.stageHasNode(subnode._id, this.props.node.uuid);
-
-      // return <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
+      const hasNode = this.stageHasNode(subnode._id, this.props.currentNode.uuid);
       return (
-        <div key={subnode._id} className="sub-node">
+        <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
           <div className="sub-node-btn">
             <button className="btn-add-node topcoat-button"
-                    // disabled={hasNode}
+                    disabled={hasNode}
                     onClick={(e) => this.onAddNode(e, subnode)}>+</button>
           </div>
 
@@ -369,7 +383,8 @@ function mapStateToProps(state) {
   return {
     currentNode: state.nodes.currentNode,
     graphs: state.app.graphs,
-    collectionsByGraphs: state.app.collectionsByGraphs
+    collectionsByGraphs: state.app.collectionsByGraphs,
+    stageNodes: state.stage.stageNodes
   };
 }
 

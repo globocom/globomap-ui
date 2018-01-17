@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import Stickyfill from 'stickyfill';
 import { setCurrentNode } from '../../redux/modules/nodes';
 import { removeStageNode, setStageNodes } from '../../redux/modules/stage';
-import { traverseItems, uiSocket } from '../../utils';
+// import { traverseItems, uiSocket } from '../../utils';
 import { NodeEdges } from '../';
 import './NodeItem.css';
 
@@ -28,7 +28,7 @@ class NodeItem extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = uiSocket();
+    // this.socket = uiSocket();
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
     // this.checkNodeExistence = this.checkNodeExistence.bind(this);
