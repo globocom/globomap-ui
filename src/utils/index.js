@@ -17,7 +17,7 @@ limitations under the License.
 import io from 'socket.io-client';
 
 function uiSocket() {
-  var uiSocket = io();
+  var uiSocket = io('http://localhost:8888');
   uiSocket.on('error', function(err) {
     console.log('uiSocket error');
   });
