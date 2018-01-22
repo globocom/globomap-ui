@@ -83,8 +83,8 @@ class IOServer {
         this.getMonitoring(data, (result) => { fn(result); });
       });
 
-      socket.on('getEnvironment', (fn) => {
-        fn(environment);
+      socket.on('getenviron', (data, fn) => {
+        this.getEnviron(data, (result) => { fn(environment); });
       });
 
       socket.on('getZabbixGraph', (data, fn) => {
@@ -206,6 +206,10 @@ class IOServer {
     delete item._key;
     delete item._rev;
     return item;
+  }
+
+  getEnviron(data, fn) {
+    return fn(environment);
   }
 
   getMonitoring(data, fn) {

@@ -11,6 +11,10 @@ const FETCH_COLLECTIONS = 'fetch_collections';
 const FETCH_COLLECTIONS_SUCCESS = 'fetch_collections_success';
 const FETCH_COLLECTIONS_FAIL = 'fetch_collections_fail';
 
+const GET_ENV = 'get_env';
+const GET_ENV_SUCCESS = 'get_env_success';
+const GET_ENV_FAIL = 'get_env_fail';
+
 const TOGGLE_GRAPH = 'toggle_graph';
 const TOGGLE_HASID = 'toggle_hasid';
 const SHOW_MODAL = 'show_modal';
@@ -21,8 +25,10 @@ const initialState = {
   collections: [],
   collectionsByGraphs: {},
   enabledCollections: [],
+  selectedCollections: [],
   modalVisible: false,
   modalContent: null,
+  environ: '',
   hasId: false
 };
 
@@ -78,6 +84,23 @@ export default function reducer(state=initialState, action={}) {
         error: action.error
       };
 
+    case GET_ENV:
+      console.log('get environ...');
+      return state;
+
+    case GET_ENV_SUCCESS:
+      return {
+        ...state,
+        environ: action.result
+      };
+
+    case GET_ENV_FAIL:
+      console.log(action.error);
+      return {
+        ...state,
+        error: action.error
+      };
+
     case TOGGLE_GRAPH:
       const newGraphs = state.graphs.map((graph) => {
         if(graph.name === action.name) {
@@ -86,9 +109,17 @@ export default function reducer(state=initialState, action={}) {
         return graph;
       });
 
+      let selectedCollections = [];
+      newGraphs.forEach((graph, index) => {
+        if (graph.enabled) {
+          selectedCollections = selectedCollections.concat(getEdgeLinks(graph));
+        }
+      });
+
       return {
         ...state,
-        graphs: newGraphs
+        graphs: newGraphs,
+        selectedCollections: _.uniq(selectedCollections)
       };
 
     case TOGGLE_HASID:
@@ -129,6 +160,14 @@ export function fetchCollections() {
     type: SOCKET,
     types: [FETCH_COLLECTIONS, FETCH_COLLECTIONS_SUCCESS, FETCH_COLLECTIONS_FAIL],
     promise: (socket) => socket.emit('getcollections', {})
+  };
+}
+
+export function getEnviron() {
+  return {
+    type: SOCKET,
+    types: [GET_ENV, GET_ENV_SUCCESS, GET_ENV_FAIL],
+    promise: (socket) => socket.emit('getenviron', {})
   };
 }
 
