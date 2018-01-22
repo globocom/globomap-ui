@@ -32,7 +32,6 @@ class Header extends Component {
       checkedGraphs: [],
       checkedCollections: [],
       query: '',
-      // loading: false,
       showOptions: false,
       queryProps: [],
       propsOperators: ["==", "LIKE", "IN", "!=", ">", ">=", "<", "<="]
@@ -98,13 +97,10 @@ class Header extends Component {
     event.preventDefault();
 
     this.props.cleanStageNodes();
-    // this.props.clearStage();
-
     this.props.resetSubNodes();
 
-    // this.props.clearInfo(() => {
-    let checkedGraphs = this.state.checkedGraphs,
-        checkedCollections = this.state.checkedCollections;
+    const checkedGraphs = this.state.checkedGraphs;
+    let checkedCollections = this.state.checkedCollections;
 
     if (checkedCollections.length === 0 && checkedGraphs.length === 0) {
       checkedCollections = this.props.collections;
@@ -120,26 +116,7 @@ class Header extends Component {
       collections: checkedCollections
     });
 
-    // this.setState({ loading: true }, () => {
-    //   this.props.findNodes({
-    //       query: this.state.query,
-    //       queryProps: this.state.queryProps,
-    //       collections: checkedCollections
-    //     }, (data) => {
-    //       // TODO: Remove ref to SearchContent
-    //       this.props.searchContent.pagination.setState({
-    //         pageNumber: 1,
-    //         currentPage: 1,
-    //         totalPages: data.total_pages,
-    //         total: data.total
-    //       });
-
-    //       this.setState({ loading: false });
-    //       this.closeSearchOptions();
-    //     });
-    // });
-
-    // });
+    this.closeSearchOptions();
   }
 
   onToggleSearchOptions(event) {
@@ -148,10 +125,6 @@ class Header extends Component {
   }
 
   onToggleGraph(event, graphName) {
-    console.log(graphName);
-    console.log(this.props.collectionsByGraphs);
-    console.log(this.props.collectionsByGraphs[graphName]);
-
     let collectionsByGraphs = Object.assign({}, this.props.collectionsByGraphs),
         colls = collectionsByGraphs[graphName],
         checkedCollections = this.state.checkedCollections.slice(),
@@ -192,13 +165,6 @@ class Header extends Component {
       checkedGraphs: checkedGraphs,
       checkedCollections: _.uniq(checkedCollections)
     });
-
-    // this.props.onToggleGraph(graphName, () => {
-    //   this.setState({
-    //     checkedGraphs: checkedGraphs,
-    //     checkedCollections: _.uniq(checkedCollections)
-    //   });
-    // });
   }
 
   closeSearchOptions() {
@@ -206,8 +172,8 @@ class Header extends Component {
   }
 
   render() {
-    let graphButtons = this.props.graphs.map((graph) => {
-      let disabledCls = graph.enabled ? '' : ' disabled';
+    const graphButtons = this.props.graphs.map((graph) => {
+      const disabledCls = graph.enabled ? '' : ' disabled';
 
       return <label key={"graph-" + graph.name} className={'item topcoat-checkbox' + disabledCls}>
               <input type="checkbox" name={graph.name} checked={graph.enabled}
@@ -217,10 +183,10 @@ class Header extends Component {
              </label>;
     });
 
-    let collectionItems = this.props.collections.map((co) => {
-      let selectedCollection = this.props.selectedCollections.includes(co),
-          checkedCollection = this.state.checkedCollections.includes(co),
-          disabledCls = !selectedCollection ? ' disabled' : '';
+    const collectionItems = this.props.collections.map((co) => {
+      const selectedCollection = this.props.selectedCollections.includes(co),
+            checkedCollection = this.state.checkedCollections.includes(co),
+            disabledCls = !selectedCollection ? ' disabled' : '';
 
       return (
         <label key={co} className={"item topcoat-checkbox" + disabledCls}>
@@ -231,7 +197,7 @@ class Header extends Component {
       );
     });
 
-    let propItems = this.state.queryProps.map((prop, i) => {
+    const propItems = this.state.queryProps.map((prop, i) => {
       return (
         <div key={'prop' + i} className="prop-item">
           <input className="prop-query topcoat-text-input--large" type="search"
@@ -254,7 +220,7 @@ class Header extends Component {
       );
     });
 
-    let searchOptions = (
+    const searchOptions = (
       <div className="search-box-options">
         <div className="options-container">
           <strong className="option-title">Graphs</strong>
@@ -281,7 +247,7 @@ class Header extends Component {
       </div>
     );
 
-    let disabledMainSearch = this.state.queryProps.length > 0 && this.state.showOptions;
+    const disabledMainSearch = this.state.queryProps.length > 0 && this.state.showOptions;
     return (
       <header className="main-header">
         <div className="header-group">
@@ -328,6 +294,7 @@ function mapStateToProps(state) {
     graphs: state.app.graphs,
     collections: state.app.collections,
     collectionsByGraphs: state.app.collectionsByGraphs,
+    selectedCollections: state.app.selectedCollections,
     findLoading: state.nodes.findLoading
   };
 }
