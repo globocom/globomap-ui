@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './PopMenu.css';
 
 class PopMenu extends Component {
@@ -78,4 +79,10 @@ class PopMenu extends Component {
 
 }
 
-export default PopMenu;
+function mapStateToProps(state) {
+  return {
+    currentNode: state.nodes.currentNode
+  };
+}
+
+export default connect(mapStateToProps, null)(PopMenu);

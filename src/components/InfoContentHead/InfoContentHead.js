@@ -28,12 +28,7 @@ class InfoContentHead extends Component {
     this.socket = uiSocket();
     this.state = {
       currentTab: 'Properties'
-      // modalVisible: false,
-      // modalContent: null
     }
-
-    // this.showModal = this.showModal.bind(this);
-    // this.closeModal = this.closeModal.bind(this);
   }
 
   render() {
@@ -104,26 +99,9 @@ class InfoContentHead extends Component {
       }
       this.props.showModal(<img src={`data:image/png;base64,${base64data.toString()}`}
                                 alt={node.name} />);
-      // this.setState({ modalContent: <img src={imgData} alt={node.name} /> });
     });
   }
 
-  // showModal(content) {
-  //   this.setState({ modalContent: content, modalVisible: true });
-  // }
-
-  // closeModal() {
-  //   this.setState({ modalContent: '', modalVisible: false });
-  // }
-
-  // componentWillReceiveProps(nextProps){
-  //   let current = this.props.currentNode,
-  //       next = nextProps.node;
-
-  //   if(current._id !== next._id) {
-  //     this.setState({ currentTab: 'Properties' });
-  //   }
-  // }
 }
 
 function mapStateToProps(state) {
