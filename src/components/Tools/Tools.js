@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import { setStageNodes } from '../../redux/modules/stage';
 import { clearCurrentNode, resetSubNodes } from '../../redux/modules/nodes';
 import { setMainTab } from '../../redux/modules/tabs';
-import { traverseItems, uiSocket } from '../../utils';
+import { traverseItems } from '../../utils';
 import './Tools.css';
 
 class Tools extends React.Component {
@@ -31,10 +31,7 @@ class Tools extends React.Component {
     this.state = {
       message: ''
     }
-
-    this.socket = uiSocket();
     this.tabs = [{ name: 'Search Results' }, { name: 'Navigation' }];
-
     this.onRestoreGraph = this.onRestoreGraph.bind(this);
     this.onSaveGraph = this.onSaveGraph.bind(this);
     this.getContent = this.getContent.bind(this);
@@ -100,7 +97,7 @@ class Tools extends React.Component {
     }).then(() => {
         this.props.clearCurrentNode();
         this.props.resetSubNodes();
-        this.props.resetGraphsCollections();
+        // this.props.resetGraphsCollections();
         this.props.setStageNodes(this.storages[key])
     })
   }
@@ -155,10 +152,8 @@ class Tools extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.emit('getEnvironment', (environment) => {
-      this.key = 'GSNAP_' + environment.toUpperCase();
-      this.storages = this.getLocalStorage(this.key) || {};
-    });
+    this.key = 'GSNAP_' + this.props.environ.toUpperCase();
+    this.storages = this.getLocalStorage(this.key) || {};
   }
 
   render() {
@@ -168,7 +163,7 @@ class Tools extends React.Component {
       rootNodeHasItens = true;
     }
 
-    let tabsButtons = this.tabs.map((tab, index) => {
+    const tabsButtons = this.tabs.map((tab, index) => {
       let active = this.props.currentMainTab === tab.name ? ' active' : '';
       return (
         <button key={'tab' + index} className={'tab-btn' + active}
@@ -205,7 +200,8 @@ class Tools extends React.Component {
 function mapStateToProps(state) {
   return {
     stageNodes: state.stage.stageNodes,
-    currentMainTab: state.tabs.currentMainTab
+    currentMainTab: state.tabs.currentMainTab,
+    environ: state.app.environ
   };
 }
 
