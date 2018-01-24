@@ -75,9 +75,9 @@ class Tools extends React.Component {
           return (
             <li key={index} className="content-item">
               <span  className="content-title"
-                     onClick={(e) => {this.applyGraph(e, key)}}>{key}</span>
+                     onClick={e => this.applyGraph(e, key)}>{key}</span>
               <button className="remove-btn"
-                      onClick={(e) => {this.onDeleteGraph(e, key)}}
+                      onClick={e => this.onDeleteGraph(e, key)}
                       title="Delete this item">
                 <i className="fa fa-close"></i>
               </button>
