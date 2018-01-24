@@ -90,11 +90,10 @@ export function addNewStageNode(node, parentUuid) {
 
 export function addStageNode(node, parentUuid, setCurrent=false) {
   return (dispatch, getState) => {
-    if(stageHasNode(getState().stage, { node, parentUuid })) {
+    if(stageHasNode(getState().stage.stageNodes, { node, parentUuid })) {
       dispatch(setCurrentNode(node));
       return;
     }
-
     node.uuid = uuid();
     node.items = node.items || [];
     dispatch(addNewStageNode(node, parentUuid));
@@ -124,11 +123,9 @@ export function cleanStageNodes() {
   }
 }
 
-// Selectors
-export function stageHasNode(state, { node, parentUuid }) {
-  const stageNodes = state.stageNodes;
+// Selectors?
+export function stageHasNode(stageNodes, { node, parentUuid }) {
   let ids = stageNodes.map(n => n._id);
-
   if (parentUuid !== undefined) {
     traverseItems(stageNodes, (n) => {
       if (n.uuid === parentUuid) {
@@ -136,31 +133,26 @@ export function stageHasNode(state, { node, parentUuid }) {
       }
     });
   }
-
   return !(ids.indexOf(node._id) < 0);
 }
 
-export function getStageNode(state, { node, parentUuid }) {
-  const stageNodes = state.stageNodes;
-  let nodeFound = false;
-
+export function getStageNode(stageNodes, { node, parentUuid }) {
+  let foundNode = false;
   traverseItems(stageNodes, (n) => {
     if(n.uuid === node.uuid) {
-      nodeFound = n;
+      foundNode = n;
     }
   });
-
-  if (!nodeFound && parentUuid !== undefined) {
+  if (!foundNode && parentUuid !== undefined) {
     traverseItems(stageNodes, (n) => {
       if (n.uuid === parentUuid) {
         for (let i in n.items) {
           if (node._id === n.items[i]._id) {
-            nodeFound = n.items[i];
+            foundNode = n.items[i];
           }
         }
       }
     });
   }
-
-  return nodeFound;
+  return foundNode;
 }
