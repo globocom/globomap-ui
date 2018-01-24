@@ -113,7 +113,10 @@ class SubNodesByGraph extends Component {
 
     let subnodesSlice = subnodes.slice(start, end);
     subnodes = subnodesSlice.map((subnode, index) => {
-      const hasNode = this.stageHasNode(subnode._id, this.props.currentNode.uuid);
+      let hasNode = false;
+      if (this.props.currentNode) {
+        hasNode = this.stageHasNode(subnode._id, this.props.currentNode.uuid);
+      }
       return (
         <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
           <div className="sub-node-btn">
