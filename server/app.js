@@ -23,10 +23,13 @@ const project = require('../package.json');
 
 const redisHost = process.env.REDIS_HOST
 const redisPort = process.env.REDIS_PORT || 6379
-const redisSentinelsHosts = process.env.REDIS_SENTINELS ? process.env.REDIS_SENTINELS.split(',') : null
+const redisPassword = process.env.REDIS_PASSWORD
 const redisSentinelsPort = process.env.REDIS_SENTINELS_PORT || 26379
 const redisSentinelsService = process.env.REDIS_SENTINELS_SERVICE
-const redisPassword = process.env.REDIS_PASSWORD
+const redisSentinelsHosts = process.env.REDIS_SENTINELS
+                            ? process.env.REDIS_SENTINELS.split(',')
+                            : null
+
 const oauthLogoutUrl = process.env.OAUTH_LOGOUT_URL
 const forceAuth = process.env.OAUTH_FORCE === 'true'
 const sessionSecret = process.env.SESSION_SECRET || 'secret'
@@ -35,7 +38,11 @@ const environment = process.env.ENVIRONMENT || 'development';
 const app = express();
 
 let sessionConfig = {
-  cookie: { path: '/', httpOnly: false, maxAge: 24*60*60*1000 },
+  cookie: {
+    path: '/',
+    httpOnly: false,
+    maxAge: 24*60*60*1000
+  },
   secret: sessionSecret,
   resave: false,
   saveUninitialized: false,
@@ -43,31 +50,40 @@ let sessionConfig = {
 };
 
 if (app.get('env') === 'production') {
+  const RedisStore = require('connect-redis')(session);
+
   if (redisSentinelsHosts) {
-    let redisClient = new Redis({
+    const redisClient = new Redis({
       name: redisSentinelsService,
       password: redisPassword,
       sentinels: redisSentinelsHosts.map(function(sentinelHost) {
-        return { host: sentinelHost, port: 26379 }
+        return {
+          host: sentinelHost,
+          port: 26379
+        }
       })
     });
 
-    let RedisStore = require('connect-redis')(session);
     sessionConfig.store = new RedisStore({
-      client: redisClient, host: redisHost, port: redisPort, pass: redisPassword
+      client: redisClient,
+      host: redisHost,
+      port: redisPort,
+      pass: redisPassword
     });
   } else {
-    let RedisStore = require('connect-redis')(session);
     sessionConfig.store = new RedisStore({
-      host: redisHost, port: redisPort, pass: redisPassword
+      host: redisHost,
+      port: redisPort,
+      pass: redisPassword
     });
   }
+
 } else {
   app.set('disable-auth', !forceAuth);
 }
 
-sessionMiddleware = session(sessionConfig);
-app.use(sessionMiddleware);
+// Apply session middleware
+app.use(session(sessionConfig));
 
 const isAuthenticated = (req, res, next) => {
   if (app.get('disable-auth')) {
@@ -106,24 +122,24 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/auth', (req, res) => {
-  res.redirect(oauthClient.code.getUri())
+  res.redirect(oauthClient.code.getUri());
 });
 
 app.get('/login', (req, res) => {
-    oauthClient.code.getToken(req.originalUrl).then(function (token) {
-      req.session['tokenData'] = token.data
-      return res.redirect('/')
-    }).catch(function(e) {
-      console.log("[Auth] Unexpected error on user token retrieval")
-      console.log(e);
-      return res.redirect('/logout')
-    })
+  oauthClient.code.getToken(req.originalUrl).then(function (token) {
+    req.session['tokenData'] = token.data;
+    return res.redirect('/');
+  }).catch(function(e) {
+    console.log("[Auth] Unexpected error on user token retrieval")
+    console.log(e);
+    return res.redirect('/logout');
+  });
 });
 
 app.get('/logout', (req, res) => {
-  redirectUri = req.protocol + "://" + req.get('Host')
-  req.session = null
-  res.redirect(oauthLogoutUrl + '?redirect_uri=' + redirectUri)
+  redirectUri = req.protocol + "://" + req.get('Host');
+  req.session = null;
+  res.redirect(oauthLogoutUrl + '?redirect_uri=' + redirectUri);
 });
 
 app.use(express.static(path.resolve(__dirname, '..', 'build')));

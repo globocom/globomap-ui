@@ -14,41 +14,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const oauthClientId = process.env.OAUTH_CLIENT_ID
-const oauthClientSecret = process.env.OAUTH_CLIENT_SECRET
-const oauthTokenUrl = process.env.OAUTH_TOKEN_URL
-const oauthAuthorizeUrl = process.env.OAUTH_AUTHORIZE_URL
-const oauthRedirectUrl = process.env.OAUTH_REDIRECT_URL
-
-const ClientOAuth2 = require('client-oauth2')
+const ClientOAuth2 = require('client-oauth2');
 
 var oauthClient = new ClientOAuth2({
-    clientId: oauthClientId,
-    clientSecret: oauthClientSecret,
-    accessTokenUri: oauthTokenUrl,
-    authorizationUri: oauthAuthorizeUrl,
-    redirectUri: oauthRedirectUrl,
-    scopes: []
+  clientId: process.env.OAUTH_CLIENT_ID,
+  clientSecret: process.env.OAUTH_CLIENT_SECRET,
+  accessTokenUri: process.env.OAUTH_TOKEN_URL,
+  authorizationUri: process.env.OAUTH_AUTHORIZE_URL,
+  redirectUri: process.env.OAUTH_REDIRECT_URL,
+  scopes: []
 })
 
 oauthClient.isAuthenticated = (session, callback) => {
-    token = oauthClient.createToken(session.tokenData)
-
-    if(token.expired()){
-        token.refresh().then((updatedToken) => {
-            if(updatedToken !== token){
-                session.tokenData = updatedToken.data
-                session.save()
-            } 
-            callback(true)
-        }).catch((e) => {
-            console.error("[Auth] Error refreshing expired token")
-            console.log(e); 
-            callback(false)
-        })
-    }else{
-        callback(true)
-    }
+  token = oauthClient.createToken(session.tokenData);
+  if (token.expired()) {
+    token.refresh().then((updatedToken) => {
+      if (updatedToken !== token) {
+        session.tokenData = updatedToken.data;
+        session.save();
+      }
+      callback(true);
+    }).catch((e) => {
+      console.error("[Auth] Error refreshing expired token");
+      console.log(e);
+      callback(false);
+    })
+  } else {
+    callback(true);
+  }
 }
 
 module.exports = oauthClient
