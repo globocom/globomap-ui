@@ -19,6 +19,8 @@ const TOGGLE_GRAPH = 'toggle_graph';
 const TOGGLE_HASID = 'toggle_hasid';
 const SHOW_MODAL = 'show_modal';
 const CLOSE_MODAL = 'close_modal';
+const SHOW_POP_MENU = 'show_pop_menu';
+const CLOSE_POP_MENU = 'close_pop_menu';
 
 const initialState = {
   graphs: [],
@@ -26,10 +28,12 @@ const initialState = {
   collectionsByGraphs: {},
   enabledCollections: [],
   selectedCollections: [],
+  environ: '',
+  hasId: false,
   modalVisible: false,
   modalContent: null,
-  environ: '',
-  hasId: false
+  popMenuVisible: false,
+  popMenuContent: null
 };
 
 export default function reducer(state=initialState, action={}) {
@@ -142,6 +146,20 @@ export default function reducer(state=initialState, action={}) {
         modalContent: null
       }
 
+    case SHOW_POP_MENU:
+      return {
+        ...state,
+        popMenuVisible: true,
+        popMenuContent: action.content
+      }
+
+    case CLOSE_POP_MENU:
+      return {
+        ...state,
+        popMenuVisible: false,
+        popMenuContent: null
+      }
+
     default:
       return state;
   }
@@ -194,5 +212,19 @@ export function showModal(content) {
 export function closeModal() {
   return {
     type: CLOSE_MODAL
+  }
+}
+
+export function showPopMenu(element, content) {
+  return {
+    type: SHOW_POP_MENU,
+    element,
+    content
+  }
+}
+
+export function closePopMenu() {
+  return {
+    type: CLOSE_POP_MENU
   }
 }
