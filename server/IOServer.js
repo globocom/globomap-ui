@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const app = require('./app');
+const app = require('./app').app;
+const sessionMiddleware = require('./app').sessionMiddleware;
 const axios = require('axios');
 const https = require('https');
 const fs = require('fs');

@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.tools {
+.tools, .saved {
   box-sizing: border-box;
 }
 
 .tools {
   display: flex;
-  position: fixed;
+  position: absolute;
   top: 50px;
   left: 0;
   height: 35px;
@@ -137,4 +137,44 @@ limitations under the License.
 .tools-buttons {
   display: flex;
   padding: 5px;
+}
+
+.tools .saved {
+  position: absolute;
+  top: 35px;
+  right: 5px;
+  min-width: 100px;
+  border-radius: 4px;
+  text-align: left;
+  background-color: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  z-index: 10;
+  cursor: default;
+  /*right: 30%;*/
+  overflow: hidden;
+}
+
+.tools .saved .saved-content {
+  background-color: #efefef;
+}
+
+.tools .saved .saved-head {
+  position: relative;
+  text-align: left;
+  font-size: 14px;
+  padding: 10px;
+}
+
+.tools .saved .saved-head .close-btn {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  border: 0;
+  background-color: transparent;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.tools .saved .saved-head .close-btn:hover {
+  color: #333;
 }

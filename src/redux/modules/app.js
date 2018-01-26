@@ -1,3 +1,19 @@
+/*
+Copyright 2017 Globo.com
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import _ from 'lodash';
 import { sortByName, getEdgeLinks } from '../../utils';
 
@@ -19,8 +35,6 @@ const TOGGLE_GRAPH = 'toggle_graph';
 const TOGGLE_HASID = 'toggle_hasid';
 const SHOW_MODAL = 'show_modal';
 const CLOSE_MODAL = 'close_modal';
-const SHOW_POP_MENU = 'show_pop_menu';
-const CLOSE_POP_MENU = 'close_pop_menu';
 
 const initialState = {
   graphs: [],
@@ -31,9 +45,7 @@ const initialState = {
   environ: '',
   hasId: false,
   modalVisible: false,
-  modalContent: null,
-  popMenuVisible: false,
-  popMenuContent: null
+  modalContent: null
 };
 
 export default function reducer(state=initialState, action={}) {
@@ -146,20 +158,6 @@ export default function reducer(state=initialState, action={}) {
         modalContent: null
       }
 
-    case SHOW_POP_MENU:
-      return {
-        ...state,
-        popMenuVisible: true,
-        popMenuContent: action.content
-      }
-
-    case CLOSE_POP_MENU:
-      return {
-        ...state,
-        popMenuVisible: false,
-        popMenuContent: null
-      }
-
     default:
       return state;
   }
@@ -215,16 +213,3 @@ export function closeModal() {
   }
 }
 
-export function showPopMenu(element, content) {
-  return {
-    type: SHOW_POP_MENU,
-    element,
-    content
-  }
-}
-
-export function closePopMenu() {
-  return {
-    type: CLOSE_POP_MENU
-  }
-}

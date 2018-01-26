@@ -27,7 +27,7 @@ import SocketClient from './helpers/SocketClient';
 
 import { App, NotFound } from './components';
 
-const socketClient = new SocketClient({ connect: true });
+export const socketClient = new SocketClient({ connect: true });
 
 const store = createStore(
   reducer,

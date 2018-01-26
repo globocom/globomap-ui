@@ -29,13 +29,17 @@ class Tools extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: ''
+      message: '',
+      savedOpen: false
     }
     this.tabs = [{ name: 'Search Results' }, { name: 'Navigation' }];
     this.onRestoreGraph = this.onRestoreGraph.bind(this);
     this.onSaveGraph = this.onSaveGraph.bind(this);
     this.getContent = this.getContent.bind(this);
     this.clearMessage = this.clearMessage.bind(this);
+    this.openSaved = this.openSaved.bind(this);
+    this.closeSaved = this.closeSaved.bind(this);
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
   getLocalStorage(key) {
@@ -61,10 +65,9 @@ class Tools extends React.Component {
     this.setState({ message: 'deleted' }, () => {
       this.clearMessage();
       if (Object.keys(this.storages).length === 0) {
-        this.props.popMenu.closePopMenu();
-        return;
+        return this.closeSaved();
       }
-      this.props.popMenu.openPopMenu('Saved searches', this.getContent);
+      this.openSaved();
     });
   }
 
@@ -89,7 +92,7 @@ class Tools extends React.Component {
   }
 
   applyGraph(e, key) {
-    this.props.popMenu.closePopMenu();
+    this.closeSaved();
 
     new Promise((resolve) => {
       this.storages = this.getLocalStorage(this.key) || {};
@@ -116,8 +119,12 @@ class Tools extends React.Component {
       return;
     }
 
+    if (this.state.savedOpen) {
+      return this.closeSaved();
+    }
+
     this.setState({ storages: this.storages }, () => {
-      this.props.popMenu.openPopMenu('Saved searches', this.getContent);
+      this.openSaved();
     });
   }
 
@@ -151,9 +158,29 @@ class Tools extends React.Component {
     }
   }
 
+  openSaved() {
+    this.setState({ savedOpen: true });
+  }
+
+  closeSaved() {
+    this.setState({ savedOpen: false });
+  }
+
+  handleOutsideClick(e) {
+    if (this.tools && this.tools.contains(e.target)) {
+      return;
+    }
+    this.closeSaved();
+  }
+
   componentDidMount() {
     this.key = 'GSNAP_' + this.props.environ.toUpperCase();
     this.storages = this.getLocalStorage(this.key) || {};
+    document.addEventListener('click', this.handleOutsideClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleOutsideClick, false);
   }
 
   render() {
@@ -175,10 +202,11 @@ class Tools extends React.Component {
     });
 
     return (
-      <div className="tools">
+      <div className="tools" ref={ tools => this.tools = tools }>
         <nav className="tools-tabs">
           {tabsButtons}
         </nav>
+
         <div className="tools-buttons">
           <span className="message">{this.state.message}</span>
           <button className={'btn btn-save-graph topcoat-button'}
@@ -191,6 +219,19 @@ class Tools extends React.Component {
             <i className="fa fa-folder"></i>
           </button>
         </div>
+
+        {this.state.savedOpen &&
+          <div className="saved">
+            <div className="saved-head">
+              Saved searches
+              <button className="close-btn" onClick={this.closeSaved}>
+                <i className="fa fa-close"></i>
+              </button>
+            </div>
+            <div className="saved-content">
+              {this.getContent()}
+            </div>
+          </div>}
       </div>
     );
   }

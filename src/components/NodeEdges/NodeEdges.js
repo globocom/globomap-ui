@@ -129,10 +129,12 @@ class NodeEdges extends Component {
               : null;
     });
 
-    return <div className={'sub-node-edges ' + this.props.position}
-                ref={node => { this.node = node; }}>
-             {edgesInOut}
-           </div>;
+    return (
+      <div className={'sub-node-edges ' + this.props.position}
+           ref={node => { this.node = node; }}>
+        {edgesInOut}
+      </div>
+    );
   }
 
 }
