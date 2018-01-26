@@ -82,8 +82,8 @@ if (app.get('env') === 'production') {
   app.set('disable-auth', !forceAuth);
 }
 
-// Apply session middleware
-app.use(session(sessionConfig));
+const sessionMiddleware = session(sessionConfig);
+app.use(sessionMiddleware);
 
 const isAuthenticated = (req, res, next) => {
   if (app.get('disable-auth')) {
@@ -144,4 +144,4 @@ app.get('/logout', (req, res) => {
 
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
-module.exports = app;
+module.exports = { app, sessionMiddleware };

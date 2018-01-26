@@ -20,19 +20,16 @@ import { connect } from 'react-redux';
 import { fetchGraphs, fetchCollections, getEnviron,
          toggleHasId } from '../../redux/modules/app';
 import { clearCurrentNode } from '../../redux/modules/nodes';
-import { Header, Modal, PopMenu, SearchContent,
-         Stage, SubNodes, Tools } from '../';
-// import { uiSocket } from '../../utils';
+import { Header, Modal, SearchContent, Stage,
+         SubNodes, Tools } from '../';
+import { socketClient } from '../../';
 import './App.css';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    // this.socket = uiSocket();
-
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleDoubleClick = this.handleDoubleClick.bind(this);
   }
 
   handleKeyDown(event) {
@@ -41,10 +38,6 @@ class App extends Component {
       this.props.clearCurrentNode();
     }
   };
-
-  handleDoubleClick() {
-    this.props.toggleHasId();
-  }
 
   componentDidMount() {
     this.props.fetchGraphs();
@@ -55,17 +48,17 @@ class App extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown);
-    // this.socket.disconnect();
+    socketClient.disconnect();
   }
 
-render() {
+  render() {
     return (
       <div className="main">
         <span className="has-id"
-              onDoubleClick={this.handleDoubleClick}>&nbsp;</span>
+              onDoubleClick={this.props.toggleHasId}>&nbsp;</span>
 
         <Header />
-        <Tools popMenu={this.popMenu} />
+        <Tools />
 
         {/*<Tabs>
           <Tab name="Search Results">
@@ -86,7 +79,6 @@ render() {
         </div>
 
         <SubNodes />
-        <PopMenu ref={(popMenu) => {this.popMenu = popMenu}} />
         <Modal />
       </div>
     );

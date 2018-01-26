@@ -15,9 +15,10 @@ limitations under the License.
 */
 
 import io from 'socket.io-client';
+import config from '../config';
 
 function uiSocket() {
-  var uiSocket = io();
+  var uiSocket = io(config.host);
   uiSocket.on('error', function(err) {
     console.log('uiSocket error');
   });

@@ -17,11 +17,9 @@ limitations under the License.
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { toggleGraph } from '../../redux/modules/app';
 import { resetSubNodes, findNodes } from '../../redux/modules/nodes';
 import { cleanStageNodes } from '../../redux/modules/stage';
-
 import './Header.css';
 
 class Header extends Component {

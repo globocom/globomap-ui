@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import './PopMenu.css';
 
 class PopMenu extends Component {
@@ -35,7 +34,7 @@ class PopMenu extends Component {
 
   render() {
     return (
-      <div className={'popmenu' + (this.state.open ? ' open' : '') + (this.props.currentNode ? ' with-info' : '')}>
+      <div className={'popmenu' + (this.state.open ? ' open' : '')}>
         <div className="popmenu-head">
           {this.state.title}
           <button className="close-btn" onClick={this.closePopMenu}>
@@ -46,7 +45,7 @@ class PopMenu extends Component {
           {this.state.content()}
         </div>
       </div>
-    )
+    );
   }
 
   openPopMenu(title, content) {
@@ -79,10 +78,4 @@ class PopMenu extends Component {
 
 }
 
-function mapStateToProps(state) {
-  return {
-    currentNode: state.nodes.currentNode
-  };
-}
-
-export default connect(mapStateToProps, null)(PopMenu);
+export default PopMenu;
