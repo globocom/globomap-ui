@@ -87,7 +87,8 @@ limitations under the License.
   border: 0;
   background: none;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
+  padding-top: 4px;
 }
 
 .main-header .search-box .btn-search:hover,

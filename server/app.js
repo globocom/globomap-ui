@@ -16,24 +16,11 @@ limitations under the License.
 
 const express = require('express');
 const path = require('path');
-const session = require('express-session')
+const session = require('express-session');
 const Redis = require('ioredis');
 const oauthClient = require('./oauthClient');
 const project = require('../package.json');
-
-const redisHost = process.env.REDIS_HOST
-const redisPort = process.env.REDIS_PORT || 6379
-const redisPassword = process.env.REDIS_PASSWORD
-const redisSentinelsPort = process.env.REDIS_SENTINELS_PORT || 26379
-const redisSentinelsService = process.env.REDIS_SENTINELS_SERVICE
-const redisSentinelsHosts = process.env.REDIS_SENTINELS
-                            ? process.env.REDIS_SENTINELS.split(',')
-                            : null
-
-const oauthLogoutUrl = process.env.OAUTH_LOGOUT_URL
-const forceAuth = process.env.OAUTH_FORCE === 'true'
-const sessionSecret = process.env.SESSION_SECRET || 'secret'
-const environment = process.env.ENVIRONMENT || 'development';
+const config = require('./config');
 
 const app = express();
 
@@ -43,43 +30,44 @@ let sessionConfig = {
     httpOnly: false,
     maxAge: 24*60*60*1000
   },
-  secret: sessionSecret,
+  secret: config.sessionSecret,
   resave: false,
   saveUninitialized: false,
   unset: 'destroy'
 };
 
 if (app.get('env') === 'production') {
+  const { redisSentinelsService, redisSentinelsHosts, redisHost,
+          redisPort, redisPassword, redisSentinelsPort } = config;
   const RedisStore = require('connect-redis')(session);
 
+  let redisClient = new Redis({
+    host: redisHost,
+    port: redisPort,
+    password: redisPassword
+  });
+
   if (redisSentinelsHosts) {
-    const redisClient = new Redis({
+    redisClient = new Redis({
       name: redisSentinelsService,
       password: redisPassword,
-      sentinels: redisSentinelsHosts.map(function(sentinelHost) {
+      sentinels: redisSentinelsHosts.map((sentinelHost) => {
         return {
           host: sentinelHost,
-          port: 26379
+          port: redisSentinelsPort
         }
       })
     });
-
-    sessionConfig.store = new RedisStore({
-      client: redisClient,
-      host: redisHost,
-      port: redisPort,
-      pass: redisPassword
-    });
-  } else {
-    sessionConfig.store = new RedisStore({
-      host: redisHost,
-      port: redisPort,
-      pass: redisPassword
-    });
   }
 
+  sessionConfig.store = new RedisStore({
+    client: redisClient,
+    host: redisHost,
+    port: redisPort,
+    pass: redisPassword
+  });
 } else {
-  app.set('disable-auth', !forceAuth);
+  app.set('disable-auth', !config.oauthForceAuth);
 }
 
 const sessionMiddleware = session(sessionConfig);
@@ -115,7 +103,7 @@ app.get('/info', (req, res) => {
   return res.status(200).json({
     project: project.name,
     version: project.version,
-    environment: environment,
+    environment: config.environment,
     'node-version': project.engines.node,
     dependencies: project.dependencies
   });
@@ -139,7 +127,7 @@ app.get('/login', (req, res) => {
 app.get('/logout', (req, res) => {
   redirectUri = req.protocol + "://" + req.get('Host');
   req.session = null;
-  res.redirect(oauthLogoutUrl + '?redirect_uri=' + redirectUri);
+  res.redirect(config.oauthLogoutUrl + '?redirect_uri=' + redirectUri);
 });
 
 app.use(express.static(path.resolve(__dirname, '..', 'build')));

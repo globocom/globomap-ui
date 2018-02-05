@@ -17,13 +17,28 @@ limitations under the License.
 import { uuid, traverseItems } from '../../utils';
 import { setCurrentNode } from './nodes';
 
+const SOCKET = 'socket';
+
 const STAGE_ADD_NEW_NODE = 'stage_add_new_node';
 const STAGE_REMOVE_NODE = 'stage_remove_node';
 const STAGE_SET_NODES = 'stage_set_nodes';
 const STAGE_CLEAN_NODES = 'stage_clean_nodes';
 
+const SAVE_SHARED_MAP = 'save_shared_map';
+const SAVE_SHARED_MAP_SUCCESS = 'save_shared_map_success';
+const SAVE_SHARED_MAP_FAIL = 'save_shared_map_fail';
+
+const GET_SHARED_MAP = 'get_shared_map';
+const GET_SHARED_MAP_SUCCESS = 'get_shared_map_success';
+const GET_SHARED_MAP_FAIL = 'get_shared_map_fail';
+
 const initialState = {
-  stageNodes: []
+  stageNodes: [],
+  latestSharedMapKey: null,
+  saveSharedLoading: false,
+  saveSharedLoaded: false,
+  getSharedLoading: false,
+  getSharedLoaded: false
 }
 
 export default function reducer(state=initialState, action={}) {
@@ -91,6 +106,52 @@ export default function reducer(state=initialState, action={}) {
         stageNodes: []
       }
 
+    case SAVE_SHARED_MAP:
+      return {
+        ...state,
+        saveSharedLoading: true,
+        saveSharedLoaded: false,
+      }
+
+    case SAVE_SHARED_MAP_SUCCESS:
+      return {
+        ...state,
+        saveSharedLoading: false,
+        saveSharedLoaded: true,
+        latestSharedMapKey: action.result
+      }
+
+    case SAVE_SHARED_MAP_FAIL:
+      return {
+        ...state,
+        saveSharedLoading: false,
+        saveSharedLoaded: false,
+        latestSharedMapKey: null
+      }
+
+    case GET_SHARED_MAP:
+      return {
+        ...state,
+        getSharedLoading: true,
+        getSharedLoaded: false
+      }
+
+    case GET_SHARED_MAP_SUCCESS:
+      return {
+        ...state,
+        getSharedLoading: false,
+        getSharedLoaded: true,
+        stageNodes: action.result
+      }
+
+    case GET_SHARED_MAP_FAIL:
+      return {
+        ...state,
+        getSharedLoading: false,
+        getSharedLoaded: false,
+        stageNodes: []
+      }
+
     default:
       return state;
   }
@@ -137,6 +198,22 @@ export function cleanStageNodes() {
   return {
     type: STAGE_CLEAN_NODES
   }
+}
+
+export function saveSharedMap(stageNodes) {
+  return {
+    type: SOCKET,
+    types: [SAVE_SHARED_MAP, SAVE_SHARED_MAP_SUCCESS, SAVE_SHARED_MAP_FAIL],
+    promise: (socket) => socket.emit('savesharedmap', { value: stageNodes })
+  };
+}
+
+export function getSharedMap(key) {
+  return {
+    type: SOCKET,
+    types: [GET_SHARED_MAP, GET_SHARED_MAP_SUCCESS, GET_SHARED_MAP_FAIL],
+    promise: (socket) => socket.emit('getsharedmap', { key: key })
+  };
 }
 
 // Selectors?

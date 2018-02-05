@@ -42,6 +42,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={App} />
+        <Route path="/map/:mapKey" component={App} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

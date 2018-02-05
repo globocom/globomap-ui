@@ -97,7 +97,7 @@ class NodeItem extends Component {
 
         {!this.props.node.root &&
           <button className="close-node-btn" onClick={this.onSelfRemove}>
-            <i className="fa fa-close"></i>
+            <i className="fa fa-times"></i>
           </button>}
 
         <div className="node-info sticky">

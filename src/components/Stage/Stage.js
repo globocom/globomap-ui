@@ -16,16 +16,28 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { cleanStageNodes, setStageNodes } from '../../redux/modules/stage';
+import { cleanStageNodes,
+         setStageNodes,
+         saveSharedMap,
+         getSharedMap } from '../../redux/modules/stage';
 import { setMainTab } from '../../redux/modules/tabs';
 import { NodeItem } from '../';
+import { Loading } from '../';
 import './Stage.css';
 
 class Stage extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      fullScreen: false
+    };
+
     this.renderNodes = this.renderNodes.bind(this);
+    this.saveMap = this.saveMap.bind(this);
+    this.shareMap = this.shareMap.bind(this);
+    this.toggleFullScreen = this.toggleFullScreen.bind(this);
   }
 
   renderNodes(nodeList) {
@@ -49,34 +61,88 @@ class Stage extends Component {
     return sItems.length > 0;
   }
 
+  saveMap() {
+    console.log('Save user map...');
+    return;
+  }
+
+  shareMap() {
+    this.props.saveSharedMap(this.props.stageNodes);
+  }
+
+  toggleFullScreen() {
+    this.setState({ fullScreen: !this.state.fullScreen });
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (!this.hasMinimumStageNodes(nextProps.stageNodes)) {
-      this.props.setMainTab('Search Results');
-    } else {
+    if (this.hasMinimumStageNodes(nextProps.stageNodes)) {
       this.props.setMainTab('Navigation');
     }
   }
 
+  componentDidMount() {
+    const { sharedMapKey } = this.props;
+    if (sharedMapKey) {
+      this.props.setMainTab('Navigation');
+      this.toggleFullScreen();
+      this.props.getSharedMap(sharedMapKey);
+    }
+  }
+
   render() {
-    const open = this.hasMinimumStageNodes(this.props.stageNodes);
+    let rootNodeHasItens = false;
+    if (this.props.stageNodes[0] !== undefined &&
+        this.props.stageNodes[0].items.length > 0) {
+      rootNodeHasItens = true;
+    }
+
     return (
-      <div className={`stage ${open ? 'open' : ''}`}>
+      <div className={`stage${this.state.fullScreen ? ' full' : ''}`}>
+        <div className="state-tools">
+          {/*<button className="btn btn-save-map"
+                  onClick={this.saveMap}
+                  disabled={!rootNodeHasItens}>
+            <i className="fa fa-save"></i>
+          </button>*/}
+
+          <button className="btn btn-share-map" onClick={this.shareMap}
+                  disabled={!rootNodeHasItens}>
+            <i className="fa fa-link"></i>
+          </button>
+
+          <button className="btn btn-fullscreen" onClick={this.toggleFullScreen}>
+            {this.state.fullScreen
+              ? <i className="fa fa-compress"></i>
+              : <i className="fa fa-expand"></i>}
+          </button>
+        </div>
         <div className="stage-container">
           {this.renderNodes(this.props.stageNodes)}
         </div>
+        <Loading isLoading={this.props.getSharedLoading || this.props.saveSharedLoading}
+                 iconSize="big" />
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
+  const { stageNodes, getSharedLoading, getSharedLoaded,
+          saveSharedLoading, saveSharedLoaded, latestSharedMapKey } = state.stage;
+
   return {
-    stageNodes: state.stage.stageNodes,
-    currentNode: state.nodes.currentNode
+    currentNode: state.nodes.currentNode,
+    stageNodes,
+    getSharedLoading,
+    getSharedLoaded,
+    saveSharedLoading,
+    saveSharedLoaded,
+    latestSharedMapKey
   };
 }
 
 export default connect(
   mapStateToProps,
-  { cleanStageNodes, setStageNodes, setMainTab }
+  { cleanStageNodes, setStageNodes, setMainTab,
+    saveSharedMap, getSharedMap }
 )(Stage);

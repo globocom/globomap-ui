@@ -14,12 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.stage {
+.stage,
+.stage-tools,
+.stage-container {
   box-sizing: border-box;
 }
 
 .stage {
-  display: none;
   width: 70%;
   position: fixed;
   top: 85px;
@@ -27,19 +28,56 @@ limitations under the License.
   overflow: auto;
   bottom: 0;
   left: 0;
-  padding: 20px;
-  /*border-radius: 0 0 4px 4px;*/
   background-color: #f8f8f8;
-  /*box-shadow: 0 1px 2px rgba(0,0,0,0.2);*/
   z-index: 5;
 }
 
-.stage.open {
+.stage.full {
+  top: 0;
+  right: 0;
+  width: auto;
+  z-index: 99;
+}
+
+.stage .stage-container {
   display: flex;
-  right: 10px;
+  padding: 20px;
+}
+
+.stage.full .stage-container {
+  justify-content: center;
 }
 
 .stage .node-item-group {
   display: flex;
   flex-flow: row nowrap;
+}
+
+.stage .state-tools {
+  display: flex;
+  padding: 10px 20px;
+  justify-content: center;
+}
+
+.state-tools .btn-save-map,
+.state-tools .btn-share-map,
+.state-tools .btn-fullscreen {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 22px;
+  color: #aaa;
+  margin: 0 5px;
+}
+
+.state-tools .btn-save-map:hover,
+.state-tools .btn-share-map:hover,
+.state-tools .btn-fullscreen:hover {
+  color: #333;
+}
+
+.state-tools .btn:disabled,
+.state-tools .btn:disabled:hover {
+  color: #ddd;
+  cursor: default;
 }

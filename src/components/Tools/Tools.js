@@ -43,7 +43,7 @@ class Tools extends React.Component {
   }
 
   getLocalStorage(key) {
-    let data = localStorage.getItem(key);
+    const data = localStorage.getItem(key);
     if (data) {
       return JSON.parse(data);
     }
@@ -82,7 +82,7 @@ class Tools extends React.Component {
               <button className="remove-btn"
                       onClick={e => this.onDeleteGraph(e, key)}
                       title="Delete this item">
-                <i className="fa fa-close"></i>
+                <i className="fa fa-times"></i>
               </button>
             </li>
           );
@@ -194,7 +194,7 @@ class Tools extends React.Component {
       let active = this.props.currentMainTab === tab.name ? ' active' : '';
       return (
         <button key={'tab' + index} className={'tab-btn' + active}
-          disabled={tab.name === 'Navigation' && !rootNodeHasItens}
+          // disabled={tab.name === 'Navigation' && !rootNodeHasItens}
           onClick={(e) => this.props.setMainTab( tab.name )}>
           {tab.name}
         </button>
@@ -209,14 +209,14 @@ class Tools extends React.Component {
 
         <div className="tools-buttons">
           <span className="message">{this.state.message}</span>
-          <button className={'btn btn-save-graph topcoat-button'}
+          <button className="btn btn-save-graph"
                   onClick={this.onSaveGraph} disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
-          <button className={'btn btn-restore-graph topcoat-button'}
+          <button className="btn btn-restore-graph"
                   onClick={this.onRestoreGraph}
                   disabled={(!this.storages || Object.keys(this.storages).length === 0)}>
-            <i className="fa fa-folder"></i>
+            <i className="fa fa-star"></i>
           </button>
         </div>
 
@@ -225,7 +225,7 @@ class Tools extends React.Component {
             <div className="saved-head">
               Saved searches
               <button className="close-btn" onClick={this.closeSaved}>
-                <i className="fa fa-close"></i>
+                <i className="fa fa-times"></i>
               </button>
             </div>
             <div className="saved-content">

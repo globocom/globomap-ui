@@ -99,10 +99,15 @@ class NodeEdges extends Component {
     if(edges === undefined) {
       return <div className="sub-node-edges"></div>;
     }
+    let colorCls = '';
 
-    let colorCls = this.props.graphs.filter((graph) => {
+    const itemGraphs = this.props.graphs.filter((graph) => {
       return graph.name === edges.graph;
-    })[0].colorClass;
+    });
+
+    if (itemGraphs.length > 0) {
+      colorCls = itemGraphs[0].colorClass;
+    }
 
     let edgesInOut = [
       { dir: 'in', toggleFn: this.onOpenIn, openState: this.state.inOpen, items: this.buildEdgeItems(edges.in) },
@@ -120,7 +125,7 @@ class NodeEdges extends Component {
                       <div className="edges-content-head">
                         Links
                         <button className="close-tooltip-btn" onClick={elem.toggleFn}>
-                          <i className="fa fa-close"></i>
+                          <i className="fa fa-times"></i>
                         </button>
                       </div>
                       {elem.items}
