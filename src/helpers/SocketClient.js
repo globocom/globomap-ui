@@ -22,7 +22,13 @@ export default class socketAPI {
   constructor(options = { connect: false }) {
     this.socket = null;
     if (options.connect) {
-      this.connect();
+      this.connect()
+        .then((result) => {
+          console.log('socketAPI: connected');
+        })
+        .catch((error) => {
+          console.log(`socketAPI Error: ${error}`);
+        });
     }
   }
 
@@ -30,7 +36,7 @@ export default class socketAPI {
     this.socket = io.connect(config.host, { path: config.socketPath });
     return new Promise((resolve, reject) => {
       this.socket.on('connect', () => resolve());
-      this.socket.on('connect_error', (error) => reject(error));
+      this.socket.on('error', (error) => reject(error));
     });
   }
 
@@ -50,9 +56,9 @@ export default class socketAPI {
       }
 
       return this.socket.emit(event, data, (response) => {
-        if (response.error) {
-          console.error(response.error);
-          return reject(response.error);
+        if (response instanceof Object && response.error) {
+          console.error(response.message);
+          return reject(response);
         }
 
         return resolve(response);

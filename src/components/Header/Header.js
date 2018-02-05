@@ -212,7 +212,7 @@ class Header extends Component {
             onChange={(e) => this.handlePropChange(e, i, 'value')} />
 
           <button className="btn-remove-prop topcoat-button--quiet" onClick={() => this.removeProp(i)}>
-            <i className="fa fa-close"></i>
+            <i className="fa fa-times"></i>
           </button>
         </div>
       );
@@ -267,7 +267,7 @@ class Header extends Component {
 
             <button className="btn btn-search-options"
               onClick={(e) => this.onToggleSearchOptions(e)}>
-              <i className="fa fa-sliders"></i>
+              <i className="fa fa-sliders-h"></i>
             </button>
 
             {this.state.showOptions && searchOptions}

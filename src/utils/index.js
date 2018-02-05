@@ -20,7 +20,7 @@ import config from '../config';
 function uiSocket() {
   var uiSocket = io(config.host);
   uiSocket.on('error', function(err) {
-    console.log('uiSocket error');
+    console.log(`uiSocket error: ${err}`);
   });
   return uiSocket;
 }
@@ -105,10 +105,6 @@ function sortByName(arr) {
 }
 
 export {
-  sortByName,
-  traverseItems,
-  composeEdges,
-  getEdgeLinks,
-  uiSocket,
-  uuid
+  sortByName, traverseItems, composeEdges,
+  getEdgeLinks, uiSocket, uuid
 };

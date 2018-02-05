@@ -38,7 +38,7 @@ class PopMenu extends Component {
         <div className="popmenu-head">
           {this.state.title}
           <button className="close-btn" onClick={this.closePopMenu}>
-            <i className="fa fa-close"></i>
+            <i className="fa fa-times"></i>
           </button>
         </div>
         <div className="popmenu-content">

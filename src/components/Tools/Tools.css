@@ -41,7 +41,22 @@ limitations under the License.
   margin-left: 8px;
   min-width: 35px;
   min-height: 25px;
-  /*font-size: 18px;*/
+  font-size: 18px;
+  color: #aaa;
+  padding-top: 2px;
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+.tools .btn:hover {
+  color: #333;
+}
+
+.tools .btn:disabled,
+.tools .btn:disabled:hover {
+  color: #ddd;
+  cursor: default;
 }
 
 .content-list {

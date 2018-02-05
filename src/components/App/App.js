@@ -74,7 +74,7 @@ class App extends Component {
             <SearchContent />
           </div>
           <div className={'tab-content' + (this.props.currentMainTab === 'Navigation' ? ' active' : '')}>
-            <Stage />
+            <Stage sharedMapKey={this.props.match.params.mapKey} />
           </div>
         </div>
 

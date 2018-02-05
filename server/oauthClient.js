@@ -23,7 +23,7 @@ var oauthClient = new ClientOAuth2({
   authorizationUri: process.env.OAUTH_AUTHORIZE_URL,
   redirectUri: process.env.OAUTH_REDIRECT_URL,
   scopes: []
-})
+});
 
 oauthClient.isAuthenticated = (session, callback) => {
   token = oauthClient.createToken(session.tokenData);
