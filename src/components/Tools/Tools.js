@@ -209,25 +209,20 @@ class Tools extends React.Component {
 
         <div className="tools-buttons">
           <span className="message">{this.state.message}</span>
-          <button className="btn btn-save-graph"
+          <button className="btn btn-save-graph topcoat-button"
                   onClick={this.onSaveGraph} disabled={!rootNodeHasItens}>
-            <i className="fa fa-save"></i>
+            <i className="fa fa-save"></i> Save map
           </button>
-          <button className="btn btn-restore-graph"
+          <button className="btn btn-restore-graph topcoat-button"
                   onClick={this.onRestoreGraph}
                   disabled={(!this.storages || Object.keys(this.storages).length === 0)}>
-            <i className="fa fa-star"></i>
+            Show saved <i className="fa fa-caret-down"></i>
           </button>
         </div>
 
         {this.state.savedOpen &&
           <div className="saved">
-            <div className="saved-head">
-              Saved searches
-              <button className="close-btn" onClick={this.closeSaved}>
-                <i className="fa fa-times"></i>
-              </button>
-            </div>
+            <div className="saved-head">Saved maps</div>
             <div className="saved-content">
               {this.getContent()}
             </div>

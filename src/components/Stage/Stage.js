@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import Clipboard from 'clipboard';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { cleanStageNodes,
@@ -31,13 +32,19 @@ class Stage extends Component {
     super(props);
 
     this.state = {
-      fullScreen: false
+      fullScreen: false,
+      sharedLinkOpen: false
     };
 
     this.renderNodes = this.renderNodes.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.shareMap = this.shareMap.bind(this);
     this.toggleFullScreen = this.toggleFullScreen.bind(this);
+    this.openSharedLink = this.openSharedLink.bind(this);
+    this.closeSharedLink = this.closeSharedLink.bind(this);
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+
+    new Clipboard('.btn-clipboard');
   }
 
   renderNodes(nodeList) {
@@ -67,7 +74,27 @@ class Stage extends Component {
   }
 
   shareMap() {
-    this.props.saveSharedMap(this.props.stageNodes);
+    if (!this.state.sharedLinkOpen) {
+      this.openSharedLink();
+      this.props.saveSharedMap(this.props.stageNodes);
+      return;
+    }
+    this.closeSharedLink();
+  }
+
+  openSharedLink() {
+    this.setState({ sharedLinkOpen: true });
+  }
+
+  closeSharedLink() {
+    this.setState({ sharedLinkOpen: false });
+  }
+
+  handleOutsideClick(e) {
+    if (this.stageTools && this.stageTools.contains(e.target)) {
+      return;
+    }
+    this.closeSharedLink();
   }
 
   toggleFullScreen() {
@@ -87,9 +114,19 @@ class Stage extends Component {
       this.toggleFullScreen();
       this.props.getSharedMap(sharedMapKey);
     }
+    document.addEventListener('click', this.handleOutsideClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleOutsideClick, false);
   }
 
   render() {
+    const { protocol, host } = window.location;
+    const urlToShare = this.props.latestSharedMapKey
+                       ? `${protocol}//${host}/map/${this.props.latestSharedMapKey}`
+                       : '';
+
     let rootNodeHasItens = false;
     if (this.props.stageNodes[0] !== undefined &&
         this.props.stageNodes[0].items.length > 0) {
@@ -98,7 +135,7 @@ class Stage extends Component {
 
     return (
       <div className={`stage${this.state.fullScreen ? ' full' : ''}`}>
-        <div className="state-tools">
+        <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
           {/*<button className="btn btn-save-map"
                   onClick={this.saveMap}
                   disabled={!rootNodeHasItens}>
@@ -110,6 +147,17 @@ class Stage extends Component {
             <i className="fa fa-link"></i>
           </button>
 
+          {this.state.sharedLinkOpen &&
+            <div className="shared-link">
+              <input type="text" readOnly={true} className="link-url topcoat-text-input--large"
+                     value={urlToShare} onClick={e => e.target.select()} />
+              <button className="btn-clipboard topcoat-button--large"
+                      data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
+                <i className="fa fa-clipboard"></i> Copy to clipboard
+              </button>
+              <Loading isLoading={this.props.saveSharedLoading} iconSize="medium" />
+            </div>}
+
           <button className="btn btn-fullscreen" onClick={this.toggleFullScreen}>
             {this.state.fullScreen
               ? <i className="fa fa-compress"></i>
@@ -119,8 +167,7 @@ class Stage extends Component {
         <div className="stage-container">
           {this.renderNodes(this.props.stageNodes)}
         </div>
-        <Loading isLoading={this.props.getSharedLoading || this.props.saveSharedLoading}
-                 iconSize="big" />
+        <Loading isLoading={this.props.getSharedLoading} iconSize="big" />
       </div>
     );
   }

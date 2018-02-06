@@ -53,15 +53,15 @@ limitations under the License.
   flex-flow: row nowrap;
 }
 
-.stage .state-tools {
+.stage .stage-tools {
   display: flex;
   padding: 10px 20px;
   justify-content: center;
 }
 
-.state-tools .btn-save-map,
-.state-tools .btn-share-map,
-.state-tools .btn-fullscreen {
+.stage-tools .btn-save-map,
+.stage-tools .btn-share-map,
+.stage-tools .btn-fullscreen {
   background: transparent;
   border: 0;
   cursor: pointer;
@@ -70,14 +70,39 @@ limitations under the License.
   margin: 0 5px;
 }
 
-.state-tools .btn-save-map:hover,
-.state-tools .btn-share-map:hover,
-.state-tools .btn-fullscreen:hover {
+.stage-tools .btn-save-map:hover,
+.stage-tools .btn-share-map:hover,
+.stage-tools .btn-fullscreen:hover {
   color: #333;
 }
 
-.state-tools .btn:disabled,
-.state-tools .btn:disabled:hover {
+.stage-tools .btn:disabled,
+.stage-tools .btn:disabled:hover {
   color: #ddd;
   cursor: default;
+}
+
+.stage-tools .shared-link {
+  position: absolute;
+  display: flex;
+  top: 50px;
+  left: 50%;
+  width: 66%;
+  margin-left: -33%;
+  background: white;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 19;
+  box-shadow: 0 5px 30px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+.shared-link .link-url {
+  flex-grow: 2;
+  border-radius: 4px 0 0 4px;
+  border-right: 0;
+}
+
+.shared-link .btn-clipboard {
+  border-radius: 0 4px 4px 0;
 }
