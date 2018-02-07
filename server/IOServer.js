@@ -45,7 +45,7 @@ class IOServer {
         password: config.redisPassword,
         sentinels: config.redisSentinelsHosts.map((sentinelHost) => {
           return {
-            host: config.sentinelHost,
+            host: sentinelHost,
             port: config.redisSentinelsPort
           }
         })
