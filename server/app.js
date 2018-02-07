@@ -91,7 +91,7 @@ const isAuthenticated = (req, res, next) => {
   }
 }
 
-app.get('/', isAuthenticated, (req, res) => {
+app.get(['/', '/map/:mapId'], isAuthenticated, (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });
 
