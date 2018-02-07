@@ -38,11 +38,25 @@ class IOServer {
       return;
     }
 
-    this.redis = new Redis({
-      host: config.redisHost,
-      port: config.redisPort,
-      password: config.redisPassword
-    });
+    this.redis = null;
+    if (config.redisSentinelsHosts) {
+      this.redis = new Redis({
+        name: config.redisSentinelsService,
+        password: config.redisPassword,
+        sentinels: config.redisSentinelsHosts.map((sentinelHost) => {
+          return {
+            host: config.sentinelHost,
+            port: config.redisSentinelsPort
+          }
+        })
+      });
+    } else {
+      this.redis = new Redis({
+        host: config.redisHost,
+        port: config.redisPort,
+        password: config.redisPassword
+      });
+    }
 
     io.use(function(socket, next) {
       sessionMiddleware(socket.request, socket.request.res, next);
