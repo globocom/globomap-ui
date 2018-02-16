@@ -19,9 +19,10 @@ limitations under the License.
 import React from 'react';
 import { connect } from 'react-redux';
 import { setStageNodes, getUserMap,
-         listUserMaps } from '../../redux/modules/stage';
+         deleteUserMap, listUserMaps } from '../../redux/modules/stage';
 import { clearCurrentNode, resetSubNodes } from '../../redux/modules/nodes';
 import { setMainTab } from '../../redux/modules/tabs';
+import { Loading } from '../';
 import { traverseItems, sortByName } from '../../utils';
 import './Tools.css';
 
@@ -73,35 +74,6 @@ class Tools extends React.Component {
   //     this.openSaved();
   //   });
   // }
-
-  renderUserMaps() {
-    if (this.props.userMaps.length === 0) {
-      return (
-        <ul className="content-list">
-          <li className="no-content-item">No map saved yet</li>
-        </ul>
-      );
-    }
-
-    const uMaps = sortByName(this.props.userMaps);
-    return (
-      <ul className="content-list">
-        {uMaps.map((item) => {
-          return (
-            <li key={item.key} className="content-item"
-                onClick={e => this.applyGraph(e, item.content)}>
-              <span  className="content-title">{item.name}</span>
-              <button className="remove-btn"
-                      onClick={e => this.onDeleteGraph(e, item.key)}
-                      title="Delete this item">
-                <i className="fa fa-times"></i>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
 
   applyGraph(event, content) {
     // const items = this.props.userMaps[key].content;
@@ -174,6 +146,7 @@ class Tools extends React.Component {
     event.stopPropagation();
     if (window.confirm('Are you sure to delete this item?')) {
       // this.clearLocalStorage(key);
+      this.props.deleteUserMap(key);
     }
   }
 
@@ -183,6 +156,35 @@ class Tools extends React.Component {
 
   closeSaved() {
     this.setState({ savedOpen: false });
+  }
+
+  renderUserMaps() {
+    if (this.props.userMaps.length === 0) {
+      return (
+        <ul className="content-list">
+          <li className="no-content-item">No map saved yet</li>
+        </ul>
+      );
+    }
+
+    const uMaps = sortByName(this.props.userMaps);
+    return (
+      <ul className="content-list">
+        {uMaps.map((item) => {
+          return (
+            <li key={item.key} className="content-item"
+                onClick={e => this.applyGraph(e, item.content)}>
+              <span  className="content-title">{item.name}</span>
+              <button className="remove-btn"
+                      onClick={e => this.onDeleteGraph(e, item.key)}
+                      title="Delete this item">
+                <i className="fa fa-times"></i>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    );
   }
 
   handleOutsideClick(e) {
@@ -247,6 +249,9 @@ class Tools extends React.Component {
             <div className="saved-content">
               {this.renderUserMaps()}
             </div>
+            <Loading iconSize="medium"
+                     isLoading={ this.props.saveUserMapLoading ||
+                                 this.props.deleteUserMapLoading } />
           </div>}
       </div>
     );
@@ -259,6 +264,8 @@ function mapStateToProps(state) {
     stageNodes: state.stage.stageNodes,
     userMaps: state.stage.userMaps,
     latestUserMapKey: state.stage.latestUserMapKey,
+    saveUserMapLoading: state.stage.saveUserMapLoading,
+    deleteUserMapLoading: state.stage.deleteUserMapLoading,
     currentMainTab: state.tabs.currentMainTab,
     environ: state.app.environ
   };
@@ -267,5 +274,6 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { setStageNodes, clearCurrentNode, resetSubNodes,
-    setMainTab, getUserMap, listUserMaps }
+    setMainTab, getUserMap, deleteUserMap,
+    listUserMaps }
 )(Tools);

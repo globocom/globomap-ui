@@ -161,7 +161,7 @@ limitations under the License.
 
 .saved .content-list .content-item .remove-btn:hover {
   cursor: pointer;
-  color: #333;
+  color: #a00;
 }
 
 .saved .content-list .content-item:hover .remove-btn {
