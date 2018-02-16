@@ -40,6 +40,10 @@ const GET_USER_MAP = 'get_user_map';
 const GET_USER_MAP_SUCCESS = 'get_user_map_success';
 const GET_USER_MAP_FAIL = 'get_user_map_fail';
 
+const DELETE_USER_MAP = 'delete_user_map';
+const DELETE_USER_MAP_SUCCESS = 'delete_user_map_success';
+const DELETE_USER_MAP_FAIL = 'delete_user_map_fail';
+
 const LIST_USER_MAPS = 'list_user_maps';
 const LIST_USER_MAPS_SUCCESS = 'list_user_maps_success';
 const LIST_USER_MAPS_FAIL = 'list_user_maps_fail';
@@ -55,6 +59,7 @@ const initialState = {
   latestUserMapKey: null,
   saveUserMapLoading: false,
   getUserMapLoading: false,
+  deleteUserMapLoading: false,
   listUserMapsLoading: false
 }
 
@@ -174,9 +179,9 @@ export default function reducer(state=initialState, action={}) {
 
     case SAVE_USER_MAP_SUCCESS:
       const newMap = action.result;
-      let uMaps = state.userMaps,
-          hasKey = false;
+      let uMaps = state.userMaps;
 
+      let hasKey = false;
       for (let i=0, l=uMaps.length; i<l; i++) {
         if (uMaps[i].key === newMap.key) {
           hasKey = true;
@@ -198,6 +203,7 @@ export default function reducer(state=initialState, action={}) {
       }
 
     case GET_USER_MAP:
+      console.log('get user map...');
       return {
         ...state,
         getUserMapLoading: true,
@@ -216,6 +222,35 @@ export default function reducer(state=initialState, action={}) {
         ...state,
         getUserMapLoading: false,
         stageNodes: []
+      }
+
+    case DELETE_USER_MAP:
+      console.log('delete user map...');
+      return {
+        ...state,
+        deleteUserMapLoading: true
+      }
+
+    case DELETE_USER_MAP_SUCCESS:
+      const deletedKey = action.result.deletedKey;
+      let maps = [...state.userMaps];
+
+      for (let j=0, k=maps.length; j<k; j++) {
+        if (maps[j].key === deletedKey) {
+          maps.splice(j, 1);
+        }
+      }
+
+      return {
+        ...state,
+        deleteUserMapLoading: false,
+        userMaps: maps
+      }
+
+    case DELETE_USER_MAP_FAIL:
+      return {
+        ...state,
+        deleteUserMapLoading: false
       }
 
     case LIST_USER_MAPS:
@@ -309,12 +344,6 @@ export function getSharedMap(key) {
   };
 }
 
-// export function saveUserMapAndUpdateList(stageNodes) {
-//   return (dispatch, getState) => {
-//     socketClient.emit('user:savemap', { value: stageNodes })
-//   }
-// }
-
 export function saveUserMap(stageNodes) {
   return {
     type: SOCKET,
@@ -328,6 +357,14 @@ export function getUserMap(key) {
     type: SOCKET,
     types: [GET_USER_MAP, GET_USER_MAP_SUCCESS, GET_USER_MAP_FAIL],
     promise: (socket) => socket.emit('user:getmap', { key: key })
+  };
+}
+
+export function deleteUserMap(key) {
+  return {
+    type: SOCKET,
+    types: [DELETE_USER_MAP, DELETE_USER_MAP_SUCCESS, DELETE_USER_MAP_FAIL],
+    promise: (socket) => socket.emit('user:deletemap', { key: key })
   };
 }
 

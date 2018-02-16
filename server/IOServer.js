@@ -39,7 +39,6 @@ function getUserInfo(session) {
     if (!url) {
       reject(null);
     }
-
     axios.get(url, { headers: { 'Authorization': `Bearer ${token}` } })
       .then(response => resolve(response.data))
       .catch(error => reject(error));
@@ -114,6 +113,7 @@ class IOServer {
       { event: 'getsharedmap', fn: this.getSharedMap },
       { event: 'user:savemap', fn: this.saveUserMap },
       { event: 'user:getmap', fn: this.getUserMap },
+      { event: 'user:deletemap', fn: this.deleteUserMap },
       { event: 'user:listmaps', fn: this.listUserMaps }
     ];
 
@@ -365,8 +365,8 @@ class IOServer {
     const mapKey = crypto.createHash('md5').update(mapStr).digest('hex');
 
     data.userInfo.then(uInfo => {
-      // Redis HASH username:maps, key, value
-      this.redis.hset(`${uInfo.username}:maps`, mapKey, mapStr)
+      // Redis HASH email:maps, key, value
+      this.redis.hset(`${uInfo.email}:maps`, mapKey, mapStr)
         .then((result) => {
           fn({ key: mapKey, name: sNodes[0].name, content: sNodes });
         })
@@ -383,12 +383,29 @@ class IOServer {
     }
 
     data.userInfo.then(uInfo => {
-      this.redis.hget(`${uInfo.username}:maps`, data.key)
+      this.redis.hget(`${uInfo.email}:maps`, data.key)
         .then((result) => {
           fn(JSON.parse(result));
         })
         .catch((error) => {
           fn({ error: true, message: 'Get User Map Error' });
+        });
+    });
+  }
+
+  deleteUserMap(data, fn) {
+    if (!this.redis) {
+      fn({ error: true, message: 'Redis Error' });
+      return;
+    }
+
+    data.userInfo.then(uInfo => {
+      this.redis.hdel(`${uInfo.email}:maps`, data.key)
+        .then((result) => {
+          fn({ deletedKey: data.key });
+        })
+        .catch((error) => {
+          fn({ error: true, message: 'Delete User Map Error' });
         });
     });
   }
@@ -400,7 +417,7 @@ class IOServer {
     }
 
     data.userInfo.then(uInfo => {
-      this.redis.hgetall(`${uInfo.username}:maps`)
+      this.redis.hgetall(`${uInfo.email}:maps`)
         .then((result) => {
           result = _.mapValues(result, v => JSON.parse(v));
           fn(result);
