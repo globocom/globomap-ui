@@ -18,6 +18,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const https = require('https');
 
+const _ = require('lodash');
 const axios = require('axios');
 const Redis = require('ioredis');
 const ioSession = require("express-socket.io-session");
@@ -29,6 +30,21 @@ const oauthClient = require('./oauthClient');
 
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
 const pageSize = process.env.PAGE_SIZE || 20;
+
+function getUserInfo(session) {
+  const token = session.tokenData.access_token;
+  const url = config.oauthUserInfoUrl;
+
+  return new Promise((resolve, reject) => {
+    if (!url) {
+      reject(null);
+    }
+
+    axios.get(url, { headers: { 'Authorization': `Bearer ${token}` } })
+      .then(response => resolve(response.data))
+      .catch(error => reject(error));
+  });
+}
 
 class IOServer {
   constructor(io) {
@@ -93,21 +109,43 @@ class IOServer {
       { event: 'getmonitoring', fn: this.getMonitoring },
       { event: 'getZabbixGraph', fn: this.getZabbixGraph },
 
-      // { event: 'user:savemap', fn: this.saveUserMap },
-      // { event: 'user:getmap', fn: this.saveUserMap },
-
       // Redis
       { event: 'savesharedmap', fn: this.saveSharedMap },
-      { event: 'getsharedmap', fn: this.getSharedMap }
+      { event: 'getsharedmap', fn: this.getSharedMap },
+      { event: 'user:savemap', fn: this.saveUserMap },
+      { event: 'user:getmap', fn: this.getUserMap },
+      { event: 'user:listmaps', fn: this.listUserMaps }
     ];
 
     io.on('connection', (socket) => {
+      const session = socket.request.session;
+      const userInfo = getUserInfo(session);
+
       for(let i=0, l=eventList.length; i<l; ++i) {
         socket.on(eventList[i].event, (data, fn) => {
-          eventList[i].fn.apply(this, [data, (result) => { fn(result); }]);
+          eventList[i].fn.apply(this, [{ ...data, userInfo }, (result) => {
+            fn(result);
+          }]);
         });
       }
     });
+  }
+
+  handleAxiosError(error) {
+    let msg = null;
+
+    if(error.response) {
+      msg = `Response Error: ${error.response.status} ${error.response.statusText}`;
+      console.log(msg);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      msg = `Error: ${error.message}`;
+      console.log(msg);
+    }
+
+    console.log(error.config);
+    return msg;
   }
 
   getCollections(data, fn) {
@@ -120,7 +158,7 @@ class IOServer {
       fn(response.data);
     })
     .catch((error) => {
-      let errorMsg = this.handleError(error);
+      let errorMsg = this.handleAxiosError(error);
       fn({ error: true, message: errorMsg || 'Get Collections Error' });
     });
   }
@@ -135,7 +173,7 @@ class IOServer {
       fn(response.data);
     })
     .catch((error) => {
-      let errorMsg = this.handleError(error);
+      let errorMsg = this.handleAxiosError(error);
       fn({ error: true, message: errorMsg || 'Get Graphs Error' });
     });
   }
@@ -150,7 +188,7 @@ class IOServer {
         fn(result.data);
       })
       .catch((error) => {
-        let errorMsg = this.handleError(error);
+        let errorMsg = this.handleAxiosError(error);
         fn({ error: true, message: errorMsg || 'Get Node Error' });
       });
   }
@@ -181,7 +219,7 @@ class IOServer {
         fn(result.data);
       })
       .catch((error) => {
-        const errorMsg = this.handleError(error);
+        const errorMsg = this.handleAxiosError(error);
         fn({ error: true, message: errorMsg || 'Find Nodes Error' });
       });
   }
@@ -212,7 +250,8 @@ class IOServer {
         });
         fn(results);
       }).catch((error) => {
-        let errorMsg = this.handleError(error);
+        // let errorMsg = this.handleAxiosError(error);
+        console.log(error);
         fn({ error: true, message: errorMsg || 'Traversal Search Error' });
       });
   }
@@ -247,7 +286,7 @@ class IOServer {
       fn(response.data);
     })
     .catch((error) => {
-      const errorMsg = this.handleError(error);
+      const errorMsg = this.handleAxiosError(error);
       fn({ error: true, message: errorMsg || 'Get Monitoring Error' });
     });
   }
@@ -273,62 +312,103 @@ class IOServer {
         fn(response.data);
       })
       .catch((error) => {
-        const errorMsg = this.handleError(error);
+        const errorMsg = this.handleAxiosError(error);
         fn({ error: true, message: errorMsg || 'Get Monitoring Error' });
       });
     });
   }
 
   saveSharedMap(data, fn) {
-    const mapStr = JSON.stringify(data.value);
-    if (this.redis) {
-      const mapKey = crypto.createHash('md5').update(mapStr).digest('hex');
-      this.redis.set(`sharedmap:${mapKey}`, mapStr)
-        .then((result) => {
-          fn(mapKey);
-        })
-        .catch((error) => {
-          // console.log(error);
-          fn({ error: true, message: 'Save Shared Map Error' });
-        });
-    } else {
+    if (!this.redis) {
       fn({ error: true, message: 'Redis Error' });
+      return;
     }
+
+    const mapStr = JSON.stringify(data.value);
+    const mapKey = crypto.createHash('md5').update(mapStr).digest('hex');
+
+    this.redis.set(`sharedmap:${mapKey}`, mapStr)
+      .then((result) => {
+        fn(mapKey);
+      })
+      .catch((error) => {
+        fn({ error: true, message: 'Save Shared Map Error' });
+      });
   }
 
   getSharedMap(data, fn) {
-    if (this.redis) {
-      this.redis.get(`sharedmap:${data.key}`)
+    if (!this.redis) {
+      fn({ error: true, message: 'Redis Error' });
+      return;
+    }
+
+    this.redis.get(`sharedmap:${data.key}`)
+      .then((result) => {
+        if (result === null) {
+          return fn([]);
+        }
+        fn(JSON.parse(result));
+      })
+      .catch((error) => {
+        fn({ error: true, message: 'Get Shared Map Error' });
+      });
+  }
+
+  saveUserMap(data, fn) {
+    if (!this.redis) {
+      fn({ error: true, message: 'Redis Error' });
+      return;
+    }
+
+    const sNodes = data.value;
+    const mapStr = JSON.stringify(sNodes);
+    const mapKey = crypto.createHash('md5').update(mapStr).digest('hex');
+
+    data.userInfo.then(uInfo => {
+      // Redis HASH username:maps, key, value
+      this.redis.hset(`${uInfo.username}:maps`, mapKey, mapStr)
         .then((result) => {
-          if (result === null) {
-            return fn([]);
-          }
+          fn({ key: mapKey, name: sNodes[0].name, content: sNodes });
+        })
+        .catch((error) => {
+          fn({ error: true, message: 'Save User Map Error' });
+        });
+    });
+  }
+
+  getUserMap(data, fn) {
+    if (!this.redis) {
+      fn({ error: true, message: 'Redis Error' });
+      return;
+    }
+
+    data.userInfo.then(uInfo => {
+      this.redis.hget(`${uInfo.username}:maps`, data.key)
+        .then((result) => {
           fn(JSON.parse(result));
         })
         .catch((error) => {
-          // console.log(error);
-          fn({ error: true, message: 'Get Shared Map Error' });
+          fn({ error: true, message: 'Get User Map Error' });
         });
-    } else {
-      fn({ error: true, message: 'Redis Error' });
-    }
+    });
   }
 
-  handleError(error) {
-    let msg = null;
-
-    if(error.response) {
-      msg = `Response Error: ${error.response.status} ${error.response.statusText}`;
-      console.log(msg);
-    } else if (error.request) {
-      console.log(error.request);
-    } else {
-      msg = `Error: ${error.message}`;
-      console.log(msg);
+  listUserMaps(data, fn) {
+    if (!this.redis) {
+      fn({ error: true, message: 'Redis Error' });
+      return;
     }
 
-    console.log(error.config);
-    return msg;
+    data.userInfo.then(uInfo => {
+      this.redis.hgetall(`${uInfo.username}:maps`)
+        .then((result) => {
+          result = _.mapValues(result, v => JSON.parse(v));
+          fn(result);
+        })
+        .catch((error) => {
+          fn({ error: true, message: 'List User Maps Error' });
+        });
+    });
   }
 
 }

@@ -34,5 +34,11 @@ module.exports = {
 
   // OAuth
   oauthLogoutUrl: process.env.OAUTH_LOGOUT_URL,
-  oauthForceAuth: process.env.OAUTH_FORCE === 'true'
+  oauthForceAuth: process.env.OAUTH_FORCE === 'true',
+  clientId: process.env.OAUTH_CLIENT_ID,
+  clientSecret: process.env.OAUTH_CLIENT_SECRET,
+  accessTokenUri: process.env.OAUTH_TOKEN_URL,
+  authorizationUri: process.env.OAUTH_AUTHORIZE_URL,
+  redirectUri: process.env.OAUTH_REDIRECT_URL,
+  oauthUserInfoUrl: process.env.OAUTH_USER_INFO_URL
 };
