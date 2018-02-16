@@ -267,7 +267,7 @@ function mapStateToProps(state) {
     saveUserMapLoading: state.stage.saveUserMapLoading,
     deleteUserMapLoading: state.stage.deleteUserMapLoading,
     currentMainTab: state.tabs.currentMainTab,
-    environ: state.app.environ
+    serverData: state.app.serverData
   };
 }
 

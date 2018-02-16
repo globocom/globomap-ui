@@ -27,9 +27,9 @@ const FETCH_COLLECTIONS = 'fetch_collections';
 const FETCH_COLLECTIONS_SUCCESS = 'fetch_collections_success';
 const FETCH_COLLECTIONS_FAIL = 'fetch_collections_fail';
 
-const GET_ENV = 'get_env';
-const GET_ENV_SUCCESS = 'get_env_success';
-const GET_ENV_FAIL = 'get_env_fail';
+const GET_SERVER_DATA = 'get_server_data';
+const GET_SERVER_DATA_SUCCESS = 'get_server_data_success';
+const GET_SERVER_DATA_FAIL = 'get_server_data_fail';
 
 const TOGGLE_GRAPH = 'toggle_graph';
 const TOGGLE_HASID = 'toggle_hasid';
@@ -42,7 +42,7 @@ const initialState = {
   collectionsByGraphs: {},
   enabledCollections: [],
   selectedCollections: [],
-  environ: '',
+  serverData: {},
   hasId: false,
   modalVisible: false,
   modalContent: null
@@ -80,7 +80,7 @@ export default function reducer(state=initialState, action={}) {
       console.log(action.error);
       return {
         ...state,
-        error: action.error
+        graphs: []
       };
 
     case FETCH_COLLECTIONS:
@@ -97,24 +97,24 @@ export default function reducer(state=initialState, action={}) {
       console.log(action.error);
       return {
         ...state,
-        error: action.error
+        collections: []
       };
 
-    case GET_ENV:
-      console.log('get environ...');
+    case GET_SERVER_DATA:
+      console.log('get server data...');
       return state;
 
-    case GET_ENV_SUCCESS:
+    case GET_SERVER_DATA_SUCCESS:
       return {
         ...state,
-        environ: action.result
+        serverData: action.result
       };
 
-    case GET_ENV_FAIL:
+    case GET_SERVER_DATA_FAIL:
       console.log(action.error);
       return {
         ...state,
-        error: action.error
+        serverData: {}
       };
 
     case TOGGLE_GRAPH:
@@ -179,11 +179,11 @@ export function fetchCollections() {
   };
 }
 
-export function getEnviron() {
+export function getServerData() {
   return {
     type: SOCKET,
-    types: [GET_ENV, GET_ENV_SUCCESS, GET_ENV_FAIL],
-    promise: (socket) => socket.emit('getenviron', {})
+    types: [GET_SERVER_DATA, GET_SERVER_DATA_SUCCESS, GET_SERVER_DATA_FAIL],
+    promise: (socket) => socket.emit('getserverdata', {})
   };
 }
 

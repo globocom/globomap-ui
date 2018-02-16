@@ -102,7 +102,7 @@ class IOServer {
       { event: 'getnode', fn: this.getNode },
       { event: 'findnodes', fn: this.findNodes },
       { event: 'traversalsearch', fn: this.traversalSearch },
-      { event: 'getenviron', fn: this.getEnviron },
+      { event: 'getserverdata', fn: this.getServerData },
 
       // Zabbix
       { event: 'getmonitoring', fn: this.getMonitoring },
@@ -263,8 +263,14 @@ class IOServer {
     return item;
   }
 
-  getEnviron(data, fn) {
-    return fn(config.environment);
+  getServerData(data, fn) {
+    data.userInfo
+      .then(uInfo => {
+        fn({ environ: config.environment, userInfo: uInfo });
+      })
+      .catch(error => {
+        fn({ environ: config.environment, userInfo: {} })
+      });
   }
 
   getMonitoring(data, fn) {

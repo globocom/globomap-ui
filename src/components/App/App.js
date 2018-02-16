@@ -17,7 +17,7 @@ limitations under the License.
 import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchGraphs, fetchCollections, getEnviron,
+import { fetchGraphs, fetchCollections, getServerData,
          toggleHasId } from '../../redux/modules/app';
 import { clearCurrentNode } from '../../redux/modules/nodes';
 import { Header, Modal, SearchContent, Stage,
@@ -42,7 +42,7 @@ class App extends Component {
   componentDidMount() {
     this.props.fetchGraphs();
     this.props.fetchCollections();
-    this.props.getEnviron();
+    this.props.getServerData();
     document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100));
   }
 
@@ -94,6 +94,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { fetchGraphs, fetchCollections, getEnviron,
+  { fetchGraphs, fetchCollections, getServerData,
     clearCurrentNode, toggleHasId }
 )(App);
