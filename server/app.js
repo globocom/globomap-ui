@@ -41,11 +41,7 @@ if (app.get('env') === 'production') {
           redisPort, redisPassword, redisSentinelsPort } = config;
   const RedisStore = require('connect-redis')(session);
 
-  let redisClient = new Redis({
-    host: redisHost,
-    port: redisPort,
-    password: redisPassword
-  });
+  let redisClient;
 
   if (redisSentinelsHosts) {
     redisClient = new Redis({
@@ -57,6 +53,12 @@ if (app.get('env') === 'production') {
           port: redisSentinelsPort
         }
       })
+    });
+  } else {
+    redisClient = new Redis({
+      host: redisHost,
+      port: redisPort,
+      password: redisPassword
     });
   }
 
