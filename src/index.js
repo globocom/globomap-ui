@@ -28,8 +28,7 @@ import SocketClient from './helpers/SocketClient';
 import { App, NotFound } from './components';
 
 export const socketClient = new SocketClient({ connect: true });
-
-const store = createStore(
+export const store = createStore(
   reducer,
   applyMiddleware(
     ReduxThunk,

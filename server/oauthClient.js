@@ -15,13 +15,14 @@ limitations under the License.
 */
 
 const ClientOAuth2 = require('client-oauth2');
+const config = require('./config');
 
 var oauthClient = new ClientOAuth2({
-  clientId: process.env.OAUTH_CLIENT_ID,
-  clientSecret: process.env.OAUTH_CLIENT_SECRET,
-  accessTokenUri: process.env.OAUTH_TOKEN_URL,
-  authorizationUri: process.env.OAUTH_AUTHORIZE_URL,
-  redirectUri: process.env.OAUTH_REDIRECT_URL,
+  clientId: config.clientId,
+  clientSecret: config.clientSecret,
+  accessTokenUri: config.accessTokenUri,
+  authorizationUri: config.authorizationUri,
+  redirectUri: config.redirectUri,
   scopes: []
 });
 
@@ -44,4 +45,4 @@ oauthClient.isAuthenticated = (session, callback) => {
   }
 }
 
-module.exports = oauthClient
+module.exports = oauthClient;

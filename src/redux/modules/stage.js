@@ -32,13 +32,30 @@ const GET_SHARED_MAP = 'get_shared_map';
 const GET_SHARED_MAP_SUCCESS = 'get_shared_map_success';
 const GET_SHARED_MAP_FAIL = 'get_shared_map_fail';
 
+const SAVE_USER_MAP = 'save_user_map';
+const SAVE_USER_MAP_SUCCESS = 'save_user_map_success';
+const SAVE_USER_MAP_FAIL = 'save_user_map_fail';
+
+const GET_USER_MAP = 'get_user_map';
+const GET_USER_MAP_SUCCESS = 'get_user_map_success';
+const GET_USER_MAP_FAIL = 'get_user_map_fail';
+
+const LIST_USER_MAPS = 'list_user_maps';
+const LIST_USER_MAPS_SUCCESS = 'list_user_maps_success';
+const LIST_USER_MAPS_FAIL = 'list_user_maps_fail';
+
 const initialState = {
   stageNodes: [],
+
   latestSharedMapKey: null,
   saveSharedLoading: false,
-  saveSharedLoaded: false,
   getSharedLoading: false,
-  getSharedLoaded: false
+
+  userMaps: [],
+  latestUserMapKey: null,
+  saveUserMapLoading: false,
+  getUserMapLoading: false,
+  listUserMapsLoading: false
 }
 
 export default function reducer(state=initialState, action={}) {
@@ -110,14 +127,13 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         saveSharedLoading: true,
-        saveSharedLoaded: false,
+        latestSharedMapKey: null
       }
 
     case SAVE_SHARED_MAP_SUCCESS:
       return {
         ...state,
         saveSharedLoading: false,
-        saveSharedLoaded: true,
         latestSharedMapKey: action.result
       }
 
@@ -125,22 +141,19 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         saveSharedLoading: false,
-        saveSharedLoaded: false,
         latestSharedMapKey: null
       }
 
     case GET_SHARED_MAP:
       return {
         ...state,
-        getSharedLoading: true,
-        getSharedLoaded: false
+        getSharedLoading: true
       }
 
     case GET_SHARED_MAP_SUCCESS:
       return {
         ...state,
         getSharedLoading: false,
-        getSharedLoaded: true,
         stageNodes: action.result
       }
 
@@ -148,8 +161,88 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         getSharedLoading: false,
-        getSharedLoaded: false,
         stageNodes: []
+      }
+
+    case SAVE_USER_MAP:
+      console.log('save user map...');
+      return {
+        ...state,
+        saveUserMapLoading: true,
+        latestUserMapKey: null
+      }
+
+    case SAVE_USER_MAP_SUCCESS:
+      const newMap = action.result;
+      let uMaps = state.userMaps,
+          hasKey = false;
+
+      for (let i=0, l=uMaps.length; i<l; i++) {
+        if (uMaps[i].key === newMap.key) {
+          hasKey = true;
+        }
+      }
+
+      return {
+        ...state,
+        saveUserMapLoading: false,
+        latestUserMapKey: newMap.key,
+        userMaps: hasKey ? [...uMaps] : [...uMaps, newMap]
+      }
+
+    case SAVE_USER_MAP_FAIL:
+      return {
+        ...state,
+        saveUserMapLoading: false,
+        latestUserMapKey: null
+      }
+
+    case GET_USER_MAP:
+      return {
+        ...state,
+        getUserMapLoading: true,
+        stageNodes: []
+      }
+
+    case GET_USER_MAP_SUCCESS:
+      return {
+        ...state,
+        getUserMapLoading: false,
+        stageNodes: action.result
+      }
+
+    case GET_USER_MAP_FAIL:
+      return {
+        ...state,
+        getUserMapLoading: false,
+        stageNodes: []
+      }
+
+    case LIST_USER_MAPS:
+      console.log('list user maps...');
+      return {
+        ...state,
+        listUserMapsLoading: true,
+        userMaps: []
+      }
+
+    case LIST_USER_MAPS_SUCCESS:
+      const items = action.result;
+      const newItems = Object.keys(items).map((k) => {
+        return { key: k, name: items[k][0]["name"], content: items[k] };
+      });
+
+      return {
+        ...state,
+        listUserMapsLoading: false,
+        userMaps: newItems
+      }
+
+    case LIST_USER_MAPS_FAIL:
+      return {
+        ...state,
+        listUserMapsLoading: false,
+        userMaps: []
       }
 
     default:
@@ -213,6 +306,36 @@ export function getSharedMap(key) {
     type: SOCKET,
     types: [GET_SHARED_MAP, GET_SHARED_MAP_SUCCESS, GET_SHARED_MAP_FAIL],
     promise: (socket) => socket.emit('getsharedmap', { key: key })
+  };
+}
+
+// export function saveUserMapAndUpdateList(stageNodes) {
+//   return (dispatch, getState) => {
+//     socketClient.emit('user:savemap', { value: stageNodes })
+//   }
+// }
+
+export function saveUserMap(stageNodes) {
+  return {
+    type: SOCKET,
+    types: [SAVE_USER_MAP, SAVE_USER_MAP_SUCCESS, SAVE_USER_MAP_FAIL],
+    promise: (socket) => socket.emit('user:savemap', { value: stageNodes })
+  };
+}
+
+export function getUserMap(key) {
+  return {
+    type: SOCKET,
+    types: [GET_USER_MAP, GET_USER_MAP_SUCCESS, GET_USER_MAP_FAIL],
+    promise: (socket) => socket.emit('user:getmap', { key: key })
+  };
+}
+
+export function listUserMaps() {
+  return {
+    type: SOCKET,
+    types: [LIST_USER_MAPS, LIST_USER_MAPS_SUCCESS, LIST_USER_MAPS_FAIL],
+    promise: (socket) => socket.emit('user:listmaps', {})
   };
 }
 

@@ -59,49 +59,6 @@ limitations under the License.
   cursor: default;
 }
 
-.content-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.content-list .content-item {
-  position: relative;
-  color: #666;
-  padding: 8px 40px 8px 10px;
-}
-
-.content-list .content-item:hover {
-  cursor: pointer;
-  color: #333;
-  background-color: rgba(56, 114, 210, 0.1);
-}
-
-.content-list .content-item .remove-btn {
-  display: none;
-  position: absolute;
-  top: 9px;
-  right: 7px;
-  border: 0;
-  background-color: transparent;
-  font-size: 12px;
-  color: #999;
-  margin-left: 5px;
-}
-
-.content-list .content-item .remove-btn:hover {
-  cursor: pointer;
-  color: #333;
-}
-
-.content-list .content-item:hover .remove-btn {
-  display: block;
-}
-
-.content-list .content-title {
-  font-size: 12px;
-}
-
 /* Tabs */
 .tools-tabs {
   /*padding: 5px 0 0;*/
@@ -161,35 +118,57 @@ limitations under the License.
   min-width: 100px;
   border-radius: 4px;
   text-align: left;
-  background-color: #d2d2d2;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  background-color: #fafafa;
+  /*box-shadow: 0 1px 2px rgba(0,0,0,0.2);*/
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.25);
   z-index: 10;
   cursor: default;
   /*right: 30%;*/
   overflow: hidden;
 }
 
-.tools .saved .saved-content {
-  background-color: white;
+.saved .content-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.tools .saved .saved-head {
+.saved .content-list .content-item,
+.saved .content-list .no-content-item {
   position: relative;
-  text-align: left;
-  font-size: 14px;
-  padding: 10px;
+  color: #666;
+  padding: 10px 45px 10px 20px;
+  font-size: 12px;
 }
 
-.tools .saved .saved-head .close-btn {
+.saved .content-list .content-item:hover {
+  cursor: pointer;
+  color: #333;
+  background-color: rgba(56, 114, 210, 0.1);
+}
+
+.saved .content-list .content-item .remove-btn {
+  display: none;
   position: absolute;
-  top: 8px;
-  right: 6px;
+  top: 9px;
+  right: 7px;
   border: 0;
   background-color: transparent;
-  font-size: 14px;
-  color: #aaa;
+  font-size: 12px;
+  color: #999;
+  margin-left: 5px;
 }
 
-.tools .saved .saved-head .close-btn:hover {
+.saved .content-list .content-item .remove-btn:hover {
+  cursor: pointer;
   color: #333;
+}
+
+.saved .content-list .content-item:hover .remove-btn {
+  display: block;
+}
+
+.saved .content-list .no-content-item {
+  font-weight: bold;
+  text-align: center;
 }

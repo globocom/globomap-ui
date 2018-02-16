@@ -34,6 +34,7 @@ class SubNodes extends Component {
         next = nextProps.currentNode;
 
     if (!current || !next) {
+      console.log(current, next);
       return;
     }
 

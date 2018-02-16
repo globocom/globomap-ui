@@ -17,10 +17,9 @@ limitations under the License.
 import Clipboard from 'clipboard';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { cleanStageNodes,
-         setStageNodes,
-         saveSharedMap,
-         getSharedMap } from '../../redux/modules/stage';
+import { Link } from 'react-router-dom';
+import { saveSharedMap, getSharedMap, saveUserMap,
+         getUserMap, listUserMaps } from '../../redux/modules/stage';
 import { setMainTab } from '../../redux/modules/tabs';
 import { NodeItem } from '../';
 import { Loading } from '../';
@@ -69,7 +68,7 @@ class Stage extends Component {
   }
 
   saveMap() {
-    console.log('Save user map...');
+    this.props.saveUserMap(this.props.stageNodes);
     return;
   }
 
@@ -136,11 +135,15 @@ class Stage extends Component {
     return (
       <div className={`stage${this.state.fullScreen ? ' full' : ''}`}>
         <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
-          {/*<button className="btn btn-save-map"
-                  onClick={this.saveMap}
+          <button className="btn btn-save-map" onClick={this.saveMap}
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
-          </button>*/}
+          </button>
+
+          {/*this.state.fullScreen &&
+            <Link to="/" className="btn btn-go-home" onClick={this.toggleFullScreen}>
+              <i className="fa fa-arrow-left"></i>
+            </Link>*/}
 
           <button className="btn btn-share-map" onClick={this.shareMap}
                   disabled={!rootNodeHasItens}>
@@ -167,29 +170,24 @@ class Stage extends Component {
         <div className="stage-container">
           {this.renderNodes(this.props.stageNodes)}
         </div>
-        <Loading isLoading={this.props.getSharedLoading} iconSize="big" />
+        <Loading iconSize="big"
+                 isLoading={this.props.getSharedLoading
+                            || this.props.saveUserMapLoading
+                            || this.props.getUserMapLoading} />
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  const { stageNodes, getSharedLoading, getSharedLoaded,
-          saveSharedLoading, saveSharedLoaded, latestSharedMapKey } = state.stage;
-
   return {
     currentNode: state.nodes.currentNode,
-    stageNodes,
-    getSharedLoading,
-    getSharedLoaded,
-    saveSharedLoading,
-    saveSharedLoaded,
-    latestSharedMapKey
+    ...state.stage
   };
 }
 
 export default connect(
   mapStateToProps,
-  { cleanStageNodes, setStageNodes, setMainTab,
-    saveSharedMap, getSharedMap }
+  { setMainTab, saveSharedMap, getSharedMap,
+    saveUserMap, getUserMap, listUserMaps }
 )(Stage);
