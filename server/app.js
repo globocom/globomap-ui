@@ -37,36 +37,33 @@ let sessionConfig = {
 };
 
 if (app.get('env') === 'production') {
-  const { redisSentinelsService, redisSentinelsHosts, redisHost,
-          redisPort, redisPassword, redisSentinelsPort } = config;
   const RedisStore = require('connect-redis')(session);
-
   let redisClient;
 
-  if (redisSentinelsHosts) {
+  if (config.redisAuthSentinelsHosts) {
     redisClient = new Redis({
-      name: redisSentinelsService,
-      password: redisPassword,
-      sentinels: redisSentinelsHosts.map((sentinelHost) => {
+      name: config.redisAuthSentinelsService,
+      password: config.redisAuthPassword,
+      sentinels: config.redisAuthSentinelsHosts.map((sentHost) => {
         return {
-          host: sentinelHost,
-          port: redisSentinelsPort
+          host: sentHost,
+          port: config.redisAuthSentinelsPort
         }
       })
     });
   } else {
     redisClient = new Redis({
-      host: redisHost,
-      port: redisPort,
-      password: redisPassword
+      host: config.redisAuthHost,
+      port: config.redisAuthPort,
+      password: config.redisAuthPassword
     });
   }
 
   sessionConfig.store = new RedisStore({
     client: redisClient,
-    host: redisHost,
-    port: redisPort,
-    pass: redisPassword
+    host: config.redisAuthHost,
+    port: config.redisAuthPort,
+    pass: config.redisAuthPassword
   });
 } else {
   app.set('disable-auth', !config.oauthForceAuth);
