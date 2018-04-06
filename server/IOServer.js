@@ -32,13 +32,21 @@ const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servido
 const pageSize = process.env.PAGE_SIZE || 20;
 
 function getUserInfo(session) {
-  const token = session.tokenData.access_token;
   const url = config.oauthUserInfoUrl;
 
   return new Promise((resolve, reject) => {
+    const token = null;
+
+    if (session.tokenData !== undefined) {
+      token = session.tokenData.access_token;
+    } else {
+      reject(null);
+    }
+
     if (!url) {
       reject(null);
     }
+
     axios.get(url, { headers: { 'Authorization': `Bearer ${token}` } })
       .then(response => resolve(response.data))
       .catch(error => reject(error));
