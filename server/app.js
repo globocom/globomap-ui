@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+const http = require('http')
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
@@ -23,6 +24,10 @@ const project = require('../package.json');
 const config = require('./config');
 
 const app = express();
+
+// views setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 let sessionConfig = {
   cookie: {
@@ -90,8 +95,31 @@ const isAuthenticated = (req, res, next) => {
   }
 }
 
-app.get(['/', '/map/:mapId'], isAuthenticated, (req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
+app.get('/report', (req, res) => {
+  return res.render('report');
+});
+
+app.get('/report/:q/:v', (req, res) => {
+  const v = req.param('v');
+  const url = `http://api-globomap-dev.gcloud.dev.globoi.com/v1/queries/${req.param('q')}/execute?variable=${v}`;
+
+  let request = http.get(url, function(response) {
+    console.log('STATUS: ' + response.statusCode);
+    console.log('HEADERS: ' + JSON.stringify(response.headers));
+
+    let bodyChunks = [];
+    response.on('data', function(chunk) {
+      bodyChunks.push(chunk);
+    }).on('end', function() {
+      const body = bodyChunks.join('');
+      console.log('BODY: ' + body);
+      res.status(200).json(body);
+    })
+  });
+
+  request.on('error', function(e) {
+    console.log('ERROR: ' + e.message);
+  });
 });
 
 app.get('/healthcheck', (req, res) => {
@@ -127,6 +155,10 @@ app.get('/logout', (req, res) => {
   redirectUri = req.protocol + "://" + req.get('Host');
   req.session = null;
   res.redirect(config.oauthLogoutUrl + '?redirect_uri=' + redirectUri);
+});
+
+app.get(['/', '/map/:mapId'], isAuthenticated, (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });
 
 app.use(express.static(path.resolve(__dirname, '..', 'build')));

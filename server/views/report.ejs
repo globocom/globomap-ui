@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Globomap Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+    <style>
+    </style>
+  </head>
+  <body>
+    <section class="hero is-primary">
+
+      <div class="hero-body">
+        <div class="container">
+
+          <div class="columns is-vcentered">
+            <div class="column">
+              <p class="title">
+                Globomap Report
+              </p>
+              <p class="subtitle">
+                Encontre o que est&aacute; <strong>impactando</strong> o seu servi&ccedil;o
+              </p>
+            </div>
+            <div class="column is-narrow"></div>
+
+            <div class="column">
+              <div class="field is-grouped">
+                <div class="control has-icons-left is-expanded">
+                  <input id="search-v" class="input is-medium is-rounded" type="text" placeholder="" value="comp_unit/globomap_cmah18mp01lc15" />
+                  <span class="icon is-medium is-left">
+                    <i class="fas fa-search"></i>
+                  </span>
+                </div>
+                <a id="search-btn" class="button is-medium is-rounded">Search</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="content" id="data-content"></div>
+      </div>
+    </section>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script>
+function buildTable(a) {
+  a = $.parseJSON(a);
+  JSON.stringify(a, void 0, 2);
+  var e = document.createElement("table"),
+    d, b;
+  if (isArray(a)) return buildArray(a);
+  for (var c in a) "object" != typeof a[c] || isArray(a[c]) ? "object" == typeof a[c] && isArray(a[c]) ? (d = e.insertRow(-1), b = d.insertCell(-1), b.colSpan = 2, b.innerHTML = '<div class="td_head">' + encodeText(c) + '</div><table class="table is-bordered">' + $(buildArray(a[c]), !1).html() + "</table>") : (d = e.insertRow(-1), b = d.insertCell(-1), b.innerHTML = "<div class='td_head'>" + encodeText(c) + "</div>", d = d.insertCell(-1), d.innerHTML = "<div class='td_row_even'>" +
+    encodeText(a[c]) + "</div>") : (d = e.insertRow(-1), b = d.insertCell(-1), b.colSpan = 2, b.innerHTML = '<div class="td_head">' + encodeText(c) + '</div><table class="table is-bordered">' + $(buildTable(a[c]), !1).html() + "</table>");
+  return e
+}
+
+function buildArray(a) {
+  var e = document.createElement("table"),
+    d, b, c = !1,
+    p = !1,
+    m = {},
+    h = -1,
+    n = 0,
+    l;
+  l = "";
+  if (0 == a.length) return "<div></div>";
+  d = e.insertRow(-1);
+  for (var f = 0; f < a.length; f++)
+    if ("object" != typeof a[f] || isArray(a[f])) "object" == typeof a[f] && isArray(a[f]) ? (b = d.insertCell(h), b.colSpan = 2, b.innerHTML = '<div class="td_head"></div><table class="table is-bordered">' + $(buildArray(a[f]), !1).html() + "</table>", c = !0) : p || (h += 1, p = !0, b = d.insertCell(h), m.empty = h, b.innerHTML = "<div class='td_head'>&nbsp;</div>");
+    else
+      for (var k in a[f]) l =
+        "-" + k, l in m || (c = !0, h += 1, b = d.insertCell(h), m[l] = h, b.innerHTML = "<div class='td_head'>" + encodeText(k) + "</div>");
+  c || e.deleteRow(0);
+  n = h + 1;
+  for (f = 0; f < a.length; f++)
+    if (d = e.insertRow(-1), td_class = isEven(f) ? "td_row_even" : "td_row_odd", "object" != typeof a[f] || isArray(a[f]))
+      if ("object" == typeof a[f] && isArray(a[f]))
+        for (h = m.empty, c = 0; c < n; c++) b = d.insertCell(c), b.className = td_class, l = c == h ? '<table class="table">' + $(buildArray(a[f]), !1).html() + "</table>" : " ", b.innerHTML = "<div class='" + td_class + "'>" + encodeText(l) +
+          "</div>";
+      else
+        for (h = m.empty, c = 0; c < n; c++) b = d.insertCell(c), l = c == h ? a[f] : " ", b.className = td_class, b.innerHTML = "<div class='" + td_class + "'>" + encodeText(l) + "</div>";
+  else {
+    for (c = 0; c < n; c++) b = d.insertCell(c), b.className = td_class, b.innerHTML = "<div class='" + td_class + "'>&nbsp;</div>";
+    for (k in a[f]) c = a[f], l = "-" + k, h = m[l], b = d.cells[h], b.className = td_class, "object" != typeof c[k] || isArray(c[k]) ? "object" == typeof c[k] && isArray(c[k]) ? b.innerHTML = '<table class="table is-bordered">' + $(buildArray(c[k]), !1).html() + "</table>" : b.innerHTML =
+      "<div class='" + td_class + "'>" + encodeText(c[k]) + "</div>" : b.innerHTML = '<table class="table">' + $(buildTable(c[k]), !1).html() + "</table>"
+  }
+  return e
+}
+
+function encodeText(a) {
+  return $("<div />").text(a).html()
+}
+
+function isArray(a) {
+  return "[object Array]" === Object.prototype.toString.call(a)
+}
+
+function isEven(a) {
+  return 0 == a % 2
+}
+
+// function fillContent(data) {
+//   let html = [];
+//   for (let i=0,j=data.length; i<j; ++i) {
+//     let item = data[i];
+
+//     html.push(`<h3>${item.name}</h3>`);
+//     html.push(`<table class="table is-hoverable is-fullwidth"><thead><tr><th>Path</th><th>Servers</th></tr></thead><tbody>`);
+
+//     for (let k=0,w=item.ports.length; k<w; ++k) {
+//       let port = item.ports[k];
+//       html.push(`<tr><td>${port.path}</td><td>${port.servers.join(', ')}</td></tr>`);
+//     }
+
+//     html.push('</tbody></table>');
+//   }
+
+//   $('#data-content').html(html.join(''));
+// }
+
+function fetchData(q, v) {
+  const url = `/report/${q}/${encodeURIComponent(v)}`;
+  $('#search-btn').addClass('is-loading');
+
+  console.log(url);
+
+  $.ajax({ url: url })
+    .done(function(data) {
+      // fillContent(data);
+      console.log(data)
+
+      $('#data-content').html(buildTable(data));
+      $('#search-btn').removeClass('is-loading');
+    })
+    .fail(function() {
+      $('#search-btn').removeClass('is-loading');
+    });
+}
+
+$('#search-btn').on('click', function() {
+  fetchData('query_teste', $('#search-v').val());
+});
+
+$('#search-v').on('keyup', function(e) {
+  if (e.key === 'Enter') {
+    fetchData('query_teste', $('#search-v').val());
+  }
+});
+</script>
+
+  </body>
+</html>
