@@ -6,9 +6,6 @@
     <title>Globomap Report</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-
-    <style>
-    </style>
   </head>
   <body>
     <section class="hero is-primary">
@@ -27,15 +24,25 @@
             </div>
             <div class="column is-narrow"></div>
 
-            <div class="column">
+            <div class="column is-three-fifths">
+
               <div class="field is-grouped">
+                <div class="select is-rounded is-left">
+                  <select id="select-q">
+                    <option value="query_vip_vip">Vip Acesso Vip</option>
+                    <option value="query_teste">Componentes no Host</option>
+                    <option value="query_host_vips">Vips de um Host</option>
+                    <option value="query_real_by_vip">Reals no Vip</option>
+                  </select>
+                </div>
+
                 <div class="control has-icons-left is-expanded">
-                  <input id="search-v" class="input is-medium is-rounded" type="text" placeholder="" value="comp_unit/globomap_cmah18mp01lc15" />
-                  <span class="icon is-medium is-left">
+                  <input id="search-v" class="input is-rounded" type="text" placeholder="" value="<%= query.v %>" />
+                  <span class="icon is-left">
                     <i class="fas fa-search"></i>
                   </span>
                 </div>
-                <a id="search-btn" class="button is-medium is-rounded">Search</a>
+                <a id="search-btn" class="button is-rounded">Search</a>
               </div>
             </div>
           </div>
@@ -151,14 +158,22 @@ function fetchData(q, v) {
 }
 
 $('#search-btn').on('click', function() {
-  fetchData('query_teste', $('#search-v').val());
+  fetchData($('#select-q').val(), $('#search-v').val());
 });
 
 $('#search-v').on('keyup', function(e) {
   if (e.key === 'Enter') {
-    fetchData('query_teste', $('#search-v').val());
+    fetchData($('#select-q').val(), $('#search-v').val());
   }
 });
+
+$('#select-q').on('change', function() {
+  console.log($(this).val());
+});
+
+<% if (query && query.q !== '' && query.v !== '') { %>
+fetchData('<%= query.q %>', '<%= query.v %>');
+<% } %>
 </script>
 
   </body>
