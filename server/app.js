@@ -96,7 +96,7 @@ const isAuthenticated = (req, res, next) => {
 }
 
 app.get('/report', (req, res) => {
-  return res.render('report');
+  return res.render('report', { query : req.query });
 });
 
 app.get('/report/:q/:v', (req, res) => {
@@ -152,7 +152,7 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-  redirectUri = req.protocol + "://" + req.get('Host');
+  const redirectUri = req.protocol + "://" + req.get('Host');
   req.session = null;
   res.redirect(config.oauthLogoutUrl + '?redirect_uri=' + redirectUri);
 });
