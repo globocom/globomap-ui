@@ -21,7 +21,8 @@ const https = require('https');
 const _ = require('lodash');
 const axios = require('axios');
 const Redis = require('ioredis');
-const ioSession = require("express-socket.io-session");
+const ioSession = require('express-socket.io-session');
+const GmapClient = require('globomap-api-jsclient');
 
 const config = require('./config');
 const app = require('./app').app;
@@ -55,12 +56,14 @@ function getUserInfo(session) {
 
 class IOServer {
   constructor(io) {
-    https.globalAgent.options.ca = fs.readFileSync(config.certificates);
-
     if(io === undefined) {
       return;
     }
 
+    // SSL
+    https.globalAgent.options.ca = fs.readFileSync(config.certificates);
+
+    // Authentication
     this.redis = null;
     if (config.redisSentinelsHosts) {
       this.redis = new Redis({
@@ -102,6 +105,13 @@ class IOServer {
       } else {
         next(new Error('Authentication error'));
       }
+    });
+
+    // Globomap client
+    this.gmapclient = new GmapClient({
+      username: config.globomapApiUsername,
+      password: config.globomapApiPassword,
+      apiUrl: config.globomapApiUrl
     });
 
     const eventList = [
@@ -157,52 +167,41 @@ class IOServer {
   }
 
   getCollections(data, fn) {
-    const url = `${config.globomapApiUrl}/collections`;
-
-    axios.get(url, {
-      responseType: 'json'
-    })
-    .then((response) => {
-      fn(response.data);
-    })
-    .catch((error) => {
-      let errorMsg = this.handleAxiosError(error);
-      fn({ error: true, message: errorMsg || 'Get Collections Error' });
-    });
+    this.gmapclient.listCollections()
+      .then((data) => {
+        fn(data);
+      })
+      .catch((error) => {
+        fn({ error: true, message: 'Get Collections Error' });
+      });
   }
 
   getGraphs(data, fn) {
-    const url = `${config.globomapApiUrl}/graphs`;
-
-    axios.get(url, {
-      responseType: 'json'
-    })
-    .then((response) => {
-      fn(response.data);
-    })
-    .catch((error) => {
-      let errorMsg = this.handleAxiosError(error);
-      fn({ error: true, message: errorMsg || 'Get Graphs Error' });
-    });
+    this.gmapclient.listGraphs()
+      .then((data) => {
+        fn(data);
+      })
+      .catch((error) => {
+        fn({ error: true, message: 'Get Graphs Error' });
+      });
   }
 
   getNode(data, fn) {
-    const { collection, id } = data;
-    const url = `${config.globomapApiUrl}/collections/${collection}/${id}`;
-
-    axios.get(url)
+    this.gmapclient.getNone({
+        collection: data.collection,
+        nodeId: data.id
+      })
       .then((result) => {
         this.updateItemInfo(result.data);
         fn(result.data);
       })
       .catch((error) => {
-        let errorMsg = this.handleAxiosError(error);
-        fn({ error: true, message: errorMsg || 'Get Node Error' });
+        fn({ error: true, message: 'Get Node Error' });
       });
   }
 
-  findNodes(options, fn) {
-    const { query, queryProps, collections, per_page, page } = options;
+  findNodes(data, fn) {
+    const { query, queryProps, collections, per_page, page } = data;
     const co = collections.toString();
 
     let q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}],` +
@@ -216,51 +215,48 @@ class IOServer {
       q = `[[${byProps.join(',')}]]`;
     }
 
-    const url = `${config.globomapApiUrl}/collections/search/?collections=${co}&` +
-                `query=${q}&per_page=${per_page || pageSize}&page=${page}`;
-
-    axios.get(url)
-      .then((result) => {
-        result.data.documents.filter((doc) => {
+    this.gmapclient.search({
+        collections: co,
+        query: q,
+        perPage: per_page || pageSize,
+        page: page
+      })
+      .then((data) => {
+        data.documents.filter((doc) => {
           this.updateItemInfo(doc);
         });
-        fn(result.data);
+        fn(data);
       })
       .catch((error) => {
-        const errorMsg = this.handleAxiosError(error);
-        fn({ error: true, message: errorMsg || 'Find Nodes Error' });
+        console.log(error);
+        fn({ error: true, message: 'Find Nodes Error' });
       });
   }
 
   traversalSearch(data, fn) {
     const { node, graphs, depth } = data;
-    let urlPromisseList = [];
 
-    for(let i=0, l=graphs.length; i<l; ++i) {
-      const url = `${config.globomapApiUrl}/graphs/${graphs[i]}/traversal?start_vertex=${node._id}&max_depth=${depth}&direction=any`;
-      urlPromisseList.push(axios.get(url));
-    }
-
-    axios.all(urlPromisseList)
+    this.gmapclient.traversal({
+        graphs: graphs,
+        startVertex: node._id,
+        maxDepth: depth,
+        direction: 'any'
+      })
       .then((results) => {
         results = results.map((resp) => {
           let data = { graph: resp.data.graph };
-
           data.edges = resp.data.edges.map((edge) => {
             return this.updateItemInfo(edge);
           });
-
           data.nodes = resp.data.nodes.map((node) => {
             return this.updateItemInfo(node);
           });
-
           return data;
         });
         fn(results);
-      }).catch((error) => {
-        // let errorMsg = this.handleAxiosError(error);
-        console.log(error);
-        fn({ error: true, message: errorMsg || 'Traversal Search Error' });
+      })
+      .catch((error) => {
+        fn({ error: true, message: 'Traversal Search Error' });
       });
   }
 
@@ -289,45 +285,36 @@ class IOServer {
       return fn([]);
     }
 
-    const ips = Array.from(data.properties['ips'] || '');
-    const url = `${config.globomapApiUrl}/plugin_data/zabbix?ips=` + ips.join();
-
-    axios.get(url, {
-      responseType: 'json',
-      timeout: 20000
-    })
-    .then((response) => {
-      fn(response.data);
-    })
-    .catch((error) => {
-      const errorMsg = this.handleAxiosError(error);
-      fn({ error: true, message: errorMsg || 'Get Monitoring Error' });
-    });
+    this.gmapclient.pluginData('zabbix', {
+        ips: Array.from(data.properties['ips'] || '')
+      })
+      .then((data) => {
+        fn(data);
+      })
+      .catch((error) => {
+        fn({ error: true, message: 'Get Monitoring Error' });
+      });
   }
 
   getZabbixGraph(data, fn) {
-    const { graphId } = data;
-    const url = `${config.globomapApiUrl}/plugin_data/zabbix/?encoded=1&graphid=` + graphId;
-
-    axios.get(url, {
-      responseType: 'json',
-      timeout: 1000
+    this.gmapclient.pluginData('zabbix', {
+      encoded: 1,
+      graphid: data.graphId
     })
-    .then((response) => {
-      fn(response.data);
+    .then((data) => {
+      fn(data);
     })
     .catch((error) => {
       // retry
-      axios.get(url, {
-        responseType: 'json',
-        timeout: 1000
+      this.gmapclient.pluginData('zabbix', {
+        encoded: 1,
+        graphid: data.graphId
       })
-      .then((response) => {
-        fn(response.data);
+      .then((data) => {
+        fn(data);
       })
       .catch((error) => {
-        const errorMsg = this.handleAxiosError(error);
-        fn({ error: true, message: errorMsg || 'Get Monitoring Error' });
+        fn({ error: true, message: 'Get Zabbix Graph Error' });
       });
     });
   }

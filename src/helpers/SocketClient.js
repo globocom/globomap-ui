@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import io from 'socket.io-client';
-import config from '../config';
+import { host, socketPath } from '../config';
 
 export default class socketAPI {
 
@@ -33,7 +33,7 @@ export default class socketAPI {
   }
 
   connect() {
-    this.socket = io.connect(config.host, { path: config.socketPath });
+    this.socket = io.connect(host, { path: socketPath });
     return new Promise((resolve, reject) => {
       this.socket.on('connect', () => resolve());
       this.socket.on('error', (error) => reject(error));

@@ -17,7 +17,6 @@ limitations under the License.
 import Clipboard from 'clipboard';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { saveSharedMap, getSharedMap, saveUserMap,
          getUserMap, listUserMaps } from '../../redux/modules/stage';
 import { setMainTab } from '../../redux/modules/tabs';
@@ -139,11 +138,6 @@ class Stage extends Component {
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
-
-          {/*this.state.fullScreen &&
-            <Link to="/" className="btn btn-go-home" onClick={this.toggleFullScreen}>
-              <i className="fa fa-arrow-left"></i>
-            </Link>*/}
 
           <button className="btn btn-share-map" onClick={this.shareMap}
                   disabled={!rootNodeHasItens}>
