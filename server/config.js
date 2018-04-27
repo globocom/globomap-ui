@@ -21,6 +21,8 @@ module.exports = {
 
   // API
   globomapApiUrl: process.env.GLOBOMAP_API_URL || 'http://localhost:5000/v1',
+  globomapApiUsername: process.env.GLOBOMAP_API_USERNAME || 'u_globomap_ui',
+  globomapApiPassword: process.env.GLOBOMAP_API_PASSWORD || 'u_globomap_ui',
 
   // Redis
   redisHost: process.env.REDIS_HOST || 'localhost',

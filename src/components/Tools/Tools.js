@@ -23,7 +23,7 @@ import { setStageNodes, getUserMap,
 import { clearCurrentNode, resetSubNodes } from '../../redux/modules/nodes';
 import { setMainTab } from '../../redux/modules/tabs';
 import { Loading } from '../';
-import { traverseItems, sortByName } from '../../utils';
+import { sortByName } from '../../utils';
 import './Tools.css';
 
 class Tools extends React.Component {
