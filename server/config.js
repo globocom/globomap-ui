@@ -20,7 +20,7 @@ module.exports = {
   certificates: process.env.CERTIFICATES || `${process.cwd()}/server/ca-certificates.crt`,
 
   // API
-  globomapApiUrl: process.env.GLOBOMAP_API_URL || 'http://localhost:5000/v1',
+  globomapApiUrl: process.env.GLOBOMAP_API_URL,
   globomapApiUsername: process.env.GLOBOMAP_API_USERNAME,
   globomapApiPassword: process.env.GLOBOMAP_API_PASSWORD,
 
