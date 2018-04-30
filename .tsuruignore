@@ -1,0 +1,11 @@
+.DS_Store
+.git
+.gitignore
+.travis.yml
+.vscode
+coverage
+node_modules
+src
+TODO
+LICENSE
+README.md
