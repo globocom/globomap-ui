@@ -1,4 +1,6 @@
 .DS_Store
+.editorconfig
+.eslintrc.json
 .git
 .gitignore
 .travis.yml
