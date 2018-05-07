@@ -134,10 +134,13 @@ class Stage extends Component {
     return (
       <div className={`stage${this.state.fullScreen ? ' full' : ''}`}>
         <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
+
+          {/*
           <button className="btn btn-save-map" onClick={this.saveMap}
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
+          */}
 
           <button className="btn btn-share-map" onClick={this.shareMap}
                   disabled={!rootNodeHasItens}>
