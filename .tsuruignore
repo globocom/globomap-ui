@@ -3,6 +3,7 @@
 .eslintrc.json
 .git
 .gitignore
+.jshintrc
 .travis.yml
 .vscode
 coverage
