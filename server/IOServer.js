@@ -187,6 +187,8 @@ class IOServer {
   }
 
   getNode(data, fn) {
+    console.log(data.id);
+
     this.gmapclient.getNone({
         collection: data.collection,
         nodeId: data.id
@@ -236,7 +238,7 @@ class IOServer {
   traversalSearch(data, fn) {
     const { node, graphs, depth } = data;
 
-    this.gmapclient.traversal({
+    this.gmapclient.traversalMultiple({
         graphs: graphs,
         startVertex: node._id,
         maxDepth: depth,
