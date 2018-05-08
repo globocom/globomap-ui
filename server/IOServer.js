@@ -36,7 +36,7 @@ function getUserInfo(session) {
   const url = config.oauthUserInfoUrl;
 
   return new Promise((resolve, reject) => {
-    const token = null;
+    let token = null;
 
     if (session.tokenData !== undefined) {
       token = session.tokenData.access_token;
@@ -187,8 +187,6 @@ class IOServer {
   }
 
   getNode(data, fn) {
-    console.log(data.id);
-
     this.gmapclient.getNone({
         collection: data.collection,
         nodeId: data.id
