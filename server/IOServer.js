@@ -21,7 +21,7 @@ const https = require('https');
 const _ = require('lodash');
 const axios = require('axios');
 const Redis = require('ioredis');
-const ioSession = require('express-socket.io-session');
+// const ioSession = require('express-socket.io-session');
 const GmapClient = require('globomap-api-jsclient');
 
 const config = require('./config');
