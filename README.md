@@ -14,7 +14,9 @@ To run the UI, first you need a Globo Map API endpoint running. See [Globo Map A
 
 ```shell
 # Set API environment variable
-export GLOBOMAP_API_URL=<api_endpoint>/v1
+export GLOBOMAP_API_URL=<api_endpoint>/v2
+export GLOBOMAP_API_USERNAME=<username>
+export GLOBOMAP_API_PASSWORD=<password>
 
 # Install dependencies, build a deployable version, run
 npm install
