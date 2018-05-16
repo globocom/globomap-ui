@@ -1,0 +1,24 @@
+version: '3'
+services:
+
+    ui:
+        container_name: globomap_ui
+        build:
+            context: ./
+            dockerfile: scripts/docker/Dockerfile
+        ports:
+            - "8888:8888"
+        env_file:
+            - scripts/docker/globomap_ui.env
+        volumes:
+            - .:/app
+        command: node server
+        networks:
+            - globomapapi_globomap_net
+        external_links:
+            - globomap_api:globomap_api
+            - globomap_redis:globomap_redis
+
+networks:
+    globomapapi_globomap_net:
+        external: true
