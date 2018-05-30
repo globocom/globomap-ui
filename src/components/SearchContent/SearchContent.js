@@ -50,7 +50,7 @@ class SearchContent extends Component {
           <tr key={node._id} className={current ? 'current' : ''}
               onClick={(e) => this.onNodeSelect(e, node)}>
             <td>{i + index}</td>
-            <td>{node.type}</td>
+            <td>{this.props.namedCollections[node.type].alias}</td>
             <td>{node.name}</td>
           </tr>
         );
@@ -85,7 +85,8 @@ function mapStateToProps(state) {
     currentNode: state.nodes.currentNode,
     perPage: state.nodes.perPage,
     findLoading: state.nodes.findLoading,
-    currentPage: state.nodes.currentPage
+    currentPage: state.nodes.currentPage,
+    namedCollections: state.app.namedCollections
   };
 }
 

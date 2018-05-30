@@ -90,7 +90,8 @@ export default function reducer(state=initialState, action={}) {
     case FETCH_COLLECTIONS_SUCCESS:
       return {
         ...state,
-        collections: action.result
+        collections: action.result,
+        namedCollections: _.mapKeys(action.result, 'name')
       };
 
     case FETCH_COLLECTIONS_FAIL:
