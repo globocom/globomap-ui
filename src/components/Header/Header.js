@@ -103,7 +103,7 @@ class Header extends Component {
     let checkedCollections = this.state.checkedCollections;
 
     if (checkedCollections.length === 0 && checkedGraphs.length === 0) {
-      checkedCollections = this.props.collections;
+      checkedCollections = this.props.collections.map(co => co.name);
     }
 
     if (checkedCollections.length === 0) {
@@ -184,15 +184,15 @@ class Header extends Component {
     });
 
     const collectionItems = this.props.collections.map((co) => {
-      const selectedCollection = this.props.selectedCollections.includes(co),
-            checkedCollection = this.state.checkedCollections.includes(co),
+      const selectedCollection = this.props.selectedCollections.includes(co.name),
+            checkedCollection = this.state.checkedCollections.includes(co.name),
             disabledCls = !selectedCollection ? ' disabled' : '';
 
       return (
-        <label key={co} className={"item topcoat-checkbox" + disabledCls}>
-          <input type="checkbox" name={co} checked={checkedCollection && selectedCollection}
+        <label key={co.name} className={"item topcoat-checkbox" + disabledCls}>
+          <input type="checkbox" name={co.name} checked={checkedCollection && selectedCollection}
                  onChange={this.handleCheckItem} disabled={!selectedCollection} />
-          <div className="topcoat-checkbox__checkmark"></div>&nbsp;{co}
+          <div className="topcoat-checkbox__checkmark"></div>&nbsp;{co.alias}
         </label>
       );
     });
