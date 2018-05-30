@@ -167,7 +167,7 @@ class IOServer {
   }
 
   getCollections(data, fn) {
-    this.gmapclient.listCollections()
+    this.gmapclient.listCollections({ perPage: 100, page: 1 })
       .then((data) => {
         fn(data.collections);
       })
