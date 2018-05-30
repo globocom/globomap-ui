@@ -169,7 +169,7 @@ class IOServer {
   getCollections(data, fn) {
     this.gmapclient.listCollections()
       .then((data) => {
-        fn(data);
+        fn(data.collections);
       })
       .catch((error) => {
         fn({ error: true, message: 'Get Collections Error' });

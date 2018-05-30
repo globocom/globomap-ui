@@ -18,7 +18,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { uiSocket } from '../../utils';
 import { showModal, closeModal } from '../../redux/modules/app';
-import { Properties, Monit } from '../';
+import { Properties, Monit, Query } from '../';
 import './InfoContentHead.css';
 
 class InfoContentHead extends Component {
@@ -38,11 +38,13 @@ class InfoContentHead extends Component {
     }
 
     let tabs = [{ name: 'Properties', content: <Properties key="properties-info" item={node} /> },
-                { name: 'Monitoring', content: <Monit node={node} /> }];
+                { name: 'Monitoring', content: <Monit node={node} /> },
+                { name: 'Queries', content: <Query node={node} /> }
+              ];
 
     let tabsButtons = tabs.map((tabItem) => {
       let active = this.state.currentTab === tabItem.name ? ' active' : '',
-          disabled = tabItem.name === 'Monitoring' && node.type !== 'comp_unit';
+        disabled = (tabItem.name === 'Monitoring' && node.type !== 'comp_unit') || tabItem.name === 'Queries';
 
       return (
         <li key={'tab' + tabItem.name} className={active}>
