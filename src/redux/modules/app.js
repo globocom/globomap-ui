@@ -111,7 +111,6 @@ export default function reducer(state=initialState, action={}) {
       return state;
 
     case FETCH_EDGES_SUCCESS:
-      console.log(action.result)
       return {
         ...state,
         edges: action.result,
