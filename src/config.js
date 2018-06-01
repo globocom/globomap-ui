@@ -14,5 +14,5 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export const host = 'localhost:8884';
+export const host = '';
 export const socketPath = '';
