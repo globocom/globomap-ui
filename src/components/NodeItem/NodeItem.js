@@ -101,7 +101,7 @@ class NodeItem extends Component {
           </button>}
 
         <div className="node-info sticky">
-          <span className="type">{type}</span>
+          <span className="type">{this.props.namedCollections[type].alias}</span>
           <span className="name">{name}</span>
           {this.props.hasId && <span>{id}</span>}
         </div>
@@ -116,7 +116,8 @@ function mapStateToProps(state) {
   return {
     currentNode: state.nodes.currentNode,
     stageNodes: state.stage.stageNodes,
-    hasId: state.app.hasId
+    hasId: state.app.hasId,
+    namedCollections: state.app.namedCollections
   };
 }
 

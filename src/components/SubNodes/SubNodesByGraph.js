@@ -126,7 +126,7 @@ class SubNodesByGraph extends Component {
           </div>
 
           <div className="sub-node-info" onClick={(e) => this.onAddNode(e, subnode, true)}>
-            <span className="sub-node-type">{subnode.type}</span>
+            <span className="sub-node-type">{this.props.namedCollections[subnode.type].alias}</span>
             <span className="sub-node-name" title={subnode.name}>{subnode.name}</span>
           </div>
 
@@ -387,7 +387,8 @@ function mapStateToProps(state) {
     currentNode: state.nodes.currentNode,
     graphs: state.app.graphs,
     collectionsByGraphs: state.app.collectionsByGraphs,
-    stageNodes: state.stage.stageNodes
+    stageNodes: state.stage.stageNodes,
+    namedCollections: state.app.namedCollections
   };
 }
 

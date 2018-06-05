@@ -42,12 +42,11 @@ class NodeEdges extends Component {
       if (!edge.properties || Object.keys(edge.properties).length === 0) {
         noProp = ' no-prop';
       }
-
       return <span key={i} className={'edge-item' + noProp} title={edge.name}>
                <span className="edge-item-prop" onClick={(e) => this.onOpenProp(e, edge)}>
                  <i className="icon-right fa fa-caret-right"></i>
                  <i className="icon-down fa fa-caret-down"></i>
-                 &nbsp;<strong>{edge.type}</strong>: {edge.name}
+          &nbsp;<strong>{this.props.namedEdges[edge.type].alias}</strong>: {edge.name}
                </span>
                {edge.properties &&
                 <Properties key="properties-node" item={edge} />}
@@ -146,7 +145,8 @@ class NodeEdges extends Component {
 
 function mapStateToProps(state) {
   return {
-    graphs: state.app.graphs
+    graphs: state.app.graphs,
+    namedEdges: state.app.namedEdges
   };
 }
 

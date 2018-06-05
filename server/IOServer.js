@@ -116,6 +116,7 @@ class IOServer {
 
     const eventList = [
       { event: 'getcollections', fn: this.getCollections },
+      { event: 'getedges', fn: this.getEdges },
       { event: 'getgraphs', fn: this.getGraphs },
       { event: 'getnode', fn: this.getNode },
       { event: 'findnodes', fn: this.findNodes },
@@ -173,6 +174,16 @@ class IOServer {
       })
       .catch((error) => {
         fn({ error: true, message: 'Get Collections Error' });
+      });
+  }
+  
+  getEdges(data, fn) {
+    this.gmapclient.listEdges({ perPage: 100, page: 1 })
+      .then((data) => {
+        fn(data.collections);
+      })
+      .catch((error) => {
+        fn({ error: true, message: 'Get Edges Error' });
       });
   }
 
