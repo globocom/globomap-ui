@@ -14,11 +14,11 @@ services:
             - .:/app
         command: node server
         networks:
-            - globomapapi_globomap_net
+            - globomap-api_globomap_net
         external_links:
             - globomap_api:globomap_api
             - globomap_redis:globomap_redis
 
 networks:
-    globomapapi_globomap_net:
+    globomap-api_globomap_net:
         external: true
