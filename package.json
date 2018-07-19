@@ -41,6 +41,7 @@
     "test": "react-scripts test --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill",
     "test-ci": "CI=true react-scripts test --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill --collectCoverageFrom=src/components/*.js --coverage",
     "eject": "react-scripts eject",
-    "deploy-dev": "npm run build && tsuru app-deploy . -a globomap-ui"
+    "deploy-dev": "npm run build && tsuru app-deploy . -a globomap-ui",
+    "docker": "docker-compose up"
   }
 }
