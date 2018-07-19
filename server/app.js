@@ -53,7 +53,7 @@ if (app.get('env') === 'production') {
         return {
           host: sentHost,
           port: config.redisAuthSentinelsPort
-        }
+        };
       })
     });
   } else {
