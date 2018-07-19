@@ -41,16 +41,19 @@ function getUserInfo(session) {
     if (session.tokenData !== undefined) {
       token = session.tokenData.access_token;
     } else {
-      reject(null);
+      reject("getUserInfo: Undefined session tokenData");
     }
 
     if (!url) {
-      reject(null);
+      reject("getUserInfo: oauthUserInfoUrl is null");
     }
 
     axios.get(url, { headers: { 'Authorization': `Bearer ${token}` } })
       .then(response => resolve(response.data))
       .catch(error => reject(error));
+  })
+  .catch((error) => {
+    console.log(error);
   });
 }
 
@@ -73,7 +76,7 @@ class IOServer {
           return {
             host: sentinelHost,
             port: config.redisSentinelsPort
-          }
+          };
         })
       });
     } else {
@@ -81,6 +84,12 @@ class IOServer {
         host: config.redisHost,
         port: config.redisPort,
         password: config.redisPassword
+      });
+    }
+
+    if (this.redis) {
+      this.redis.on('error', function(err) {
+        console.log(err.toString());
       });
     }
 
@@ -176,7 +185,7 @@ class IOServer {
         fn({ error: true, message: 'Get Collections Error' });
       });
   }
-  
+
   getEdges(data, fn) {
     this.gmapclient.listEdges({ perPage: 100, page: 1 })
       .then((data) => {
@@ -290,14 +299,14 @@ class IOServer {
 
   getMonitoring(data, fn) {
     const eTypes = zabbixEquipmentTypes.split(',');
-    const nodeType = data.properties['equipment_type'] || '';
+    const nodeType = data.properties.equipment_type || '';
 
     if(!eTypes.includes(nodeType)) {
       return fn([]);
     }
 
     this.gmapclient.pluginData('zabbix', {
-        ips: Array.from(data.properties['ips'] || '')
+        ips: Array.from(data.properties.ips || '')
       })
       .then((data) => {
         fn(data);
@@ -441,5 +450,10 @@ class IOServer {
   }
 
 }
+
+// Use this code to catch and debug unhandled promises
+// process.on('unhandledRejection', (reason, p) => {
+//   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+// });
 
 module.exports = IOServer;
