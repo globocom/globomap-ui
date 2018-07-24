@@ -27,3 +27,5 @@ server/ca-certificates.crt
 # editors
 .vscode/
 
+docker-compose-temp.yml
+
