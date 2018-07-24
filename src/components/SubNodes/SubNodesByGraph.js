@@ -328,6 +328,9 @@ class SubNodesByGraph extends Component {
     const parentGraph = this.props.graphs.filter((graph) => {
       return graph.name === items.graph;
     });
+
+    let aliasGraph = parentGraph.length > 0 ? parentGraph.map(graph => graph.alias)[0] : items.graph;
+
     const colorCls = parentGraph.length > 0 ? parentGraph[0].colorClass : '';
 
     if (graphAmount === 0 &&
@@ -341,7 +344,7 @@ class SubNodesByGraph extends Component {
         <div className={'graph-header ' + colorCls}>
           <span className="graph-name" onClick={this.onOpenGraph}>
             <i className={isOpen ? 'icon-down fa fa-caret-down' : 'icon-right fa fa-caret-right'}></i>
-            &nbsp;{items.graph}
+            &nbsp;{aliasGraph}
           </span>
 
           <span className="graph-amount">

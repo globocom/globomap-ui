@@ -199,7 +199,7 @@ class IOServer {
   getGraphs(data, fn) {
     this.gmapclient.listGraphs()
       .then((data) => {
-        fn(data);
+        fn(data.graphs);
       })
       .catch((error) => {
         fn({ error: true, message: 'Get Graphs Error' });

@@ -179,7 +179,7 @@ class Header extends Component {
               <input type="checkbox" name={graph.name} checked={graph.enabled}
                 onChange={(e) => this.onToggleGraph(e, graph.name)} />
               <div className="topcoat-checkbox__checkmark"></div>
-              &nbsp;<span className={'graph-name ' + graph.colorClass}>{graph.name}</span>
+              &nbsp;<span className={'graph-name ' + graph.colorClass}>{graph.alias}</span>
              </label>;
     });
 
