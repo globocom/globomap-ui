@@ -66,6 +66,13 @@ npm run build
 
 This will create an optmized version of the app with performance improvements.
 
+
+## Running local with docker:
+
+` make dynamic_ports` <br>
+` make containers_build ` (When project not started yet.) <br>
+` make containers_start ` (When project not started yet.) <br>
+
 ## Licensing
 
 Globo Map UI is under [Apache 2 License](./LICENSE)
