@@ -14,23 +14,43 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Query.css';
 
 class Query extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {}
-    }
+  buildQueryItems() {
+    let queries = _.filter(this.props.queries, (q) => {
+      return q.collection === this.props.node.type;
+    });
 
-    render() {
-        return (
-            <div className="queries">
-            </div>
-        );
-    }
+    let items = queries.map((q) => {
+      return <li>{q.description}</li>;
+    })
+
+    return (
+      <ul>{items}</ul>
+    );
+  }
+
+  render() {
+    return (
+      <div className="queries">
+        {this.buildQueryItems()}
+      </div>
+    );
+  }
 }
 
-export default Query;
+function mapStateToProps(state) {
+  return {
+    queries: state.app.queries
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Query);
