@@ -7,11 +7,12 @@ services:
             context: ./
             dockerfile: scripts/docker/Dockerfile
         ports:
-            - "8888:8888"
+            - "${GMAP_UI_PORT}:8888"
         env_file:
             - scripts/docker/globomap_ui.env
         volumes:
             - .:/app
+            - ./scripts/docker/ca-certificates.crt:/usr/src/app/server/ca-certificates.crt:ro
         command: node server
         networks:
             - globomap-api_globomap_net
