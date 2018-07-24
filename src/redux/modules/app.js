@@ -78,7 +78,8 @@ export default function reducer(state=initialState, action={}) {
         ...state,
         graphs,
         collectionsByGraphs,
-        enabledCollections
+        enabledCollections,
+        namedGraphs: _.mapKeys(action.result, 'name')
       };
 
     case FETCH_GRAPHS_FAIL:
