@@ -18,6 +18,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { uiSocket } from '../../utils';
 import { showModal, closeModal } from '../../redux/modules/app';
+import { setExtTab } from '../../redux/modules/tabs';
 import { Properties, Monit, Query } from '../';
 import './InfoContentHead.css';
 
@@ -26,9 +27,23 @@ class InfoContentHead extends Component {
   constructor(props) {
     super(props);
     this.socket = uiSocket();
-    this.state = {
-      currentTab: 'Properties'
+  }
+
+  openZbxGraph(event) {
+    const node = this.props.currentNode;
+    if (!node) {
+      return;
     }
+    this.props.showModal(null);
+    this.socket.emit('getZabbixGraph', { graphId: node.id }, (base64data) => {
+      if (base64data.error) {
+        console.log(base64data.message);
+        this.props.closeModal();
+        return;
+      }
+      this.props.showModal(<img src={`data:image/png;base64,${base64data.toString()}`}
+                                alt={node.name} />);
+    });
   }
 
   render() {
@@ -43,13 +58,21 @@ class InfoContentHead extends Component {
               ];
 
     let tabsButtons = tabs.map((tabItem) => {
-      let active = this.state.currentTab === tabItem.name ? ' active' : '',
-        disabled = (tabItem.name === 'Monitoring' && node.type !== 'comp_unit') || tabItem.name === 'Queries';
+      let active = this.props.currentExtTab === tabItem.name ? ' active' : '';
+      let disabled = false;
+
+      if (tabItem.name === 'Monitoring' && node.type !== 'comp_unit') {
+        disabled = true;
+      }
+
+      // if (tabItem.name === 'Queries') {
+      //   disabled = true;
+      // }
 
       return (
         <li key={'tab' + tabItem.name} className={active}>
           <button className="tab-btn topcoat-button--quiet" disabled={disabled}
-            onClick={(e) => this.setState({ currentTab: tabItem.name })}>
+            onClick={(e) => this.props.setExtTab(tabItem.name) }>
             {tabItem.name}
           </button>
         </li>
@@ -57,7 +80,7 @@ class InfoContentHead extends Component {
     });
 
     let tabsContent = tabs.map((tabItem) => {
-      let active = this.state.currentTab === tabItem.name ? ' active' : '';
+      let active = this.props.currentExtTab === tabItem.name ? ' active' : '';
       return (
         <div key={'content' + tabItem.name} className={'tab-content' + active}>
           {tabItem.content}
@@ -87,32 +110,16 @@ class InfoContentHead extends Component {
     );
   }
 
-  openZbxGraph(event) {
-    const node = this.props.currentNode;
-    if (!node) {
-      return;
-    }
-    this.props.showModal(null);
-    this.socket.emit('getZabbixGraph', { graphId: node.id }, (base64data) => {
-      if (base64data.error) {
-        console.log(base64data.message);
-        this.props.closeModal();
-        return;
-      }
-      this.props.showModal(<img src={`data:image/png;base64,${base64data.toString()}`}
-                                alt={node.name} />);
-    });
-  }
-
 }
 
 function mapStateToProps(state) {
   return {
-    currentNode: state.nodes.currentNode
+    currentNode: state.nodes.currentNode,
+    currentExtTab: state.tabs.currentExtTab
   };
 }
 
 export default connect(
   mapStateToProps,
-  { showModal, closeModal }
+  { showModal, closeModal, setExtTab }
 )(InfoContentHead);
