@@ -31,6 +31,10 @@ const FETCH_EDGES = 'fetch_edges';
 const FETCH_EDGES_SUCCESS = 'fetch_edges_success';
 const FETCH_EDGES_FAIL = 'fetch_edges_fail';
 
+const FETCH_QUERIES = 'fetch_queries';
+const FETCH_QUERIES_SUCCESS = 'fetch_queries_success';
+const FETCH_QUERIES_FAIL = 'fetch_queries_fail';
+
 const GET_SERVER_DATA = 'get_server_data';
 const GET_SERVER_DATA_SUCCESS = 'get_server_data_success';
 const GET_SERVER_DATA_FAIL = 'get_server_data_fail';
@@ -43,6 +47,7 @@ const CLOSE_MODAL = 'close_modal';
 const initialState = {
   graphs: [],
   collections: [],
+  queries: [],
   edges: [],
   collectionsByGraphs: {},
   enabledCollections: [],
@@ -123,6 +128,23 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         edges: []
+      };
+
+    case FETCH_QUERIES:
+      console.log('fetch queries...');
+      return state;
+
+    case FETCH_QUERIES_SUCCESS:
+      return {
+        ...state,
+        queries: action.result.documents
+      };
+
+    case FETCH_QUERIES_FAIL:
+      console.log(action.error);
+      return {
+        ...state,
+        queries: []
       };
 
     case GET_SERVER_DATA:
@@ -209,6 +231,14 @@ export function fetchEdges() {
     type: SOCKET,
     types: [FETCH_EDGES, FETCH_EDGES_SUCCESS, FETCH_EDGES_FAIL],
     promise: (socket) => socket.emit('getedges', {})
+  };
+}
+
+export function fetchQueries() {
+  return {
+    type: SOCKET,
+    types: [FETCH_QUERIES, FETCH_QUERIES_SUCCESS, FETCH_QUERIES_FAIL],
+    promise: (socket) => socket.emit('getqueries', {})
   };
 }
 

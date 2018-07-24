@@ -127,6 +127,7 @@ class IOServer {
       { event: 'getcollections', fn: this.getCollections },
       { event: 'getedges', fn: this.getEdges },
       { event: 'getgraphs', fn: this.getGraphs },
+      { event: 'getqueries', fn: this.getQueries },
       { event: 'getnode', fn: this.getNode },
       { event: 'findnodes', fn: this.findNodes },
       { event: 'traversalsearch', fn: this.traversalSearch },
@@ -203,6 +204,17 @@ class IOServer {
       })
       .catch((error) => {
         fn({ error: true, message: 'Get Graphs Error' });
+      });
+  }
+
+  getQueries(data, fn) {
+    this.gmapclient.listQueries({ perPage: 100, page: 1})
+      .then((data) => {
+        fn(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        fn({ error: true, message: 'Get Queries Error' });
       });
   }
 
@@ -394,6 +406,9 @@ class IOServer {
         .catch((error) => {
           fn({ error: true, message: 'Save User Map Error' });
         });
+    })
+    .catch((error) => {
+      console.log(error);
     });
   }
 
@@ -411,6 +426,9 @@ class IOServer {
         .catch((error) => {
           fn({ error: true, message: 'Get User Map Error' });
         });
+    })
+    .catch((error) => {
+      console.log(error);
     });
   }
 
@@ -428,6 +446,9 @@ class IOServer {
         .catch((error) => {
           fn({ error: true, message: 'Delete User Map Error' });
         });
+    })
+    .catch((error) => {
+      console.log(error);
     });
   }
 
@@ -446,6 +467,9 @@ class IOServer {
         .catch((error) => {
           fn({ error: true, message: 'List User Maps Error' });
         });
+    })
+    .catch((error) => {
+      console.log(error);
     });
   }
 
