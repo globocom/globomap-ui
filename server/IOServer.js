@@ -160,23 +160,6 @@ class IOServer {
     });
   }
 
-  handleAxiosError(error) {
-    let msg = null;
-
-    if(error.response) {
-      msg = `Response Error: ${error.response.status} ${error.response.statusText}`;
-      console.log(msg);
-    } else if (error.request) {
-      console.log(error.request);
-    } else {
-      msg = `Error: ${error.message}`;
-      console.log(msg);
-    }
-
-    console.log(error.config);
-    return msg;
-  }
-
   getCollections(data, fn) {
     this.gmapclient.listCollections({ perPage: 100, page: 1 })
       .then((data) => {
@@ -211,7 +194,6 @@ class IOServer {
     this.gmapclient.listQueries({ perPage: 100, page: 1})
       .then((data) => {
         fn(data);
-        console.log(data);
       })
       .catch((error) => {
         fn({ error: true, message: 'Get Queries Error' });
