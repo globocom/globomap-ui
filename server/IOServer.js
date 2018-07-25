@@ -198,7 +198,7 @@ class IOServer {
   }
 
   getGraphs(data, fn) {
-    this.gmapclient.listGraphs()
+    this.gmapclient.listGraphs({ perPage: 100, page: 1})
       .then((data) => {
         fn(data.graphs);
       })
