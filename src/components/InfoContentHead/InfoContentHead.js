@@ -64,9 +64,9 @@ class InfoContentHead extends Component {
         disabled = true;
       }
 
-      // if (tabItem.name === 'Queries') {
-      //   disabled = true;
-      // }
+      if (tabItem.name === 'Queries') {
+        disabled = true;
+      }
 
       return (
         <li key={'tab' + tabItem.name} className={active}>
