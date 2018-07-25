@@ -68,7 +68,7 @@ limitations under the License.
 
 .subnodes .subnodes-graph-items {
   flex-grow: 1;
-  background-color: #e2e2e2;
+  background-color: #edf0f4;
   overflow: auto;
   overflow-x: hidden;
 }
