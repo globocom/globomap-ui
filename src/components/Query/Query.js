@@ -22,12 +22,20 @@ import './Query.css';
 class Query extends Component {
 
   buildQueryItems() {
+    const node = this.props.currentNode;
+
     let queries = _.filter(this.props.queries, (q) => {
-      return q.collection === this.props.node.type;
+      return q.collection === node.type;
     });
 
     let items = queries.map((q) => {
-      return <li>{q.description}</li>;
+      return (
+        <li key={q.name}>
+          <a className="query" target="_blank" href={`/report?q=${q._key}&v=${node._id}`}>
+            {q.description}
+          </a>
+        </li>
+      );
     })
 
     return (
@@ -46,6 +54,7 @@ class Query extends Component {
 
 function mapStateToProps(state) {
   return {
+    currentNode: state.nodes.currentNode,
     queries: state.app.queries
   };
 }

@@ -1,0 +1,29 @@
+.queries {
+  padding: 10px;
+  background-color: #edf0f4;
+}
+
+.queries ul {
+  list-style: none;
+  padding: 0;
+}
+
+.queries .query {
+  display: block;
+  padding: 10px;
+  margin-bottom: 10px;
+  height: 30px;
+  line-height: 30px;
+  text-decoration: none;
+  background-color: white;
+  border-radius: 3px;
+  font-size: 16px;
+  font-weight: 300;
+  color: #333;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.queries .query:hover {
+  color: #4ca1e4;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
