@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { uiSocket } from '../../utils';
@@ -66,6 +67,13 @@ class InfoContentHead extends Component {
 
       if (tabItem.name === 'Queries') {
         disabled = true;
+        let queries = _.filter(this.props.queries, (q) => {
+          return q.collection === node.type;
+        });
+
+        if (queries.length > 0) {
+          disabled = false;
+        }
       }
 
       return (
@@ -114,7 +122,8 @@ class InfoContentHead extends Component {
 function mapStateToProps(state) {
   return {
     currentNode: state.nodes.currentNode,
-    currentExtTab: state.tabs.currentExtTab
+    currentExtTab: state.tabs.currentExtTab,
+    queries: state.app.queries
   };
 }
 
