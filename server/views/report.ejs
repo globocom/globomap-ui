@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Globomap Report</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <link rel="stylesheet" href="/css/bulma.css">
   </head>
   <body>
     <section class="hero is-primary">
@@ -147,7 +146,7 @@ function fetchData(q, v) {
   $.ajax({ url: url })
     .done(function(data) {
       // fillContent(data);
-      console.log(data)
+      // console.log(data)
 
       $('#data-content').html(buildTable(data));
       $('#search-btn').removeClass('is-loading');
@@ -157,19 +156,19 @@ function fetchData(q, v) {
     });
 }
 
-$('#search-btn').on('click', function() {
-  fetchData($('#select-q').val(), $('#search-v').val());
-});
+// $('#search-btn').on('click', function() {
+//   fetchData($('#select-q').val(), $('#search-v').val());
+// });
 
-$('#search-v').on('keyup', function(e) {
-  if (e.key === 'Enter') {
-    fetchData($('#select-q').val(), $('#search-v').val());
-  }
-});
+// $('#search-v').on('keyup', function(e) {
+//   if (e.key === 'Enter') {
+//     fetchData($('#select-q').val(), $('#search-v').val());
+//   }
+// });
 
-$('#select-q').on('change', function() {
-  console.log($(this).val());
-});
+// $('#select-q').on('change', function() {
+//   console.log($(this).val());
+// });
 
 <% if (query && query.q !== '' && query.v !== '') { %>
 fetchData('<%= query.q %>', '<%= query.v %>');
