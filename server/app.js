@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+const _ = require('lodash');
 const http = require('http')
 const express = require('express');
 const path = require('path');
@@ -22,12 +23,20 @@ const Redis = require('ioredis');
 const oauthClient = require('./oauthClient');
 const project = require('../package.json');
 const config = require('./config');
+const GmapClient = require('globomap-api-jsclient');
 
 const app = express();
 
 // views setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// Globomap API client
+const gmapclient = new GmapClient({
+  username: config.globomapApiUsername,
+  password: config.globomapApiPassword,
+  apiUrl: config.globomapApiUrl
+});
 
 let sessionConfig = {
   cookie: {
@@ -96,30 +105,24 @@ const isAuthenticated = (req, res, next) => {
 }
 
 app.get('/report', (req, res) => {
-  return res.render('report', { query : req.query });
-});
+  const query = req.query;
 
-app.get('/report/:q/:v', (req, res) => {
-  const v = req.param('v');
-  const url = `http://api-globomap-dev.gcloud.dev.globoi.com/v1/queries/${req.param('q')}/execute?variable=${v}`;
+  if (_.isEmpty(query) || query.q === undefined || query.v === undefined) {
+    return res.status(200).render('report', {
+      result: '[{ error: "Empty query / missing parameters" }]'
+    });
+  }
 
-  let request = http.get(url, function(response) {
-    console.log('STATUS: ' + response.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(response.headers));
-
-    let bodyChunks = [];
-    response.on('data', function(chunk) {
-      bodyChunks.push(chunk);
-    }).on('end', function() {
-      const body = bodyChunks.join('');
-      console.log('BODY: ' + body);
-      res.status(200).json(body);
+  gmapclient.runQuery({ kind: query.q, value: query.v })
+    .then((data) => {
+      console.log(data);
+      res.status(200).render('report', { result: JSON.stringify(data) });
     })
-  });
-
-  request.on('error', function(e) {
-    console.log('ERROR: ' + e.message);
-  });
+    .catch((error) => {
+      const errMsg = 'GmapClient: runQuery error'
+      console.log(errMsg);
+      res.status(200).render('report', { result: `[{ error: ${errMsg} }]` });
+    });
 });
 
 app.get('/healthcheck', (req, res) => {

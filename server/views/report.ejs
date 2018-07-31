@@ -4,68 +4,41 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Globomap Report</title>
-    <link rel="stylesheet" href="/css/bulma.css">
+    <link rel="stylesheet" href="/css/bulma.min.css">
+    <style>
+      html { background-color: #dee1e5; }
+      .report-main { background-color: #edf0f4; }
+      .report-header { padding: 1.5rem; background-color: #3872d2; }
+      .report-header .title { color: white; }
+      .report-header .title .globo { font-weight: 300; }
+      .content { border-radius: 3px; overflow: hidden; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3); }
+    </style>
   </head>
   <body>
-    <section class="hero is-primary">
+    <section class="report-header">
+      <div class="container">
 
-      <div class="hero-body">
-        <div class="container">
-
-          <div class="columns is-vcentered">
-            <div class="column">
-              <p class="title">
-                Globomap Report
-              </p>
-              <p class="subtitle">
-                Encontre o que est&aacute; <strong>impactando</strong> o seu servi&ccedil;o
-              </p>
-            </div>
-            <div class="column is-narrow"></div>
-
-            <div class="column is-three-fifths">
-
-              <div class="field is-grouped">
-                <div class="select is-rounded is-left">
-                  <select id="select-q">
-                    <option value="query_vip_vip">Vip Acesso Vip</option>
-                    <option value="query_teste">Componentes no Host</option>
-                    <option value="query_host_vips">Vips de um Host</option>
-                    <option value="query_real_by_vip">Reals no Vip</option>
-                  </select>
-                </div>
-
-                <div class="control has-icons-left is-expanded">
-                  <input id="search-v" class="input is-rounded" type="text" placeholder="" value="<%= query.v %>" />
-                  <span class="icon is-left">
-                    <i class="fas fa-search"></i>
-                  </span>
-                </div>
-                <a id="search-btn" class="button is-rounded">Search</a>
-              </div>
-            </div>
+        <div class="columns is-vcentered">
+          <div class="column">
+            <p class="title">
+              <span class="globo">globo</span>map Report
+            </p>
           </div>
-
         </div>
-      </div>
 
+      </div>
     </section>
 
-    <section class="section">
+    <section class="section report-main">
       <div class="container">
         <div class="content" id="data-content"></div>
       </div>
     </section>
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-
+<script src="/js/jquery-3.3.1.min.js"></script>
 <script>
 function buildTable(a) {
-  a = $.parseJSON(a);
-  JSON.stringify(a, void 0, 2);
-  var e = document.createElement("table"),
+  var e = $('<table />').addClass('table'),
     d, b;
   if (isArray(a)) return buildArray(a);
   for (var c in a) "object" != typeof a[c] || isArray(a[c]) ? "object" == typeof a[c] && isArray(a[c]) ? (d = e.insertRow(-1), b = d.insertCell(-1), b.colSpan = 2, b.innerHTML = '<div class="td_head">' + encodeText(c) + '</div><table class="table is-bordered">' + $(buildArray(a[c]), !1).html() + "</table>") : (d = e.insertRow(-1), b = d.insertCell(-1), b.innerHTML = "<div class='td_head'>" + encodeText(c) + "</div>", d = d.insertCell(-1), d.innerHTML = "<div class='td_row_even'>" +
@@ -74,7 +47,7 @@ function buildTable(a) {
 }
 
 function buildArray(a) {
-  var e = document.createElement("table"),
+  var e = document.createElement('table'),
     d, b, c = !1,
     p = !1,
     m = {},
@@ -82,6 +55,7 @@ function buildArray(a) {
     n = 0,
     l;
   l = "";
+  e.classList.add('table')
   if (0 == a.length) return "<div></div>";
   d = e.insertRow(-1);
   for (var f = 0; f < a.length; f++)
@@ -107,71 +81,19 @@ function buildArray(a) {
 }
 
 function encodeText(a) {
-  return $("<div />").text(a).html()
+  return $("<div />").text(a).html();
 }
 
 function isArray(a) {
-  return "[object Array]" === Object.prototype.toString.call(a)
+  return "[object Array]" === Object.prototype.toString.call(a);
 }
 
 function isEven(a) {
   return 0 == a % 2
 }
 
-// function fillContent(data) {
-//   let html = [];
-//   for (let i=0,j=data.length; i<j; ++i) {
-//     let item = data[i];
-
-//     html.push(`<h3>${item.name}</h3>`);
-//     html.push(`<table class="table is-hoverable is-fullwidth"><thead><tr><th>Path</th><th>Servers</th></tr></thead><tbody>`);
-
-//     for (let k=0,w=item.ports.length; k<w; ++k) {
-//       let port = item.ports[k];
-//       html.push(`<tr><td>${port.path}</td><td>${port.servers.join(', ')}</td></tr>`);
-//     }
-
-//     html.push('</tbody></table>');
-//   }
-
-//   $('#data-content').html(html.join(''));
-// }
-
-function fetchData(q, v) {
-  const url = `/report/${q}/${encodeURIComponent(v)}`;
-  $('#search-btn').addClass('is-loading');
-
-  console.log(url);
-
-  $.ajax({ url: url })
-    .done(function(data) {
-      // fillContent(data);
-      // console.log(data)
-
-      $('#data-content').html(buildTable(data));
-      $('#search-btn').removeClass('is-loading');
-    })
-    .fail(function() {
-      $('#search-btn').removeClass('is-loading');
-    });
-}
-
-// $('#search-btn').on('click', function() {
-//   fetchData($('#select-q').val(), $('#search-v').val());
-// });
-
-// $('#search-v').on('keyup', function(e) {
-//   if (e.key === 'Enter') {
-//     fetchData($('#select-q').val(), $('#search-v').val());
-//   }
-// });
-
-// $('#select-q').on('change', function() {
-//   console.log($(this).val());
-// });
-
-<% if (query && query.q !== '' && query.v !== '') { %>
-fetchData('<%= query.q %>', '<%= query.v %>');
+<% if (result && result !== '') { %>
+  $('#data-content').html(buildTable(<%- result %>));
 <% } %>
 </script>
 
