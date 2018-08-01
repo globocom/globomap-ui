@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 const _ = require('lodash');
-const http = require('http')
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
@@ -115,12 +114,11 @@ app.get('/report', (req, res) => {
 
   gmapclient.runQuery({ kind: query.q, value: query.v })
     .then((data) => {
-      console.log(data);
       res.status(200).render('report', { result: JSON.stringify(data) });
     })
     .catch((error) => {
-      const errMsg = 'GmapClient: runQuery error'
-      console.log(errMsg);
+      const errMsg = 'GmapClient runQuery error';
+      console.log(`${errMsg}: ${error}`);
       res.status(200).render('report', { result: `[{ error: ${errMsg} }]` });
     });
 });
@@ -166,4 +164,7 @@ app.get(['/', '/map/:mapId'], isAuthenticated, (req, res) => {
 
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
-module.exports = { app, sessionMiddleware };
+module.exports = {
+  app,
+  sessionMiddleware
+};
