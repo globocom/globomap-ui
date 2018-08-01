@@ -119,7 +119,7 @@ app.get('/report', (req, res) => {
     .catch((error) => {
       const errMsg = 'GmapClient runQuery error';
       console.log(`${errMsg}: ${error}`);
-      res.status(200).render('report', { result: `[{ error: ${errMsg} }]` });
+      res.status(200).render('report', { result: `[{ error: "${errMsg}" }]` });
     });
 });
 

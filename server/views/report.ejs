@@ -39,8 +39,9 @@
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script>
 function buildTable(a) {
-  var e = $('<table />').addClass('table'),
+  var e = document.createElement('table'),
     d, b;
+  e.classList.add('table')
   if (isArray(a)) return buildArray(a);
   for (var c in a) "object" != typeof a[c] || isArray(a[c]) ? "object" == typeof a[c] && isArray(a[c]) ? (d = e.insertRow(-1), b = d.insertCell(-1), b.colSpan = 2, b.innerHTML = '<div class="td_head">' + encodeText(c) + '</div><table class="table is-bordered">' + $(buildArray(a[c]), !1).html() + "</table>") : (d = e.insertRow(-1), b = d.insertCell(-1), b.innerHTML = "<div class='td_head'>" + encodeText(c) + "</div>", d = d.insertCell(-1), d.innerHTML = "<div class='td_row_even'>" +
     encodeText(a[c]) + "</div>") : (d = e.insertRow(-1), b = d.insertCell(-1), b.colSpan = 2, b.innerHTML = '<div class="td_head">' + encodeText(c) + '</div><table class="table is-bordered">' + $(buildTable(a[c]), !1).html() + "</table>");
@@ -56,7 +57,7 @@ function buildArray(a) {
     n = 0,
     l;
   l = "";
-  e.classList.add('table')
+  e.classList.add('table');
   if (0 == a.length) return "<div></div>";
   d = e.insertRow(-1);
   for (var f = 0; f < a.length; f++)
