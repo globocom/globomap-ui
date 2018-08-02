@@ -114,12 +114,33 @@ app.get('/report', (req, res) => {
 
   gmapclient.runQuery({ kind: query.q, value: query.v })
     .then((data) => {
-      res.status(200).render('report', { result: JSON.stringify(data) });
+      let items = query.v.split('/'),
+          result = JSON.stringify(data)
+
+      gmapclient.getNode({collection: items[0], nodeId: items[1]})
+        .then((data) => {
+          res.status(200).render('report', {
+            node: JSON.stringify(data),
+            nodeName: data.name,
+            result: result
+          });
+        })
+        .catch((error) => {
+          const errMsg = 'GmapClient getNode error';
+          console.log(`${errMsg}: ${error}`);
+          res.status(200).render('report', {
+            node: {},
+            result: `[{ error: "${errMsg}" }]`
+          });
+        });
     })
     .catch((error) => {
       const errMsg = 'GmapClient runQuery error';
       console.log(`${errMsg}: ${error}`);
-      res.status(200).render('report', { result: `[{ error: "${errMsg}" }]` });
+      res.status(200).render('report', {
+        node: {},
+        result: `[{ error: "${errMsg}" }]`
+      });
     });
 });
 
