@@ -55,7 +55,7 @@ class InfoContentHead extends Component {
 
     let tabs = [{ name: 'Properties', content: <Properties key="properties-info" item={node} /> },
                 { name: 'Monitoring', content: <Monit node={node} /> },
-                { name: 'Queries', content: <Query /> }];
+                { name: 'Reports', content: <Query /> }];
 
     let tabsButtons = tabs.map((tabItem) => {
       let active = this.props.currentExtTab === tabItem.name ? ' active' : '';
@@ -65,7 +65,7 @@ class InfoContentHead extends Component {
         disabled = true;
       }
 
-      if (tabItem.name === 'Queries') {
+      if (tabItem.name === 'Reports') {
         disabled = true;
         let queries = _.filter(this.props.queries, (q) => {
           return q.collection === node.type;
