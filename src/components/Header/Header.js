@@ -33,7 +33,7 @@ class Header extends Component {
       query: '',
       showOptions: false,
       queryProps: [],
-      propsOperators: ["==", "LIKE", "IN", "!=", ">", ">=", "<", "<="]
+      propsOperators: ["==", "LIKE","NOTIN", "IN", "!=", ">", ">=", "<", "<=", "!~", "=~"]
     };
 
     this.addProp = this.addProp.bind(this);
