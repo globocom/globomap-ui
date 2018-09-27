@@ -39,6 +39,11 @@ class NodeEdges extends Component {
   buildEdgeItems(edges) {
     return edges.map((edge, i) => {
       let noProp = '';
+
+      let edgeType = edge.type;
+      if (this.props.namedEdges !== undefined)
+        edgeType = this.props.namedEdges[edge.type].alias;
+
       if (!edge.properties || Object.keys(edge.properties).length === 0) {
         noProp = ' no-prop';
       }
@@ -46,7 +51,7 @@ class NodeEdges extends Component {
                <span className="edge-item-prop" onClick={(e) => this.onOpenProp(e, edge)}>
                  <i className="icon-right fa fa-caret-right"></i>
                  <i className="icon-down fa fa-caret-down"></i>
-          &nbsp;<strong>{this.props.namedEdges[edge.type].alias}</strong>: {edge.name}
+          &nbsp;<strong>{edgeType}</strong>: {edge.name}
                </span>
                {edge.properties &&
                 <Properties key="properties-node" item={edge} />}

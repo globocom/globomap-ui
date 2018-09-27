@@ -90,6 +90,10 @@ class NodeItem extends Component {
         exist = this.props.node.exist === undefined ? true : this.props.node.exist,
         disabled = !exist ? ' disabled' : '';
 
+    let nodeType = type;
+    if (this.props.namedCollections !== undefined)
+      nodeType = this.props.namedCollections[type].alias;
+
     return (
       <div key={this.props.node.id}
            className={'node-item' + disabled + current + thisnode}
@@ -101,7 +105,7 @@ class NodeItem extends Component {
           </button>}
 
         <div className="node-info sticky">
-          <span className="type">{this.props.namedCollections[type].alias}</span>
+          <span className="type">{nodeType}</span>
           <span className="name">{name}</span>
           {this.props.hasId && <span>{id}</span>}
         </div>
