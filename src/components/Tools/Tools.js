@@ -237,11 +237,11 @@ class Tools extends React.Component {
           {/*<button className="btn btn-save-graph topcoat-button"
                   onClick={this.onSaveGraph} disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i> Save map
-          </button>*/}
+          </button>
           <button className="btn btn-restore-graph topcoat-button"
                   onClick={this.toggleSaved}>
             Show saved <i className="fa fa-caret-down"></i>
-          </button>
+          </button>*/}
         </div>
 
         {this.state.savedOpen &&

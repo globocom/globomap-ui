@@ -42,10 +42,7 @@ limitations under the License.
 .stage .stage-container {
   display: flex;
   padding: 20px;
-}
-
-.stage.full .stage-container {
-  justify-content: center;
+  justify-content: left;
 }
 
 .stage .node-item-group {
