@@ -15,9 +15,11 @@ limitations under the License.
 */
 
 import _ from 'lodash';
+// import axios from 'axios';
 import { sortByName, getEdgeLinks } from '../../utils';
+// import { host } from '../../config';
 
-const SOCKET = 'socket';
+// const SOCKET = 'socket';
 
 const FETCH_GRAPHS = 'fetch_graphs';
 const FETCH_GRAPHS_SUCCESS = 'fetch_graphs_success';
@@ -212,41 +214,36 @@ export default function reducer(state=initialState, action={}) {
 
 export function fetchGraphs() {
   return {
-    type: SOCKET,
     types: [FETCH_GRAPHS, FETCH_GRAPHS_SUCCESS, FETCH_GRAPHS_FAIL],
-    promise: (socket) => socket.emit('getgraphs', {})
+    promise: (client) => client.get('/graphs')
   };
 }
 
 export function fetchCollections() {
   return {
-    type: SOCKET,
     types: [FETCH_COLLECTIONS, FETCH_COLLECTIONS_SUCCESS, FETCH_COLLECTIONS_FAIL],
-    promise: (socket) => socket.emit('getcollections', {})
+    promise: (client) => client.get('/collections')
   };
 }
 
 export function fetchEdges() {
   return {
-    type: SOCKET,
     types: [FETCH_EDGES, FETCH_EDGES_SUCCESS, FETCH_EDGES_FAIL],
-    promise: (socket) => socket.emit('getedges', {})
+    promise: (client) => client.get('/edges')
   };
 }
 
 export function fetchQueries() {
   return {
-    type: SOCKET,
     types: [FETCH_QUERIES, FETCH_QUERIES_SUCCESS, FETCH_QUERIES_FAIL],
-    promise: (socket) => socket.emit('getqueries', {})
+    promise: (client) => client.get('/queries')
   };
 }
 
 export function getServerData() {
   return {
-    type: SOCKET,
     types: [GET_SERVER_DATA, GET_SERVER_DATA_SUCCESS, GET_SERVER_DATA_FAIL],
-    promise: (socket) => socket.emit('getserverdata', {})
+    promise: (client) => client.get('/server-data')
   };
 }
 

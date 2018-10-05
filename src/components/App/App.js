@@ -22,7 +22,7 @@ import { fetchGraphs, fetchCollections, fetchEdges,
 import { clearCurrentNode } from '../../redux/modules/nodes';
 import { Header, Modal, SearchContent, Stage,
          SubNodes, Tools } from '../';
-import { socketClient } from '../../';
+// import { socketClient } from '../../';
 import './App.css';
 
 class App extends Component {
@@ -50,7 +50,7 @@ class App extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown);
-    socketClient.disconnect();
+    // socketClient.disconnect();
   }
 
   render() {

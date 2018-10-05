@@ -17,7 +17,7 @@ limitations under the License.
 import { uuid, traverseItems } from '../../utils';
 import { setCurrentNode } from './nodes';
 
-const SOCKET = 'socket';
+// const SOCKET = 'socket';
 
 const STAGE_ADD_NEW_NODE = 'stage_add_new_node';
 const STAGE_REMOVE_NODE = 'stage_remove_node';
@@ -330,49 +330,53 @@ export function cleanStageNodes() {
 
 export function saveSharedMap(stageNodes) {
   return {
-    type: SOCKET,
+    // type: SOCKET,
     types: [SAVE_SHARED_MAP, SAVE_SHARED_MAP_SUCCESS, SAVE_SHARED_MAP_FAIL],
-    promise: (socket) => socket.emit('savesharedmap', { value: stageNodes })
+    promise: (client) => client.post('/shared-maps', { value: stageNodes })
   };
 }
 
 export function getSharedMap(key) {
   return {
-    type: SOCKET,
+    // type: SOCKET,
     types: [GET_SHARED_MAP, GET_SHARED_MAP_SUCCESS, GET_SHARED_MAP_FAIL],
-    promise: (socket) => socket.emit('getsharedmap', { key: key })
+    promise: (client) => client.get(`/shared-maps/${key}`)
   };
 }
 
 export function saveUserMap(stageNodes) {
   return {
-    type: SOCKET,
+    // type: SOCKET,
     types: [SAVE_USER_MAP, SAVE_USER_MAP_SUCCESS, SAVE_USER_MAP_FAIL],
-    promise: (socket) => socket.emit('user:savemap', { value: stageNodes })
+    // promise: (socket) => socket.emit('user:savemap', { value: stageNodes })
+    promise: (client) => client.post('/user-maps', { value: stageNodes })
   };
 }
 
 export function getUserMap(key) {
   return {
-    type: SOCKET,
+    // type: SOCKET,
     types: [GET_USER_MAP, GET_USER_MAP_SUCCESS, GET_USER_MAP_FAIL],
-    promise: (socket) => socket.emit('user:getmap', { key: key })
+    // promise: (socket) => socket.emit('user:getmap', { key: key })
+    promise: (client) => client.get(`/user-maps/${key}`)
   };
 }
 
 export function deleteUserMap(key) {
   return {
-    type: SOCKET,
+    // type: SOCKET,
     types: [DELETE_USER_MAP, DELETE_USER_MAP_SUCCESS, DELETE_USER_MAP_FAIL],
-    promise: (socket) => socket.emit('user:deletemap', { key: key })
+    // promise: (socket) => socket.emit('user:deletemap', { key: key })
+    promise: (client) => client.del(`/user-maps/${key}`)
   };
 }
 
 export function listUserMaps() {
   return {
-    type: SOCKET,
+    // type: SOCKET,
     types: [LIST_USER_MAPS, LIST_USER_MAPS_SUCCESS, LIST_USER_MAPS_FAIL],
-    promise: (socket) => socket.emit('user:listmaps', {})
+    // promise: (socket) => socket.emit('user:listmaps', {})
+    promise: (client) => client.get(`/user-maps`)
   };
 }
 

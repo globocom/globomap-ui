@@ -30,6 +30,13 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// add CORS just for DEVELOPMENT
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // Globomap API client
 const gmapclient = new GmapClient({
   username: config.globomapApiUsername,
@@ -177,6 +184,32 @@ app.get('/logout', (req, res) => {
   const redirectUri = req.protocol + "://" + req.get('Host');
   req.session = null;
   res.redirect(config.oauthLogoutUrl + '?redirect_uri=' + redirectUri);
+});
+
+app.get('/api/graphs', isAuthenticated, (req, res) => {
+  gmapclient.listGraphs({ perPage: 100, page: 1})
+    .then((data) => {
+      return res.status(200).json(data.graphs);
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        error: true,
+        message: 'Get Graphs Error'
+      });
+    });
+});
+
+app.get('/api/collections', isAuthenticated, (req, res) => {
+  gmapclient.listCollections({ perPage: 100, page: 1 })
+    .then((data) => {
+      return res.status(200).json(data.collections);
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        error: true,
+        message: 'Get Collections Error'
+      });
+    });
 });
 
 app.get(['/', '/map/:mapId'], isAuthenticated, (req, res) => {

@@ -18,21 +18,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import ReduxThunk from 'redux-thunk';
+import thunk from 'redux-thunk';
+// import ReduxPromise from 'redux-promise';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import reducer from './redux/modules/reducer';
-import socketMiddleware from './redux/middlewares/socketMiddleware';
-import SocketClient from './helpers/SocketClient';
+// import socketMiddleware from './redux/middlewares/socketMiddleware';
+import clientMiddleware from './redux/middlewares/clientMiddleware';
+// import SocketClient from './helpers/SocketClient';
+import ApiClient from './helpers/ApiClient';
 
 import { App, NotFound } from './components';
 
-export const socketClient = new SocketClient({ connect: true });
+// export const socketClient = new SocketClient({ connect: true });
+const apiClient = new ApiClient()
+
 export const store = createStore(
   reducer,
   applyMiddleware(
-    ReduxThunk,
-    socketMiddleware(socketClient)
+    // socketMiddleware(socketClient),
+    // ReduxPromise,
+    thunk,
+    clientMiddleware(apiClient)
   )
 );
 
