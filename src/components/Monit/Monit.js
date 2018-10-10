@@ -16,7 +16,6 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { Loading } from '../';
-import { uiSocket } from '../../utils';
 import './Monit.css';
 
 class Monit extends Component {
@@ -24,7 +23,6 @@ class Monit extends Component {
 
   constructor(props) {
     super(props);
-    this.socket = uiSocket();
     this.state = {
       loading: true,
       triggers: []

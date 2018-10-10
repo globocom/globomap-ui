@@ -21,12 +21,10 @@ const https = require('https');
 const _ = require('lodash');
 const axios = require('axios');
 const Redis = require('ioredis');
-// const ioSession = require('express-socket.io-session');
 const GmapClient = require('globomap-api-jsclient');
 
 const config = require('./config');
 const app = require('./app').app;
-const sessionMiddleware = require('./app').sessionMiddleware;
 const oauthClient = require('./oauthClient');
 
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
@@ -94,7 +92,7 @@ class IOServer {
     }
 
     io.use(function(socket, next) {
-      sessionMiddleware(socket.request, socket.request.res, next);
+      // sessionMiddleware(socket.request, socket.request.res, next);
     });
 
     io.use(function(socket, next) {
@@ -124,11 +122,11 @@ class IOServer {
     });
 
     const eventList = [
-      { event: 'getcollections', fn: this.getCollections },
-      { event: 'getedges', fn: this.getEdges },
-      { event: 'getgraphs', fn: this.getGraphs },
-      { event: 'getqueries', fn: this.getQueries },
-      { event: 'getnode', fn: this.getNode },
+      // { event: 'getcollections', fn: this.getCollections },
+      // { event: 'getedges', fn: this.getEdges },
+      // { event: 'getgraphs', fn: this.getGraphs },
+      // { event: 'getqueries', fn: this.getQueries },
+      // { event: 'getnode', fn: this.getNode },
       { event: 'findnodes', fn: this.findNodes },
       { event: 'traversalsearch', fn: this.traversalSearch },
       { event: 'getserverdata', fn: this.getServerData },
@@ -160,59 +158,59 @@ class IOServer {
     });
   }
 
-  getCollections(data, fn) {
-    this.gmapclient.listCollections({ perPage: 100, page: 1 })
-      .then((data) => {
-        fn(data.collections);
-      })
-      .catch((error) => {
-        fn({ error: true, message: 'Get Collections Error' });
-      });
-  }
+  // getCollections(data, fn) {
+  //   this.gmapclient.listCollections({ perPage: 100, page: 1 })
+  //     .then((data) => {
+  //       fn(data.collections);
+  //     })
+  //     .catch((error) => {
+  //       fn({ error: true, message: 'Get Collections Error' });
+  //     });
+  // }
 
-  getEdges(data, fn) {
-    this.gmapclient.listEdges({ perPage: 100, page: 1 })
-      .then((data) => {
-        fn(data.collections);
-      })
-      .catch((error) => {
-        fn({ error: true, message: 'Get Edges Error' });
-      });
-  }
+  // getEdges(data, fn) {
+  //   this.gmapclient.listEdges({ perPage: 100, page: 1 })
+  //     .then((data) => {
+  //       fn(data.collections);
+  //     })
+  //     .catch((error) => {
+  //       fn({ error: true, message: 'Get Edges Error' });
+  //     });
+  // }
 
-  getGraphs(data, fn) {
-    this.gmapclient.listGraphs({ perPage: 100, page: 1})
-      .then((data) => {
-        fn(data.graphs);
-      })
-      .catch((error) => {
-        fn({ error: true, message: 'Get Graphs Error' });
-      });
-  }
+  // getGraphs(data, fn) {
+  //   this.gmapclient.listGraphs({ perPage: 100, page: 1})
+  //     .then((data) => {
+  //       fn(data.graphs);
+  //     })
+  //     .catch((error) => {
+  //       fn({ error: true, message: 'Get Graphs Error' });
+  //     });
+  // }
 
-  getQueries(data, fn) {
-    this.gmapclient.listQueries({ perPage: 100, page: 1})
-      .then((data) => {
-        fn(data);
-      })
-      .catch((error) => {
-        fn({ error: true, message: 'Get Queries Error' });
-      });
-  }
+  // getQueries(data, fn) {
+  //   this.gmapclient.listQueries({ perPage: 100, page: 1})
+  //     .then((data) => {
+  //       fn(data);
+  //     })
+  //     .catch((error) => {
+  //       fn({ error: true, message: 'Get Queries Error' });
+  //     });
+  // }
 
-  getNode(data, fn) {
-    this.gmapclient.getNone({
-        collection: data.collection,
-        nodeId: data.id
-      })
-      .then((result) => {
-        this.updateItemInfo(result.data);
-        fn(result.data);
-      })
-      .catch((error) => {
-        fn({ error: true, message: 'Get Node Error' });
-      });
-  }
+  // getNode(data, fn) {
+  //   this.gmapclient.getNone({
+  //       collection: data.collection,
+  //       nodeId: data.id
+  //     })
+  //     .then((result) => {
+  //       this.updateItemInfo(result.data);
+  //       fn(result.data);
+  //     })
+  //     .catch((error) => {
+  //       fn({ error: true, message: 'Get Node Error' });
+  //     });
+  // }
 
   findNodes(data, fn) {
     const { query, queryProps, collections, per_page, page } = data;

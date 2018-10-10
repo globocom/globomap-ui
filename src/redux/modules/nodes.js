@@ -17,8 +17,6 @@ limitations under the License.
 import _ from 'lodash';
 import { composeEdges } from '../../utils';
 
-// const SOCKET = 'socket';
-
 const SET_CURRENT_NODE = 'set_current_node';
 const CLEAR_CURRENT_NODE = 'clear_current_node';
 
@@ -160,9 +158,7 @@ export function findNodes(opts) {
   }, opts);
 
   return {
-    // type: SOCKET,
     types: [FIND_NODES, FIND_NODES_SUCCESS, FIND_NODES_FAIL],
-    // promise: (socket) => socket.emit('findnodes', options),
     promise: (client) => client.get('/find-nodes', options),
     options
   };
@@ -176,9 +172,7 @@ export function traversalSearchWithGraphs(opts) {
   }, opts);
 
   return {
-    // type: SOCKET,
     types: [TRAVERSAL, TRAVERSAL_SUCCESS, TRAVERSAL_FAIL],
-    // promise: (socket) => socket.emit('traversalsearch', options),
     promise: (client) => client.get('/traversal-search', options),
     graphs: options.graphs,
     node: options.node

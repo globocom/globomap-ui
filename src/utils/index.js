@@ -14,17 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import io from 'socket.io-client';
-import { host } from '../config';
-
-function uiSocket() {
-  var uiSocket = io(host);
-  uiSocket.on('error', function(err) {
-    console.log(`uiSocket error: ${err}`);
-  });
-  return uiSocket;
-}
-
 function traverseItems(nList, fn) {
   for (let i in nList) {
     let node = nList[i];
@@ -106,5 +95,5 @@ function sortByName(arr) {
 
 export {
   sortByName, traverseItems, composeEdges,
-  getEdgeLinks, uiSocket, uuid
+  getEdgeLinks, uuid
 };

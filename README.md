@@ -30,7 +30,6 @@ Now you have an up and running Globo Map UI app (http://localhost:8888)
 
 ### Built With
 - [React](https://github.com/facebook/react)
-- [Socket.io](https://github.com/socketio/socket.io)
 - [Express](https://github.com/expressjs/express)
 - [Axios](https://github.com/axios/axios)
 

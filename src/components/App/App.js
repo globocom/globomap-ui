@@ -22,7 +22,6 @@ import { fetchGraphs, fetchCollections, fetchEdges,
 import { clearCurrentNode } from '../../redux/modules/nodes';
 import { Header, Modal, SearchContent, Stage,
          SubNodes, Tools } from '../';
-// import { socketClient } from '../../';
 import './App.css';
 
 class App extends Component {
@@ -44,13 +43,12 @@ class App extends Component {
     this.props.fetchCollections();
     this.props.fetchEdges();
     this.props.fetchQueries();
-    this.props.getServerData();
+    // this.props.getServerData();
     document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100));
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown);
-    // socketClient.disconnect();
   }
 
   render() {

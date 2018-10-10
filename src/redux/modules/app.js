@@ -15,11 +15,7 @@ limitations under the License.
 */
 
 import _ from 'lodash';
-// import axios from 'axios';
 import { sortByName, getEdgeLinks } from '../../utils';
-// import { host } from '../../config';
-
-// const SOCKET = 'socket';
 
 const FETCH_GRAPHS = 'fetch_graphs';
 const FETCH_GRAPHS_SUCCESS = 'fetch_graphs_success';

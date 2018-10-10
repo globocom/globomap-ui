@@ -17,18 +17,12 @@ limitations under the License.
 import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { uiSocket } from '../../utils';
 import { showModal, closeModal } from '../../redux/modules/app';
 import { setExtTab } from '../../redux/modules/tabs';
 import { Properties, Monit, Query } from '../';
 import './InfoContentHead.css';
 
 class InfoContentHead extends Component {
-
-  constructor(props) {
-    super(props);
-    this.socket = uiSocket();
-  }
 
   openZbxGraph(event) {
     const node = this.props.currentNode;

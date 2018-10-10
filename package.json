@@ -16,7 +16,6 @@
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "express-socket.io-session": "^1.3.5",
     "globomap-api-jsclient": "^1.2.6",
     "ioredis": "^3.2.2",
     "lodash": "^4.17.10",
@@ -27,9 +26,7 @@
     "react-transition-group": "^1.2.1",
     "redux": "^3.7.2",
     "redux-form": "^7.4.2",
-    "redux-promise": "^0.6.0",
     "redux-thunk": "^2.3.0",
-    "socket.io": "^2.1.1",
     "stickyfill": "^1.1.1"
   },
   "scripts": {
