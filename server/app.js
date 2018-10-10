@@ -37,12 +37,21 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(require('./controllers'));
+
 // Globomap API client
 const gmapclient = new GmapClient({
   username: config.globomapApiUsername,
   password: config.globomapApiPassword,
   apiUrl: config.globomapApiUrl
 });
+
+function updateItemInfo(item) {
+  item.type = item._id.split('/')[0];
+  delete item._key;
+  delete item._rev;
+  return item;
+}
 
 let sessionConfig = {
   cookie: {
@@ -155,7 +164,7 @@ app.get('/healthcheck', (req, res) => {
   return res.status(200).send('WORKING');
 });
 
-app.get('/info', (req, res) => {
+app.get('/info', isAuthenticated, (req, res) => {
   return res.status(200).json({
     project: project.name,
     version: project.version,
@@ -212,13 +221,117 @@ app.get('/api/collections', isAuthenticated, (req, res) => {
     });
 });
 
+app.get('/api/edges', isAuthenticated, (req, res) => {
+  gmapclient.listEdges({ perPage: 100, page: 1 })
+    .then((data) => {
+      return res.status(200).json(data.collections);
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        error: true,
+        message: 'Get Edges Error'
+      });
+    });
+});
+
+app.get('/api/queries', isAuthenticated, (req, res) => {
+  gmapclient.listQueries({ perPage: 100, page: 1 })
+    .then((data) => {
+      return res.status(200).json(data.collections);
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        error: true,
+        message: 'Get Queries Error'
+      });
+    });
+});
+
+app.get('/api/find-nodes', isAuthenticated, (req, res) => {
+  const { query, queryProps, collections, per_page, page } = req.query;
+  const co = collections.toString();
+
+  let q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}],` +
+          `[{"field": "properties", "value": "${query}", "operator": "LIKE"}]]`;
+
+  if (queryProps.length > 0) {
+    let byProps = queryProps.map((prop) => {
+      const f = prop.name === 'name' ? prop.name : `properties.${prop.name}`;
+      return `{"field": "${f}", "value": "${prop.value}", "operator": "${prop.op}"}`;
+    });
+    q = `[[${byProps.join(',')}]]`;
+  }
+
+  gmapclient.search({
+      collections: co,
+      query: q,
+      perPage: per_page || pageSize,
+      page: page
+    })
+    .then((data) => {
+      data.documents.filter((doc) => {
+        updateItemInfo(doc);
+      });
+      return res.status(200).json(data);
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        error: true,
+        message: 'Find Nodes Error'
+      });
+    });
+});
+
+app.get('/api/traversal-search', isAuthenticated, (req, res) => {
+  const { node, graphs, depth } = req.query;
+
+  gmapclient.traversalMultiple({
+      graphs: graphs,
+      startVertex: node._id,
+      maxDepth: depth,
+      direction: 'any'
+    })
+    .then((results) => {
+      results = results.map((resp) => {
+        let data = { graph: resp.data.graph };
+        data.edges = resp.data.edges.map((edge) => {
+          return updateItemInfo(edge);
+        });
+        data.nodes = resp.data.nodes.map((node) => {
+          return updateItemInfo(node);
+        });
+        return data;
+      });
+      return res.status(200).json(results);
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        error: true,
+        message: 'Traversal Search Error'
+      });
+    });
+});
+
+app.get('/api/server-data', isAuthenticated, (req, res) => {
+  // data.userInfo
+  //   .then(uInfo => {
+  //     return res.status(200).json({
+  //       environ: config.environment,
+  //       userInfo: uInfo
+  //     });
+  //   })
+  //   .catch(error => {
+  //     return res.status(500).json({
+  //       environ: config.environment,
+  //       userInfo: {}
+  //     });
+  //   });
+});
+
 app.get(['/', '/map/:mapId'], isAuthenticated, (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });
 
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
-module.exports = {
-  app,
-  sessionMiddleware
-};
+module.exports = app;
