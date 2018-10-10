@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import config from '../config'
+import { host } from '../config'
 
 export default class ApiClient {
 
@@ -12,7 +12,8 @@ export default class ApiClient {
   }
 
   formatUrl(path) {
-    return path[0] !== '/' ? `/api/${path}` : `/api${path}`;
+    path = path[0] !== '/' ? `/api/${path}` : `/api${path}`;
+    return `${host}${path}`;
   }
 
 }
