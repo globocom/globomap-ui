@@ -31,7 +31,8 @@ class Query extends Component {
     let items = queries.map((q) => {
       return (
         <li key={q.name}>
-          <a className="query" target="_blank" href={`/report?q=${q._key}&v=${node._id}`}>
+          <a className="query" target="_blank" rel="noopener noreferrer"
+            href={`/report?q=${q._key}&v=${node._id}`}>
             {q.description}
           </a>
         </li>
