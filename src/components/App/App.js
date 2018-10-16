@@ -43,7 +43,7 @@ class App extends Component {
     this.props.fetchCollections();
     this.props.fetchEdges();
     this.props.fetchQueries();
-    // this.props.getServerData();
+    this.props.getServerData();
     document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100));
   }
 

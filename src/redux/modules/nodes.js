@@ -43,6 +43,8 @@ const initialState = {
 };
 
 export default function reducer(state=initialState, action={}) {
+  let data;
+
   switch (action.type) {
     case SET_CURRENT_NODE:
       return {
@@ -65,12 +67,13 @@ export default function reducer(state=initialState, action={}) {
 
     case FIND_NODES_SUCCESS:
       const { result, options } = action;
+      data = result.data;
 
       return {
         ...state,
-        nodeList: result.documents,
-        totalPages: result.total_pages,
-        perPage: result.total,
+        nodeList: data.documents,
+        totalPages: data.total_pages,
+        perPage: data.total,
         currentPage: options.page,
         searchOptions: options,
         findLoaded: true,
@@ -95,7 +98,9 @@ export default function reducer(state=initialState, action={}) {
       }
 
     case TRAVERSAL_SUCCESS:
-      const byGraphData = action.result.map((gData) => {
+      data = action.result.data;
+
+      const byGraphData = data.map((gData) => {
         gData.subnodes = gData.nodes.filter(n => n._id !== action.node._id).map((n) => {
           n.edges = composeEdges(n, gData.edges);
           n.edges.graph = gData.graph;
@@ -159,7 +164,7 @@ export function findNodes(opts) {
 
   return {
     types: [FIND_NODES, FIND_NODES_SUCCESS, FIND_NODES_FAIL],
-    promise: (client) => client.get('/find-nodes', options),
+    promise: (client) => client.get('/api/find-nodes', options),
     options
   };
 }
@@ -173,7 +178,7 @@ export function traversalSearchWithGraphs(opts) {
 
   return {
     types: [TRAVERSAL, TRAVERSAL_SUCCESS, TRAVERSAL_FAIL],
-    promise: (client) => client.get('/traversal-search', options),
+    promise: (client) => client.get('/api/traversal-search', options),
     graphs: options.graphs,
     node: options.node
   }

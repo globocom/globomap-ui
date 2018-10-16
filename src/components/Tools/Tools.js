@@ -209,17 +209,17 @@ class Tools extends React.Component {
   }
 
   render() {
-    // let rootNodeHasItens = false;
-    // if (this.props.stageNodes[0] !== undefined &&
-    //     this.props.stageNodes[0].items.length > 0) {
-    //   rootNodeHasItens = true;
-    // }
+    let rootNodeHasItens = false;
+    if (this.props.stageNodes[0] !== undefined &&
+        this.props.stageNodes[0].items.length > 0) {
+      rootNodeHasItens = true;
+    }
 
     const tabsButtons = this.tabs.map((tab, index) => {
       let active = this.props.currentMainTab === tab.name ? ' active' : '';
       return (
         <button key={'tab' + index} className={'tab-btn' + active}
-          // disabled={tab.name === 'Navigation' && !rootNodeHasItens}
+          disabled={tab.name === 'Navigation' && !rootNodeHasItens}
           onClick={(e) => this.props.setMainTab( tab.name )}>
           {tab.name}
         </button>
@@ -234,14 +234,14 @@ class Tools extends React.Component {
 
         <div className="tools-buttons">
           <span className="message">{this.state.message}</span>
-          {/*<button className="btn btn-save-graph topcoat-button"
+          {/* <button className="btn btn-save-graph topcoat-button"
                   onClick={this.onSaveGraph} disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i> Save map
-          </button>
+          </button> */}
           <button className="btn btn-restore-graph topcoat-button"
                   onClick={this.toggleSaved}>
             Show saved <i className="fa fa-caret-down"></i>
-          </button>*/}
+          </button>
         </div>
 
         {this.state.savedOpen &&

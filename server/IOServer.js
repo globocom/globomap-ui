@@ -30,30 +30,30 @@ const oauthClient = require('./oauthClient');
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
 const pageSize = process.env.PAGE_SIZE || 20;
 
-function getUserInfo(session) {
-  const url = config.oauthUserInfoUrl;
+// function getUserInfo(session) {
+//   const url = config.oauthUserInfoUrl;
 
-  return new Promise((resolve, reject) => {
-    let token = null;
+//   return new Promise((resolve, reject) => {
+//     let token = null;
 
-    if (session.tokenData !== undefined) {
-      token = session.tokenData.access_token;
-    } else {
-      reject("getUserInfo: Undefined session tokenData");
-    }
+//     if (session.tokenData !== undefined) {
+//       token = session.tokenData.access_token;
+//     } else {
+//       reject("getUserInfo: Undefined session tokenData");
+//     }
 
-    if (!url) {
-      reject("getUserInfo: oauthUserInfoUrl is null");
-    }
+//     if (!url) {
+//       reject("getUserInfo: oauthUserInfoUrl is null");
+//     }
 
-    axios.get(url, { headers: { 'Authorization': `Bearer ${token}` } })
-      .then(response => resolve(response.data))
-      .catch(error => reject(error));
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-}
+//     axios.get(url, { headers: { 'Authorization': `Bearer ${token}` } })
+//       .then(response => resolve(response.data))
+//       .catch(error => reject(error));
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
+// }
 
 class IOServer {
   constructor(io) {
@@ -62,38 +62,37 @@ class IOServer {
     }
 
     // SSL
-    https.globalAgent.options.ca = fs.readFileSync(config.certificates);
+    // https.globalAgent.options.ca = fs.readFileSync(config.certificates);
 
-    // Authentication
-    this.redis = null;
-    if (config.redisSentinelsHosts) {
-      this.redis = new Redis({
-        name: config.redisSentinelsService,
-        password: config.redisPassword,
-        sentinels: config.redisSentinelsHosts.map((sentinelHost) => {
-          return {
-            host: sentinelHost,
-            port: config.redisSentinelsPort
-          };
-        })
-      });
-    } else {
-      this.redis = new Redis({
-        host: config.redisHost,
-        port: config.redisPort,
-        password: config.redisPassword
-      });
-    }
+    // this.redis = null;
+    // if (config.redisSentinelsHosts) {
+    //   this.redis = new Redis({
+    //     name: config.redisSentinelsService,
+    //     password: config.redisPassword,
+    //     sentinels: config.redisSentinelsHosts.map((sentinelHost) => {
+    //       return {
+    //         host: sentinelHost,
+    //         port: config.redisSentinelsPort
+    //       };
+    //     })
+    //   });
+    // } else {
+    //   this.redis = new Redis({
+    //     host: config.redisHost,
+    //     port: config.redisPort,
+    //     password: config.redisPassword
+    //   });
+    // }
 
-    if (this.redis) {
-      this.redis.on('error', function(err) {
-        console.log(err.toString());
-      });
-    }
+    // if (this.redis) {
+    //   this.redis.on('error', function(err) {
+    //     console.log(err.toString());
+    //   });
+    // }
 
-    io.use(function(socket, next) {
-      // sessionMiddleware(socket.request, socket.request.res, next);
-    });
+    // io.use(function(socket, next) {
+    //   sessionMiddleware(socket.request, socket.request.res, next);
+    // });
 
     io.use(function(socket, next) {
       if (app.get('disable-auth')) {
@@ -115,11 +114,11 @@ class IOServer {
     });
 
     // Globomap client
-    this.gmapclient = new GmapClient({
-      username: config.globomapApiUsername,
-      password: config.globomapApiPassword,
-      apiUrl: config.globomapApiUrl
-    });
+    // this.gmapclient = new GmapClient({
+    //   username: config.globomapApiUsername,
+    //   password: config.globomapApiPassword,
+    //   apiUrl: config.globomapApiUrl
+    // });
 
     const eventList = [
       // { event: 'getcollections', fn: this.getCollections },
@@ -127,9 +126,9 @@ class IOServer {
       // { event: 'getgraphs', fn: this.getGraphs },
       // { event: 'getqueries', fn: this.getQueries },
       // { event: 'getnode', fn: this.getNode },
-      { event: 'findnodes', fn: this.findNodes },
-      { event: 'traversalsearch', fn: this.traversalSearch },
-      { event: 'getserverdata', fn: this.getServerData },
+      // { event: 'findnodes', fn: this.findNodes },
+      // { event: 'traversalsearch', fn: this.traversalSearch },
+      // { event: 'getserverdata', fn: this.getServerData },
 
       // Zabbix
       { event: 'getmonitoring', fn: this.getMonitoring },
@@ -141,7 +140,7 @@ class IOServer {
       { event: 'user:savemap', fn: this.saveUserMap },
       { event: 'user:getmap', fn: this.getUserMap },
       { event: 'user:deletemap', fn: this.deleteUserMap },
-      { event: 'user:listmaps', fn: this.listUserMaps }
+      // { event: 'user:listmaps', fn: this.listUserMaps }
     ];
 
     io.on('connection', (socket) => {
@@ -212,82 +211,82 @@ class IOServer {
   //     });
   // }
 
-  findNodes(data, fn) {
-    const { query, queryProps, collections, per_page, page } = data;
-    const co = collections.toString();
+  // findNodes(data, fn) {
+  //   const { query, queryProps, collections, per_page, page } = data;
+  //   const co = collections.toString();
 
-    let q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}],` +
-            `[{"field": "properties", "value": "${query}", "operator": "LIKE"}]]`;
+  //   let q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}],` +
+  //           `[{"field": "properties", "value": "${query}", "operator": "LIKE"}]]`;
 
-    if (queryProps.length > 0) {
-      let byProps = queryProps.map((prop) => {
-        const f = prop.name === 'name' ? prop.name : `properties.${prop.name}`;
-        return `{"field": "${f}", "value": "${prop.value}", "operator": "${prop.op}"}`;
-      });
-      q = `[[${byProps.join(',')}]]`;
-    }
+  //   if (queryProps.length > 0) {
+  //     let byProps = queryProps.map((prop) => {
+  //       const f = prop.name === 'name' ? prop.name : `properties.${prop.name}`;
+  //       return `{"field": "${f}", "value": "${prop.value}", "operator": "${prop.op}"}`;
+  //     });
+  //     q = `[[${byProps.join(',')}]]`;
+  //   }
 
-    this.gmapclient.search({
-        collections: co,
-        query: q,
-        perPage: per_page || pageSize,
-        page: page
-      })
-      .then((data) => {
-        data.documents.filter((doc) => {
-          this.updateItemInfo(doc);
-        });
-        fn(data);
-      })
-      .catch((error) => {
-        console.log(error);
-        fn({ error: true, message: 'Find Nodes Error' });
-      });
-  }
+  //   this.gmapclient.search({
+  //       collections: co,
+  //       query: q,
+  //       perPage: per_page || pageSize,
+  //       page: page
+  //     })
+  //     .then((data) => {
+  //       data.documents.filter((doc) => {
+  //         this.updateItemInfo(doc);
+  //       });
+  //       fn(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       fn({ error: true, message: 'Find Nodes Error' });
+  //     });
+  // }
 
-  traversalSearch(data, fn) {
-    const { node, graphs, depth } = data;
+  // traversalSearch(data, fn) {
+  //   const { node, graphs, depth } = data;
 
-    this.gmapclient.traversalMultiple({
-        graphs: graphs,
-        startVertex: node._id,
-        maxDepth: depth,
-        direction: 'any'
-      })
-      .then((results) => {
-        results = results.map((resp) => {
-          let data = { graph: resp.data.graph };
-          data.edges = resp.data.edges.map((edge) => {
-            return this.updateItemInfo(edge);
-          });
-          data.nodes = resp.data.nodes.map((node) => {
-            return this.updateItemInfo(node);
-          });
-          return data;
-        });
-        fn(results);
-      })
-      .catch((error) => {
-        fn({ error: true, message: 'Traversal Search Error' });
-      });
-  }
+  //   this.gmapclient.traversalMultiple({
+  //       graphs: graphs,
+  //       startVertex: node._id,
+  //       maxDepth: depth,
+  //       direction: 'any'
+  //     })
+  //     .then((results) => {
+  //       results = results.map((resp) => {
+  //         let data = { graph: resp.data.graph };
+  //         data.edges = resp.data.edges.map((edge) => {
+  //           return this.updateItemInfo(edge);
+  //         });
+  //         data.nodes = resp.data.nodes.map((node) => {
+  //           return this.updateItemInfo(node);
+  //         });
+  //         return data;
+  //       });
+  //       fn(results);
+  //     })
+  //     .catch((error) => {
+  //       fn({ error: true, message: 'Traversal Search Error' });
+  //     });
+  // }
 
-  updateItemInfo(item) {
-    item.type = item._id.split('/')[0];
-    delete item._key;
-    delete item._rev;
-    return item;
-  }
+  // updateItemInfo(item) {
+  //   item.type = item._id.split('/')[0];
+  //   delete item._key;
+  //   delete item._rev;
+  //   return item;
+  // }
 
-  getServerData(data, fn) {
-    data.userInfo
-      .then(uInfo => {
-        fn({ environ: config.environment, userInfo: uInfo });
-      })
-      .catch(error => {
-        fn({ environ: config.environment, userInfo: {} })
-      });
-  }
+  // getServerData(data, fn) {
+  //   data.userInfo
+  //     .then(uInfo => {
+  //       fn({ environ: config.environment, userInfo: uInfo });
+  //     })
+  //     .catch(error => {
+  //       fn({ environ: config.environment, userInfo: {} })
+  //     });
+  // }
 
   getMonitoring(data, fn) {
     const eTypes = zabbixEquipmentTypes.split(',');
@@ -367,91 +366,91 @@ class IOServer {
       });
   }
 
-  saveUserMap(data, fn) {
-    if (!this.redis) {
-      fn({ error: true, message: 'Redis Error' });
-      return;
-    }
+  // saveUserMap(data, fn) {
+  //   if (!this.redis) {
+  //     fn({ error: true, message: 'Redis Error' });
+  //     return;
+  //   }
 
-    const sNodes = data.value;
-    const mapStr = JSON.stringify(sNodes);
-    const mapKey = crypto.createHash('md5').update(mapStr).digest('hex');
+  //   const sNodes = data.value;
+  //   const mapStr = JSON.stringify(sNodes);
+  //   const mapKey = crypto.createHash('md5').update(mapStr).digest('hex');
 
-    data.userInfo.then(uInfo => {
-      // Redis HASH email:maps, key, value
-      this.redis.hset(`${uInfo.email}:maps`, mapKey, mapStr)
-        .then((result) => {
-          fn({ key: mapKey, name: sNodes[0].name, content: sNodes });
-        })
-        .catch((error) => {
-          fn({ error: true, message: 'Save User Map Error' });
-        });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
+  //   data.userInfo.then(uInfo => {
+  //     // Redis HASH email:maps, key, value
+  //     this.redis.hset(`${uInfo.email}:maps`, mapKey, mapStr)
+  //       .then((result) => {
+  //         fn({ key: mapKey, name: sNodes[0].name, content: sNodes });
+  //       })
+  //       .catch((error) => {
+  //         fn({ error: true, message: 'Save User Map Error' });
+  //       });
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
 
-  getUserMap(data, fn) {
-    if (!this.redis) {
-      fn({ error: true, message: 'Redis Error' });
-      return;
-    }
+  // getUserMap(data, fn) {
+  //   if (!this.redis) {
+  //     fn({ error: true, message: 'Redis Error' });
+  //     return;
+  //   }
 
-    data.userInfo.then(uInfo => {
-      this.redis.hget(`${uInfo.email}:maps`, data.key)
-        .then((result) => {
-          fn(JSON.parse(result));
-        })
-        .catch((error) => {
-          fn({ error: true, message: 'Get User Map Error' });
-        });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
+  //   data.userInfo.then(uInfo => {
+  //     this.redis.hget(`${uInfo.email}:maps`, data.key)
+  //       .then((result) => {
+  //         fn(JSON.parse(result));
+  //       })
+  //       .catch((error) => {
+  //         fn({ error: true, message: 'Get User Map Error' });
+  //       });
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
 
-  deleteUserMap(data, fn) {
-    if (!this.redis) {
-      fn({ error: true, message: 'Redis Error' });
-      return;
-    }
+  // deleteUserMap(data, fn) {
+  //   if (!this.redis) {
+  //     fn({ error: true, message: 'Redis Error' });
+  //     return;
+  //   }
 
-    data.userInfo.then(uInfo => {
-      this.redis.hdel(`${uInfo.email}:maps`, data.key)
-        .then((result) => {
-          fn({ deletedKey: data.key });
-        })
-        .catch((error) => {
-          fn({ error: true, message: 'Delete User Map Error' });
-        });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
+  //   data.userInfo.then(uInfo => {
+  //     this.redis.hdel(`${uInfo.email}:maps`, data.key)
+  //       .then((result) => {
+  //         fn({ deletedKey: data.key });
+  //       })
+  //       .catch((error) => {
+  //         fn({ error: true, message: 'Delete User Map Error' });
+  //       });
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
 
-  listUserMaps(data, fn) {
-    if (!this.redis) {
-      fn({ error: true, message: 'Redis Error' });
-      return;
-    }
+  // listUserMaps(data, fn) {
+  //   if (!this.redis) {
+  //     fn({ error: true, message: 'Redis Error' });
+  //     return;
+  //   }
 
-    data.userInfo.then(uInfo => {
-      this.redis.hgetall(`${uInfo.email}:maps`)
-        .then((result) => {
-          result = _.mapValues(result, v => JSON.parse(v));
-          fn(result);
-        })
-        .catch((error) => {
-          fn({ error: true, message: 'List User Maps Error' });
-        });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
+  //   data.userInfo.then(uInfo => {
+  //     this.redis.hgetall(`${uInfo.email}:maps`)
+  //       .then((result) => {
+  //         result = _.mapValues(result, v => JSON.parse(v));
+  //         fn(result);
+  //       })
+  //       .catch((error) => {
+  //         fn({ error: true, message: 'List User Maps Error' });
+  //       });
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
 
 }
 

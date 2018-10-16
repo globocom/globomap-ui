@@ -1,6 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
 
-router.use('/api/maps', require('./maps'))
+const router = express.Router();
 
-module.exports = router
+router.use('/', require('./auth'));
+router.use('/api', require('./base'));
+router.use('/api/maps', require('./maps'));
+router.use('/tools', require('./tools'));
+
+module.exports = router;

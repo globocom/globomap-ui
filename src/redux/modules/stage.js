@@ -260,9 +260,13 @@ export default function reducer(state=initialState, action={}) {
       }
 
     case LIST_USER_MAPS_SUCCESS:
-      const items = action.result;
+      const items = action.result.data;
       const newItems = Object.keys(items).map((k) => {
-        return { key: k, name: items[k][0]["name"], content: items[k] };
+        let name = '';
+        if (0 in items[k]) {
+          name = items[k][0]["name"];
+        }
+        return { key: k, name: name, content: items[k] };
       });
 
       return {
@@ -329,42 +333,42 @@ export function cleanStageNodes() {
 export function saveSharedMap(stageNodes) {
   return {
     types: [SAVE_SHARED_MAP, SAVE_SHARED_MAP_SUCCESS, SAVE_SHARED_MAP_FAIL],
-    promise: (client) => client.post('/maps/shared', { value: stageNodes })
+    promise: (client) => client.post('/api/maps/shared', { value: stageNodes })
   };
 }
 
 export function getSharedMap(key) {
   return {
     types: [GET_SHARED_MAP, GET_SHARED_MAP_SUCCESS, GET_SHARED_MAP_FAIL],
-    promise: (client) => client.get(`/maps/shared/${key}`)
+    promise: (client) => client.get(`/api/maps/shared/${key}`)
   };
 }
 
 export function saveUserMap(stageNodes) {
   return {
     types: [SAVE_USER_MAP, SAVE_USER_MAP_SUCCESS, SAVE_USER_MAP_FAIL],
-    promise: (client) => client.post('/maps/user', { value: stageNodes })
+    promise: (client) => client.post('/api/maps/user', { value: stageNodes })
   };
 }
 
 export function getUserMap(key) {
   return {
     types: [GET_USER_MAP, GET_USER_MAP_SUCCESS, GET_USER_MAP_FAIL],
-    promise: (client) => client.get(`/maps/user/${key}`)
+    promise: (client) => client.get(`/api/maps/user/${key}`)
   };
 }
 
 export function deleteUserMap(key) {
   return {
     types: [DELETE_USER_MAP, DELETE_USER_MAP_SUCCESS, DELETE_USER_MAP_FAIL],
-    promise: (client) => client.del(`/maps/user/${key}`)
+    promise: (client) => client.delete(`/api/maps/user/${key}`)
   };
 }
 
 export function listUserMaps() {
   return {
     types: [LIST_USER_MAPS, LIST_USER_MAPS_SUCCESS, LIST_USER_MAPS_FAIL],
-    promise: (client) => client.get(`/maps/user`)
+    promise: (client) => client.get(`/api/maps/user`)
   };
 }
 

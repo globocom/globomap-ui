@@ -63,7 +63,7 @@ export default function reducer(state=initialState, action={}) {
       return state;
 
     case FETCH_GRAPHS_SUCCESS:
-      let graphs = sortByName(action.result);
+      let graphs = sortByName(action.result.data);
       let collectionsByGraphs = {};
       let enabledCollections = [];
 
@@ -97,10 +97,11 @@ export default function reducer(state=initialState, action={}) {
       return state;
 
     case FETCH_COLLECTIONS_SUCCESS:
+      const collections = action.result.data;
       return {
         ...state,
-        collections: action.result,
-        namedCollections: _.mapKeys(action.result, 'name')
+        collections: collections,
+        namedCollections: _.mapKeys(collections, 'name')
       };
 
     case FETCH_COLLECTIONS_FAIL:
@@ -115,10 +116,11 @@ export default function reducer(state=initialState, action={}) {
       return state;
 
     case FETCH_EDGES_SUCCESS:
+      const edges = action.result.data;
       return {
         ...state,
-        edges: action.result,
-        namedEdges: _.mapKeys(action.result, 'name')
+        edges: edges,
+        namedEdges: _.mapKeys(edges, 'name')
       };
 
     case FETCH_EDGES_FAIL:
@@ -135,7 +137,7 @@ export default function reducer(state=initialState, action={}) {
     case FETCH_QUERIES_SUCCESS:
       return {
         ...state,
-        queries: action.result.documents
+        queries: action.result.data.documents
       };
 
     case FETCH_QUERIES_FAIL:
@@ -211,35 +213,35 @@ export default function reducer(state=initialState, action={}) {
 export function fetchGraphs() {
   return {
     types: [FETCH_GRAPHS, FETCH_GRAPHS_SUCCESS, FETCH_GRAPHS_FAIL],
-    promise: (client) => client.get('/graphs')
+    promise: (client) => client.get('/api/graphs')
   };
 }
 
 export function fetchCollections() {
   return {
     types: [FETCH_COLLECTIONS, FETCH_COLLECTIONS_SUCCESS, FETCH_COLLECTIONS_FAIL],
-    promise: (client) => client.get('/collections')
+    promise: (client) => client.get('/api/collections')
   };
 }
 
 export function fetchEdges() {
   return {
     types: [FETCH_EDGES, FETCH_EDGES_SUCCESS, FETCH_EDGES_FAIL],
-    promise: (client) => client.get('/edges')
+    promise: (client) => client.get('/api/edges')
   };
 }
 
 export function fetchQueries() {
   return {
     types: [FETCH_QUERIES, FETCH_QUERIES_SUCCESS, FETCH_QUERIES_FAIL],
-    promise: (client) => client.get('/queries')
+    promise: (client) => client.get('/api/queries')
   };
 }
 
 export function getServerData() {
   return {
     types: [GET_SERVER_DATA, GET_SERVER_DATA_SUCCESS, GET_SERVER_DATA_FAIL],
-    promise: (client) => client.get('/server-data')
+    promise: (client) => client.get('/tools/server-data')
   };
 }
 
