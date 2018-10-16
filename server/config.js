@@ -35,14 +35,14 @@ module.exports = {
                         : null,
 
   // Redis Auth
-  redisAuthHost: process.env.REDIS_AUTH_HOST || 'localhost',
-  redisAuthPort: process.env.REDIS_AUTH_PORT || 6379,
-  redisAuthPassword: process.env.REDIS_AUTH_PASSWORD,
-  redisAuthSentinelsPort: process.env.REDIS_AUTH_SENTINELS_PORT || 26379,
-  redisAuthSentinelsService: process.env.REDIS_AUTH_SENTINELS_SERVICE,
-  redisAuthSentinelsHosts: process.env.REDIS_AUTH_SENTINELS
-                            ? process.env.REDIS_AUTH_SENTINELS.split(',')
-                            : null,
+  // redisAuthHost: process.env.REDIS_AUTH_HOST || 'localhost',
+  // redisAuthPort: process.env.REDIS_AUTH_PORT || 6379,
+  // redisAuthPassword: process.env.REDIS_AUTH_PASSWORD,
+  // redisAuthSentinelsPort: process.env.REDIS_AUTH_SENTINELS_PORT || 26379,
+  // redisAuthSentinelsService: process.env.REDIS_AUTH_SENTINELS_SERVICE,
+  // redisAuthSentinelsHosts: process.env.REDIS_AUTH_SENTINELS
+  //                           ? process.env.REDIS_AUTH_SENTINELS.split(',')
+  //                           : null,
 
   // OAuth
   oauthLogoutUrl: process.env.OAUTH_LOGOUT_URL,
