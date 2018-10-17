@@ -69,9 +69,9 @@ class SubNodes extends Component {
           <div className="subnodes-header-title" title={headerTitle}>
             <span className="title-limit">{headerTitle}</span>
           </div>
-          <button className="btn colapse-subnodes-btn" onClick={this.onColapseSubNodes}>
+          {/* <button className="btn colapse-subnodes-btn" onClick={this.onColapseSubNodes}>
             <i className="fa fa-angle-right"></i>
-          </button>
+          </button> */}
           <InfoContentHead />
         </div>
         <div className="subnodes-graph-items">

@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,9 +26,6 @@ const config = require('./config');
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // SSL
 https.globalAgent.options.ca = fs.readFileSync(config.certificates);
 
@@ -36,12 +33,14 @@ https.globalAgent.options.ca = fs.readFileSync(config.certificates);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// add CORS just for DEVELOPMENT
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// Add CORS for DEVELOPMENT
+if (config.environment === 'development') {
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+}
 
 let sessionConfig = {
   cookie: {
@@ -88,8 +87,10 @@ if (app.get('env') === 'production') {
   app.set('disable-auth', !config.oauthForceAuth);
 }
 
-const sessionMiddleware = session(sessionConfig);
-app.use(sessionMiddleware);
+// Apply middlewares
+app.use(session(sessionConfig));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // controllers
 app.use(require('./controllers'));

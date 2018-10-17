@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@ limitations under the License.
 */
 
 import { combineReducers } from 'redux';
-
-import { reducer as form } from 'redux-form';
+// import { reducer as form } from 'redux-form';
 import app from './app';
 import nodes from './nodes';
-import stage, * as fromStage from './stage';
+import stage from './stage';
 import tabs from './tabs';
 
 const rootReducer = combineReducers({
-  form,
+  // form,
   app,
   nodes,
   stage,
@@ -31,10 +30,3 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
-
-// Selectors from stage
-export const stageHasNode = (state, params) =>
-  fromStage.stageHasNode(state.stage, params);
-
-export const getStageNode = (state, params) =>
-  fromStage.getStageNode(state.stage, params);

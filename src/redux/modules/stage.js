@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -137,7 +137,7 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         saveSharedLoading: false,
-        latestSharedMapKey: action.result
+        latestSharedMapKey: action.result.data
       }
 
     case SAVE_SHARED_MAP_FAIL:
@@ -157,7 +157,7 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         getSharedLoading: false,
-        stageNodes: action.result
+        stageNodes: action.result.data
       }
 
     case GET_SHARED_MAP_FAIL:
@@ -176,7 +176,7 @@ export default function reducer(state=initialState, action={}) {
       }
 
     case SAVE_USER_MAP_SUCCESS:
-      const newMap = action.result;
+      const newMap = action.result.data;
       let uMaps = state.userMaps;
 
       let hasKey = false;
@@ -212,7 +212,7 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         getUserMapLoading: false,
-        stageNodes: action.result
+        stageNodes: action.result.data
       }
 
     case GET_USER_MAP_FAIL:
@@ -230,7 +230,7 @@ export default function reducer(state=initialState, action={}) {
       }
 
     case DELETE_USER_MAP_SUCCESS:
-      const deletedKey = action.result.deletedKey;
+      const deletedKey = action.result.data.deletedKey;
       let maps = [...state.userMaps];
 
       for (let j=0, k=maps.length; j<k; j++) {

@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@ limitations under the License.
 
 module.exports = {
   environment: process.env.ENVIRONMENT || 'development',
-  sessionSecret: process.env.SESSION_SECRET || 'secret',
+  sessionSecret: process.env.SESSION_SECRET || '53cr3t',
   certificates: process.env.CERTIFICATES || `${process.cwd()}/server/ca-certificates.crt`,
 
-  // API
+  // Globomap API
   globomapApiUrl: process.env.GLOBOMAP_API_URL,
   globomapApiUsername: process.env.GLOBOMAP_API_USERNAME,
   globomapApiPassword: process.env.GLOBOMAP_API_PASSWORD,
@@ -33,16 +33,6 @@ module.exports = {
   redisSentinelsHosts: process.env.REDIS_SENTINELS
                         ? process.env.REDIS_SENTINELS.split(',')
                         : null,
-
-  // Redis Auth
-  // redisAuthHost: process.env.REDIS_AUTH_HOST || 'localhost',
-  // redisAuthPort: process.env.REDIS_AUTH_PORT || 6379,
-  // redisAuthPassword: process.env.REDIS_AUTH_PASSWORD,
-  // redisAuthSentinelsPort: process.env.REDIS_AUTH_SENTINELS_PORT || 26379,
-  // redisAuthSentinelsService: process.env.REDIS_AUTH_SENTINELS_SERVICE,
-  // redisAuthSentinelsHosts: process.env.REDIS_AUTH_SENTINELS
-  //                           ? process.env.REDIS_AUTH_SENTINELS.split(',')
-  //                           : null,
 
   // OAuth
   oauthLogoutUrl: process.env.OAUTH_LOGOUT_URL,
