@@ -157,7 +157,7 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         getSharedLoading: false,
-        stageNodes: action.result.data
+        stageNodes: JSON.parse(action.result.data)
       }
 
     case GET_SHARED_MAP_FAIL:

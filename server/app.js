@@ -92,9 +92,10 @@ app.use(session(sessionConfig));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// controllers
+// Controllers
 app.use(require('./controllers'));
 
+// Default routes
 app.get('/healthcheck', (req, res) => {
   return res.status(200).send('WORKING');
 });

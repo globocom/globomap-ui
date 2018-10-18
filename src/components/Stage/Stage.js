@@ -63,7 +63,7 @@ class Stage extends Component {
     if(sNodes.length > 0) {
       sItems = sNodes[0].items;
     }
-    return sItems.length > 0;
+    return sItems !== undefined ? sItems.length > 0 : false;
   }
 
   saveMap() {
@@ -126,8 +126,10 @@ class Stage extends Component {
                        : '';
 
     let rootNodeHasItens = false;
-    if (this.props.stageNodes[0] !== undefined &&
-        this.props.stageNodes[0].items.length > 0) {
+    let sNodes = this.props.stageNodes;
+
+    if (sNodes[0] !== undefined && sNodes[0].items !== undefined &&
+        sNodes[0].items.length > 0) {
       rootNodeHasItens = true;
     }
 

@@ -49,6 +49,24 @@ if (redis) {
   });
 }
 
+function flatById(mapItems) {
+  return mapItems.map((node) => {
+    return {
+      _id: node._id,
+      items: node.items.length > 0 ? flatById(node.items) : []
+    }
+  });
+}
+
+function createMapHash(mapStr) {
+  let mapItems = flatById(JSON.parse(mapStr));
+  let newMapStr = JSON.stringify(mapItems);
+
+  console.log(newMapStr);
+
+  return crypto.createHash('md5').update(newMapStr).digest('hex');
+}
+
 // List user maps
 router.get('/user', isAuthenticated, (req, res) => {
   if (!redis) {
@@ -88,7 +106,7 @@ router.post('/user', isAuthenticated, (req, res) => {
 
   const sNodes = req.body.params.value;
   const mapStr = JSON.stringify(sNodes);
-  const mapKey = crypto.createHash('md5').update(mapStr).digest('hex');
+  const mapKey = createMapHash(mapStr);
 
   getUserInfo(req.session).then(uInfo => {
     // Redis HASH email:maps, key, value
@@ -171,6 +189,7 @@ router.delete('/user/:key', isAuthenticated, (req, res) => {
   });
 });
 
+// Get shared map
 router.get('/shared/:key', isAuthenticated, (req, res) => {
   if (!redis) {
     res.json({ error: true, message: 'Redis Error' });
@@ -179,10 +198,6 @@ router.get('/shared/:key', isAuthenticated, (req, res) => {
 
   redis.get(`sharedmap:${req.params.key}`)
     .then((result) => {
-      // if (result === null) {
-      //   res.json([]);
-      //   return;
-      // }
       res.json(result);
     })
     .catch((error) => {
@@ -194,6 +209,7 @@ router.get('/shared/:key', isAuthenticated, (req, res) => {
     });
 });
 
+// Save shared map
 router.post('/shared', isAuthenticated, (req, res) => {
   if (!redis) {
     res.json({ error: true, message: 'Redis Error' });
@@ -201,7 +217,7 @@ router.post('/shared', isAuthenticated, (req, res) => {
   }
 
   const mapStr = JSON.stringify(req.body.params.value);
-  const mapKey = crypto.createHash('md5').update(mapStr).digest('hex');
+  const mapKey = createMapHash(mapStr);
 
   redis.set(`sharedmap:${mapKey}`, mapStr)
     .then((result) => {
