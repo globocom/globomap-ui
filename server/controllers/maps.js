@@ -58,17 +58,17 @@ router.get('/user', isAuthenticated, (req, res) => {
 
   getUserInfo(req.session).then(uInfo => {
     redis.hgetall(`${uInfo.email}:maps`)
-    .then((result) => {
-      result = _.mapValues(result, v => JSON.parse(v));
-      res.json(result);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({
-        error: true,
-        message: 'List User Maps Error'
+      .then((result) => {
+        result = _.mapValues(result, v => JSON.parse(v));
+        res.json(result);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({
+          error: true,
+          message: 'List User Maps Error'
+        });
       });
-    });
   })
   .catch((error) => {
     console.log(error);
@@ -122,16 +122,16 @@ router.get('/user/:key', isAuthenticated, (req, res) => {
 
   getUserInfo(req.session).then(uInfo => {
     redis.hget(`${uInfo.email}:maps`, req.params.key)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.json({
-        error: true,
-        message: 'Get User Map Error'
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.json({
+          error: true,
+          message: 'Get User Map Error'
+        });
       });
-    });
   })
   .catch((error) => {
     console.log(error);
@@ -151,16 +151,16 @@ router.delete('/user/:key', isAuthenticated, (req, res) => {
 
   getUserInfo(req.session).then(uInfo => {
     redis.hdel(`${uInfo.email}:maps`, req.params.key)
-    .then((result) => {
-      res.json({ deletedKey: req.params.key });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.json({
-        error: true,
-        message: 'Delete User Map Error'
+      .then((result) => {
+        res.json({ deletedKey: req.params.key });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.json({
+          error: true,
+          message: 'Delete User Map Error'
+        });
       });
-    });
   })
   .catch((error) => {
     console.log(error);
@@ -171,18 +171,18 @@ router.delete('/user/:key', isAuthenticated, (req, res) => {
   });
 });
 
-router.get('/shared', isAuthenticated, (req, res) => {
+router.get('/shared/:key', isAuthenticated, (req, res) => {
   if (!redis) {
     res.json({ error: true, message: 'Redis Error' });
     return;
   }
 
-  redis.get(`sharedmap:${data.key}`)
+  redis.get(`sharedmap:${req.params.key}`)
     .then((result) => {
-      if (result === null) {
-        res.json([]);
-        return;
-      }
+      // if (result === null) {
+      //   res.json([]);
+      //   return;
+      // }
       res.json(result);
     })
     .catch((error) => {
@@ -200,7 +200,7 @@ router.post('/shared', isAuthenticated, (req, res) => {
     return;
   }
 
-  const mapStr = JSON.stringify(data.value);
+  const mapStr = JSON.stringify(req.body.params.value);
   const mapKey = crypto.createHash('md5').update(mapStr).digest('hex');
 
   redis.set(`sharedmap:${mapKey}`, mapStr)

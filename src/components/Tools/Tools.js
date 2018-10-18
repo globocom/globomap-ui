@@ -210,8 +210,10 @@ class Tools extends React.Component {
 
   render() {
     let rootNodeHasItens = false;
-    if (this.props.stageNodes[0] !== undefined &&
-        this.props.stageNodes[0].items.length > 0) {
+    let sNodes = this.props.stageNodes;
+
+    if (sNodes[0] !== undefined && sNodes[0].items !== undefined &&
+        sNodes[0].items.length > 0) {
       rootNodeHasItens = true;
     }
 

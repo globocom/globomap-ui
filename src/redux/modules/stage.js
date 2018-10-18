@@ -137,7 +137,7 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         saveSharedLoading: false,
-        latestSharedMapKey: action.result.data
+        latestSharedMapKey: action.result.data.mapKey
       }
 
     case SAVE_SHARED_MAP_FAIL:

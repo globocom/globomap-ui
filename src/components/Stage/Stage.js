@@ -140,10 +140,10 @@ class Stage extends Component {
             <i className="fa fa-save"></i>
           </button>
 
-          {/* <button className="btn btn-share-map" onClick={this.shareMap}
+          <button className="btn btn-share-map" onClick={this.shareMap}
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-link"></i>
-          </button> */}
+          </button>
 
           {this.state.sharedLinkOpen &&
             <div className="shared-link">
