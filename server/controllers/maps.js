@@ -51,9 +51,18 @@ if (redis) {
 
 function flatById(mapItems) {
   return mapItems.map((node) => {
+    let nItems = node.items;
+
+    if (nItems.length > 0) {
+      nItems = nItems.sort((a, b) => {
+        return a._id < b._id ? -1 : a._id > b._id ? 1 : 0;
+      });
+      nItems = flatById(nItems);
+    }
+
     return {
       _id: node._id,
-      items: node.items.length > 0 ? flatById(node.items) : []
+      items: nItems
     }
   });
 }
@@ -61,9 +70,6 @@ function flatById(mapItems) {
 function createMapHash(mapStr) {
   let mapItems = flatById(JSON.parse(mapStr));
   let newMapStr = JSON.stringify(mapItems);
-
-  console.log(newMapStr);
-
   return crypto.createHash('md5').update(newMapStr).digest('hex');
 }
 
