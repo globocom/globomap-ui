@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Loading } from '../';
 import { getZabbixMonitoring,
          getZabbixGraph } from '../../redux/modules/plugins';
