@@ -16,36 +16,30 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { Loading } from '../';
+import { getZabbixMonitoring,
+         getZabbixGraph } from '../../redux/modules/plugins';
 import './Monit.css';
 
 class Monit extends Component {
   monitItems = ['comp_unit'];
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      triggers: []
-    }
-  }
-
   getIcon(val) {
     return parseInt(val, 10) !== 0
-           ? <i className="fa fa-times"></i>
-           : <i className="fa fa-check"></i>;
+            ? <i className="fa fa-times"></i>
+            : <i className="fa fa-check"></i>;
   }
 
-  fetchMonitData(node) {
-    this.setState({ loading: true, triggers: [] }, () => {
-      this.socket.emit('getmonitoring', node, (data) => {
-        if (data.error) {
-          console.log(data.message);
-          return this.setState({ loading: false, triggers: [] });
-        }
-        return this.setState({ loading: false, triggers: data });
-      });
-    });
-  }
+  // fetchMonitData(node) {
+  //   this.setState({ loading: true, triggers: [] }, () => {
+  //     this.socket.emit('getmonitoring', node, (data) => {
+  //       if (data.error) {
+  //         console.log(data.message);
+  //         return this.setState({ loading: false, triggers: [] });
+  //       }
+  //       return this.setState({ loading: false, triggers: data });
+  //     });
+  //   });
+  // }
 
   componentWillReceiveProps(nextProps){
     const next = nextProps.node;
@@ -56,7 +50,8 @@ class Monit extends Component {
     }
 
     if(current._id !== next._id) {
-      this.fetchMonitData(next);
+      // this.fetchMonitData(next);
+      this.props.getZabbixMonitoring(next);
     }
   }
 
@@ -67,12 +62,13 @@ class Monit extends Component {
       return;
     }
 
-    this.fetchMonitData(node);
+    // this.fetchMonitData(node);
+    this.props.getZabbixMonitoring(node);
   }
 
   render() {
     if(this.props.node.type === 'comp_unit'){
-      let props = this.state.triggers.map((trigger, i) => {
+      let props = this.state.zbxTriggers.map((trigger, i) => {
         return (
           <tr key={trigger.properties.triggerid}>
             <th>{trigger.key}</th>
@@ -101,4 +97,16 @@ class Monit extends Component {
   }
 }
 
-export default Monit;
+function mapStateToProps(state) {
+  return {
+    zbxMonitLoading: state.plugins.zbxMonitLoading,
+    zbxGraphLoading: state.plugins.zbxGraphLoading,
+    zbxTriggers: state.plugins.zbxTriggers,
+    zbxGraph: state.plugins.zbxGraph
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { getZabbixMonitoring, getZabbixGraph }
+)(Monit);
