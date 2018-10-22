@@ -51,6 +51,11 @@ module.exports = {
     return new Promise((resolve, reject) => {
       let token = null;
 
+      if (config.environment !== 'production') {
+        resolve({ "email": "local@localhost" });
+        return;
+      }
+
       if (session.tokenData !== undefined) {
         token = session.tokenData.access_token;
       } else {

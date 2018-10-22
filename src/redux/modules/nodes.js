@@ -178,7 +178,7 @@ export function traversalSearchWithGraphs(opts) {
 
   return {
     types: [TRAVERSAL, TRAVERSAL_SUCCESS, TRAVERSAL_FAIL],
-    promise: (client) => client.get('/api/traversal-search', options),
+    promise: (client) => client.post('/api/traversal-search', options),
     graphs: options.graphs,
     node: options.node
   }

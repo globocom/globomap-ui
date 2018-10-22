@@ -119,9 +119,8 @@ router.get('/find-nodes', isAuthenticated, (req, res) => {
     });
 });
 
-router.get('/traversal-search', isAuthenticated, (req, res) => {
-  const { graphs, depth } = req.query;
-  const node = JSON.parse(req.query.node);
+router.post('/traversal-search', isAuthenticated, (req, res) => {
+  let { graphs, depth, node } = req.body.params;
 
   gmapclient.traversalMultiple({
       graphs: graphs,
