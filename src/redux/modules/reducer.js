@@ -15,17 +15,17 @@ limitations under the License.
 */
 
 import { combineReducers } from 'redux';
-// import { reducer as form } from 'redux-form';
 import app from './app';
 import nodes from './nodes';
 import stage from './stage';
+import plugins from './plugins';
 import tabs from './tabs';
 
 const rootReducer = combineReducers({
-  // form,
   app,
   nodes,
   stage,
+  plugins,
   tabs
 });
 
