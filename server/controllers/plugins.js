@@ -15,53 +15,69 @@ limitations under the License.
 */
 
 const express = require('express');
+const GmapClient = require('globomap-api-jsclient');
 const config = require('../config');
 
 const router = express.Router();
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
 
+const gmapclient = new GmapClient({
+  username: config.globomapApiUsername,
+  password: config.globomapApiPassword,
+  apiUrl: config.globomapApiUrl
+});
+
 // Zabbix
 router.get('/zabbix/monitoring', (req, res) => {
-
+  const { equipment_type, ips } = req.query;
   const eTypes = zabbixEquipmentTypes.split(',');
-  const nodeType = data.properties.equipment_type || '';
+  const nodeType = equipment_type || '';
 
   if(!eTypes.includes(nodeType)) {
-    return fn([]);
+    return res.status(200).json([]);
   }
 
-  this.gmapclient.pluginData('zabbix', {
-      ips: Array.from(data.properties.ips || '')
+  gmapclient.pluginData('zabbix', {
+      ips: Array.from(ips || '')
     })
     .then((data) => {
-      fn(data);
+      return res.status(200).json(data);
     })
     .catch((error) => {
-      fn({ error: true, message: 'Get Monitoring Error' });
+      console.log(error);
+      return res.status(500).json({
+        error: true,
+        message: 'Get Monitoring Error'
+      });
     });
 
 });
 
 router.get('/zabbix/graph', (req, res) => {
+  const { graphId } = req.query;
 
-  this.gmapclient.pluginData('zabbix', {
+  gmapclient.pluginData('zabbix', {
     encoded: 1,
-    graphid: data.graphId
+    graphid: graphId
   })
   .then((data) => {
-    fn(data);
+    return res.status(200).json(data);
   })
   .catch((error) => {
     // retry
-    this.gmapclient.pluginData('zabbix', {
+    gmapclient.pluginData('zabbix', {
       encoded: 1,
-      graphid: data.graphId
+      graphid: graphId
     })
     .then((data) => {
-      fn(data);
+      return res.status(200).json(data);
     })
     .catch((error) => {
-      fn({ error: true, message: 'Get Zabbix Graph Error' });
+      console.log(error);
+      return res.status(500).json({
+        error: true,
+        message: 'Get Zabbix Graph Error'
+      });
     });
   });
 

@@ -137,7 +137,7 @@ export default function reducer(state=initialState, action={}) {
     case FETCH_QUERIES_SUCCESS:
       return {
         ...state,
-        queries: action.result.data.documents
+        queries: action.result.data
       };
 
     case FETCH_QUERIES_FAIL:

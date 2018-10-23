@@ -66,3 +66,7 @@ limitations under the License.
 .monit .trigger-1 {
   background-color: #ea4335;
 }
+ .monit .monit-buttons {
+   text-align: center;
+   padding: 10px;
+ }

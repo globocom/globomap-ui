@@ -17,29 +17,11 @@ limitations under the License.
 import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { showModal, closeModal } from '../../redux/modules/app';
 import { setExtTab } from '../../redux/modules/tabs';
 import { Properties, Monit, Query } from '../';
 import './InfoContentHead.css';
 
 class InfoContentHead extends Component {
-
-  openZbxGraph(event) {
-    const node = this.props.currentNode;
-    if (!node) {
-      return;
-    }
-    this.props.showModal(null);
-    this.socket.emit('getZabbixGraph', { graphId: node.id }, (base64data) => {
-      if (base64data.error) {
-        console.log(base64data.message);
-        this.props.closeModal();
-        return;
-      }
-      this.props.showModal(<img src={`data:image/png;base64,${base64data.toString()}`}
-                                alt={node.name} />);
-    });
-  }
 
   render() {
     const node = this.props.currentNode;
@@ -48,14 +30,14 @@ class InfoContentHead extends Component {
     }
 
     let tabs = [{ name: 'Properties', content: <Properties key="properties-info" item={node} /> },
-                // { name: 'Monitoring', content: <Monit node={node} /> },
+                { name: 'Monitoring', content: <Monit /> },
                 { name: 'Reports', content: <Query /> }];
 
     let tabsButtons = tabs.map((tabItem) => {
       let active = this.props.currentExtTab === tabItem.name ? ' active' : '';
       let disabled = false;
 
-      if (tabItem.name === 'Monitoring' && node.type !== 'comp_unit') {
+      if (tabItem.name === 'Monitoring' && !['comp_unit', 'zabbix_graph'].includes(node.type)) {
         disabled = true;
       }
 
@@ -89,21 +71,11 @@ class InfoContentHead extends Component {
       );
     });
 
-    let zbxGraphButton = (
-      <button className="topcoat-button--cta" onClick={(e) => this.openZbxGraph(e)}>
-        <i className="fa fa-bar-chart"></i>
-      </button>
-    );
-
     return (
       <div className="info-content-head">
         <nav className="tabs-nav">
           <ul>{tabsButtons}</ul>
         </nav>
-        <div className="plugins-buttons">
-          {node.type === 'zabbix_graph' &&
-            zbxGraphButton}
-        </div>
         <div className="tabs-container">
           {tabsContent}
         </div>
@@ -123,5 +95,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { showModal, closeModal, setExtTab }
+  { setExtTab }
 )(InfoContentHead);

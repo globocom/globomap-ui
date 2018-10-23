@@ -71,9 +71,3 @@ limitations under the License.
   display: block;
   background-color: #f8f8f8;
 }
-
-.subnodes-header .plugins-buttons {
-  position: absolute;
-  top: 43px;
-  right: 10px;
-}

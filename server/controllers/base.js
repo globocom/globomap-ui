@@ -72,7 +72,7 @@ router.get('/edges', isAuthenticated, (req, res) => {
 router.get('/queries', isAuthenticated, (req, res) => {
   gmapclient.listQueries({ perPage: 100, page: 1 })
     .then((data) => {
-      return res.status(200).json(data.collections);
+      return res.status(200).json(data.documents);
     })
     .catch((error) => {
       console.log(error);

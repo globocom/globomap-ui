@@ -17,12 +17,13 @@ limitations under the License.
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Loading } from '../';
+import { showModal, closeModal } from '../../redux/modules/app';
 import { getZabbixMonitoring,
          getZabbixGraph } from '../../redux/modules/plugins';
 import './Monit.css';
 
 class Monit extends Component {
-  monitItems = ['comp_unit'];
+  monitItems = ['comp_unit', 'zabbix_graph'];
 
   getIcon(val) {
     return parseInt(val, 10) !== 0
@@ -30,46 +31,58 @@ class Monit extends Component {
             : <i className="fa fa-check"></i>;
   }
 
-  // fetchMonitData(node) {
-  //   this.setState({ loading: true, triggers: [] }, () => {
-  //     this.socket.emit('getmonitoring', node, (data) => {
-  //       if (data.error) {
-  //         console.log(data.message);
-  //         return this.setState({ loading: false, triggers: [] });
-  //       }
-  //       return this.setState({ loading: false, triggers: data });
-  //     });
-  //   });
-  // }
+  openZbxGraph(event) {
+    event.stopPropagation();
+    const node = this.props.currentNode;
 
-  componentWillReceiveProps(nextProps){
-    const next = nextProps.node;
-    const current = this.props.node;
+    if (!node) return;
+
+    this.props.showModal(<img src={`data:image/png;base64,${this.props.zbxGraph}`}
+                              alt={node.name} />);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const next = nextProps.currentNode;
+    const current = this.props.currentNode;
 
     if(!this.monitItems.includes(next.type)) {
       return;
     }
 
     if(current._id !== next._id) {
-      // this.fetchMonitData(next);
-      this.props.getZabbixMonitoring(next);
+      if (current.type === 'comp_unit') {
+        this.props.getZabbixMonitoring(next);
+      }
+
+      if (current.type === 'zabbix_graph') {
+        this.props.getZabbixGraph(next);
+      }
     }
   }
 
   componentDidMount() {
-    const node = this.props.node;
+    const node = this.props.currentNode;
 
     if(!this.monitItems.includes(node.type)) {
       return;
     }
 
-    // this.fetchMonitData(node);
-    this.props.getZabbixMonitoring(node);
+    if (node.type === 'comp_unit') {
+      this.props.getZabbixMonitoring(node);
+    }
+
+    if (node.type === 'zabbix_graph') {
+      this.props.getZabbixGraph(node);
+    }
   }
 
   render() {
-    if(this.props.node.type === 'comp_unit'){
-      let props = this.state.zbxTriggers.map((trigger, i) => {
+    let node = this.props.currentNode,
+        triggers = [],
+        zbxGraphButton = '';
+
+    if (node.type === 'comp_unit') {
+      triggers = this.props.zbxTriggers.map((trigger) => {
         return (
           <tr key={trigger.properties.triggerid}>
             <th>{trigger.key}</th>
@@ -80,26 +93,38 @@ class Monit extends Component {
         );
       });
 
-      if(props.length === 0) {
-        props = [<tr key={1}><th className="trigger-not-found"></th></tr>];
+      if (triggers.length === 0) {
+        triggers = [<tr key={1}><th className="trigger-not-found"></th></tr>];
       }
+    }
 
-      return (
-        <div className="monit">
-          <table>
-            <tbody>{props}</tbody>
-          </table>
-          <Loading isLoading={this.state.loading} iconSize="medium" />
-        </div>
+    if (node.type === 'zabbix_graph') {
+      zbxGraphButton = (
+        <button className="topcoat-button--cta" onClick={(e) => this.openZbxGraph(e)}>
+          <i className="fa fa-chart-bar"></i>&nbsp;Show Zabbix Graph
+        </button>
       );
     }
 
-    return null;
+    return (
+      <div className="monit">
+        <div className="monit-buttons">
+          { zbxGraphButton }
+        </div>
+        <table>
+          <tbody>{ triggers }</tbody>
+        </table>
+        <Loading iconSize="medium"
+                 isLoading={ this.props.zbxMonitLoading ||
+                             this.props.zbxGraphLoading } />
+      </div>
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
+    currentNode: state.nodes.currentNode,
     zbxMonitLoading: state.plugins.zbxMonitLoading,
     zbxGraphLoading: state.plugins.zbxGraphLoading,
     zbxTriggers: state.plugins.zbxTriggers,
@@ -109,5 +134,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { getZabbixMonitoring, getZabbixGraph }
+  { getZabbixMonitoring, getZabbixGraph, showModal,
+    closeModal }
 )(Monit);

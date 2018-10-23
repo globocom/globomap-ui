@@ -32,12 +32,12 @@ class Query extends Component {
       return (
         <li key={q.name}>
           <a className="query" target="_blank" rel="noopener noreferrer"
-            href={`/report?q=${q._key}&v=${node._id}`}>
-            {q.description}
+             href={`/tools/report?q=${q._key}&v=${node._id}`}>
+            { q.description }
           </a>
         </li>
       );
-    })
+    });
 
     return (
       <ul>{items}</ul>
@@ -47,7 +47,7 @@ class Query extends Component {
   render() {
     return (
       <div className="queries">
-        {this.buildQueryItems()}
+        { this.buildQueryItems() }
       </div>
     );
   }

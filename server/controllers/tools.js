@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+const _ = require('lodash');
 const express = require('express');
 const GmapClient = require('globomap-api-jsclient');
 const { isAuthenticated, getUserInfo } = require('../helpers');
