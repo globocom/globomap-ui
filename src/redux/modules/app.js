@@ -50,7 +50,13 @@ const initialState = {
   collectionsByGraphs: {},
   enabledCollections: [],
   selectedCollections: [],
-  serverData: {},
+  serverData: {
+    environment: '',
+    userInfo: {
+      email: '',
+      picture: ''
+    }
+  },
   hasId: false,
   modalVisible: false,
   modalContent: null
@@ -154,7 +160,7 @@ export default function reducer(state=initialState, action={}) {
     case GET_SERVER_DATA_SUCCESS:
       return {
         ...state,
-        serverData: action.result
+        serverData: action.result.data
       };
 
     case GET_SERVER_DATA_FAIL:

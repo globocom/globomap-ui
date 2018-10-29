@@ -52,7 +52,10 @@ module.exports = {
       let token = null;
 
       if (config.environment !== 'production') {
-        resolve({ "email": "local@localhost" });
+        resolve({
+          "email": "local@localhost",
+          "picture": "/images/user.png"
+        });
         return;
       }
 
@@ -66,9 +69,11 @@ module.exports = {
         reject("getUserInfo: oauthUserInfoUrl is null");
       }
 
-      axios.get(url, { headers: { 'Authorization': `Bearer ${token}` } })
-        .then(response => resolve(response.data))
-        .catch(error => reject(error));
+      axios.get(url, {
+        headers: { 'Authorization': `Bearer ${token}`}
+      })
+      .then(response => resolve(response.data))
+      .catch(error => reject(error));
     })
     .catch((error) => {
       console.log(error);

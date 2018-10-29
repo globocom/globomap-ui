@@ -1,0 +1,37 @@
+.sidebar-user {
+  box-sizing: border-box;
+}
+
+.sidebar-user {
+  width: 100%;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+}
+
+.sidebar-user .user-logout {
+  display: block;
+  text-align: center;
+  color: white;
+  font-size: 0.8em;
+  text-decoration: none;
+  margin: 20px 0;
+}
+
+.sidebar-user .user-logout:hover {
+  color: #2eb78e;
+}
+
+.sidebar-user .user-avatar {
+  overflow: hidden;
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.sidebar-user .user-avatar img {
+  width: 100%;
+}

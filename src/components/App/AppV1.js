@@ -20,7 +20,8 @@ import { connect } from 'react-redux';
 import { fetchGraphs, fetchCollections, fetchEdges,
          fetchQueries, getServerData, toggleHasId } from '../../redux/modules/app';
 import { clearCurrentNode } from '../../redux/modules/nodes';
-import { Sidebar } from '../';
+import { Header, Modal, SearchContent, Stage,
+         SubNodes, Tools } from '../';
 import './App.css';
 
 class App extends Component {
@@ -53,7 +54,32 @@ class App extends Component {
   render() {
     return (
       <div className="main">
-        <Sidebar />
+        <span className="has-id"
+              onDoubleClick={this.props.toggleHasId}>&nbsp;</span>
+
+        <Header />
+        <Tools />
+
+        {/*<Tabs>
+          <Tab name="Search Results">
+            <SearchContent />
+          </Tab>
+          <Tab name="Navigation">
+            <Stage />
+          </Tab>
+        </Tabs>*/}
+
+        <div className="tabs-container">
+          <div className={'tab-content' + (this.props.currentMainTab === 'Search Results' ? ' active' : '')}>
+            <SearchContent />
+          </div>
+          <div className={'tab-content' + (this.props.currentMainTab === 'Navigation' ? ' active' : '')}>
+            <Stage sharedMapKey={this.props.match.params.mapKey} />
+          </div>
+        </div>
+
+        <SubNodes />
+        <Modal />
       </div>
     );
   }

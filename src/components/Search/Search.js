@@ -14,4 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export const host = 'http://localhost:8888';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import './Search.css';
+
+class Search extends Component {
+
+  render() {
+    return (
+      <section className="search">
+      </section>
+    );
+  }
+
+}
+
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Search);

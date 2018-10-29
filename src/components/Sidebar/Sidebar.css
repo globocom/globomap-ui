@@ -1,0 +1,18 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 8%;
+  min-width: 90px;
+  background-color: #1e2529;
+}
+
+.sidebar .sidebar-logo {
+  text-align: center;
+  padding: 45px 0;
+}
+
+.sidebar .sidebar-logo img {
+  width: 85%;
+}
