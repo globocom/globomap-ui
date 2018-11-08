@@ -26,6 +26,8 @@ import NotFound from './NotFound/NotFound';
 import PopMenu from './PopMenu/PopMenu';
 import Properties from './Properties/Properties';
 import Query from './Query/Query';
+import Search from './Search/Search';
+import SearchHeader from './Search/SearchHeader';
 import SearchContent from './SearchContent/SearchContent';
 import Sidebar from './Sidebar/Sidebar';
 import Stage from './Stage/Stage';
@@ -35,6 +37,6 @@ import Tools from './Tools/Tools';
 export {
   App, Header, InfoContentHead, Loading, Modal,
   Monit, NodeEdges, NodeItem, NotFound, PopMenu,
-  Properties, Query, SearchContent, Sidebar, Stage,
-  SubNodes, Tools
+  Properties, Query, Search, SearchHeader, SearchContent,
+  Sidebar, Stage, SubNodes, Tools
 }

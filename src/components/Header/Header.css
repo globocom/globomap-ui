@@ -23,37 +23,24 @@ limitations under the License.
   box-sizing: border-box;
 }
 
-.main-header .header-group,
+/* .main-header .header-group,
 .main-header .header-sub-group {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+} */
+
+.main-header {
+  width: 100%;
 }
 
 .main-header .header-group {
   display: flex;
-  justify-content: space-between;
-  height: 50px;
-  background-color: #3872d2;
-  z-index: 9;
-}
-
-.main-header .header-group .logo {
-  font-size: 17px;
-  font-weight: lighter;
-  letter-spacing: -1px;
-  color: white;
-  margin: 0 20px;
-  height: 50px;
-  line-height: 18px;
-  padding-top: 5px;
-}
-
-.main-header .logo-map {
-  font-weight: bold;
-  display: block;
-  font-size: 21px;
+  justify-content: left;
+  /* height: 50px; */
+  background-color: rgba(100, 200, 100, 0.35);
+  /* z-index: 9; */
 }
 
 .main-header .search-box {
@@ -206,25 +193,10 @@ limitations under the License.
 }
 
 .search-box-options .properties-items .btn-or-prop,
-.search-box-options .properties-items .btn-and-prop {
+.search-box-options .properties-items .btn-add-prop {
   margin-right: 5px;
 }
 
 .search-box-options .properties-items .btn-remove-prop {
   margin-left: 5px;
-}
-
-.main-header .user-items {
-  display: flex;
-  float: right;
-  height: 50px;
-  align-items: center;
-  padding: 0 10px;
-}
-
-.main-header .user-items .logout-btn {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 14px;
 }

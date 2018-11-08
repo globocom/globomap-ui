@@ -1,0 +1,9 @@
+.search {
+  position: fixed;
+  top: 0;
+  left: 100px;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  padding: 50px 7%;
+}

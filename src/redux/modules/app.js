@@ -167,7 +167,13 @@ export default function reducer(state=initialState, action={}) {
       console.log(action.error);
       return {
         ...state,
-        serverData: {}
+        serverData: {
+          environment: '',
+          userInfo: {
+            email: '',
+            picture: ''
+          }
+        }
       };
 
     case TOGGLE_GRAPH:

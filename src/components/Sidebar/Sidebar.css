@@ -3,8 +3,9 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 8%;
+  width: 100px;
   min-width: 90px;
+  min-height: 640px;
   background-color: #1e2529;
 }
 

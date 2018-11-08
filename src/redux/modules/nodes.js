@@ -189,7 +189,7 @@ export function traversalSearch(opts) {
     const options = _.merge({
       graphs: getState().app.graphs.map(g => g.name)
     }, opts);
-    dispatch(traversalSearchWithGraphs(options))
+    dispatch(traversalSearchWithGraphs(options));
   }
 }
 

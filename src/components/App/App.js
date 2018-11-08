@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import { fetchGraphs, fetchCollections, fetchEdges,
          fetchQueries, getServerData, toggleHasId } from '../../redux/modules/app';
 import { clearCurrentNode } from '../../redux/modules/nodes';
-import { Sidebar } from '../';
+import { Sidebar, Search } from '../';
 import './App.css';
 
 class App extends Component {
@@ -54,6 +54,7 @@ class App extends Component {
     return (
       <div className="main">
         <Sidebar />
+        <Search />
       </div>
     );
   }

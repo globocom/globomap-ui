@@ -251,9 +251,6 @@ class Header extends Component {
     return (
       <header className="main-header">
         <div className="header-group">
-          <span className="logo">
-            globo<span className="logo-map">map</span>
-          </span>
 
           <div className="search-box">
             <input className="search-query topcoat-text-input--large" type="search" name="query"
@@ -275,14 +272,8 @@ class Header extends Component {
             {this.state.showOptions && searchOptions}
           </div>
 
-          <div className="user-items">
-            <button className="btn logout-btn" href="/logout"
-              onClick={() => { window.location.href = '/logout' }}>
-              logout <i className="fa fa-sign-out"></i>
-            </button>
-          </div>
         </div>
-        <div className="header-sub-group"></div>
+        {/* <div className="header-sub-group"></div> */}
       </header>
     );
   }

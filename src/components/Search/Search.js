@@ -16,6 +16,7 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { SearchHeader } from '../';
 import './Search.css';
 
 class Search extends Component {
@@ -23,6 +24,7 @@ class Search extends Component {
   render() {
     return (
       <section className="search">
+        <SearchHeader />
       </section>
     );
   }
