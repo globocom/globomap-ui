@@ -8,16 +8,18 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
 
-    <link rel="stylesheet" href="%PUBLIC_URL%/css/normalize.css" />
+    <link rel="preload" href="https://s3.glbimg.com/cdn/fonts/opensans/regular.woff2" as="font" crossorigin>
+    <link rel="preload" href="https://s3.glbimg.com/cdn/fonts/opensans/bold.woff2" as="font" crossorigin>
+    <link rel="preload" href="https://s3.glbimg.com/cdn/fonts/opensans/light.woff2" as="font" crossorigin>
+
+    <link rel="stylesheet" href="%PUBLIC_URL%/css/normalize.min.css" />
+    <link rel="stylesheet" href="https://s3.glbimg.com/cdn/fonts/opensans/all.css" />
     <link rel="stylesheet" href="%PUBLIC_URL%/css/fontawesome-all.min.css" />
-    <link rel="stylesheet" href="%PUBLIC_URL%/css/topcoat-desktop-light.min.css" />
 
     <title>Globomap</title>
   </head>
   <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
 </html>
