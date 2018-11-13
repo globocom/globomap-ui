@@ -14,6 +14,7 @@
   font-size: 1.6em;
   height: 120px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  outline: none;
 }
 
 .sidebar-buttons button:last-child {

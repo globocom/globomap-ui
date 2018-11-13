@@ -16,16 +16,22 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SearchHeader } from '../';
+import {
+  SearchHeader,
+  SearchContent
+} from '../';
 import './Search.css';
 
 class Search extends Component {
 
   render() {
     return (
-      <section className="search">
-        <SearchHeader />
-      </section>
+      <div className="search-container">
+        <section className="search">
+          <SearchHeader />
+        </section>
+        <SearchContent />
+      </div>
     );
   }
 

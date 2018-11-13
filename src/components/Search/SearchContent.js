@@ -16,9 +16,8 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { traversalSearch } from '../../redux/modules/nodes';
+import { traversalSearch, clearNodes } from '../../redux/modules/nodes';
 import { addStageNode } from '../../redux/modules/stage';
-import { Loading } from '../';
 import SearchContentPagination from './SearchContentPagination';
 import './SearchContent.css';
 
@@ -58,8 +57,11 @@ class SearchContent extends Component {
     }
 
     return (
-      <div className="search-content">
-        {allNodes.length > 0 && allNodes &&
+      <div className={`search-content${allNodes.length > 0 ? ' active' : ''}`}>
+        <button className="search-content-btn-close" onClick={this.props.clearNodes}>
+          <i className="fa fa-times"></i>
+        </button>
+        {allNodes.length > 0 &&
           <table className="search-content-results">
             <thead>
               <tr>
@@ -69,11 +71,12 @@ class SearchContent extends Component {
               </tr>
             </thead>
             <tbody>{allNodes}</tbody>
+            <tfoot className="search-content-base">
+              <tr>
+                <th><SearchContentPagination /></th>
+              </tr>
+            </tfoot>
           </table>}
-        <div className="search-content-base">
-          <SearchContentPagination />
-        </div>
-        <Loading isLoading={this.props.findLoading} iconSize="big" />
       </div>
     );
   }
@@ -84,7 +87,6 @@ function mapStateToProps(state) {
     nodeList: state.nodes.nodeList,
     currentNode: state.nodes.currentNode,
     perPage: state.nodes.perPage,
-    findLoading: state.nodes.findLoading,
     currentPage: state.nodes.currentPage,
     namedCollections: state.app.namedCollections
   };
@@ -92,5 +94,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { traversalSearch, addStageNode }
+  { traversalSearch, addStageNode, clearNodes }
 )(SearchContent);

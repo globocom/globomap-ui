@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import Properties from './Properties/Properties';
 import Query from './Query/Query';
 import Search from './Search/Search';
 import SearchHeader from './Search/SearchHeader';
-import SearchContent from './SearchContent/SearchContent';
+import SearchContent from './Search/SearchContent';
 import Sidebar from './Sidebar/Sidebar';
 import Stage from './Stage/Stage';
 import SubNodes from './SubNodes/SubNodes';

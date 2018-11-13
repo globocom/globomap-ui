@@ -101,7 +101,7 @@ router.get('/find-nodes', isAuthenticated, (req, res) => {
   gmapclient.search({
       collections: co,
       query: q,
-      perPage: per_page || process.env.PAGE_SIZE || 20,
+      perPage: per_page || process.env.PAGE_SIZE || 50,
       page: page
     })
     .then((data) => {

@@ -5,5 +5,7 @@
   bottom: 0;
   right: 0;
   display: flex;
-  padding: 50px 7%;
+  padding: 50px 7% 0;
+  z-index: 8;
+  background-color: white;
 }

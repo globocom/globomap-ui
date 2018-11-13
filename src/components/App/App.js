@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import { fetchGraphs, fetchCollections, fetchEdges,
          fetchQueries, getServerData, toggleHasId } from '../../redux/modules/app';
 import { clearCurrentNode } from '../../redux/modules/nodes';
-import { Sidebar, Search } from '../';
+import { Sidebar, Search, Loading } from '../';
 import './App.css';
 
 class App extends Component {
@@ -52,9 +52,11 @@ class App extends Component {
 
   render() {
     return (
-      <div className="main">
+      <div className={`main${this.props.findLoading ? ' loading' : ''}`}>
         <Sidebar />
         <Search />
+        <Loading isLoading={this.props.findLoading ||
+                            this.props.traversalLoading} iconSize="big" />
       </div>
     );
   }
@@ -63,7 +65,9 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    currentMainTab: state.tabs.currentMainTab
+    currentMainTab: state.tabs.currentMainTab,
+    findLoading: state.nodes.findLoading,
+    traversalLoading: state.nodes.traversalLoading
   };
 }
 

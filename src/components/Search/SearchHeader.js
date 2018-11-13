@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -186,7 +186,8 @@ class SearchHeader extends Component {
 
           {this.state.searchFor === 'all' &&
             <div className="search-for-all">
-              <input className="search-query" type="search" name="query" placeholder="Type keyword"
+              <input className="search-query" type="search" name="query"
+                placeholder="Type keyword" autoComplete="off"
                 value={this.state.query}
                 onChange={this.handleSearchChange}
                 onKeyPress={this.handleKeyPress} />

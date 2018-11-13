@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,6 +26,19 @@ a {
   color: #288edf
 }
 
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+
 .has-id {
   position: absolute;
   left: 0;
@@ -35,52 +48,3 @@ a {
   user-select: none;
   z-index: 10;
 }
-
-/* Graph colors */
-.graph-color-0,
-.graph-color-0:hover { background-color: #67001f }
-
-.graph-color-1,
-.graph-color-1:hover { background-color: #b2182b }
-
-.graph-color-2,
-.graph-color-2:hover { background-color: #d6604d }
-
-.graph-color-3,
-.graph-color-3:hover { background-color: #f4a582 }
-
-.graph-color-4,
-.graph-color-4:hover { background-color: #92c5de }
-
-.graph-color-5,
-.graph-color-5:hover { background-color: #4393c3 }
-
-.graph-color-6,
-.graph-color-6:hover { background-color: #2166ac }
-
-.graph-color-7,
-.graph-color-7:hover { background-color: #053061 }
-
-.graph-color-8,
-.graph-color-8:hover { background-color: #67001f }
-
-.graph-color-9,
-.graph-color-9:hover { background-color: #b2182b }
-
-.graph-color-10,
-.graph-color-10:hover { background-color: #d6604d }
-
-.graph-color-11,
-.graph-color-11:hover { background-color: #67001f }
-
-.graph-color-12,
-.graph-color-12:hover { background-color: #b2182b }
-
-.graph-color-13,
-.graph-color-13:hover { background-color: #d6604d }
-
-.graph-color-14,
-.graph-color-14:hover { background-color: #f4a582 }
-
-.graph-color-15,
-.graph-color-15:hover { background-color: #92c5de }

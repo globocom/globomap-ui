@@ -26,8 +26,8 @@ class Loading extends React.Component {
       'big': 'fa-3x'
     };
     const iconSize = Object.keys(iconSizes).includes(this.props.iconSize)
-                     ? iconSizes[this.props.iconSize]
-                     : iconSizes['medium'];
+                      ? iconSizes[this.props.iconSize]
+                      : iconSizes['medium'];
     return (
       <CSSTransitionGroup transitionName="ui-loading"
                           transitionEnterTimeout={200}

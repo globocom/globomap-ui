@@ -24,6 +24,8 @@ const FIND_NODES = 'find_nodes';
 const FIND_NODES_SUCCESS = 'find_nodes_success';
 const FIND_NODES_FAIL = 'find_nodes_fail';
 
+const CLEAR_NODES = 'clear_nodes';
+
 const TRAVERSAL = 'traversal';
 const TRAVERSAL_SUCCESS = 'traversal_success';
 const TRAVERSAL_FAIL = 'traversal_fail';
@@ -39,7 +41,9 @@ const initialState = {
   searchOptions: {},
   subNodesByGraph: [],
   findLoaded: false,
-  traversalLoaded: false
+  findLoading: false,
+  traversalLoaded: false,
+  traversalLoading: false
 };
 
 export default function reducer(state=initialState, action={}) {
@@ -88,6 +92,12 @@ export default function reducer(state=initialState, action={}) {
         findLoaded: false,
         findLoading: false,
         error: action.error
+      };
+
+    case CLEAR_NODES:
+      return {
+        ...state,
+        nodeList: []
       };
 
     case TRAVERSAL:
@@ -166,6 +176,12 @@ export function findNodes(opts) {
     types: [FIND_NODES, FIND_NODES_SUCCESS, FIND_NODES_FAIL],
     promise: (client) => client.get('/api/find-nodes', options),
     options
+  };
+}
+
+export function clearNodes() {
+  return {
+    type: CLEAR_NODES
   };
 }
 

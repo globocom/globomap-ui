@@ -148,7 +148,7 @@
 .search-options {
   overflow-y: auto;
   border-top: 2px solid #ccc;
-  padding: 10px 0 0;
+  padding: 10px 0 20px;
 }
 
 .search-options .collection-items {
