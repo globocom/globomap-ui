@@ -25,7 +25,7 @@ class NodeEdges extends Component {
     super(props);
     this.state = {
       inOpen: false,
-      outOppen: false
+      outOpen: false
     }
 
     this.buildEdgeItems = this.buildEdgeItems.bind(this);

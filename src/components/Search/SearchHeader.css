@@ -44,7 +44,7 @@
   line-height: normal;
   color: #2eb78e;
   padding: 50px 10px 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
   margin-bottom: 40px;
   outline: none;
 
@@ -58,7 +58,7 @@
 
 .search-box .prop-query::placeholder,
 .search-box .search-query::placeholder {
-  color: #eee;
+  color: #e8e8e8;
 }
 
 .search-for-properties {

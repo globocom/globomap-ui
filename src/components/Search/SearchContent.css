@@ -145,6 +145,29 @@ limitations under the License.
   font-size: 16px;
 }
 
+.search-content .node-props {
+  display: block;
+  height: 0;
+  background-color: #f8f8f8;
+  overflow: hidden;
+}
+
+.search-content .node-props.open {
+  height: 200px;
+}
+
+.search-content .node-props td {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.search-content .node-props button {
+  border: 0;
+  background: lime;
+}
+
 .search-content-base {
   position: absolute;
   bottom: 0;

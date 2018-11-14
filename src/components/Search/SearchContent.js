@@ -16,7 +16,7 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { traversalSearch, clearNodes } from '../../redux/modules/nodes';
+import { clearNodes, setCurrentNode } from '../../redux/modules/nodes';
 import { addStageNode } from '../../redux/modules/stage';
 import SearchContentPagination from './SearchContentPagination';
 import './SearchContent.css';
@@ -30,10 +30,14 @@ class SearchContent extends Component {
 
   onNodeSelect(event, node) {
     event.stopPropagation();
+    this.props.setCurrentNode(node);
+  }
+
+  onOpenMap(event, node) {
+    event.stopPropagation();
     this.props.addStageNode(node, null, true);
-    if (this.props.currentNode === null) {
-      this.props.traversalSearch({ node });
-    }
+    // change to map screen
+    // this.setMainTab('map');
   }
 
   render() {
@@ -46,12 +50,20 @@ class SearchContent extends Component {
         let current = (this.props.currentNode &&
                        node._id === this.props.currentNode._id);
         return (
-          <tr key={node._id} className={current ? 'current' : ''}
-              onClick={(e) => this.onNodeSelect(e, node)}>
-            <td>{i + index}</td>
-            <td>{this.props.namedCollections[node.type].alias}</td>
-            <td>{node.name}</td>
-          </tr>
+          <React.Fragment key={node._id}>
+            <tr className={current ? 'current' : ''} onClick={e => this.onNodeSelect(e, node)}>
+              <td>{i + index}</td>
+              <td>{this.props.namedCollections[node.type].alias}</td>
+              <td>{node.name}</td>
+            </tr>
+            <tr className={`node-props${current ? ' open' : ''}`}>
+              <td colSpan="3">
+                <button onClick={e => this.onOpenMap(e)}>
+                  <i className="fa fa-sitemap" />
+                </button>
+              </td>
+            </tr>
+          </React.Fragment>
         );
       });
     }
@@ -94,5 +106,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { traversalSearch, addStageNode, clearNodes }
+  { addStageNode, setCurrentNode, clearNodes }
 )(SearchContent);
