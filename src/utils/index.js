@@ -72,18 +72,18 @@ function uuid() {
   return uuidv4();
 }
 
-function sortByName(arr) {
+function sortBy(arr, prop) {
   let arrCopy = arr.slice();
 
   arrCopy.sort((a, b) => {
-    let aName = a.name.toUpperCase(),
-        bName = b.name.toUpperCase();
+    let aProp = a[prop].toUpperCase(),
+        bProp = b[prop].toUpperCase();
 
-    if(aName < bName) {
+    if(aProp < bProp) {
       return -1;
     }
 
-    if(aName > bName) {
+    if(aProp > bProp) {
       return 1;
     }
 
@@ -93,7 +93,11 @@ function sortByName(arr) {
   return arrCopy;
 }
 
+function sortByName(arr) {
+  return sortBy(arr, 'name');
+}
+
 export {
-  sortByName, traverseItems, composeEdges,
-  getEdgeLinks, uuid
+  sortBy, sortByName, traverseItems,
+  composeEdges, getEdgeLinks, uuid
 };

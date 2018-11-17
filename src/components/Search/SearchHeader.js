@@ -18,6 +18,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { resetSubNodes, findNodes } from '../../redux/modules/nodes';
 import { cleanStageNodes } from '../../redux/modules/stage';
+import { sortBy } from '../../utils';
 import './SearchHeader.css';
 
 class SearchHeader extends Component {
@@ -124,7 +125,8 @@ class SearchHeader extends Component {
   }
 
   render() {
-    const collectionItems = this.props.collections.map((co) => {
+    const coItems = sortBy(this.props.collections, 'alias');
+    const collectionItems = coItems.map((co) => {
       const checked = this.state.checkedCollections.includes(co.name);
       return (
         <label key={co.name} className={`item${checked ? ' checked' : ''}`}>
