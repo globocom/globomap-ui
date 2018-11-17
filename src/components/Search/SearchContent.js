@@ -16,9 +16,14 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { clearNodes, setCurrentNode } from '../../redux/modules/nodes';
+import {
+  clearNodes,
+  setCurrentNode,
+  clearCurrentNode
+} from '../../redux/modules/nodes';
 import { addStageNode } from '../../redux/modules/stage';
 import SearchContentPagination from './SearchContentPagination';
+import { Properties } from '../';
 import './SearchContent.css';
 
 class SearchContent extends Component {
@@ -30,7 +35,11 @@ class SearchContent extends Component {
 
   onNodeSelect(event, node) {
     event.stopPropagation();
-    this.props.setCurrentNode(node);
+    if (this.props.currentNode !== null &&
+        this.props.currentNode._id === node._id) {
+      return this.props.clearCurrentNode();
+    }
+    return this.props.setCurrentNode(node);
   }
 
   onOpenMap(event, node) {
@@ -38,6 +47,12 @@ class SearchContent extends Component {
     this.props.addStageNode(node, null, true);
     // change to map screen
     // this.setMainTab('map');
+  }
+
+  onCloseSearchContent(event) {
+    event.stopPropagation();
+    this.props.clearNodes();
+    this.props.clearCurrentNode();
   }
 
   render() {
@@ -51,14 +66,18 @@ class SearchContent extends Component {
                        node._id === this.props.currentNode._id);
         return (
           <React.Fragment key={node._id}>
-            <tr className={current ? 'current' : ''} onClick={e => this.onNodeSelect(e, node)}>
+            <tr className={current ? 'current' : ''}
+                onClick={e => this.onNodeSelect(e, node)}>
               <td>{i + index}</td>
               <td>{this.props.namedCollections[node.type].alias}</td>
               <td>{node.name}</td>
             </tr>
-            <tr className={`node-props${current ? ' open' : ''}`}>
+            <tr className={`node-options${current ? ' open' : ''}`}>
               <td colSpan="3">
-                <button onClick={e => this.onOpenMap(e)}>
+                <div className="node-properties">
+                  <Properties item={node} />
+                </div>
+                <button onClick={e => this.onOpenMap(e, node)}>
                   <i className="fa fa-sitemap" />
                 </button>
               </td>
@@ -70,7 +89,8 @@ class SearchContent extends Component {
 
     return (
       <div className={`search-content${allNodes.length > 0 ? ' active' : ''}`}>
-        <button className="search-content-btn-close" onClick={this.props.clearNodes}>
+        <button className="search-content-btn-close"
+                onClick={e => this.onCloseSearchContent(e)}>
           <i className="fa fa-times"></i>
         </button>
         {allNodes.length > 0 &&
@@ -106,5 +126,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { addStageNode, setCurrentNode, clearNodes }
+  { addStageNode, setCurrentNode, clearNodes,
+    clearCurrentNode }
 )(SearchContent);
