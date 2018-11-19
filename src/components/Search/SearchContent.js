@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import {
   clearCurrentNode
 } from '../../redux/modules/nodes';
 import { addStageNode } from '../../redux/modules/stage';
+import { setTab } from '../../redux/modules/tabs';
 import SearchContentPagination from './SearchContentPagination';
 import { Properties } from '../';
 import './SearchContent.css';
@@ -46,7 +47,11 @@ class SearchContent extends Component {
     event.stopPropagation();
     this.props.addStageNode(node, null, true);
     // change to map screen
-    // this.setMainTab('map');
+    this.props.setTab('map');
+  }
+
+  onOpenProperties(event, node) {
+    event.stopPropagation();
   }
 
   onCloseSearchContent(event) {
@@ -74,12 +79,15 @@ class SearchContent extends Component {
             </tr>
             <tr className={`node-options${current ? ' open' : ''}`}>
               <td colSpan="3">
-                <div className="node-properties">
-                  <Properties item={node} />
-                </div>
-                <button onClick={e => this.onOpenMap(e, node)}>
-                  <i className="fa fa-sitemap" />
+                <button onClick={e => this.onOpenProperties(e, node)}>
+                  <i className="icon fa fa-info" /> Properties
                 </button>
+                <button onClick={e => this.onOpenMap(e, node)}>
+                  <i className="icon fa fa-sitemap" /> View Map
+                </button>
+                {/* <div className="node-properties">
+                  <Properties item={node} />
+                </div> */}
               </td>
             </tr>
           </React.Fragment>
@@ -127,5 +135,5 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { addStageNode, setCurrentNode, clearNodes,
-    clearCurrentNode }
+    clearCurrentNode, setTab }
 )(SearchContent);

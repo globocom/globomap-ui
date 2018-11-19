@@ -34,36 +34,17 @@ class Properties extends Component {
     this.toggleProps = this.toggleProps.bind(this);
   }
 
-  render() {
-    return (
-      <div className="item-properties">
-        {this.buildProperties(this.props.item)}
-      </div>
-    );
-  }
+  toggleProps(event, item) {
+    event.preventDefault();
+    let sub = this.state.subProps.slice();
 
-  buildProperties(item) {
-    // let propertiesMetadata = item.properties_metadata;
-    // propertiesMetadata && propertiesMetadata[key].description) || key
+    if (sub.includes(item)) {
+      sub.splice(sub.indexOf(item), 1);
+    } else {
+      sub.push(item);
+    }
 
-    let properties = item.properties || {};
-    let content = this.buildProps(properties, 0);
-
-    // Add timestamp property
-    let itemTimestamp = new Date(parseInt(item.timestamp, 10) * 1000);
-    content.push(<div key="timestamp" className="item-prop">
-                   <span>timestamp</span>
-                   <span>{itemTimestamp.toLocaleString(DATE_FORMAT_LANGUAGE)}</span>
-                 </div>);
-
-    // Add item ID
-    this.props.hasId &&
-      content.push(<div key="id" className="item-prop">
-                     <span>id</span>
-                     <span>{item.id}</span>
-                   </div>);
-
-    return content;
+    this.setState({ subProps: sub });
   }
 
   buildProps(obj, level) {
@@ -96,7 +77,11 @@ class Properties extends Component {
       if (typeof value === 'boolean') {
         value = value ? 'yes' : 'no';
       } else if (value instanceof Array) {
-        value = <div>{value.map(o => <span key={o}>{o}</span>)}</div>;
+        value = (
+          <div>
+            {value.map(o => <span key={o}>{o}</span>)}
+          </div>
+        );
       }
 
       return (
@@ -110,39 +95,30 @@ class Properties extends Component {
     });
   }
 
-  toggleProps(event, item) {
-    event.preventDefault();
-    let sub = this.state.subProps.slice();
+  buildProperties(item) {
+    const properties = item.properties || {};
+    let content = this.buildProps(properties, 0);
 
-    if (sub.includes(item)) {
-      sub.splice(sub.indexOf(item), 1);
-    } else {
-      sub.push(item);
-    }
+    const itemTimestamp = new Date(parseInt(item.timestamp, 10) * 1000);
+    content.push(<div key="timestamp" className="item-prop">
+                   <span>timestamp</span>
+                   <span>{itemTimestamp.toLocaleString(DATE_FORMAT_LANGUAGE)}</span>
+                 </div>);
 
-    this.setState({ subProps: sub });
+    this.props.hasId &&
+      content.push(<div key="id" className="item-prop">
+                     <span>id</span>
+                     <span>{item.id}</span>
+                   </div>);
+
+    return content;
   }
 
-  buildArrayProperty(arr) {
-    let initial = [],
-        remaining = [];
 
-    for (let i=0, j=arr.length; i<j; i++) {
-      i < 5
-        ? initial.push(<span key={i+arr[i]}>{arr[i]}</span>)
-        : remaining.push(<span key={i+arr[i]}>{arr[i]}</span>);
-    }
-
+  render() {
     return (
-      <div>
-        <div className="prop-initial">{initial}</div>
-        {remaining.length > 0 &&
-          <button className="btn-show-more topcoat-button--quiet"
-            onClick={(e) => this.setState({ showMore: !this.state.showMore })}>
-              show {!this.state.showMore ? 'more' : 'less'}
-          </button>}
-        {this.state.showMore &&
-          <div className="prop-remaining">{remaining}</div>}
+      <div className="item-properties">
+        {this.buildProperties(this.props.item)}
       </div>
     );
   }

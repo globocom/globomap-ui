@@ -16,7 +16,8 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setMainTab } from '../../redux/modules/tabs';
+import { setTab } from '../../redux/modules/tabs';
+import { Tab } from '../';
 import './SidebarButtons.css';
 
 class SidebarButtons extends Component {
@@ -24,15 +25,21 @@ class SidebarButtons extends Component {
   render() {
     return (
       <div className="sidebar-buttons">
-        <button className="active">
-          <i className="fa fa-search"></i>
-        </button>
-        <button>
-          <i className="fa fa-sitemap"></i>
-        </button>
-        <button>
-          <i className="fa fa-star"></i>
-        </button>
+        <Tab tabKey="search">
+          <button>
+            <i className="fa fa-search"></i>
+          </button>
+        </Tab>
+        <Tab tabKey="map">
+          <button>
+            <i className="fa fa-sitemap"></i>
+          </button>
+        </Tab>
+        <Tab tabKey="favorites">
+          <button>
+            <i className="fa fa-star"></i>
+          </button>
+        </Tab>
       </div>
     );
   }
@@ -45,5 +52,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { setMainTab }
+  { setTab }
 )(SidebarButtons);

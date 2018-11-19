@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,13 +21,14 @@ limitations under the License.
 }
 
 .stage {
-  width: 70%;
   position: fixed;
-  top: 85px;
+  top: 0;
+  left: 100px;
+  bottom: 0;
+  right: 0;
+
   flex-direction: column;
   overflow: auto;
-  bottom: 0;
-  left: 0;
   background-color: #f8f8f8;
   z-index: 5;
 }

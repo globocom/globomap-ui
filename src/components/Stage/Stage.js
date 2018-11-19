@@ -19,7 +19,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { saveSharedMap, getSharedMap, saveUserMap,
          getUserMap, listUserMaps } from '../../redux/modules/stage';
-import { setMainTab } from '../../redux/modules/tabs';
+import { setTab } from '../../redux/modules/tabs';
 import { NodeItem } from '../';
 import { Loading } from '../';
 import './Stage.css';
@@ -101,14 +101,14 @@ class Stage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.hasMinimumStageNodes(nextProps.stageNodes)) {
-      this.props.setMainTab('Navigation');
+      this.props.setTab('map');
     }
   }
 
   componentDidMount() {
     const { sharedMapKey } = this.props;
     if (sharedMapKey) {
-      this.props.setMainTab('Navigation');
+      this.props.setTab('map');
       this.toggleFullScreen();
       this.props.getSharedMap(sharedMapKey);
     }
@@ -185,6 +185,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { setMainTab, saveSharedMap, getSharedMap,
+  { setTab, saveSharedMap, getSharedMap,
     saveUserMap, getUserMap, listUserMaps }
 )(Stage);

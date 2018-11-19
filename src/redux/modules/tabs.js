@@ -14,59 +14,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const SET_MAIN_TAB = 'set_main_tab';
-const SET_EXT_TAB = 'set_ext_tab';
-
-const REGISTER_MAIN_TAB = 'register_main_tab';
-const REGISTER_EXT_TAB = 'register_ext_tab';
+const SET_TAB = 'set_tab';
+const REGISTER_TAB = 'register_tab';
 
 const initialState = {
-  mainTabs: [],
-  currentMainTab: 'Search Results',
-  extTabs: [],
-  currentExtTab: 'Properties'
+  tabs: [],
+  currentTab: 'search'
 };
 
 export default function reducer(state=initialState, action={}) {
   switch (action.type) {
-    case SET_MAIN_TAB:
+
+    case SET_TAB:
       return {
         ...state,
-        currentMainTab: action.tabName
+        currentTab: action.tabKey
       }
 
-    case SET_EXT_TAB:
+    case REGISTER_TAB:
+      const hasTab = state.tabs.includes(action.tabKey);
       return {
         ...state,
-        currentExtTab: action.tabName
-      }
-
-    case REGISTER_MAIN_TAB:
-      let hasMainTab = false;
-
-      if (state.mainTabs.includes(action.tabName)) {
-        hasMainTab = true;
-      }
-
-      return {
-        ...state,
-        mainTabs: hasMainTab
-                    ? [...state.mainTabs]
-                    : [...state.mainTabs, action.tabName]
-      }
-
-    case REGISTER_EXT_TAB:
-      let hasExtTab = false;
-
-      if (state.extTabs.includes(action.tabName)) {
-        hasExtTab = true;
-      }
-
-      return {
-        ...state,
-        extTabs: hasExtTab
-                  ? [...state.extTabs]
-                  : [...state.extTabs, action.tabName]
+        tabs: hasTab
+                ? [...state.tabs]
+                : [...state.tabs, action.tabKey]
       }
 
     default:
@@ -74,30 +45,16 @@ export default function reducer(state=initialState, action={}) {
   }
 }
 
-export function setMainTab(tabName) {
+export function setTab(tabKey) {
   return {
-    type: SET_MAIN_TAB,
-    tabName
+    type: SET_TAB,
+    tabKey
   }
 }
 
-export function setExtTab(tabName) {
+export function registerTab(tabKey) {
   return {
-    type: SET_EXT_TAB,
-    tabName
-  }
-}
-
-export function registerMainTab(tabName) {
-  return {
-    type: REGISTER_MAIN_TAB,
-    tabName
-  }
-}
-
-export function registerExtTab(tabName) {
-  return {
-    type: REGISTER_EXT_TAB,
-    tabName
+    type: REGISTER_TAB,
+    tabKey
   }
 }

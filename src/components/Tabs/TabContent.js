@@ -2,19 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { registerTab, setTab } from '../../redux/modules/tabs';
 
-class Tab extends React.Component {
+class TabContent extends React.Component {
 
   componentDidMount() {
     this.props.registerTab(this.props.tabKey);
   }
 
   render() {
-    return React.Children.map(this.props.children, child => {
-      return React.cloneElement(child, {
-        className: this.props.currentTab === this.props.tabKey ? 'active' : '',
-        onClick: () => this.props.setTab(this.props.tabKey)
-      });
-    });
+    return this.props.currentTab === this.props.tabKey
+      ? this.props.children
+      : null;
   }
 
 }
@@ -28,4 +25,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { registerTab, setTab }
-)(Tab);
+)(TabContent);

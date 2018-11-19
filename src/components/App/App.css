@@ -28,10 +28,11 @@ a {
 
 button {
   cursor: pointer;
+  outline: none;
 }
 
 button:hover {
-  opacity: 0.85;
+  opacity: 0.90;
 }
 
 button:disabled {

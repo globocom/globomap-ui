@@ -17,7 +17,6 @@ limitations under the License.
 import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setExtTab } from '../../redux/modules/tabs';
 import { Properties, Monit, Query } from '../';
 import './InfoContentHead.css';
 
@@ -95,5 +94,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { setExtTab }
+  { }
 )(InfoContentHead);

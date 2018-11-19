@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import { setStageNodes, getUserMap,
          deleteUserMap, listUserMaps } from '../../redux/modules/stage';
 import { clearCurrentNode, resetSubNodes } from '../../redux/modules/nodes';
-import { setMainTab } from '../../redux/modules/tabs';
+import { setTab } from '../../redux/modules/tabs';
 import { Loading } from '../';
 import { sortByName } from '../../utils';
 import './Tools.css';
@@ -222,7 +222,7 @@ class Tools extends React.Component {
       return (
         <button key={'tab' + index} className={'tab-btn' + active}
           disabled={tab.name === 'Navigation' && !rootNodeHasItens}
-          onClick={(e) => this.props.setMainTab( tab.name )}>
+          onClick={(e) => this.props.setTab( tab.name )}>
           {tab.name}
         </button>
       );
@@ -276,6 +276,6 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { setStageNodes, clearCurrentNode, resetSubNodes,
-    setMainTab, getUserMap, deleteUserMap,
+    setTab, getUserMap, deleteUserMap,
     listUserMaps }
 )(Tools);

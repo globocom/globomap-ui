@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 .item-properties {
-  padding: 8px 0;
+  /* padding: 8px 0; */
 }
 
 .item-properties .item-prop {
@@ -34,7 +34,7 @@ limitations under the License.
 .item-properties .item-prop > span:first-child {
   font-weight: bold;
   text-align: right;
-  min-width: 35%;
+  min-width: 40%;
   vertical-align: top;
 }
 
@@ -49,7 +49,7 @@ limitations under the License.
 }
 
 .item-properties .sub-item-prop {
-  box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.2);
+  /* box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.2); */
 }
 
 .item-properties .btn-show-more {

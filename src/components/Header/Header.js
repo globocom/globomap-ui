@@ -20,7 +20,6 @@ import { connect } from 'react-redux';
 import { toggleGraph } from '../../redux/modules/app';
 import { resetSubNodes, findNodes } from '../../redux/modules/nodes';
 import { cleanStageNodes } from '../../redux/modules/stage';
-import { setMainTab } from '../../redux/modules/tabs';
 import './Header.css';
 
 class Header extends Component {
@@ -97,7 +96,6 @@ class Header extends Component {
 
     this.props.cleanStageNodes();
     this.props.resetSubNodes();
-    this.props.setMainTab('Search Results');
 
     const checkedGraphs = this.state.checkedGraphs;
     let checkedCollections = this.state.checkedCollections;
@@ -293,5 +291,5 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { toggleGraph, resetSubNodes, findNodes,
-    cleanStageNodes, setMainTab }
+    cleanStageNodes }
 )(Header);

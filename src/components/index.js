@@ -32,11 +32,30 @@ import SearchContent from './Search/SearchContent';
 import Sidebar from './Sidebar/Sidebar';
 import Stage from './Stage/Stage';
 import SubNodes from './SubNodes/SubNodes';
+import Tab from './Tabs/Tab';
+import TabContent from './Tabs/TabContent';
 import Tools from './Tools/Tools';
 
 export {
-  App, Header, InfoContentHead, Loading, Modal,
-  Monit, NodeEdges, NodeItem, NotFound, PopMenu,
-  Properties, Query, Search, SearchHeader, SearchContent,
-  Sidebar, Stage, SubNodes, Tools
+  App,
+  Header,
+  InfoContentHead,
+  Loading,
+  Modal,
+  Monit,
+  NodeEdges,
+  NodeItem,
+  NotFound,
+  PopMenu,
+  Properties,
+  Query,
+  Search,
+  SearchHeader,
+  SearchContent,
+  Sidebar,
+  Stage,
+  SubNodes,
+  Tab,
+  TabContent,
+  Tools
 }

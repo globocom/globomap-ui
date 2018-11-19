@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,7 +20,12 @@ import { connect } from 'react-redux';
 import { fetchGraphs, fetchCollections, fetchEdges,
          fetchQueries, getServerData, toggleHasId } from '../../redux/modules/app';
 import { clearCurrentNode } from '../../redux/modules/nodes';
-import { Sidebar, Search, Loading } from '../';
+import {
+  Sidebar,
+  Search,
+  Stage,
+  Loading,
+  TabContent } from '../';
 import './App.css';
 
 class App extends Component {
@@ -52,9 +57,14 @@ class App extends Component {
 
   render() {
     return (
-      <div className={`main${this.props.findLoading ? ' loading' : ''}`}>
+      <div className="main">
         <Sidebar />
-        <Search />
+        <TabContent tabKey="search">
+          <Search />
+        </TabContent>
+        <TabContent tabKey="map">
+          <Stage sharedMapKey={this.props.match.params.mapKey} />
+        </TabContent>
         <Loading isLoading={this.props.findLoading ||
                             this.props.traversalLoading} iconSize="big" />
       </div>
@@ -65,7 +75,6 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    currentMainTab: state.tabs.currentMainTab,
     findLoading: state.nodes.findLoading,
     traversalLoading: state.nodes.traversalLoading
   };
