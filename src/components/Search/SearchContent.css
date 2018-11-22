@@ -189,6 +189,8 @@ limitations under the License.
   font-size: 1em;
 }
 
+.search-content .node-options button.active,
+.search-content .node-options button.active .icon,
 .search-content .node-options button:hover,
 .search-content .node-options button:hover .icon {
   color: white;

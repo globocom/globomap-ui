@@ -29,8 +29,12 @@ limitations under the License.
 
   flex-direction: column;
   overflow: auto;
-  background-color: #f8f8f8;
   z-index: 5;
+
+  background-color:#fafafa;
+  background-image: radial-gradient(#ddd 3%, transparent 0),
+                    radial-gradient(#ddd 3%, transparent 0);
+  background-size: 50px 50px;
 }
 
 .stage.full {

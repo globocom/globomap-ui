@@ -1,0 +1,82 @@
+.node-info-box {
+  box-sizing: border-box;
+  max-width: 50%;
+}
+
+.node-info-box {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 30px;
+  background-color: white;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.node-info-box.left {
+  left: 30px;
+}
+
+.node-info-box.right {
+  right: 30px;
+}
+
+.node-info-box .title {
+  padding: 30px 25px;
+  margin-right: 50px;
+}
+
+.node-info-box .title .type {
+  display: block;
+  font-family: 'opensans-regular', Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 5px;
+}
+
+.node-info-box .title .name {
+  font-size: 1.1em;
+}
+
+.node-info-box .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: 0;
+  color: #ccc;
+  font-size: 1.3em;
+  background: none;
+}
+
+.node-info-box .tabs {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.node-info-box .tabs li {
+  flex: 1;
+}
+
+.node-info-box .tabs li button {
+  text-transform: uppercase;
+  font-family: 'opensans-regular', Arial, Helvetica, sans-serif;
+  font-size: 0.8em;
+  background: none;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  border-bottom: 2px solid #ddd;
+}
+
+.node-info-box .tabs li.active button {
+  color: #2eb78e;
+  border-bottom-color: #2eb78e;
+}
+
+.node-info-box .tabs-content {
+  height: 250px;
+  overflow: auto;
+  padding: 20px 0;
+}

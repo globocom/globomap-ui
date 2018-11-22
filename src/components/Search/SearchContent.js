@@ -24,14 +24,19 @@ import {
 import { addStageNode } from '../../redux/modules/stage';
 import { setTab } from '../../redux/modules/tabs';
 import SearchContentPagination from './SearchContentPagination';
-import { Properties } from '../';
+import { NodeInfo } from '../';
 import './SearchContent.css';
 
 class SearchContent extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      showNodeInfo: false
+    };
+
     this.onNodeSelect = this.onNodeSelect.bind(this);
+    this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
   }
 
   onNodeSelect(event, node) {
@@ -50,8 +55,13 @@ class SearchContent extends Component {
     this.props.setTab('map');
   }
 
-  onOpenProperties(event, node) {
+  onToggleNodeInfo(event) {
     event.stopPropagation();
+    this.setState({ showNodeInfo: !this.state.showNodeInfo });
+  }
+
+  onCloseNodeInfo() {
+    this.setState({ showNodeInfo: false });
   }
 
   onCloseSearchContent(event) {
@@ -79,15 +89,13 @@ class SearchContent extends Component {
             </tr>
             <tr className={`node-options${current ? ' open' : ''}`}>
               <td colSpan="3">
-                <button onClick={e => this.onOpenProperties(e, node)}>
-                  <i className="icon fa fa-info" /> Properties
+                <button onClick={e => this.onToggleNodeInfo(e)}
+                  className={this.state.showNodeInfo ? 'active' : ''}>
+                  <i className="icon fa fa-info" /> Show Properties
                 </button>
                 <button onClick={e => this.onOpenMap(e, node)}>
                   <i className="icon fa fa-sitemap" /> View Map
                 </button>
-                {/* <div className="node-properties">
-                  <Properties item={node} />
-                </div> */}
               </td>
             </tr>
           </React.Fragment>
@@ -117,6 +125,10 @@ class SearchContent extends Component {
               </tr>
             </tfoot>
           </table>}
+        {this.state.showNodeInfo &&
+          <NodeInfo node={this.props.currentNode}
+                    onClose={this.onCloseNodeInfo}
+                    position="right" />}
       </div>
     );
   }

@@ -21,6 +21,7 @@ import Loading from './Loading/Loading';
 import Modal from './Modal/Modal';
 import Monit from './Monit/Monit';
 import NodeEdges from './NodeEdges/NodeEdges';
+import NodeInfo from './NodeInfo/NodeInfo';
 import NodeItem from './NodeItem/NodeItem';
 import NotFound from './NotFound/NotFound';
 import PopMenu from './PopMenu/PopMenu';
@@ -44,6 +45,7 @@ export {
   Modal,
   Monit,
   NodeEdges,
+  NodeInfo,
   NodeItem,
   NotFound,
   PopMenu,

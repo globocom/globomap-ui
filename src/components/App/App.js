@@ -65,8 +65,16 @@ class App extends Component {
         <TabContent tabKey="map">
           <Stage sharedMapKey={this.props.match.params.mapKey} />
         </TabContent>
-        <Loading isLoading={this.props.findLoading ||
-                            this.props.traversalLoading} iconSize="big" />
+        <TabContent tabKey="favorites">
+          favorites
+        </TabContent>
+        <Loading iconSize="big"
+                 isLoading={this.props.findLoading
+                            || this.props.traversalLoading
+                            || this.props.getSharedLoading
+                            || this.props.saveUserMapLoading
+                            || this.props.getUserMapLoading
+                            || this.props.saveSharedLoading} />
       </div>
     );
   }
@@ -76,7 +84,11 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     findLoading: state.nodes.findLoading,
-    traversalLoading: state.nodes.traversalLoading
+    traversalLoading: state.nodes.traversalLoading,
+    getSharedLoading: state.stage.getSharedLoading,
+    saveUserMapLoading: state.stage.saveUserMapLoading,
+    getUserMapLoading: state.stage.getUserMapLoading,
+    saveSharedLoading: state.stage.saveSharedLoading
   };
 }
 

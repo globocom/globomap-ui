@@ -20,22 +20,26 @@ limitations under the License.
 
 .item-properties .item-prop {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   justify-content: flex-start;
+  margin-bottom: 8px;
 }
 
 .item-properties .item-prop > span,
 .item-properties .item-prop > span:first-child {
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
   font-size: 12px;
-  padding: 4px 8px;
+  padding: 4px 25px;
 }
 
 .item-properties .item-prop > span:first-child {
   font-weight: bold;
-  text-align: right;
+  font-size: 14px;
+  color: #444;
+  font-family: 'opensans-regular', Arial, Helvetica, sans-serif;
+  /* text-align: right;
   min-width: 40%;
-  vertical-align: top;
+  vertical-align: top; */
 }
 
 .item-properties .item-prop a {

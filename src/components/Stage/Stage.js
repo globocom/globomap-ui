@@ -20,8 +20,7 @@ import { connect } from 'react-redux';
 import { saveSharedMap, getSharedMap, saveUserMap,
          getUserMap, listUserMaps } from '../../redux/modules/stage';
 import { setTab } from '../../redux/modules/tabs';
-import { NodeItem } from '../';
-import { Loading } from '../';
+import { NodeInfo, NodeItem } from '../';
 import './Stage.css';
 
 class Stage extends Component {
@@ -37,7 +36,7 @@ class Stage extends Component {
     this.renderNodes = this.renderNodes.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.shareMap = this.shareMap.bind(this);
-    this.toggleFullScreen = this.toggleFullScreen.bind(this);
+    // this.toggleFullScreen = this.toggleFullScreen.bind(this);
     this.openSharedLink = this.openSharedLink.bind(this);
     this.closeSharedLink = this.closeSharedLink.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
@@ -58,13 +57,13 @@ class Stage extends Component {
     });
   }
 
-  hasMinimumStageNodes(sNodes) {
-    let sItems = [];
-    if(sNodes.length > 0) {
-      sItems = sNodes[0].items;
-    }
-    return sItems !== undefined ? sItems.length > 0 : false;
-  }
+  // hasMinimumStageNodes(sNodes) {
+  //   let sItems = [];
+  //   if(sNodes.length > 0) {
+  //     sItems = sNodes[0].items;
+  //   }
+  //   return sItems !== undefined ? sItems.length > 0 : false;
+  // }
 
   saveMap() {
     this.props.saveUserMap(this.props.stageNodes);
@@ -95,15 +94,15 @@ class Stage extends Component {
     this.closeSharedLink();
   }
 
-  toggleFullScreen() {
-    this.setState({ fullScreen: !this.state.fullScreen });
-  }
+  // toggleFullScreen() {
+  //   this.setState({ fullScreen: !this.state.fullScreen });
+  // }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.hasMinimumStageNodes(nextProps.stageNodes)) {
-      this.props.setTab('map');
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (this.hasMinimumStageNodes(nextProps.stageNodes)) {
+  //     this.props.setTab('map');
+  //   }
+  // }
 
   componentDidMount() {
     const { sharedMapKey } = this.props;
@@ -155,22 +154,19 @@ class Stage extends Component {
                       data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
                 <i className="fa fa-clipboard"></i> Copy to clipboard
               </button>
-              <Loading isLoading={this.props.saveSharedLoading} iconSize="medium" />
             </div>}
 
-          <button className="btn btn-fullscreen" onClick={this.toggleFullScreen}>
+          {/* <button className="btn btn-fullscreen" onClick={this.toggleFullScreen}>
             {this.state.fullScreen
               ? <i className="fa fa-compress"></i>
               : <i className="fa fa-expand"></i>}
-          </button>
+          </button> */}
         </div>
         <div className="stage-container">
           {this.renderNodes(this.props.stageNodes)}
         </div>
-        <Loading iconSize="big"
-                 isLoading={this.props.getSharedLoading
-                            || this.props.saveUserMapLoading
-                            || this.props.getUserMapLoading} />
+        {this.props.stageNodes.length > 0 &&
+          <NodeInfo node={this.props.currentNode} />}
       </div>
     );
   }
