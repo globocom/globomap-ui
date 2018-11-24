@@ -9,7 +9,7 @@
   position: absolute;
   bottom: 30px;
   background-color: white;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
 }
 
 .node-info-box.left {

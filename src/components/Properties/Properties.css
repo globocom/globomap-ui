@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 .item-properties {
-  /* padding: 8px 0; */
+  box-sizing: border-box;
 }
 
 .item-properties .item-prop {
@@ -27,7 +27,6 @@ limitations under the License.
 
 .item-properties .item-prop > span,
 .item-properties .item-prop > span:first-child {
-  /* font-family: Arial, Helvetica, sans-serif; */
   font-size: 12px;
   padding: 4px 25px;
 }
@@ -37,9 +36,6 @@ limitations under the License.
   font-size: 14px;
   color: #444;
   font-family: 'opensans-regular', Arial, Helvetica, sans-serif;
-  /* text-align: right;
-  min-width: 40%;
-  vertical-align: top; */
 }
 
 .item-properties .item-prop a {
@@ -50,10 +46,6 @@ limitations under the License.
   display: inline-block;
   margin-right: 2px;
   width: 5px;
-}
-
-.item-properties .sub-item-prop {
-  /* box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.2); */
 }
 
 .item-properties .btn-show-more {

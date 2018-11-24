@@ -14,31 +14,37 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { registerTab, setTab } from '../../redux/modules/tabs';
+import SubNodesByGraph from './SubNodesByGraph';
+import './SubNodes.css';
 
-class TabContent extends React.Component {
-
-  componentDidMount() {
-    this.props.registerTab(this.props.tabKey);
-  }
+class SubNodes extends Component {
 
   render() {
-    return this.props.currentTab === this.props.tabKey
-      ? this.props.children
-      : null;
+    const byGraph = this.props.subNodesByGraph.map((items) => {
+      return <SubNodesByGraph key={`index_${items.graph}_${items.nodes.length}`}
+                              items={items}/>
+    });
+
+    return (
+      <div className="subnodes">
+        <div className="subnodes-graph-items">
+          {byGraph}
+        </div>
+      </div>
+    );
   }
 
 }
 
 function mapStateToProps(state) {
   return {
-    currentTab: state.tabs.currentTab
+    subNodesByGraph: state.nodes.subNodesByGraph
   };
 }
 
 export default connect(
   mapStateToProps,
-  { registerTab, setTab }
-)(TabContent);
+  { }
+)(SubNodes);

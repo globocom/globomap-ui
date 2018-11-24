@@ -26,19 +26,13 @@ class SidebarButtons extends Component {
     return (
       <div className="sidebar-buttons">
         <Tab tabKey="search">
-          <button>
-            <i className="fa fa-search"></i>
-          </button>
+          <button><i className="fa fa-search"></i></button>
         </Tab>
         <Tab tabKey="map">
-          <button>
-            <i className="fa fa-sitemap"></i>
-          </button>
+          <button><i className="fa fa-sitemap"></i></button>
         </Tab>
         <Tab tabKey="favorites">
-          <button>
-            <i className="fa fa-star"></i>
-          </button>
+          <button><i className="fa fa-star"></i></button>
         </Tab>
       </div>
     );

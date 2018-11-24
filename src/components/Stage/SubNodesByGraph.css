@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,24 +14,48 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.sub-nodes-by-graph .graph-header {
-  padding: 4px 10px;
-  color: white;
-  font-size: 14px;
-  min-height: 23px;
+.sub-nodes-by-graph:last-child {
+  border-bottom: 1px solid #eee;
 }
 
-.sub-nodes-by-graph .graph-header .icon-down,
-.sub-nodes-by-graph .graph-header .icon-right {
-  display: inline-block;
-  min-width: 10px;
+.sub-nodes-by-graph .graph-header {
+  padding: 20px 25px;
+  color: #2eb78e;
+  line-height: 22px;
+  text-transform: uppercase;
+  font-size: 14px;
+  min-height: 22px;
+  border-top: 1px solid #eee;
+  /* border-bottom: 1px solid #eee; */
+}
+
+.sub-nodes-by-graph .graph-header .icon-up-down {
+  float: right;
+  font-size: 16px;
 }
 
 .sub-nodes-by-graph .graph-name {
-  display: inline-block;
-  min-width: 150px;
+  display: block;
   cursor: pointer;
-  padding-top: 3px;
+  font-family: 'opensans-regular', Arial, Helvetica, sans-serif;
+}
+
+.sub-nodes-by-graph .graph-buttons {
+  margin-top: 20px;
+}
+
+.sub-nodes-by-graph .graph-buttons .btn {
+  background: none;
+  border: 0;
+  color: #757575;
+  font-size: 18px;
+  padding: 0 5px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.sub-nodes-by-graph .graph-buttons .btn.active {
+  opacity: 0.4
 }
 
 .sub-nodes-by-graph .graph-header .graph-amount {
@@ -41,18 +65,10 @@ limitations under the License.
   padding-top: 3px;
 }
 
-.sub-nodes-by-graph .graph-items {
-  display: none;
-}
-
-.sub-nodes-by-graph.open .graph-items {
-  display: block;
-}
-
 .sub-nodes-by-graph .graph-types {
   box-sizing: border-box;
   background-color: #f8f8f8;
-  border-bottom: 1px solid rgba(157, 172, 169, 0.50);
+  border-bottom: 1px solid #eee;
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
@@ -61,59 +77,32 @@ limitations under the License.
 }
 
 .sub-nodes-by-graph.open .graph-types .item {
-  /*flex-grow: 1;*/
-  /*width: 50%;*/
   font-size: 12px;
   margin: 10px;
 }
 
-.sub-nodes-by-graph .graph-buttons {
-  float: right;
-  margin: 0 8px;
-  padding-top: 3px;
-}
-
 .sub-nodes-by-graph .graph-search {
+  position: relative;
+  display: flex;
+  margin-top: 20px;
   cursor: pointer;
-  position: absolute;
-  right: 120px;
 }
 
 .sub-nodes-by-graph .graph-search .graph-search-input {
-  position: absolute;
-  top: 1px;
-  right: 0;
-  z-index: 0;
-  width: 180px;
-  border: none;
-  box-shadow: none;
-  background-color: rgba(255, 255, 255, 0.65);
-  padding-right: 30px;
+  flex-grow: 1;
+  border: 1px solid #aaa;
+  padding: 8px;
+  outline: none;
 }
 
-.sub-nodes-by-graph .graph-search .fa-search {
-  position: absolute;
-  right: 11px;
-  z-index: 10;
-  color: #424242;
-  top: 4px;
+.sub-nodes-by-graph .graph-items {
+  display: none;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
-.sub-nodes-by-graph .graph-buttons .btn {
-  background: transparent;
-  border: 0;
-  color: rgba(255, 255, 255, 0.5);
-  padding: 0 5px;
-  margin: 0 5px;
-  cursor: pointer;
-}
-
-.sub-nodes-by-graph .graph-buttons .btn:hover {
-  color: rgba(255, 255, 255, 1);
-}
-
-.sub-nodes-by-graph .graph-buttons .btn.btn-filter.active {
-  color: rgba(255, 255, 255, 1);
+.sub-nodes-by-graph.open .graph-items {
+  display: block;
 }
 
 .subnodes-graph-items,
@@ -128,13 +117,20 @@ limitations under the License.
 
 .subnodes-graph-items .sub-node .sub-node-type {
   display: block;
-  font-size: 10px;
+  font-family: 'opensans-bold', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #757575;
   margin-bottom: 6px;
   text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .subnodes-graph-items .sub-node .sub-node-name {
-  font-size: 14px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .subnodes-graph-items .sub-node {
@@ -142,14 +138,7 @@ limitations under the License.
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-  background: white;
-  border-radius: 3px;
-  margin: 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);;
-}
-
-.subnodes-graph-items .sub-node:hover {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 5px 20px;
 }
 
 .subnodes-graph-items .sub-node-info {
@@ -161,13 +150,22 @@ limitations under the License.
 }
 
 .subnodes-graph-items .sub-node-info:hover .sub-node-name {
-  color: #4ca1e4;
+  color: #2eb78e;
 }
 
 .subnodes-graph-items .sub-node-btn,
 .subnodes-graph-items .sub-node-info,
 .subnodes-graph-items .sub-node-edges {
   padding: 10px;
+}
+
+.subnodes-graph-items .sub-node-btn .btn-add-node {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: #757575;
+  font-size: 20px;
 }
 
 .subnodes-graph-items .sub-node-edges .edges-in,
@@ -189,23 +187,6 @@ limitations under the License.
   text-overflow: ellipsis;
 }
 
-.subnodes-graph-items .items-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 7;
-}
-
-.subnodes-graph-items .items-loading .loading-cog {
-  color: rgba(255, 255, 255, 0.6)
-}
-
 .subnodes-graph-items .graph-items-pagination {
   padding: 10px;
   text-align: center;
@@ -214,17 +195,14 @@ limitations under the License.
 .graph-items-pagination .items-page-number {
   text-align: center;
   width: 40px;
-  border-radius: 0;
-  border-size: 1px 0 1px 0;
-  box-shadow: none;
+  border: none;
+  font-size: 18px;
+  color: #757575;
 }
 
+.graph-items-pagination .btn-next,
 .graph-items-pagination .btn-previous {
-  border-right: 0;
-  border-radius: 4px 0 0 4px;
-}
-
-.graph-items-pagination .btn-next {
-  border-left: 0;
-  border-radius: 0 4px 4px 0;
+  border: none;
+  font-size: 22px;
+  color: #757575;
 }

@@ -194,7 +194,7 @@ limitations under the License.
 .search-content .node-options button:hover,
 .search-content .node-options button:hover .icon {
   color: white;
-  background: #2eb78e;
+  background-color: #2eb78e;
 }
 
 .node-options .node-properties {

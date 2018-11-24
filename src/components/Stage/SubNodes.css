@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,51 +24,16 @@ limitations under the License.
   position: fixed;
   display: flex;
   flex-direction: column;
-  top: 50px;
+  top: 80px;
   right: 0;
   bottom: 0;
-  width: 30%;
-  border-left: 1px solid #d2d2d2;
-}
-
-.subnodes .subnodes-header-title {
-  display: flex;
-  align-items: center;
-  height: 35px;
-  padding: 0 10px;
-  font: normal 14px sans-serif;
-  color: #333;
-  background-color: #d2d2d2;
-}
-
-.subnodes .subnodes-header-title .title-limit {
-  display: block;
-  width: 94%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.subnodes .subnodes-header .colapse-subnodes-btn {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 25px;
-  height: 25px;
-  font-size: 22px;
-  color: #888;
-  background: transparent;
-  border: none;
-}
-
-.subnodes .subnodes-header .colapse-subnodes-btn:hover {
-  color: #333;
-  cursor: pointer;
+  width: 280px;
+  border-left: 1px solid #eee;
+  background-color: white;
 }
 
 .subnodes .subnodes-graph-items {
   flex-grow: 1;
-  background-color: #edf0f4;
   overflow: auto;
   overflow-x: hidden;
 }

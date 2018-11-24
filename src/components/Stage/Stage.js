@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import { saveSharedMap, getSharedMap, saveUserMap,
          getUserMap, listUserMaps } from '../../redux/modules/stage';
 import { setTab } from '../../redux/modules/tabs';
 import { NodeInfo, NodeItem } from '../';
+import SubNodes from './SubNodes';
 import './Stage.css';
 
 class Stage extends Component {
@@ -36,7 +37,7 @@ class Stage extends Component {
     this.renderNodes = this.renderNodes.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.shareMap = this.shareMap.bind(this);
-    // this.toggleFullScreen = this.toggleFullScreen.bind(this);
+    this.toggleFullScreen = this.toggleFullScreen.bind(this);
     this.openSharedLink = this.openSharedLink.bind(this);
     this.closeSharedLink = this.closeSharedLink.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
@@ -56,14 +57,6 @@ class Stage extends Component {
       );
     });
   }
-
-  // hasMinimumStageNodes(sNodes) {
-  //   let sItems = [];
-  //   if(sNodes.length > 0) {
-  //     sItems = sNodes[0].items;
-  //   }
-  //   return sItems !== undefined ? sItems.length > 0 : false;
-  // }
 
   saveMap() {
     this.props.saveUserMap(this.props.stageNodes);
@@ -94,15 +87,9 @@ class Stage extends Component {
     this.closeSharedLink();
   }
 
-  // toggleFullScreen() {
-  //   this.setState({ fullScreen: !this.state.fullScreen });
-  // }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.hasMinimumStageNodes(nextProps.stageNodes)) {
-  //     this.props.setTab('map');
-  //   }
-  // }
+  toggleFullScreen() {
+    this.setState({ fullScreen: !this.state.fullScreen });
+  }
 
   componentDidMount() {
     const { sharedMapKey } = this.props;
@@ -135,17 +122,14 @@ class Stage extends Component {
     return (
       <div className={`stage${this.state.fullScreen ? ' full' : ''}`}>
         <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
-
           <button className="btn btn-save-map" onClick={this.saveMap}
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
-
           <button className="btn btn-share-map" onClick={this.shareMap}
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-link"></i>
           </button>
-
           {this.state.sharedLinkOpen &&
             <div className="shared-link">
               <input type="text" readOnly={true} className="link-url topcoat-text-input--large"
@@ -155,18 +139,21 @@ class Stage extends Component {
                 <i className="fa fa-clipboard"></i> Copy to clipboard
               </button>
             </div>}
-
-          {/* <button className="btn btn-fullscreen" onClick={this.toggleFullScreen}>
+          <button className="btn btn-fullscreen" onClick={this.toggleFullScreen}>
             {this.state.fullScreen
               ? <i className="fa fa-compress"></i>
               : <i className="fa fa-expand"></i>}
-          </button> */}
+          </button>
         </div>
+
         <div className="stage-container">
           {this.renderNodes(this.props.stageNodes)}
         </div>
-        {this.props.stageNodes.length > 0 &&
-          <NodeInfo node={this.props.currentNode} />}
+
+        {/* {this.props.stageNodes.length > 0 &&
+          <NodeInfo node={this.props.currentNode} />} */}
+
+        <SubNodes />
       </div>
     );
   }

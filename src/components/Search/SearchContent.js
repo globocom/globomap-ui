@@ -19,7 +19,8 @@ import { connect } from 'react-redux';
 import {
   clearNodes,
   setCurrentNode,
-  clearCurrentNode
+  clearCurrentNode,
+  traversalSearch
 } from '../../redux/modules/nodes';
 import { addStageNode } from '../../redux/modules/stage';
 import { setTab } from '../../redux/modules/tabs';
@@ -51,8 +52,10 @@ class SearchContent extends Component {
   onOpenMap(event, node) {
     event.stopPropagation();
     this.props.addStageNode(node, null, true);
-    // change to map screen
+
+    // change to map screen and do traversal search
     this.props.setTab('map');
+    this.props.traversalSearch({ node: node });
   }
 
   onToggleNodeInfo(event) {
@@ -146,6 +149,12 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { addStageNode, setCurrentNode, clearNodes,
-    clearCurrentNode, setTab }
+  {
+    addStageNode,
+    setCurrentNode,
+    clearNodes,
+    clearCurrentNode,
+    traversalSearch,
+    setTab
+  }
 )(SearchContent);

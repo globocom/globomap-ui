@@ -18,8 +18,14 @@ import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Stickyfill from 'stickyfill';
-import { setCurrentNode } from '../../redux/modules/nodes';
-import { removeStageNode, setStageNodes } from '../../redux/modules/stage';
+import {
+  traversalSearch,
+  setCurrentNode
+} from '../../redux/modules/nodes';
+import {
+  removeStageNode,
+  setStageNodes
+} from '../../redux/modules/stage';
 // import { traverseItems } from '../../utils';
 import { NodeEdges } from '../';
 import './NodeItem.css';
@@ -69,6 +75,7 @@ class NodeItem extends Component {
     //   }
     // });
     this.props.setCurrentNode(this.props.node);
+    this.props.traversalSearch({ node: this.props.node });
   }
 
   onSelfRemove(event) {
@@ -126,5 +133,10 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { setCurrentNode, removeStageNode, setStageNodes }
+  {
+    setCurrentNode,
+    removeStageNode,
+    setStageNodes,
+    traversalSearch
+  }
 )(NodeItem);

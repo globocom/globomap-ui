@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,25 +21,26 @@ limitations under the License.
 
 .node-item {
   position: relative;
-  margin: 0 10px 10px 0;
-  border-radius: 2px;
+  margin: 0 40px 30px 0;
   min-width: 120px;
   max-width: 200px;
+  min-height: 80px;
+  padding: 20px;
   cursor: pointer;
-  background-color: #9daca9;
-  border: 1px solid transparent;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 .node-item .node-info,
 .node-item .node-graphs {
-  padding: 10px 15px;
+  /* padding: 10px 15px; */
 }
 
 .sticky {
   position: -webkit-sticky;
   position: sticky;
-  top: 0;
+  top: 20px;
   z-index: 0;
 }
 
@@ -51,14 +52,15 @@ limitations under the License.
 
 .node-item .type {
   display: block;
-  font-size: 10px;
+  font-size: 14px;
+  font-family: 'opensans-bold', Arial, Helvetica, sans-serif;
+  color: #555;
   margin: 0 10px 6px 0;
   text-transform: uppercase;
 }
 
 .node-item .name {
   display: block;
-  color: white;
   text-decoration: none;
   font-size: 14px;
   overflow: hidden;
@@ -81,19 +83,23 @@ limitations under the License.
 }
 
 .node-item.current {
-  background-color: #7f8c89;
+  background-color: #fefefe;
+}
+
+.node-item.current .type,
+.node-item.current .name {
+  color: #2eb78e;
 }
 
 .node-item.current.this-node {
-  border: 1px solid #587bff;
-  border-bottom-color: #0036ff;
-  box-shadow: 0 0 0 3px #6fb5f1;
+  /* border: 1px solid #587bff; */
+  /* border-bottom-color: #0036ff; */
 }
 
 .node-item .sub-node-edges .edges-in,
 .node-item .sub-node-edges .edges-out {
   position: absolute;
-  left: -16px;
+  left: -30px;
 }
 
 .node-item .sub-node-edges .edges-in {

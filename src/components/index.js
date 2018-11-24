@@ -15,8 +15,6 @@ limitations under the License.
 */
 
 import App from './App/App';
-import Header from './Header/Header';
-import InfoContentHead from './InfoContentHead/InfoContentHead';
 import Loading from './Loading/Loading';
 import Modal from './Modal/Modal';
 import Monit from './Monit/Monit';
@@ -24,7 +22,7 @@ import NodeEdges from './NodeEdges/NodeEdges';
 import NodeInfo from './NodeInfo/NodeInfo';
 import NodeItem from './NodeItem/NodeItem';
 import NotFound from './NotFound/NotFound';
-import PopMenu from './PopMenu/PopMenu';
+// import PopMenu from './PopMenu/PopMenu';
 import Properties from './Properties/Properties';
 import Query from './Query/Query';
 import Search from './Search/Search';
@@ -32,15 +30,12 @@ import SearchHeader from './Search/SearchHeader';
 import SearchContent from './Search/SearchContent';
 import Sidebar from './Sidebar/Sidebar';
 import Stage from './Stage/Stage';
-import SubNodes from './SubNodes/SubNodes';
 import Tab from './Tabs/Tab';
 import TabContent from './Tabs/TabContent';
 import Tools from './Tools/Tools';
 
 export {
   App,
-  Header,
-  InfoContentHead,
   Loading,
   Modal,
   Monit,
@@ -48,7 +43,7 @@ export {
   NodeInfo,
   NodeItem,
   NotFound,
-  PopMenu,
+  // PopMenu,
   Properties,
   Query,
   Search,
@@ -56,7 +51,6 @@ export {
   SearchContent,
   Sidebar,
   Stage,
-  SubNodes,
   Tab,
   TabContent,
   Tools

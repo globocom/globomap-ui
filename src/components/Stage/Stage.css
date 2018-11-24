@@ -26,10 +26,10 @@ limitations under the License.
   left: 100px;
   bottom: 0;
   right: 0;
-
   flex-direction: column;
   overflow: auto;
   z-index: 5;
+  padding: 80px 280px 0 0;
 
   background-color:#fafafa;
   background-image: radial-gradient(#ddd 3%, transparent 0),
@@ -46,8 +46,9 @@ limitations under the License.
 
 .stage .stage-container {
   display: flex;
-  padding: 20px;
+  padding: 50px;
   justify-content: left;
+  overflow: auto;
 }
 
 .stage .node-item-group {
@@ -56,9 +57,17 @@ limitations under the License.
 }
 
 .stage .stage-tools {
+  position: fixed;
+  z-index: 18;
+  top: 0;
+  left: 100px;
+  right: 0;
   display: flex;
   padding: 10px 20px;
-  justify-content: center;
+  height: 80px;
+  justify-content: left;
+  background-color: white;
+  border-bottom: 1px solid #eee;
 }
 
 .stage-tools .btn-save-map,
