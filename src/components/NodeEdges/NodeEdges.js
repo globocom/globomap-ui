@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -120,7 +120,7 @@ class NodeEdges extends Component {
       return elem.items.length > 0
               ? (<div key={elem.dir} className={'edges-' + elem.dir}>
                   <button className={'edges-btn ' + colorCls} onClick={elem.toggleFn}>
-                    <i className={'fa fa-arrow-'+ (elem.dir === 'in' ? 'right' : 'left')}></i>
+                    <i className={'fa fa-long-arrow-alt-'+ (elem.dir === 'in' ? 'right' : 'left')}></i>
                   </button>
                   {elem.openState &&
                     <div className="edges-content" onClick={e => e.stopPropagation()}>

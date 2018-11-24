@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ limitations under the License.
 .sub-node-edges .edges-btn {
   box-sizing: content-box;
   width: 22px;
-  height: 16px;
-  font-size: 14px;
+  height: 22px;
+  font-size: 20px;
   color: #aaa;
   padding: 2px;
   border: 0;
@@ -35,7 +35,7 @@ limitations under the License.
 }
 
 .sub-node-edges .edges-btn:hover {
-  opacity: 0.9;
+  color: #444;
 }
 
 .sub-node-edges .edges-content {
@@ -65,8 +65,8 @@ limitations under the License.
 
 .sub-node-edges .edge-item .item-properties {
   display: none;
-  background-color: #efefef;
-  padding: 4px 0;
+  /* background-color: #efefef; */
+  padding: 10px 0;
   border-radius: 0 0 4px 4px;
   /*box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);*/
 }

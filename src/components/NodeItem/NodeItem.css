@@ -29,6 +29,7 @@ limitations under the License.
   cursor: pointer;
   background-color: white;
   border-radius: 5px;
+  border: 1px solid transparent;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -92,14 +93,14 @@ limitations under the License.
 }
 
 .node-item.current.this-node {
-  /* border: 1px solid #587bff; */
+  border: 1px solid #2eb78e;
   /* border-bottom-color: #0036ff; */
 }
 
 .node-item .sub-node-edges .edges-in,
 .node-item .sub-node-edges .edges-out {
   position: absolute;
-  left: -30px;
+  left: -32px;
 }
 
 .node-item .sub-node-edges .edges-in {
