@@ -20,7 +20,6 @@ import { connect } from 'react-redux';
 import { addStageNode } from '../../redux/modules/stage';
 import { traversalSearch } from '../../redux/modules/nodes';
 import { traverseItems } from '../../utils';
-import { NodeEdges } from '../';
 import './SubNodesByGraph.css';
 
 class SubNodesByGraph extends Component {
@@ -301,8 +300,6 @@ class SubNodesByGraph extends Component {
             <span className="sub-node-type">{this.props.namedCollections[subnode.type].alias}</span>
             <span className="sub-node-name" title={subnode.name}>{subnode.name}</span>
           </div>
-
-          {/* <NodeEdges edges={subnode.edges} position={'right'} /> */}
         </div>
       );
     });
@@ -333,7 +330,6 @@ class SubNodesByGraph extends Component {
     if (graphAmount === 0 &&
       this.state.excludedTypes.length === 0 &&
       this.state.query.trim() === '') {
-      // return <div key={items.graph}></div>;
       return null;
     }
 
