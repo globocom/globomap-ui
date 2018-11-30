@@ -21,7 +21,13 @@ import './User.css';
 class User extends Component {
 
   render() {
-    const { picture, email } = this.props.serverData.userInfo;
+    const uInfo = this.props.serverData.userInfo;
+    let picture, email;
+
+    if (uInfo !== undefined) {
+      ({picture, email} = uInfo);
+    }
+
     return (
       <div className="sidebar-user">
         <div className="user-avatar">

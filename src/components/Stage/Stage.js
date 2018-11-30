@@ -16,6 +16,7 @@ limitations under the License.
 
 import Clipboard from 'clipboard';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { saveSharedMap, getSharedMap, saveUserMap,
          getUserMap, listUserMaps } from '../../redux/modules/stage';
@@ -35,8 +36,6 @@ class Stage extends Component {
     };
 
     this.renderNodes = this.renderNodes.bind(this);
-    this.saveMap = this.saveMap.bind(this);
-    this.shareMap = this.shareMap.bind(this);
     this.toggleFullScreen = this.toggleFullScreen.bind(this);
     this.openSharedLink = this.openSharedLink.bind(this);
     this.closeSharedLink = this.closeSharedLink.bind(this);
@@ -58,12 +57,14 @@ class Stage extends Component {
     });
   }
 
-  saveMap() {
+  saveMap(event) {
+    event.preventDefault();
     this.props.saveUserMap(this.props.stageNodes);
     return;
   }
 
-  shareMap() {
+  shareMap(event) {
+    event.preventDefault();
     if (!this.state.sharedLinkOpen) {
       this.openSharedLink();
       this.props.saveSharedMap(this.props.stageNodes);
@@ -120,40 +121,50 @@ class Stage extends Component {
     }
 
     return (
-      <div className={`stage${this.state.fullScreen ? ' full' : ''}`}>
+      <div className={`stage${this.props.full ? ' full' : ''}`}>
+
+        {this.props.full &&
+          <Link to="/" className="btn-close-full">
+            <i className="fa fa-arrow-left"></i>
+          </Link>}
+
         <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
-          <button className="btn btn-save-map" onClick={this.saveMap}
+          <button className="btn btn-save-map" onClick={e => this.saveMap(e)}
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
-          <button className="btn btn-share-map" onClick={this.shareMap}
+          <button className="btn btn-share-map" onClick={e => this.shareMap(e)}
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-link"></i>
           </button>
           {this.state.sharedLinkOpen &&
             <div className="shared-link">
-              <input type="text" readOnly={true} className="link-url topcoat-text-input--large"
+              <input type="text" readOnly={true} className="link-url"
                      value={urlToShare} onClick={e => e.target.select()} />
-              <button className="btn-clipboard topcoat-button--large"
+              <button className="btn-clipboard" onClick={() => alert('Copied!')}
                       data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
                 <i className="fa fa-clipboard"></i> Copy to clipboard
               </button>
             </div>}
-          <button className="btn btn-fullscreen" onClick={this.toggleFullScreen}>
+
+          {/* <button className="btn btn-fullscreen" onClick={this.toggleFullScreen}>
             {this.state.fullScreen
               ? <i className="fa fa-compress"></i>
               : <i className="fa fa-expand"></i>}
-          </button>
+          </button> */}
         </div>
 
         <div className="stage-container">
-          {this.renderNodes(this.props.stageNodes)}
+          <div className="node-item-content">
+            {this.renderNodes(this.props.stageNodes)}
+          </div>
         </div>
 
         {/* {this.props.stageNodes.length > 0 &&
           <NodeInfo node={this.props.currentNode} />} */}
 
-        <SubNodes />
+        {!this.props.full &&
+          <SubNodes />}
       </div>
     );
   }

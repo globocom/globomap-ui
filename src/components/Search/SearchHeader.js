@@ -32,28 +32,25 @@ class SearchHeader extends Component {
       showSearchTypes: false,
       searchFor: "all",
       queryProps: [{ 'name': '', 'value': '', 'op': 'LIKE' }],
-      propsOperators: ["==", "LIKE","NOTIN", "IN", "!=", ">", ">=", "<", "<=", "!~", "=~"]
+      propsOperators: ["==", "LIKE", "NOTIN", "IN", "!=", ">", ">=", "<", "<=", "!~", "=~"]
     };
 
-    this.addProp = this.addProp.bind(this);
-    this.removeProp = this.removeProp.bind(this);
     this.handleCheckItem = this.handleCheckItem.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.onSendSearchQuery = this.onSendSearchQuery.bind(this);
     this.onToggleSearchOptions = this.onToggleSearchOptions.bind(this);
     this.closeSearchOptions = this.closeSearchOptions.bind(this);
   }
 
-  addProp() {
+  addProp(event) {
+    event.preventDefault();
     this.propItems.scrollTop = this.propItems.scrollHeight;
-
     let qProps = this.state.queryProps.slice();
     qProps.push({ 'name': '', 'value': '', 'op': 'LIKE' });
     this.setState({ queryProps: qProps });
   }
 
-  removeProp(index) {
+  removeProp(event, index) {
+    event.preventDefault();
     let qProps = this.state.queryProps.slice();
     qProps.splice(index, 1);
     this.setState({ queryProps: qProps });
@@ -141,19 +138,20 @@ class SearchHeader extends Component {
         <div key={'prop' + i} className="prop-item">
           <input className="prop-query" type="search"
             name={'prop'+i+'-name'} placeholder="property name" value={this.state.queryProps[i].name}
-            onChange={(e) => this.handlePropChange(e, i, 'name')} />
+            onChange={e => this.handlePropChange(e, i, 'name')} />
 
           <select className="prop-operator" name={'prop'+i+'-operator'}
-            value={this.state.queryProps[i].op} onChange={(e) => this.handlePropChange(e, i, 'op')}>
+            value={this.state.queryProps[i].op} onChange={e => this.handlePropChange(e, i, 'op')}>
             {this.state.propsOperators.map((op, j) => <option key={'op'+j} value={op}>{op}</option>)}
           </select>
 
           <input className="prop-query" type="search"
             name={'prop'+i+'-value'} placeholder="value" value={this.state.queryProps[i].value}
-            onChange={(e) => this.handlePropChange(e, i, 'value')} />
+            onChange={e => this.handlePropChange(e, i, 'value')}
+            onKeyPress={e => this.handleKeyPress(e)} />
 
           {i > 0 &&
-            <button className="btn-remove-prop" onClick={() => this.removeProp(i)}>
+            <button className="btn-remove-prop" onClick={e => this.removeProp(e, i)}>
               <i className="fas fa-times"></i>
             </button>}
         </div>
@@ -165,7 +163,7 @@ class SearchHeader extends Component {
 
         <div className="search-box">
           <div className="search-top">
-            <button className="btn btn-search" onClick={this.onSendSearchQuery}
+            <button className="btn btn-search" onClick={e => this.onSendSearchQuery(e)}
               disabled={this.props.findLoading}>
                 <i className="fa fa-search"></i> Search
             </button>
@@ -192,7 +190,7 @@ class SearchHeader extends Component {
                 placeholder="Type keyword" autoComplete="off"
                 value={this.state.query}
                 onChange={this.handleSearchChange}
-                onKeyPress={this.handleKeyPress} />
+                onKeyPress={e => this.handleKeyPress(e)} />
             </div>}
 
           {this.state.searchFor === 'properties' &&
@@ -200,7 +198,7 @@ class SearchHeader extends Component {
               <div className="property-items" ref={(el) => { this.propItems = el; }}>
                 {propItems}
               </div>
-              <button className="btn-add-prop" onClick={this.addProp}>
+              <button className="btn-add-prop" onClick={e => this.addProp(e)}>
                 <i className="icon fas fa-plus"></i> Add another search
               </button>
             </div>}

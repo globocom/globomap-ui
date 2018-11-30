@@ -19,13 +19,19 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
+import {
+  BrowserRouter,
+  Route,
+  Switch
+} from 'react-router-dom';
 import reducer from './redux/modules/reducer';
 import clientMiddleware from './redux/middlewares/clientMiddleware';
 import ApiClient from './helpers/ApiClient';
-
-import { App, NotFound } from './components';
+import {
+  App,
+  AppFull,
+  NotFound
+} from './components';
 
 const apiClient = new ApiClient()
 
@@ -42,7 +48,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={App} />
-        <Route path="/map/:mapKey" component={App} />
+        <Route path="/map/:mapKey" component={AppFull} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

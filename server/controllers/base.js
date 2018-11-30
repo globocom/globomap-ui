@@ -91,9 +91,10 @@ router.get('/find-nodes', isAuthenticated, (req, res) => {
           `[{"field": "properties", "value": "${query}", "operator": "LIKE"}]]`;
 
   if (queryProps && queryProps.length > 0) {
-    let byProps = queryProps.map((prop) => {
-      const f = prop.name === 'name' ? prop.name : `properties.${prop.name}`;
-      return `{"field": "${f}", "value": "${prop.value}", "operator": "${prop.op}"}`;
+    let byProps = queryProps.map(prop => {
+      prop = JSON.parse(prop);
+      const field = prop.name === 'name' ? prop.name : `properties.${prop.name}`;
+      return `{"field": "${field}", "value": "${prop.value}", "operator": "${prop.op}"}`;
     });
     q = `[[${byProps.join(',')}]]`;
   }

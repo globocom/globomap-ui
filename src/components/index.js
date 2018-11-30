@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import App from './App/App';
+import AppFull from './App/AppFull';
 import Loading from './Loading/Loading';
 import Modal from './Modal/Modal';
 import Monit from './Monit/Monit';
@@ -36,6 +37,7 @@ import Tools from './Tools/Tools';
 
 export {
   App,
+  AppFull,
   Loading,
   Modal,
   Monit,

@@ -40,15 +40,50 @@ limitations under the License.
 .stage.full {
   top: 0;
   right: 0;
+  left: 0;
+  padding: 0;
   width: auto;
   z-index: 99;
 }
 
+.stage.full .stage-container {
+  padding: 80px;
+}
+
+.stage.full .stage-tools {
+  display: none;
+}
+
+.stage .btn-close-full {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 22px;
+  color: #999;
+  text-align: center;
+  background-color: white;
+  display: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.stage .btn-close-full:hover {
+  color: #333;
+}
+
+.stage.full .btn-close-full {
+  display: block;
+}
+
 .stage .stage-container {
   display: flex;
-  padding: 50px;
+  padding: 40px;
   justify-content: left;
   overflow: auto;
+  height: 100%;
 }
 
 .stage .node-item-group {
@@ -111,9 +146,13 @@ limitations under the License.
 .shared-link .link-url {
   flex-grow: 2;
   border-radius: 4px 0 0 4px;
+  border: 1px solid #ccc;
   border-right: 0;
+  padding: 8px;
 }
 
 .shared-link .btn-clipboard {
   border-radius: 0 4px 4px 0;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
 }
