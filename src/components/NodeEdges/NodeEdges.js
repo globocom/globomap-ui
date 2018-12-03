@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import tippy from 'tippy.js';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Properties } from '../';
@@ -92,6 +93,10 @@ class NodeEdges extends Component {
 
   componentDidMount() {
     document.addEventListener('click', this.handleOutsideClick, false);
+    tippy('.edges-btn', {
+      arrow: true,
+      animation: "fade"
+    });
   }
 
   componentWillUnmount() {
@@ -119,7 +124,9 @@ class NodeEdges extends Component {
     ].map((elem) => {
       return elem.items.length > 0
               ? (<div key={elem.dir} className={'edges-' + elem.dir}>
-                  <button className={'edges-btn ' + colorCls} onClick={elem.toggleFn}>
+                  <button className={'edges-btn ' + colorCls}
+                          onClick={elem.toggleFn}
+                          data-tippy-content="Show link properties">
                     <i className={'fa fa-long-arrow-alt-'+ (elem.dir === 'in' ? 'right' : 'left')}></i>
                   </button>
                   {elem.openState &&
