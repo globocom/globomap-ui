@@ -15,12 +15,19 @@ limitations under the License.
 */
 
 import _ from "lodash";
+import 'tippy.js/dist/tippy.css';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchGraphs, fetchCollections, fetchEdges,
-         fetchQueries, getServerData, toggleHasId } from '../../redux/modules/app';
+import {
+  fetchGraphs,
+  fetchCollections,
+  fetchEdges,
+  fetchQueries,
+  getServerData,
+  toggleHasId } from '../../redux/modules/app';
 import { clearCurrentNode } from '../../redux/modules/nodes';
 import {
+  Favorites,
   Sidebar,
   Search,
   Stage,
@@ -66,7 +73,7 @@ class App extends Component {
           <Stage sharedMapKey={this.props.match.params.mapKey} />
         </TabContent>
         <TabContent tabKey="favorites">
-          favorites
+          <Favorites />
         </TabContent>
         <Loading iconSize="big"
                  isLoading={this.props.findLoading

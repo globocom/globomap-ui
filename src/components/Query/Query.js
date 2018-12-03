@@ -22,7 +22,7 @@ import './Query.css';
 class Query extends Component {
 
   buildQueryItems() {
-    const node = this.props.currentNode;
+    const node = this.props.node;
 
     let queries = _.filter(this.props.queries, (q) => {
       return q.collection === node.type;
@@ -45,6 +45,9 @@ class Query extends Component {
   }
 
   render() {
+    if (!this.props.node)
+      return null;
+
     return (
       <div className="queries">
         { this.buildQueryItems() }
@@ -55,7 +58,6 @@ class Query extends Component {
 
 function mapStateToProps(state) {
   return {
-    currentNode: state.nodes.currentNode,
     queries: state.app.queries
   };
 }

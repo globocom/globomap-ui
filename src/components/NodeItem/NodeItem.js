@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import _ from "lodash";
+import tippy from 'tippy.js';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Stickyfill from 'stickyfill';
@@ -26,7 +27,6 @@ import {
   removeStageNode,
   setStageNodes
 } from '../../redux/modules/stage';
-// import { traverseItems } from '../../utils';
 import { NodeEdges } from '../';
 import './NodeItem.css';
 
@@ -36,46 +36,26 @@ class NodeItem extends Component {
     super(props);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
-    // this.checkNodeExistence = this.checkNodeExistence.bind(this);
     this.stickyfill = Stickyfill();
   }
 
-  // checkNodeExistence() {
-  //   return new Promise((resolve) => {
-  //     let stageNodes = Object.assign([], this.props.stageNodes);
-  //     let params = {
-  //       collection: this.props.node._id.split('/')[0],
-  //       id: this.props.node._id.split('/')[1]
-  //     };
-
-  //     this.socket.emit('getnode', params, (data) => {
-  //       let exist = true;
-  //       if (data.error) {
-  //         exist = false;
-  //       }
-  //       if (Object.keys(data).length === 0) {
-  //         exist = false;
-  //       }
-  //       traverseItems(stageNodes, (node) => {
-  //         if (node._id === this.props.node._id) {
-  //           node.exist = exist;
-  //         }
-  //       });
-  //       this.props.setStageNodes(stageNodes, () => {
-  //         resolve(exist);
-  //       });
-  //     });
-  //   });
-  // }
-
   onItemSelect(event) {
-    // this.checkNodeExistence().then((exist) => {
-    //   if (exist) {
-    //     this.props.setCurrentNode(this.props.node);
-    //   }
-    // });
+    if (!this.props.currentNode) {
+      this.props.traversalSearch({ node: this.props.node });
+      this.props.setCurrentNode(this.props.node);
+      return;
+    }
+
+    if (this.props.currentNode._id !== this.props.node._id) {
+      this.props.traversalSearch({ node: this.props.node });
+    }
+
     this.props.setCurrentNode(this.props.node);
-    this.props.traversalSearch({ node: this.props.node });
+  }
+
+  onNodeInfo(event) {
+    event.stopPropagation();
+    this.props.onShowNodeInfo();
   }
 
   onSelfRemove(event) {
@@ -86,6 +66,10 @@ class NodeItem extends Component {
   componentDidMount() {
     let element = document.getElementsByClassName('sticky');
     this.stickyfill.add(element);
+    tippy('.btn-with-tip', {
+      arrow: true,
+      animation: "fade"
+    });
   }
 
   render() {
@@ -105,11 +89,6 @@ class NodeItem extends Component {
            className={'node-item' + disabled + current + thisnode}
            onClick={exist && _.debounce(this.onItemSelect, 100, true)}>
 
-        {!this.props.node.root &&
-          <button className="close-node-btn" onClick={this.onSelfRemove}>
-            <i className="fa fa-times"></i>
-          </button>}
-
         <div className="node-info sticky">
           <span className="type">{nodeType}</span>
           <span className="name">{name}</span>
@@ -117,6 +96,20 @@ class NodeItem extends Component {
         </div>
 
         <NodeEdges edges={edges} position={'left'} />
+
+        <div className="node-item-tools">
+          <button className="btn-with-tip show-node-info-btn"
+                  onClick={e => this.onNodeInfo(e)}
+                  data-tippy-content="Show node info">
+            <i className="fa fa-info-circle"></i>
+          </button>
+          {!this.props.node.root &&
+            <button className="btn-with-tip close-node-btn"
+                    onClick={this.onSelfRemove}
+                    data-tippy-content="Remove this node">
+              <i className="fa fa-times-circle"></i>
+            </button>}
+        </div>
       </div>
     );
   }

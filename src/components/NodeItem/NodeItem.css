@@ -94,7 +94,6 @@ limitations under the License.
 
 .node-item.current.this-node {
   border: 1px solid #2eb78e;
-  /* border-bottom-color: #0036ff; */
 }
 
 .node-item .sub-node-edges .edges-in,
@@ -111,21 +110,53 @@ limitations under the License.
   bottom: 2px;
 }
 
-.node-item .close-node-btn {
-  color: transparent;
+.node-item-tools {
   position: absolute;
-  top: 5px;
-  right: 2px;
-  border: 0;
-  background-color: transparent;
-  font-size: 12px;
+  top: -20px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  transition: top 100ms ease-out;
+}
+
+.node-item-tools:hover {
+  top: -23px;
+}
+
+.node-item-tools .close-node-btn,
+.node-item-tools .show-node-info-btn {
+  /* display: none; */
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  width: 20px;
+  height: 20px;
+  background: none;
+  font-size: 16px;
+  padding: 0;
   z-index: 1;
+  color: rgba(0, 0, 0, 0);
+
+  transition: color 100ms ease-out;
 }
 
-.node-item:hover .close-node-btn {
-  color: rgba(0, 0, 0, 0.2);
+.node-item-tools .close-node-btn {
+  right: 0;
 }
 
-.node-item:hover .close-node-btn:hover {
+.node-item-tools .show-node-info-btn {
+  left: 0;
+}
+
+.node-item-tools:hover .close-node-btn,
+.node-item-tools:hover .show-node-info-btn {
+  /* display: block; */
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.node-item-tools:hover .close-node-btn:hover,
+.node-item-tools:hover .show-node-info-btn:hover {
   color: rgba(0, 0, 0, 0.9);
 }

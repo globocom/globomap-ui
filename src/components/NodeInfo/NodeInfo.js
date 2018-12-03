@@ -26,7 +26,8 @@ class NodeInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: 'Properties'
+      tab: 'Properties',
+      show: false
     }
   }
 
@@ -35,14 +36,21 @@ class NodeInfo extends React.Component {
     this.setState({ tab: tabName });
   }
 
+  onClose(event) {
+    event.stopPropagation();
+    return this.props.onClose
+            ? this.props.onClose()
+            : this.props.clearCurrentNode();
+  }
+
   render() {
     if (!this.props.node)
       return null;
 
     const node = this.props.node;
     const tabs = [{ name: 'Properties', content: <Properties item={node} /> },
-                  { name: 'Monitoring', content: <Monit /> },
-                  { name: 'Reports', content: <Query /> }];
+                  { name: 'Monitoring', content: <Monit node={node} /> },
+                  { name: 'Reports', content: <Query node={node} /> }];
 
     const tabsButtons = tabs.map(tabItem => {
       const active = this.state.tab === tabItem.name ? ' active' : '';
@@ -86,15 +94,12 @@ class NodeInfo extends React.Component {
       nodeType = this.props.namedCollections[node.type].alias;
 
     const position = this.props.position ? this.props.position : 'right';
-    const onClose = this.props.onClose ? this.props.onClose : this.props.clearCurrentNode;
-
     return (
       <div className={`node-info-box ${position}`}>
         <div className="title">
           <span className="type">{nodeType}</span>
           <span className="name">{node.name}</span>
-          <button className="close-btn"
-            onClick={() => onClose()}>
+          <button className="close-btn" onClick={e => this.onClose(e)}>
             <i className="fa fa-times"></i>
           </button>
         </div>

@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import tippy from 'tippy.js';
 import Clipboard from 'clipboard';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -32,7 +33,9 @@ class Stage extends Component {
 
     this.state = {
       fullScreen: false,
-      sharedLinkOpen: false
+      sharedLinkOpen: false,
+      showNodeInfo: false,
+      nodeInfoNode: null
     };
 
     this.renderNodes = this.renderNodes.bind(this);
@@ -40,15 +43,27 @@ class Stage extends Component {
     this.openSharedLink = this.openSharedLink.bind(this);
     this.closeSharedLink = this.closeSharedLink.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
+    this.onShowNodeInfo = this.onShowNodeInfo.bind(this);
+  }
 
-    new Clipboard('.btn-clipboard');
+  onShowNodeInfo(node) {
+    this.setState({
+      showNodeInfo: true,
+      nodeInfoNode: node
+    });
+  }
+
+  onCloseNodeInfo() {
+    this.setState({ showNodeInfo: false });
   }
 
   renderNodes(nodeList) {
     return nodeList.map((node, i) => {
       return (
         <div key={`n${i}`} className="node-item-group">
-          <NodeItem node={node} />
+          <NodeItem node={node}
+                    onShowNodeInfo={() => this.onShowNodeInfo(node)} />
           <div className="node-item-content">
             {node.items.length > 0 ? this.renderNodes(node.items) : ''}
           </div>
@@ -100,6 +115,12 @@ class Stage extends Component {
       this.props.getSharedMap(sharedMapKey);
     }
     document.addEventListener('click', this.handleOutsideClick, false);
+
+    new Clipboard('.btn-clipboard');
+    tippy('.btn', {
+      arrow: true,
+      animation: "fade"
+    });
   }
 
   componentWillUnmount() {
@@ -130,10 +151,12 @@ class Stage extends Component {
 
         <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
           <button className="btn btn-save-map" onClick={e => this.saveMap(e)}
+                  data-tippy-content="Save this map"
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
           <button className="btn btn-share-map" onClick={e => this.shareMap(e)}
+                  data-tippy-content="Share this map"
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-link"></i>
           </button>
@@ -160,8 +183,10 @@ class Stage extends Component {
           </div>
         </div>
 
-        {/* {this.props.stageNodes.length > 0 &&
-          <NodeInfo node={this.props.currentNode} />} */}
+        {this.state.showNodeInfo &&
+          <NodeInfo node={this.state.nodeInfoNode}
+                    onClose={this.onCloseNodeInfo}
+                    position="left" />}
 
         {!this.props.full &&
           <SubNodes />}

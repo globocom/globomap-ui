@@ -33,17 +33,18 @@ class Monit extends Component {
 
   openZbxGraph(event) {
     event.stopPropagation();
-    const node = this.props.currentNode;
+    const node = this.props.node;
 
-    if (!node) return;
+    if (!node)
+      return;
 
     this.props.showModal(<img src={`data:image/png;base64,${this.props.zbxGraph}`}
                               alt={node.name} />);
   }
 
   componentWillReceiveProps(nextProps) {
-    const next = nextProps.currentNode;
-    const current = this.props.currentNode;
+    const next = nextProps.node;
+    const current = this.props.node;
 
     if(!this.monitItems.includes(next.type)) {
       return;
@@ -61,7 +62,7 @@ class Monit extends Component {
   }
 
   componentDidMount() {
-    const node = this.props.currentNode;
+    const node = this.props.node;
 
     if(!this.monitItems.includes(node.type)) {
       return;
@@ -77,7 +78,10 @@ class Monit extends Component {
   }
 
   render() {
-    let node = this.props.currentNode,
+    if (!this.props.node)
+      return null;
+
+    let node = this.props.node,
         triggers = [],
         zbxGraphButton = '';
 
@@ -124,7 +128,6 @@ class Monit extends Component {
 
 function mapStateToProps(state) {
   return {
-    currentNode: state.nodes.currentNode,
     zbxMonitLoading: state.plugins.zbxMonitLoading,
     zbxGraphLoading: state.plugins.zbxGraphLoading,
     zbxTriggers: state.plugins.zbxTriggers,
