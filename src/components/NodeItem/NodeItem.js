@@ -100,7 +100,7 @@ class NodeItem extends Component {
         <div className="node-item-tools">
           <button className="btn-with-tip show-node-info-btn"
                   onClick={e => this.onNodeInfo(e)}
-                  data-tippy-content="Show node info">
+                  data-tippy-content="Show Properties">
             <i className="fa fa-info-circle"></i>
           </button>
           {!this.props.node.root &&

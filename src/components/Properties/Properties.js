@@ -99,8 +99,6 @@ class Properties extends Component {
     const properties = item.properties || {};
     let content = this.buildProps(properties, 0);
 
-    console.log(item.timestamp);
-
     const itemTimestamp = new Date(parseInt(item.timestamp, 10) * 1000);
     content.push(<div key="timestamp" className="item-prop">
                    <span>timestamp</span>
