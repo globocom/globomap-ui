@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import SidebarButtons from './SidebarButtons';
 import User from './User';
 import './Sidebar.css';
 
-class Sidebar extends Component {
+class Sidebar extends React.Component {
 
   render() {
     return (

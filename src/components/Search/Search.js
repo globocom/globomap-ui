@@ -18,8 +18,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   SearchHeader,
-  SearchContent
-} from '../';
+  SearchContent } from '../';
 import './Search.css';
 
 class Search extends Component {

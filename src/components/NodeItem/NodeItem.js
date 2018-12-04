@@ -21,12 +21,11 @@ import { connect } from 'react-redux';
 import Stickyfill from 'stickyfill';
 import {
   traversalSearch,
-  setCurrentNode
-} from '../../redux/modules/nodes';
+  resetSubNodes,
+  setCurrentNode } from '../../redux/modules/nodes';
 import {
   removeStageNode,
-  setStageNodes
-} from '../../redux/modules/stage';
+  setStageNodes } from '../../redux/modules/stage';
 import { NodeEdges } from '../';
 import './NodeItem.css';
 
@@ -61,6 +60,9 @@ class NodeItem extends Component {
   onSelfRemove(event) {
     event.stopPropagation();
     this.props.removeStageNode(this.props.node);
+    if (this.props.currentNode.uuid === this.props.node.uuid) {
+      this.props.resetSubNodes();
+    }
   }
 
   componentDidMount() {
@@ -129,6 +131,7 @@ export default connect(
   {
     setCurrentNode,
     removeStageNode,
+    resetSubNodes,
     setStageNodes,
     traversalSearch
   }

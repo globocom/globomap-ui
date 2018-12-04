@@ -25,9 +25,12 @@ import {
   fetchQueries,
   getServerData,
   toggleHasId } from '../../redux/modules/app';
-import { clearCurrentNode } from '../../redux/modules/nodes';
+import {
+  clearCurrentNode,
+  resetSubNodes } from '../../redux/modules/nodes';
 import {
   Favorites,
+  Modal,
   Sidebar,
   Search,
   Stage,
@@ -46,6 +49,7 @@ class App extends Component {
     if (event.key === 'Escape') {
       event.preventDefault();
       this.props.clearCurrentNode();
+      this.props.resetSubNodes();
     }
   };
 
@@ -82,6 +86,7 @@ class App extends Component {
                             || this.props.saveUserMapLoading
                             || this.props.getUserMapLoading
                             || this.props.saveSharedLoading} />
+        <Modal />
       </div>
     );
   }
@@ -101,7 +106,14 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { fetchGraphs, fetchCollections, fetchEdges,
-    fetchQueries, getServerData, clearCurrentNode,
-    toggleHasId }
+  {
+    fetchGraphs,
+    fetchCollections,
+    fetchEdges,
+    fetchQueries,
+    getServerData,
+    clearCurrentNode,
+    resetSubNodes,
+    toggleHasId
+  }
 )(App);

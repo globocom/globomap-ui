@@ -16,7 +16,9 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { resetSubNodes, findNodes } from '../../redux/modules/nodes';
+import {
+  resetSubNodes,
+  findNodes } from '../../redux/modules/nodes';
 import { cleanStageNodes } from '../../redux/modules/stage';
 import { sortBy } from '../../utils';
 import './SearchHeader.css';

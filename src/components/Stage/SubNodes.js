@@ -14,15 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import SubNodesByGraph from './SubNodesByGraph';
 import './SubNodes.css';
 
-class SubNodes extends Component {
+class SubNodes extends React.Component {
 
   render() {
-    const byGraph = this.props.subNodesByGraph.map((items) => {
+    const byGraph = this.props.subNodesByGraph.map(items => {
       return <SubNodesByGraph key={`index_${items.graph}_${items.nodes.length}`}
                               items={items}/>
     });

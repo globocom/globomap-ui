@@ -17,21 +17,21 @@ limitations under the License.
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import {
+  createStore,
+  applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import {
   BrowserRouter,
   Route,
-  Switch
-} from 'react-router-dom';
+  Switch } from 'react-router-dom';
 import reducer from './redux/modules/reducer';
 import clientMiddleware from './redux/middlewares/clientMiddleware';
 import ApiClient from './helpers/ApiClient';
 import {
   App,
   AppFull,
-  NotFound
-} from './components';
+  NotFound } from './components';
 
 const apiClient = new ApiClient()
 

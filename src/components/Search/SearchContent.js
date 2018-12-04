@@ -20,8 +20,7 @@ import {
   clearNodes,
   setCurrentNode,
   clearCurrentNode,
-  traversalSearch
-} from '../../redux/modules/nodes';
+  traversalSearch } from '../../redux/modules/nodes';
 import { addStageNode } from '../../redux/modules/stage';
 import { setTab } from '../../redux/modules/tabs';
 import SearchContentPagination from './SearchContentPagination';

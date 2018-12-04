@@ -23,8 +23,7 @@ import {
   fetchEdges,
   fetchQueries,
   getServerData,
-  toggleHasId
-} from '../../redux/modules/app';
+  toggleHasId } from '../../redux/modules/app';
 import { clearCurrentNode } from '../../redux/modules/nodes';
 import { Stage } from '../';
 import './App.css';

@@ -86,7 +86,7 @@ export default function reducer(state=initialState, action={}) {
 
     case STAGE_REMOVE_NODE:
       currentNodes = state.stageNodes.slice();
-      const i = currentNodes.findIndex((n) => {
+      const i = currentNodes.findIndex(n => {
         return n.uuid === action.node.uuid;
       });
 
@@ -102,12 +102,6 @@ export default function reducer(state=initialState, action={}) {
           }
         });
       }
-
-      // if (currentNodes.length > 0 && currentNodes[0].items !== undefined) {
-      //   if (currentNodes[0].items.length === 0) {
-      //     this.setCurrentTab('Search Results');
-      //   }
-      // }
 
       return {
         ...state,

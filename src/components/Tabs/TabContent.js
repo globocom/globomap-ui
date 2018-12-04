@@ -16,7 +16,9 @@ limitations under the License.
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { registerTab, setTab } from '../../redux/modules/tabs';
+import {
+  registerTab,
+  setTab } from '../../redux/modules/tabs';
 
 class TabContent extends React.Component {
 
