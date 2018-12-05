@@ -44,8 +44,9 @@ class NodeInfo extends React.Component {
   }
 
   render() {
-    if (!this.props.node)
+    if (!this.props.node) {
       return null;
+    }
 
     const node = this.props.node;
     const tabs = [{ name: 'Properties', content: <Properties item={node} /> },
@@ -56,9 +57,9 @@ class NodeInfo extends React.Component {
       const active = this.state.tab === tabItem.name ? ' active' : '';
       let disabled = false;
 
-      // if (tabItem.name === 'Monitoring' && !['comp_unit', 'zabbix_graph'].includes(node.type)) {
-      //   disabled = true;
-      // }
+      if (tabItem.name === 'Monitoring' && !['comp_unit', 'zabbix_graph'].includes(node.type)) {
+        disabled = true;
+      }
 
       if (tabItem.name === 'Reports') {
         disabled = true;
@@ -90,8 +91,9 @@ class NodeInfo extends React.Component {
     });
 
     let nodeType = node.type;
-    if (this.props.namedCollections !== undefined)
+    if (this.props.namedCollections !== undefined) {
       nodeType = this.props.namedCollections[node.type].alias;
+    }
 
     const position = this.props.position ? this.props.position : 'right';
     return (
