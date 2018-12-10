@@ -20,12 +20,10 @@ import {
   listUserMaps,
   deleteUserMap,
   getUserMap,
-  setStageNodes
-} from '../../redux/modules/stage';
+  setStageNodes } from '../../redux/modules/stage';
 import {
   clearCurrentNode,
-  resetSubNodes
-} from '../../redux/modules/nodes';
+  resetSubNodes } from '../../redux/modules/nodes';
 import { setTab } from '../../redux/modules/tabs';
 import { sortByName } from '../../utils';
 import './Favorites.css';

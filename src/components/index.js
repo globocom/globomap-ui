@@ -24,7 +24,6 @@ import NodeEdges from './NodeEdges/NodeEdges';
 import NodeInfo from './NodeInfo/NodeInfo';
 import NodeItem from './NodeItem/NodeItem';
 import NotFound from './NotFound/NotFound';
-// import PopMenu from './PopMenu/PopMenu';
 import Properties from './Properties/Properties';
 import Query from './Query/Query';
 import Search from './Search/Search';
@@ -34,7 +33,6 @@ import Sidebar from './Sidebar/Sidebar';
 import Stage from './Stage/Stage';
 import Tab from './Tabs/Tab';
 import TabContent from './Tabs/TabContent';
-import Tools from './Tools/Tools';
 
 export {
   App,
@@ -47,7 +45,6 @@ export {
   NodeInfo,
   NodeItem,
   NotFound,
-  // PopMenu,
   Properties,
   Query,
   Search,
@@ -56,6 +53,5 @@ export {
   Sidebar,
   Stage,
   Tab,
-  TabContent,
-  Tools
+  TabContent
 }

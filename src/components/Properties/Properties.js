@@ -105,11 +105,10 @@ class Properties extends Component {
                    <span>{itemTimestamp.toLocaleString(DATE_FORMAT_LANGUAGE)}</span>
                  </div>);
 
-    this.props.hasId &&
-      content.push(<div key="id" className="item-prop">
-                     <span>id</span>
-                     <span>{item.id}</span>
-                   </div>);
+    content.push(<div key="id" className="item-prop">
+                    <span>id</span>
+                    <span>{item.id}</span>
+                  </div>);
 
     return content;
   }
