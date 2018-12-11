@@ -77,7 +77,12 @@
 }
 
 .node-info-box .tabs-content {
+  display: none;
   height: 250px;
   overflow: auto;
   padding: 20px 0;
+}
+
+.node-info-box .tab-content.active {
+  display: block;
 }

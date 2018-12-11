@@ -60,6 +60,7 @@ if (app.get('env') === 'production') {
 
   if (config.redisSentinelsHosts) {
     redisClient = new Redis({
+      db: 1,
       name: config.redisSentinelsService,
       password: config.redisPassword,
       sentinels: config.redisSentinelsHosts.map((sentHost) => {
@@ -71,6 +72,7 @@ if (app.get('env') === 'production') {
     });
   } else {
     redisClient = new Redis({
+      db: 1,
       host: config.redisHost,
       port: config.redisPort,
       password: config.redisPassword
