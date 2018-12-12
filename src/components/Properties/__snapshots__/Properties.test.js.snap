@@ -82,7 +82,7 @@ exports[`Properties should render Properties component 1`] = `
       timestamp
     </span>
     <span>
-      2017-11-23 10:44:51
+      Thu, 23 Nov 2017 12:44:51 GMT
     </span>
   </div>
   <div

@@ -102,7 +102,7 @@ export class Properties extends Component {
     const itemTimestamp = new Date(parseInt(item.timestamp, 10) * 1000);
     content.push(<div key="timestamp" className="item-prop">
                    <span>timestamp</span>
-                   <span>{itemTimestamp.toLocaleString(DATE_FORMAT_LANGUAGE)}</span>
+                   <span>{itemTimestamp.toUTCString(DATE_FORMAT_LANGUAGE)}</span>
                  </div>);
 
     content.push(<div key="id" className="item-prop">
