@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Properties should render Properties component 1`] = `
+<div
+  className="item-properties"
+>
+  <div
+    className="l-0"
+    key="equipment_type"
+  >
+    <div
+      className="item-prop"
+    >
+      <span>
+        equipment_type
+      </span>
+      <span>
+        Servidor Virtual
+      </span>
+    </div>
+  </div>
+  <div
+    className="l-0"
+    key="host"
+  >
+    <div
+      className="item-prop"
+    >
+      <span>
+        host
+      </span>
+      <span>
+        cmal18mp11lc03
+      </span>
+    </div>
+  </div>
+  <div
+    className="l-0"
+    key="ips"
+  >
+    <div
+      className="item-prop"
+    >
+      <span>
+        ips
+      </span>
+      <span>
+        <a
+          href="#sup-props"
+          onClick={[Function]}
+        >
+          <span>
+            <i
+              className="icon fa fa-caret-right"
+            />
+             show
+          </span>
+        </a>
+      </span>
+    </div>
+  </div>
+  <div
+    className="l-0"
+    key="uuid"
+  >
+    <div
+      className="item-prop"
+    >
+      <span>
+        uuid
+      </span>
+      <span>
+        5d9ed63b-1985-4d3a-98d4-8b0195ce1c53
+      </span>
+    </div>
+  </div>
+  <div
+    className="item-prop"
+    key="timestamp"
+  >
+    <span>
+      timestamp
+    </span>
+    <span>
+      2017-11-23 10:44:51
+    </span>
+  </div>
+  <div
+    className="item-prop"
+    key="id"
+  >
+    <span>
+      id
+    </span>
+    <span>
+      5d9ed63b-1985-4d3a-98d4-8b0195ce1c53
+    </span>
+  </div>
+</div>
+`;

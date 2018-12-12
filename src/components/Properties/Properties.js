@@ -20,7 +20,7 @@ import './Properties.css';
 
 const DATE_FORMAT_LANGUAGE = 'pt-BR';
 
-class Properties extends Component {
+export class Properties extends Component {
 
   constructor(props) {
     super(props);

@@ -28,7 +28,7 @@ import { setTab } from '../../redux/modules/tabs';
 import { sortByName } from '../../utils';
 import './Favorites.css';
 
-class Favorites extends React.Component {
+export class Favorites extends React.Component {
 
   componentWillMount() {
     this.props.listUserMaps();

@@ -29,7 +29,7 @@ import {
 import { NodeEdges } from '../';
 import './NodeItem.css';
 
-class NodeItem extends Component {
+export class NodeItem extends Component {
 
   constructor(props) {
     super(props);

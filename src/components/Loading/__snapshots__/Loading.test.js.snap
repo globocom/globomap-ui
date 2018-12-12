@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading should render Loading component 1`] = `
+<CSSTransitionGroup
+  transitionAppear={false}
+  transitionEnter={true}
+  transitionEnterTimeout={200}
+  transitionLeave={true}
+  transitionLeaveTimeout={200}
+  transitionName="ui-loading"
+/>
+`;

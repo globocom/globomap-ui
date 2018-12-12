@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Favorites should render Favorites component 1`] = `
+<div
+  className="favorites"
+>
+  <h3
+    className="favorites-title"
+  >
+    Saved maps
+  </h3>
+  <ul
+    className="user-map-list"
+  >
+    <li
+      className="user-map-item no-content"
+    >
+      No map saved yet
+    </li>
+  </ul>
+</div>
+`;

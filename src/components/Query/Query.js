@@ -19,7 +19,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Query.css';
 
-class Query extends Component {
+export class Query extends Component {
 
   buildQueryItems() {
     const node = this.props.node;

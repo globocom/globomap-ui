@@ -18,7 +18,7 @@ import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group'
 import './Loading.css';
 
-class Loading extends React.Component {
+export class Loading extends React.Component {
   render() {
     const iconSizes = {
       'small': 'fa-1x',

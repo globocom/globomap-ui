@@ -21,7 +21,7 @@ import { clearCurrentNode } from '../../redux/modules/nodes';
 import { Properties, Monit, Query } from '../';
 import './NodeInfo.css';
 
-class NodeInfo extends React.Component {
+export class NodeInfo extends React.Component {
 
   constructor(props) {
     super(props);

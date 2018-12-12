@@ -18,8 +18,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './NotFound.css';
 
-
-class NotFound extends React.Component {
+export class NotFound extends React.Component {
   render() {
     return (
       <div className="not-found">

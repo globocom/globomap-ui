@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import { Properties } from '../';
 import './NodeEdges.css';
 
-class NodeEdges extends Component {
+export class NodeEdges extends Component {
 
   constructor(props) {
     super(props);

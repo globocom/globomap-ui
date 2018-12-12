@@ -20,7 +20,7 @@ import {
   registerTab,
   setTab } from '../../redux/modules/tabs';
 
-class TabContent extends React.Component {
+export class TabContent extends React.Component {
 
   componentDidMount() {
     this.props.registerTab(this.props.tabKey);

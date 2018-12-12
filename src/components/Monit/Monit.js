@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2018 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import { getZabbixMonitoring,
          getZabbixGraph } from '../../redux/modules/plugins';
 import './Monit.css';
 
-class Monit extends Component {
+export class Monit extends Component {
   monitItems = ['comp_unit', 'zabbix_graph'];
 
   getIcon(val) {

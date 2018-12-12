@@ -9,7 +9,7 @@ cache:
 install:
   - npm install
 script:
-  - npm run -s test-ci
+  - npm run test
 branches:
   only:
   - master

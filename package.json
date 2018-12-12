@@ -6,7 +6,13 @@
     "node": "8.9.1"
   },
   "devDependencies": {
-    "react-scripts": "^2.0.4"
+    "babel-jest": "^23.6.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
+    "enzyme-to-json": "^3.3.5",
+    "jest": "^23.6.0",
+    "react-scripts": "^2.0.4",
+    "sinon": "^7.2.2"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -33,10 +39,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill",
-    "test-ci": "CI=true react-scripts test --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill --collectCoverageFrom=src/components/*.js --coverage",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy-dev": "npm run build && tsuru app-deploy . -a globomap-ui",
     "docker": "docker-compose up"
   },
   "browserslist": [
@@ -44,5 +48,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  }
 }

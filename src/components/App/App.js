@@ -16,7 +16,7 @@ limitations under the License.
 
 import _ from "lodash";
 import 'tippy.js/dist/tippy.css';
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import {
   fetchGraphs,
@@ -38,7 +38,7 @@ import {
   TabContent } from '../';
 import './App.css';
 
-class App extends Component {
+export class App extends React.Component {
 
   constructor(props) {
     super(props);
@@ -74,7 +74,7 @@ class App extends Component {
           <Search />
         </TabContent>
         <TabContent tabKey="map">
-          <Stage sharedMapKey={this.props.match.params.mapKey} />
+          <Stage />
         </TabContent>
         <TabContent tabKey="favorites">
           <Favorites />

@@ -20,7 +20,7 @@ import { closeModal } from '../../redux/modules/app';
 import { Loading } from '../';
 import './Modal.css';
 
-class Modal extends React.Component {
+export class Modal extends React.Component {
   render() {
     return this.props.modalVisible
       ? <div className="modal" onClick={(e) => this.props.closeModal()}>
