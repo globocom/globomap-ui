@@ -39,6 +39,21 @@ class SearchContent extends Component {
     this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
   }
 
+  componentDidMount() {
+    document.addEventListener("keydown", this.handleKeyPress, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeyPress, false);
+  }
+
+  handleKeyPress = (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.onCloseSearchContent(event)
+    }
+  }
+
   onNodeSelect(event, node) {
     event.stopPropagation();
     if (this.props.currentNode !== null &&

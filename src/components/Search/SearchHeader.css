@@ -124,9 +124,14 @@
 }
 
 .search-types {
-  height: 125px;
+  height: 155px;
   padding: 56px 20px 0 38px;
   z-index: 8;
+}
+
+.search-types button {
+  text-align: left;
+  width: inherit;
 }
 
 .search-types button:disabled {

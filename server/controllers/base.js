@@ -84,11 +84,15 @@ router.get('/queries', isAuthenticated, (req, res) => {
 });
 
 router.get('/find-nodes', isAuthenticated, (req, res) => {
-  const { query, queryProps, collections, per_page, page } = req.query;
+  const { query, queryType, queryProps, collections, per_page, page } = req.query;
   const co = collections.toString();
 
   let q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}],` +
           `[{"field": "properties", "value": "${query}", "operator": "LIKE"}]]`;
+
+  if (queryType && queryType === 'name') {
+    q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}],[]]`;
+  }
 
   if (queryProps && queryProps.length > 0) {
     let byProps = queryProps.map(prop => {

@@ -32,7 +32,7 @@ class SearchHeader extends Component {
       query: '',
       showOptions: false,
       showSearchTypes: false,
-      searchFor: "all",
+      searchFor: "name",
       queryProps: [{ 'name': '', 'value': '', 'op': 'LIKE' }],
       propsOperators: ["==", "LIKE", "NOTIN", "IN", "!=", ">", ">=", "<", "<=", "!~", "=~"]
     };
@@ -107,6 +107,9 @@ class SearchHeader extends Component {
 
     if (this.state.searchFor === 'all') {
       params['query'] = this.state.query;
+    } else if (this.state.searchFor === 'name') {
+      params['query'] = this.state.query;
+      params['queryType'] = 'name';
     } else {
       params['queryProps'] = this.state.queryProps;
     }
@@ -180,6 +183,9 @@ class SearchHeader extends Component {
                   <button onClick={() => this.setState({ searchFor: 'all', showSearchTypes: false })}
                     disabled={this.state.searchFor === 'all'}>all</button>
 
+                  <button onClick={() => this.setState({ searchFor: 'name', showSearchTypes: false })}
+                    disabled={this.state.searchFor === 'name'}>name</button>
+
                   <button onClick={() => this.setState({ searchFor: 'properties', showSearchTypes: false })}
                     disabled={this.state.searchFor === 'properties'}>properties</button>
                 </div>}
@@ -187,6 +193,15 @@ class SearchHeader extends Component {
           </div>
 
           {this.state.searchFor === 'all' &&
+            <div className="search-for-all">
+              <input className="search-query" type="search" name="query"
+                placeholder="Type keyword" autoComplete="off"
+                value={this.state.query}
+                onChange={this.handleSearchChange}
+                onKeyPress={e => this.handleKeyPress(e)} />
+            </div>}
+
+          {this.state.searchFor === 'name' &&
             <div className="search-for-all">
               <input className="search-query" type="search" name="query"
                 placeholder="Type keyword" autoComplete="off"

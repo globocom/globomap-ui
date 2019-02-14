@@ -18,15 +18,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setTab } from '../../redux/modules/tabs';
 import { Tab } from '../';
+import {
+  clearNodes,
+  clearCurrentNode } from '../../redux/modules/nodes';
 import './SidebarButtons.css';
 
 class SidebarButtons extends Component {
+
+  handleSearch = () => {
+    const nodeList = this.props.nodeList;
+    const currentTab = this.props.currentTab;
+    if (nodeList.length > 0 && currentTab === 'search') {
+      this.props.clearNodes();
+      this.props.clearCurrentNode();
+    }
+  }
 
   render() {
     return (
       <div className="sidebar-buttons">
         <Tab tabKey="search">
-          <button><i className="fa fa-search"></i></button>
+          <button><i onClick={() => this.handleSearch()} className="fa fa-search"></i></button>
         </Tab>
         <Tab tabKey="map">
           <button><i className="fa fa-sitemap"></i></button>
@@ -41,10 +53,17 @@ class SidebarButtons extends Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    nodeList: state.nodes.nodeList,
+    currentTab: state.tabs.currentTab
+  };
 }
 
 export default connect(
   mapStateToProps,
-  { setTab }
+  {
+    setTab,
+    clearNodes,
+    clearCurrentNode
+  }
 )(SidebarButtons);
