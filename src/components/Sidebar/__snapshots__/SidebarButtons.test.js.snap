@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SidebarButtons should render SidebarButtons component 1`] = `
+<div
+  className="sidebar-buttons"
+>
+  <Connect(Tab)
+    tabKey="search"
+  >
+    <button>
+      <i
+        className="fa fa-search"
+      />
+    </button>
+  </Connect(Tab)>
+  <Connect(Tab)
+    tabKey="map"
+  >
+    <button>
+      <i
+        className="fa fa-sitemap"
+      />
+    </button>
+  </Connect(Tab)>
+  <Connect(Tab)
+    tabKey="favorites"
+  >
+    <button>
+      <i
+        className="fa fa-star"
+      />
+    </button>
+  </Connect(Tab)>
+</div>
+`;

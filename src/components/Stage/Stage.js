@@ -26,7 +26,7 @@ import { NodeInfo, NodeItem } from '../';
 import SubNodes from './SubNodes';
 import './Stage.css';
 
-class Stage extends Component {
+export class Stage extends Component {
 
   constructor(props) {
     super(props);

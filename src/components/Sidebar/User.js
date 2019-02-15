@@ -18,7 +18,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './User.css';
 
-class User extends Component {
+export class User extends Component {
 
   render() {
     const uInfo = this.props.serverData.userInfo;

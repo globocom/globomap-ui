@@ -14,12 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import throttle from 'lodash/throttle';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import {
-  createStore,
-  applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import {
   BrowserRouter,
@@ -32,16 +31,24 @@ import {
   App,
   AppFull,
   NotFound } from './components';
+import { loadState, saveState } from './utils/localStorage';
+import { turnOffLoadings } from './utils';
 
 const apiClient = new ApiClient()
+const persistedState = turnOffLoadings(loadState());
 
 export const store = createStore(
   reducer,
+  persistedState,
   applyMiddleware(
     thunk,
     clientMiddleware(apiClient)
   )
 );
+
+store.subscribe(throttle(() => {
+  saveState(store.getState());
+}, 1000));
 
 ReactDOM.render(
   <Provider store={store}>

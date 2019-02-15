@@ -23,7 +23,7 @@ import {
   clearCurrentNode } from '../../redux/modules/nodes';
 import './SidebarButtons.css';
 
-class SidebarButtons extends Component {
+export class SidebarButtons extends Component {
 
   handleSearch = () => {
     const nodeList = this.props.nodeList;

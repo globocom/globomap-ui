@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import SubNodesByGraph from './SubNodesByGraph';
 import './SubNodes.css';
 
-class SubNodes extends React.Component {
+export class SubNodes extends React.Component {
 
   render() {
     const byGraph = this.props.subNodesByGraph.map(items => {

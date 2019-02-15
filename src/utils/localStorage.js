@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Globo.com
+Copyright 2019 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,33 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {
-  SearchHeader,
-  SearchContent } from '../';
-import './Search.css';
-
-export class Search extends Component {
-
-  render() {
-    return (
-      <div className="search-container">
-        <section className="search">
-          <SearchHeader />
-        </section>
-        <SearchContent />
-      </div>
-    );
+export const loadState = () => {
+  try {
+    const serializedState = localStorage.getItem('gmapState');
+    if (serializedState === null) {
+      return undefined;
+    }
+    return JSON.parse(serializedState);
+  } catch (err) {
+    return undefined;
   }
+};
 
-}
-
-function mapStateToProps(state) {
-  return {};
-}
-
-export default connect(
-  mapStateToProps,
-  {}
-)(Search);
+export const saveState = (state) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('gmapState', serializedState);
+  } catch {
+    // Ignore write errors.
+  }
+};

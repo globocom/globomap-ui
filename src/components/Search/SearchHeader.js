@@ -23,7 +23,7 @@ import { cleanStageNodes } from '../../redux/modules/stage';
 import { sortBy } from '../../utils';
 import './SearchHeader.css';
 
-class SearchHeader extends Component {
+export class SearchHeader extends Component {
 
   constructor(props) {
     super(props);

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchContent should render SearchContent component 1`] = `
+<div
+  className="search-content"
+>
+  <button
+    className="search-content-btn-close"
+    onClick={[Function]}
+  >
+    <i
+      className="fa fa-times"
+    />
+  </button>
+</div>
+`;
