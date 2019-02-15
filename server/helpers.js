@@ -69,6 +69,7 @@ module.exports = {
         reject("getUserInfo: oauthUserInfoUrl is null");
       }
 
+      // TODO: Add user info to session tokenData to avoid a subsequent get
       axios.get(url, {
         headers: { 'Authorization': `Bearer ${token}`}
       })
