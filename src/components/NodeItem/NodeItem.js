@@ -60,6 +60,11 @@ export class NodeItem extends Component {
   onSelfRemove(event) {
     event.stopPropagation();
     this.props.removeStageNode(this.props.node);
+
+    if (this.props.currentNode === null) {
+      return;
+    }
+
     if (this.props.currentNode.uuid === this.props.node.uuid) {
       this.props.resetSubNodes();
     }
