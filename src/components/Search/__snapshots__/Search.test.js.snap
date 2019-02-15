@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search should render Search component 1`] = `
+<div
+  className="search-container"
+>
+  <section
+    className="search"
+  >
+    <Connect(SearchHeader) />
+  </section>
+  <Connect(SearchContent) />
+</div>
+`;

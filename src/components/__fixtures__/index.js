@@ -79,7 +79,8 @@ export const nodes = [
     "properties": null,
     "properties_metadata": null,
     "type": "tag_firewall"
-  },{
+  },
+  {
     "_id": "tag_firewall/gproxy_LnMzLXNhLWVhc3QtMS5hbWF6b25hd3MuY29t",
     "id": "LnMzLXNhLWVhc3QtMS5hbWF6b25hd3MuY29t",
     "name": ".s3-sa-east-1.amazonaws.com",
@@ -88,5 +89,73 @@ export const nodes = [
     "properties": null,
     "properties_metadata": null,
     "type": "tag_firewall"
+  }
+];
+
+export const collections = [
+  {
+    "alias": "Host",
+    "name": "comp_unit",
+    "kind": "document",
+    "icon": "comp_unit",
+    "description": "Host",
+    "users": [
+      "u_globomap_driver_acs",
+      "u_globomap_driver_cmdb",
+      "u_globomap_driver_napi"
+    ]
+  },
+  {
+    "alias": "DNS",
+    "name": "dns",
+    "kind": "document",
+    "icon": "dns",
+    "description": "DNS",
+    "users": [
+      "u_globomap_driver_dns"
+    ]
+  },
+  {
+    "alias": "VIP",
+    "name": "vip",
+    "kind": "document",
+    "icon": "vip",
+    "description": "VIP",
+    "users": [
+      "u_globomap_driver_napi"
+    ]
+  }
+];
+
+export const edges = [
+  {
+    "alias": "ACL",
+    "name": "access",
+    "kind": "edge",
+    "icon": "access",
+    "description": "ACL",
+    "users": [
+      "u_globomap_driver_aclapi"
+    ]
+  },
+  {
+    "alias": "Link: Pool - Equipamento",
+    "name": "tsuru_pool_comp_unit",
+    "kind": "edge",
+    "icon": "tsuru_pool_comp_unit",
+    "description": "Link: Pool - Equipamento",
+    "users": [
+      "u_globomap_driver_tsuru"
+    ]
+  },
+  {
+    "alias": "Link: VLAN - Rede",
+    "name": "vlan_network",
+    "kind": "edge",
+    "icon": "vlan_network",
+    "description": "Link: VLAN - Rede",
+    "users": [
+      "u_globomap_driver_napi"
+    ]
   }
 ];

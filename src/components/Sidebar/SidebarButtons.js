@@ -20,7 +20,7 @@ import { setTab } from '../../redux/modules/tabs';
 import { Tab } from '../';
 import './SidebarButtons.css';
 
-class SidebarButtons extends Component {
+export class SidebarButtons extends Component {
 
   render() {
     return (

@@ -27,7 +27,7 @@ import SearchContentPagination from './SearchContentPagination';
 import { NodeInfo } from '../';
 import './SearchContent.css';
 
-class SearchContent extends Component {
+export class SearchContent extends Component {
 
   constructor(props) {
     super(props);

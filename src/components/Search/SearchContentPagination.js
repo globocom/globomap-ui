@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { findNodes } from '../../redux/modules/nodes';
 import './SearchContentPagination.css';
 
-class SearchContentPagination extends Component {
+export class SearchContentPagination extends Component {
 
   constructor(props) {
     super(props);

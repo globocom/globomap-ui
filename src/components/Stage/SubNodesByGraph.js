@@ -22,7 +22,7 @@ import { traversalSearch } from '../../redux/modules/nodes';
 import { traverseItems } from '../../utils';
 import './SubNodesByGraph.css';
 
-class SubNodesByGraph extends Component {
+export class SubNodesByGraph extends Component {
 
   constructor(props) {
     super(props);

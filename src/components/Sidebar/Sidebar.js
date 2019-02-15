@@ -20,7 +20,7 @@ import SidebarButtons from './SidebarButtons';
 import User from './User';
 import './Sidebar.css';
 
-class Sidebar extends React.Component {
+export class Sidebar extends React.Component {
 
   render() {
     return (
