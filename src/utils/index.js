@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2019 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,7 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-function traverseItems(nList, fn) {
+import forOwn from 'lodash/forOwn';
+
+export const traverseItems = (nList, fn) => {
   for (let i in nList) {
     let node = nList[i];
 
@@ -24,9 +26,9 @@ function traverseItems(nList, fn) {
       traverseItems(node.items, fn);
     }
   }
-}
+};
 
-function composeEdges(node, edges) {
+export const composeEdges = (node, edges) => {
   let nEdges = { in: [], out: [] };
 
   for(let i=0, l=edges.length; i<l; ++i) {
@@ -44,9 +46,9 @@ function composeEdges(node, edges) {
   }
 
   return nEdges;
-}
+};
 
-function getEdgeLinks(graph) {
+export const getEdgeLinks = (graph) => {
   let collections = [];
 
   graph.links.forEach((edge) => {
@@ -59,20 +61,20 @@ function getEdgeLinks(graph) {
   });
 
   return collections;
-}
+};
 
-function uuidv4() {
+const uuidv4 = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0, v = c === 'x' ? r : ((r & 0x3) | 0x8);
     return v.toString(16);
   });
-}
+};
 
-function uuid() {
+export const uuid = () => {
   return uuidv4();
-}
+};
 
-function sortBy(arr, prop) {
+export const sortBy = (arr, prop) => {
   let arrCopy = arr.slice();
 
   arrCopy.sort((a, b) => {
@@ -93,11 +95,17 @@ function sortBy(arr, prop) {
   return arrCopy;
 }
 
-function sortByName(arr) {
+export const sortByName = (arr) => {
   return sortBy(arr, 'name');
-}
+};
 
-export {
-  sortBy, sortByName, traverseItems,
-  composeEdges, getEdgeLinks, uuid
+export const turnOffLoadings = (state) => {
+  return forOwn(state, (v, k, o) => {
+    if (typeof k === 'string' && k.toLowerCase().includes('loading')) {
+      o[k] = false;
+    }
+    if (typeof v === 'object') {
+      o[k] = turnOffLoadings(v);
+    }
+  });
 };
