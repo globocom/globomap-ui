@@ -91,7 +91,9 @@ router.get('/find-nodes', isAuthenticated, (req, res) => {
           `[{"field": "properties", "value": "${query}", "operator": "LIKE"}]]`;
 
   if (queryType && queryType === 'name') {
-    q = `[[{"field": "name", "value": "${query}", "operator": "LIKE"}],[]]`;
+    q = `[[{"field": "name", "comparison": "^", "value": "${query}", "operator": "REGEXP"},` +
+        `{"field": "name", "comparison": "(?!^)", "value": "${query}", "operator": "REGEXP"}],` +
+        `[]]`;
   }
 
   if (queryProps && queryProps.length > 0) {
