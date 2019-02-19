@@ -49,7 +49,10 @@ module.exports = {
     const url = config.oauthUserInfoUrl;
 
     return new Promise((resolve, reject) => {
-      let token = null;
+      if (session.userInfo !== undefined) {
+        resolve(session.userInfo);
+        return;
+      }
 
       if (config.environment !== 'production') {
         resolve({
@@ -59,6 +62,7 @@ module.exports = {
         return;
       }
 
+      let token = null;
       if (session.tokenData !== undefined) {
         token = session.tokenData.access_token;
       } else {
@@ -69,12 +73,14 @@ module.exports = {
         reject("getUserInfo: oauthUserInfoUrl is null");
       }
 
-      // TODO: Add user info to session tokenData to avoid a subsequent get
-      axios.get(url, {
-        headers: { 'Authorization': `Bearer ${token}`}
-      })
-      .then(response => resolve(response.data))
-      .catch(error => reject(error));
+      axios.get(url, { headers: { 'Authorization': `Bearer ${token}`} })
+        .then(response => {
+          session.userInfo = response.data;
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
     })
     .catch((error) => {
       console.log(error);
