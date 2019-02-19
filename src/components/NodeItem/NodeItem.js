@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Globo.com
+Copyright 2019 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -73,10 +73,7 @@ export class NodeItem extends Component {
   componentDidMount() {
     let element = document.getElementsByClassName('sticky');
     this.stickyfill.add(element);
-    tippy('.btn-with-tip', {
-      arrow: true,
-      animation: "fade"
-    });
+    tippy('.btn-with-tip', { arrow: true, animation: "fade" });
   }
 
   render() {

@@ -53,9 +53,9 @@ limitations under the License.
 
 .node-item .type {
   display: block;
-  font-size: 14px;
+  font-size: 12px;
   font-family: 'opensans-bold', Arial, Helvetica, sans-serif;
-  color: #555;
+  color: #757575;
   margin: 0 10px 6px 0;
   text-transform: uppercase;
 }

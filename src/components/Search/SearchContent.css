@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2019 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -107,26 +107,30 @@ limitations under the License.
 
 .search-content-results th:nth-child(2),
 .search-content-results td:nth-child(2) {
-  width: 30%;
+  width: 25%;
+}
+
+.search-content-results th:nth-child(4),
+.search-content-results td:nth-child(4) {
+  width: 1%;
 }
 
 .search-content-results tr td {
+  position: relative;
   cursor: pointer;
-  border-top: 1px solid transparent;
+  font-size: 0.95em;
+  color: #666;
+}
+
+.search-content-results tr:hover td {
+  background-color: #def5ee;
+  color: #222;
 }
 
 .search-content-results tr.current td,
-.search-content-results tr.current:hover td,
-.search-content-results tr.current:not(.node-options):hover td {
-  /* background-color: #2eb78e;
-  color: white; */
-  /* color: #2eb78e; */
+.search-content-results tr.current:hover td {
   background-color: #def5ee;
-  border-top: 1px solid #2eb78e;
-}
-
-.search-content-results tr:not(.node-options):hover td {
-  background-color: #def5ee;
+  color: #222;
 }
 
 .search-content-results th,
@@ -143,67 +147,31 @@ limitations under the License.
   height: 50px;
 }
 
-.search-content .btn-open-node {
-  font-size: 16px;
+.search-content-results .row-tools {
+  position: absolute;
+  display: none;
+  top: 0;
+  right: 0;
+  background-color: #def5ee;
+  padding-left: 35px;
 }
 
-.search-content .node-options {
-  display: block;
-  background-color: #f8f8f8;
-  /* background-color: #def5ee; */
-  overflow: hidden;
-
-  height: 0;
-  opacity: 0;
-  transition: all 500ms cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-
-.search-content .node-options.open {
-  height: auto;
-  opacity: 1;
-}
-
-.search-content .node-options td {
+.search-content-results tr:hover .row-tools,
+.search-content-results tr.current .row-tools {
   display: flex;
-  justify-content: left;
-  align-items: flex-start;
-  width: 100%;
-  height: 100%;
-  border-bottom: 1px solid #2eb78e;
-  cursor: default;
-  padding: 10px;
 }
 
-.search-content .node-options button {
+.search-content-results .row-tools button {
   padding: 8px 20px;
-  font-size: 0.9em;
-  background: white;
-  margin: 10px;
-  border: 1px solid #2eb78e;
-  border-radius: 20px;
+  font-size: 1.2em;
+  background: none;
+  margin-left: 0 10px;
+  border: none;
+  opacity: 0.5;
 }
 
-.search-content .node-options button .icon {
-  color: #2eb78e;
-  margin-right: 10px;
-  font-size: 1em;
-}
-
-.search-content .node-options button.active,
-.search-content .node-options button.active .icon,
-.search-content .node-options button:hover,
-.search-content .node-options button:hover .icon {
-  color: white;
-  background-color: #2eb78e;
-}
-
-.node-options .node-properties {
-  padding: 0 10px;
-  margin-right: 10px;
-  /* width: 50%; */
-  height: auto;
-  border-right: 1px dotted #ddd;
-  overflow: scroll;
+.search-content-results .row-tools button:hover {
+  opacity: 1;
 }
 
 .search-content-base {

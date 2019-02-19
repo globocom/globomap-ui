@@ -117,10 +117,7 @@ export class Stage extends Component {
     document.addEventListener('click', this.handleOutsideClick, false);
 
     new Clipboard('.btn-clipboard');
-    tippy('.btn', {
-      arrow: true,
-      animation: "fade"
-    });
+    tippy('.btn', { arrow: true, animation: "fade" });
   }
 
   componentWillUnmount() {

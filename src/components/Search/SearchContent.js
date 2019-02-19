@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Globo.com
+Copyright 2019 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import tippy from 'tippy.js';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -32,15 +33,17 @@ export class SearchContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showNodeInfo: false
+      showNodeInfo: false,
+      nodeInfoNode: null
     };
 
-    this.onNodeSelect = this.onNodeSelect.bind(this);
+    // this.onNodeSelect = this.onNodeSelect.bind(this);
     this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
   }
 
   componentDidMount() {
     document.addEventListener("keydown", this.handleKeyPress, false);
+    tippy('.row-tools button', { arrow: true, animation: "fade" });
   }
 
   componentWillUnmount() {
@@ -54,14 +57,14 @@ export class SearchContent extends Component {
     }
   }
 
-  onNodeSelect(event, node) {
-    event.stopPropagation();
-    if (this.props.currentNode !== null &&
-        this.props.currentNode._id === node._id) {
-      return this.props.clearCurrentNode();
-    }
-    return this.props.setCurrentNode(node);
-  }
+  // onNodeSelect(event, node) {
+  //   event.stopPropagation();
+  //   if (this.props.currentNode !== null &&
+  //       this.props.currentNode._id === node._id) {
+  //     return this.props.clearCurrentNode();
+  //   }
+  //   return this.props.setCurrentNode(node);
+  // }
 
   onOpenMap(event, node) {
     event.stopPropagation();
@@ -72,9 +75,12 @@ export class SearchContent extends Component {
     this.props.traversalSearch({ node: node });
   }
 
-  onToggleNodeInfo(event) {
+  onToggleNodeInfo(event, node) {
     event.stopPropagation();
-    this.setState({ showNodeInfo: !this.state.showNodeInfo });
+    this.setState({
+      showNodeInfo: true,
+      nodeInfoNode: node
+    });
   }
 
   onCloseNodeInfo() {
@@ -94,25 +100,26 @@ export class SearchContent extends Component {
     let allNodes = [];
     if (this.props.nodeList !== undefined) {
       allNodes = this.props.nodeList.map((node, i) => {
-        let current = (this.props.currentNode &&
-                       node._id === this.props.currentNode._id);
+        // let current = (this.props.currentNode &&
+        //                node._id === this.props.currentNode._id);
         return (
           <React.Fragment key={node._id}>
-            <tr className={current ? 'current' : ''}
-                onClick={e => this.onNodeSelect(e, node)}>
+            <tr>
               <td>{i + index}</td>
               <td>{this.props.namedCollections[node.type].alias}</td>
               <td>{node.name}</td>
-            </tr>
-            <tr className={`node-options${current ? ' open' : ''}`}>
-              <td colSpan="3">
-                <button onClick={e => this.onToggleNodeInfo(e)}
-                  className={this.state.showNodeInfo ? 'active' : ''}>
-                  <i className="icon fa fa-info" /> Show Properties
-                </button>
-                <button onClick={e => this.onOpenMap(e, node)}>
-                  <i className="icon fa fa-sitemap" /> View Map
-                </button>
+              <td>
+                <div className="row-tools">
+                  <button onClick={e => this.onToggleNodeInfo(e, node)}
+                          className={this.state.showNodeInfo ? 'active' : ''}
+                          data-tippy-content="Show Info">
+                    <i className="icon fa fa-info" />
+                  </button>
+                  <button onClick={e => this.onOpenMap(e, node)}
+                          data-tippy-content="Build Map">
+                    <i className="icon fa fa-sitemap" />
+                  </button>
+                </div>
               </td>
             </tr>
           </React.Fragment>
@@ -143,7 +150,7 @@ export class SearchContent extends Component {
             </tfoot>
           </table>}
         {this.state.showNodeInfo &&
-          <NodeInfo node={this.props.currentNode}
+          <NodeInfo node={this.state.nodeInfoNode}
                     onClose={this.onCloseNodeInfo}
                     position="right" />}
       </div>
