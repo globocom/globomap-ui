@@ -85,8 +85,10 @@ export class NodeItem extends Component {
         disabled = !exist ? ' disabled' : '';
 
     let nodeType = type;
-    if (this.props.namedCollections !== undefined)
+    if (this.props.namedCollections !== undefined
+        && this.props.namedCollections[type] !== undefined) {
       nodeType = this.props.namedCollections[type].alias;
+    }
 
     return (
       <div key={this.props.node.id}

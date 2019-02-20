@@ -283,10 +283,20 @@ export class SubNodesByGraph extends Component {
 
     let subnodesSlice = subnodes.slice(start, end);
     subnodes = subnodesSlice.map((subnode, index) => {
+      if (subnode.type === 'unknown') {
+        return null;
+      }
+
       let hasNode = false;
       if (this.props.currentNode) {
         hasNode = this.stageHasNode(subnode._id, this.props.currentNode.uuid);
       }
+
+      // let typeAlias = '';
+      // if (this.props.namedCollections[subnode.type] !== undefined) {
+      //   typeAlias = this.props.namedCollections[subnode.type].alias;
+      // }
+
       return (
         <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
           <div className="sub-node-btn">
