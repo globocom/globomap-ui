@@ -1,7 +1,12 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import sinon from 'sinon';
+import chai from "chai";
+import chaiEnzyme from "chai-enzyme";
+import { shallow } from 'enzyme';
 import { TabContent } from './TabContent';
+
+chai.use(chaiEnzyme());
+const expect = chai.expect;
 
 describe("TabContent", function() {
 
@@ -17,7 +22,7 @@ describe("TabContent", function() {
 
   it('should render TabContent component', () => {
     const component = shallow(<TabContent><div></div></TabContent>);
-    expect(component).toMatchSnapshot();
+    expect(component).to.exist;
   });
 
 });

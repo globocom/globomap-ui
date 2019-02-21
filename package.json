@@ -7,10 +7,11 @@
   },
   "devDependencies": {
     "babel-jest": "^23.6.0",
+    "chai": "4.2.0",
+    "chai-enzyme": "1.0.0-beta.1",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "enzyme-to-json": "^3.3.5",
-    "jest": "^23.6.0",
     "react-scripts": "^2.1.5",
     "sinon": "^7.2.2"
   },
@@ -39,7 +40,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --verbose=false",
     "eject": "react-scripts eject",
     "docker": "docker-compose up"
   },
