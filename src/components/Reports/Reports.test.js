@@ -1,0 +1,17 @@
+import React from 'react';
+import chai from "chai";
+import chaiEnzyme from "chai-enzyme";
+import { shallow } from 'enzyme';
+import { Reports } from './Reports';
+
+chai.use(chaiEnzyme());
+const expect = chai.expect;
+
+describe("Reports", function() {
+
+  it('should render Reports component', () => {
+    const component = shallow(<Reports />);
+    expect(component).to.exist;
+  });
+
+});
