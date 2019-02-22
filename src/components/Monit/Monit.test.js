@@ -1,7 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
+import chai from "chai";
+import chaiEnzyme from "chai-enzyme";
 import { Monit } from './Monit';
+
+chai.use(chaiEnzyme());
+const expect = chai.expect;
 
 describe("Monit", function() {
 
@@ -17,7 +22,7 @@ describe("Monit", function() {
 
   it('should render Monit component', () => {
     const component = shallow(<Monit />);
-    expect(component).toMatchSnapshot();
+    expect(component).to.exist;
   });
 
 });

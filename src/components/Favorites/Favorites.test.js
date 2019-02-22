@@ -1,7 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
+import chai from "chai";
+import chaiEnzyme from "chai-enzyme";
 import { Favorites } from './Favorites';
+
+chai.use(chaiEnzyme());
+const expect = chai.expect;
 
 describe("Favorites", function() {
 
@@ -20,7 +25,7 @@ describe("Favorites", function() {
       userMaps: []
     };
     const component = shallow(<Favorites {...props} />);
-    expect(component).toMatchSnapshot();
+    expect(component).to.exist;
   });
 
 });

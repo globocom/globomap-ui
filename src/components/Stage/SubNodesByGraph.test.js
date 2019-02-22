@@ -1,13 +1,23 @@
 import React from 'react';
+import chai from "chai";
+import chaiEnzyme from "chai-enzyme";
 import { shallow } from 'enzyme';
 import { SubNodesByGraph } from './SubNodesByGraph';
-// import { nodes } from '../__fixtures__';
+import { items, graphs } from './helpers/index';
+
+chai.use(chaiEnzyme());
+const expect = chai.expect;
 
 describe("SubNodesByGraph", function() {
+  let wrapper;
+
+  beforeEach(() => {
+    const props = { items, graphs }
+    wrapper = shallow(<SubNodesByGraph {...props} />);
+  });
 
   it('should render SubNodesByGraph component', () => {
-    const component = shallow(<SubNodesByGraph />);
-    expect(component).toMatchSnapshot();
+    expect(wrapper).to.exist;
   });
 
 });
