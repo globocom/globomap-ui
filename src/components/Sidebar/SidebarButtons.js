@@ -46,6 +46,9 @@ export class SidebarButtons extends Component {
         <Tab tabKey="favorites">
           <button><i className="fa fa-star"></i></button>
         </Tab>
+        <Tab tabKey="reports">
+          <button><i className="fa fa-print"></i></button>
+        </Tab>
       </div>
     );
   }

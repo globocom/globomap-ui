@@ -26,6 +26,7 @@ import NodeItem from './NodeItem/NodeItem';
 import NotFound from './NotFound/NotFound';
 import Properties from './Properties/Properties';
 import Query from './Query/Query';
+import Reports from './Reports/Reports';
 import Search from './Search/Search';
 import SearchHeader from './Search/SearchHeader';
 import SearchContent from './Search/SearchContent';
@@ -47,6 +48,7 @@ export {
   NotFound,
   Properties,
   Query,
+  Reports,
   Search,
   SearchHeader,
   SearchContent,

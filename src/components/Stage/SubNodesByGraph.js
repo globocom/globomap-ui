@@ -292,11 +292,6 @@ export class SubNodesByGraph extends Component {
         hasNode = this.stageHasNode(subnode._id, this.props.currentNode.uuid);
       }
 
-      // let typeAlias = '';
-      // if (this.props.namedCollections[subnode.type] !== undefined) {
-      //   typeAlias = this.props.namedCollections[subnode.type].alias;
-      // }
-
       return (
         <div key={subnode._id} className={'sub-node' + (hasNode ? ' disabled': '')}>
           <div className="sub-node-btn">

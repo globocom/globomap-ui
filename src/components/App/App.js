@@ -31,6 +31,7 @@ import {
 import {
   Favorites,
   Modal,
+  Reports,
   Sidebar,
   Search,
   Stage,
@@ -78,6 +79,9 @@ export class App extends React.Component {
         </TabContent>
         <TabContent tabKey="favorites">
           <Favorites />
+        </TabContent>
+        <TabContent tabKey="reports">
+          <Reports />
         </TabContent>
         <Loading iconSize="big"
                  isLoading={this.props.findLoading
