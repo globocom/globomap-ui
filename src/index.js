@@ -47,7 +47,9 @@ export const store = createStore(
 );
 
 store.subscribe(throttle(() => {
-  saveState(store.getState());
+  saveState({
+    stage: store.getState().stage
+  });
 }, 1000));
 
 ReactDOM.render(
