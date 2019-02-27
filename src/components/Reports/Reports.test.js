@@ -10,7 +10,8 @@ const expect = chai.expect;
 describe("Reports", function() {
 
   it('should render Reports component', () => {
-    const component = shallow(<Reports />);
+    const props = { queries: [], reportNodes: [] }
+    const component = shallow(<Reports {...props} />);
     expect(component).to.exist;
   });
 
