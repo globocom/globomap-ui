@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+const _ = require('lodash');
 const express = require('express');
 const GmapClient = require('globomap-api-jsclient');
 const { isAuthenticated, updateItemInfo } = require('../helpers');
@@ -79,6 +80,30 @@ router.get('/queries', isAuthenticated, (req, res) => {
       return res.status(500).json({
         error: true,
         message: 'Get Queries Error'
+      });
+    });
+});
+
+router.get('/run-query', isAuthenticated, (req, res) => {
+  const query = req.query;
+
+  if (_.isEmpty(query) || query.q === undefined || query.v === undefined) {
+    return res.status(400).json({
+      error: true,
+      message: 'Empty query / missing parameters'
+    });
+  }
+
+  gmapclient.runQuery({ kind: query.q, value: query.v })
+    .then((data) => {
+      return res.status(200).json(data);
+    })
+    .catch((error) => {
+      const errMsg = 'GmapClient runQuery error';
+      console.log(`${errMsg}: ${error}`);
+      res.status(500).json({
+        error: true,
+        message: `${errMsg}`
       });
     });
 });
