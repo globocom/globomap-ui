@@ -23,10 +23,12 @@ limitations under the License.
   padding: 50px 7% 0;
   z-index: 8;
   background: white;
+  overflow-y: auto;
 }
 
 .favorites-title {
   font-size: 2em;
+  font-weight: 300;
   height: 42px;
   margin: 0 0 30px;
 }

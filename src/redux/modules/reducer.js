@@ -19,6 +19,7 @@ import app from './app';
 import nodes from './nodes';
 import stage from './stage';
 import plugins from './plugins';
+import reports from './reports';
 import tabs from './tabs';
 
 const rootReducer = combineReducers({
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   nodes,
   stage,
   plugins,
+  reports,
   tabs
 });
 

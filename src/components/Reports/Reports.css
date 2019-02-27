@@ -14,6 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+.reports,
+.reports-panes,
+.reports-queries,
+.reports-list {
+  box-sizing: border-box;
+}
+
 .reports {
   position: fixed;
   top: 0;
@@ -23,10 +30,139 @@ limitations under the License.
   padding: 50px 7% 0;
   z-index: 8;
   background: white;
+  overflow-y: auto;
 }
 
 .reports-title {
   font-size: 2em;
+  font-weight: 300;
   height: 42px;
   margin: 0 0 30px;
+}
+
+.reports-tabs {
+  display: flex;
+}
+
+.reports-tabs button {
+  flex-grow: 1;
+  background: #f2f2f2;
+  border: 0;
+  margin: 0;
+  padding: 10px;
+  font-size: 1.2em;
+  border-radius: 3px 3px 0 0;
+  opacity: 0.35;
+}
+
+.reports-tabs button.active {
+  opacity: 1;
+}
+
+.reports-tabs button::before {
+  content: attr(data-step);
+  display: inline-block;
+  background: #ccc;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.reports-panes {
+  position: relative;
+  margin-bottom: 20px;
+  min-height: 400px;
+  background-color: #f2f2f2;
+}
+
+.reports-queries,
+.reports-list {
+  display: none;
+  padding: 30px 20px;
+  background-color: #f2f2f2;
+}
+
+.reports-queries.active,
+.reports-list.active {
+  display: block;
+}
+
+.reports-queries .query-btn {
+  position: relative;
+  margin: 0 20px 20px 0;
+  padding: 10px;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+}
+
+.reports-queries .query-btn:hover {
+  color: #2eb78e;
+  /* border: 1px solid #2eb78e; */
+}
+
+.reports-search {
+  position: relative;
+}
+
+.reports-search .reports-q {
+  display: block;
+  width: 100%;
+  border: none;
+  font-size: 1.3em;
+  font-weight: 300;
+  line-height: normal;
+  color: #2eb78e;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  outline: none;
+}
+
+.reports-search .reports-q::placeholder {
+  color: #e0e0e0;
+}
+
+.reports-search button {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  font-size: 1.6em;
+  background: white;
+  border: none;
+}
+
+.reports-item-list {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  background-color: white;
+  min-height: 280px;
+}
+
+.reports-item-list li {
+  width: 100%;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.reports-item-list li:last-child {
+  border-bottom: none;
+}
+
+.reports-item-list .query {
+  position: relative;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  padding: 10px 15px;
+  color: #222;
+  font-size: 1em;
+}
+
+.reports-item-list .query:hover {
+  color: #2eb78e;
 }

@@ -85,6 +85,7 @@ export class App extends React.Component {
         </TabContent>
         <Loading iconSize="big"
                  isLoading={this.props.findLoading
+                            || this.props.findReportLoading
                             || this.props.traversalLoading
                             || this.props.getSharedLoading
                             || this.props.saveUserMapLoading
@@ -100,6 +101,7 @@ export class App extends React.Component {
 function mapStateToProps(state) {
   return {
     findLoading: state.nodes.findLoading,
+    findReportLoading: state.reports.loading,
     traversalLoading: state.nodes.traversalLoading,
     getSharedLoading: state.stage.getSharedLoading,
     saveUserMapLoading: state.stage.saveUserMapLoading,
