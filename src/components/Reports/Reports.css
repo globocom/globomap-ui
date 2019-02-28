@@ -84,12 +84,16 @@ limitations under the License.
   background-color: #f2f2f2;
 }
 
-.reports-queries.active,
+.reports-queries.active {
+  display: flex;
+}
+
 .reports-list.active {
   display: block;
 }
 
 .reports-queries .query-btn {
+  flex-grow: 1;
   position: relative;
   margin: 0 20px 20px 0;
   padding: 10px;
@@ -124,16 +128,21 @@ limitations under the License.
 }
 
 .reports-search .reports-q::placeholder {
-  color: #e0e0e0;
+  color: #ccc;
 }
 
 .reports-search button {
   position: absolute;
-  right: 0;
-  top: 8px;
+  right: 5px;
+  top: 7px;
   font-size: 1.6em;
   background: white;
   border: none;
+  color: #999;
+}
+
+.reports-search button:hover {
+  color: #333;
 }
 
 .reports-item-list {

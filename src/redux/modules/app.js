@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2019 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -59,7 +59,8 @@ const initialState = {
   },
   hasId: false,
   modalVisible: false,
-  modalContent: null
+  modalContent: null,
+  queriesLoading: false
 };
 
 export default function reducer(state=initialState, action={}) {
@@ -138,19 +139,24 @@ export default function reducer(state=initialState, action={}) {
 
     case FETCH_QUERIES:
       console.log('fetch queries...');
-      return state;
+      return {
+        ...state,
+        queriesLoading: true
+      };
 
     case FETCH_QUERIES_SUCCESS:
       return {
         ...state,
-        queries: action.result.data
+        queries: action.result.data,
+        queriesLoading: false
       };
 
     case FETCH_QUERIES_FAIL:
       console.log(action.error);
       return {
         ...state,
-        queries: []
+        queries: [],
+        queriesLoading: false
       };
 
     case GET_SERVER_DATA:

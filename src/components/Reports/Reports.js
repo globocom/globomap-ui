@@ -21,6 +21,7 @@ import {
   findReportNodes,
   clearReportNodes } from '../../redux/modules/reports';
 import { sortByName } from '../../utils';
+import { Loading } from '../';
 import './Reports.css';
 
 export class Reports extends React.Component {
@@ -114,7 +115,7 @@ export class Reports extends React.Component {
           </a>
         </li>
       )
-    })
+    });
 
     const idx = this.state.paneIndex;
     return (
@@ -135,7 +136,7 @@ export class Reports extends React.Component {
           </div>
           <div className={`reports-list ${idx === 2 ? 'active' : ''}`}>
             <div className="reports-search">
-              <input type="search" name="q" className="reports-q" autoFocus
+              <input type="search" name="q" className="reports-q" autoFocus autoComplete="off"
                       value={this.state.q} ref={elem => { this.inputQ = elem; }}
                       onChange={_.throttle(this.handleQChange, 300)}
                       onKeyPress={e => this.handleEnterKeyPress(e)}
@@ -149,6 +150,8 @@ export class Reports extends React.Component {
             </ul>
           </div>
         </div>
+        <Loading iconSize="big" isLoading={this.props.loading
+                                           || this.props.queriesLoading} />
       </div>
     );
   }
@@ -159,6 +162,7 @@ function mapStateToProps(state) {
   return {
     queries: state.app.queries,
     loading: state.reports.loading,
+    queriesLoading: state.app.queriesLoading,
     reportNodes: state.reports.reportNodeslist
   };
 }
