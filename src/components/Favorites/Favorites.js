@@ -69,7 +69,7 @@ export class Favorites extends React.Component {
               <button className="user-map-item-remove-btn"
                       onClick={e => this.onDeleteGraph(e, item.key)}
                       title="Delete this item">
-                <i className="fa fa-times"></i>
+                <i className="fa fa-trash"></i>
               </button>
             </li>
           );
@@ -82,7 +82,13 @@ export class Favorites extends React.Component {
 
     return (
       <div className="favorites">
-        <h3 className="favorites-title">Saved maps</h3>
+        <h3 className="favorites-title">
+          Saved maps
+          <button className="btn-close-favorites"
+                onClick={() => this.props.setTab('map')}>
+          <i className="fas fa-times"></i>
+        </button>
+        </h3>
         {this.renderUserMaps()}
       </div>
     );

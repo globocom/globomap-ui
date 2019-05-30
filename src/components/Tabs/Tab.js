@@ -28,8 +28,12 @@ export class Tab extends React.Component {
 
   render() {
     return React.Children.map(this.props.children, child => {
+      const cls = this.props.currentTab === this.props.tabKey
+                    ? `${child.props.className} active`
+                    : child.props.className
+
       return React.cloneElement(child, {
-        className: this.props.currentTab === this.props.tabKey ? 'active' : '',
+        className:  cls,
         onClick: () => this.props.setTab(this.props.tabKey)
       });
     });

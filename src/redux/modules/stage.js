@@ -227,9 +227,10 @@ export default function reducer(state=initialState, action={}) {
       const deletedKey = action.result.data.deletedKey;
       let maps = [...state.userMaps];
 
-      for (let j=0, k=maps.length; j<k; j++) {
+      for (let j=0, k=maps.length; j<k; ++j) {
         if (maps[j].key === deletedKey) {
           maps.splice(j, 1);
+          break;
         }
       }
 

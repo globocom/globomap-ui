@@ -33,6 +33,20 @@ limitations under the License.
   margin: 0 0 30px;
 }
 
+.btn-close-favorites {
+  float: right;
+  border: none;
+  background: none;
+  font-size: 24px;
+  height: 42px;
+  margin-right: 10px;
+  color: #ddd;
+}
+
+.btn-close-favorites:hover {
+  color: #aaa;
+}
+
 .user-map-list {
   list-style: none;
   padding: 0;
@@ -40,17 +54,18 @@ limitations under the License.
 
 .user-map-item {
   font-size: 18px;
-  border-bottom: 1px solid #eee;
-  padding: 15px 5px;
+  border-bottom: 1px solid #e2e2e2;
+  padding: 10px;
 }
 
 .user-map-item:hover {
   cursor: pointer;
   color: #2eb78e;
+  background-color: #f8f8f8;
 }
 
-.user-map-item:last-child {
-  border-bottom: none;
+.user-map-item:first-child {
+  border-top: 1px solid #e2e2e2;
 }
 
 .user-map-item-remove-btn {

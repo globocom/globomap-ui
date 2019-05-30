@@ -23,6 +23,7 @@ import { saveSharedMap, getSharedMap, saveUserMap,
          getUserMap, listUserMaps } from '../../redux/modules/stage';
 import { setTab } from '../../redux/modules/tabs';
 import { NodeInfo, NodeItem } from '../';
+import { Tab } from '../';
 import SubNodes from './SubNodes';
 import './Stage.css';
 
@@ -147,16 +148,22 @@ export class Stage extends Component {
           </Link>}
 
         <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
-          <button className="btn btn-save-map" onClick={e => this.saveMap(e)}
-                  data-tippy-content="Save this map"
-                  disabled={!rootNodeHasItens}>
-            <i className="fa fa-save"></i>
-          </button>
-          <button className="btn btn-share-map" onClick={e => this.shareMap(e)}
+          <button className="btn tool-btn btn-share-map" onClick={e => this.shareMap(e)}
                   data-tippy-content="Share this map"
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-link"></i>
           </button>
+          <button className="btn tool-btn btn-save-map" onClick={e => this.saveMap(e)}
+                  data-tippy-content="Save this map"
+                  disabled={!rootNodeHasItens}>
+            <i className="fa fa-save"></i>
+          </button>
+          <Tab tabKey="favorites">
+            <button className="btn tool-btn btn-favorites"
+                    data-tippy-content="Show saved maps">
+              <i className="fa fa-star"></i>
+            </button>
+          </Tab>
           {this.state.sharedLinkOpen &&
             <div className="shared-link">
               <input type="text" readOnly={true} className="link-url"
@@ -167,7 +174,7 @@ export class Stage extends Component {
               </button>
             </div>}
 
-          {/* <button className="btn btn-fullscreen" onClick={this.toggleFullScreen}>
+          {/* <button className="btn tool-btn btn-fullscreen" onClick={this.toggleFullScreen}>
             {this.state.fullScreen
               ? <i className="fa fa-compress"></i>
               : <i className="fa fa-expand"></i>}

@@ -105,9 +105,7 @@ limitations under the License.
   border-bottom: 1px solid #eee;
 }
 
-.stage-tools .btn-save-map,
-.stage-tools .btn-share-map,
-.stage-tools .btn-fullscreen {
+.stage-tools .tool-btn {
   background: transparent;
   border: 0;
   cursor: pointer;
@@ -116,9 +114,7 @@ limitations under the License.
   margin: 0 5px;
 }
 
-.stage-tools .btn-save-map:hover,
-.stage-tools .btn-share-map:hover,
-.stage-tools .btn-fullscreen:hover {
+.stage-tools .tool-btn:hover {
   color: #333;
 }
 
