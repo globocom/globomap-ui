@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/globocom/globomap-ui/blob/master/public/images/logo.png?raw=true" alt="GloboMap logo" />
+  <img src="https://github.com/globocom/globomap-ui/blob/master/public/images/logo_black.png?raw=true" alt="GloboMap logo" />
 </p>
 
 [![build status](https://travis-ci.org/globocom/globomap-ui.svg?branch=master)](http://travis-ci.org/globocom/globomap-ui)
