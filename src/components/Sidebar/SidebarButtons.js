@@ -43,11 +43,11 @@ export class SidebarButtons extends Component {
         <Tab tabKey="map">
           <button><i className="fa fa-sitemap"></i></button>
         </Tab>
-        <Tab tabKey="favorites">
-          <button><i className="fa fa-star"></i></button>
-        </Tab>
         <Tab tabKey="reports">
           <button><i className="fa fa-print"></i></button>
+        </Tab>
+        <Tab tabKey="automap">
+          <button><i className="fas fa-question"></i></button>
         </Tab>
       </div>
     );

@@ -16,6 +16,7 @@ limitations under the License.
 
 import App from './App/App';
 import AppFull from './App/AppFull';
+import AutoMap from './AutoMap/AutoMap';
 import Favorites from './Favorites/Favorites';
 import Loading from './Loading/Loading';
 import Modal from './Modal/Modal';
@@ -38,6 +39,7 @@ import TabContent from './Tabs/TabContent';
 export {
   App,
   AppFull,
+  AutoMap,
   Favorites,
   Loading,
   Modal,

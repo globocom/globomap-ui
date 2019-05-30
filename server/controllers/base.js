@@ -155,13 +155,13 @@ router.get('/find-nodes', isAuthenticated, (req, res) => {
 });
 
 router.post('/traversal-search', isAuthenticated, (req, res) => {
-  let { graphs, depth, node } = req.body.params;
+  let { graphs, depth, node, direction } = req.body.params;
 
   gmapclient.traversalMultiple({
       graphs: graphs,
       startVertex: node._id,
       maxDepth: depth,
-      direction: 'any'
+      direction: direction || 'any'
     })
     .then((results) => {
       results = results.map((resp) => {

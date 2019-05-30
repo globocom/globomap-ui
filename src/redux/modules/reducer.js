@@ -16,6 +16,7 @@ limitations under the License.
 
 import { combineReducers } from 'redux';
 import app from './app';
+import automap from './automap';
 import nodes from './nodes';
 import stage from './stage';
 import plugins from './plugins';
@@ -24,6 +25,7 @@ import tabs from './tabs';
 
 const rootReducer = combineReducers({
   app,
+  automap,
   nodes,
   stage,
   plugins,

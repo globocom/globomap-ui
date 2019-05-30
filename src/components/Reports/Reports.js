@@ -41,7 +41,7 @@ export class Reports extends React.Component {
   }
 
   handleQChange(event) {
-    let value = event.target.value.trim();
+    const value = event.target.value.trim();
     this.setState({ q: value });
   }
 
@@ -91,8 +91,6 @@ export class Reports extends React.Component {
 
   render() {
     let queries = sortByName(this.props.queries);
-
-    // console.log(_.mapKeys(queries, 'collection'));
 
     queries = queries.map(query => {
       if (query.collection === '') {

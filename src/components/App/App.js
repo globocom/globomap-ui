@@ -29,6 +29,7 @@ import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
 import {
+  AutoMap,
   Favorites,
   Modal,
   Reports,
@@ -82,6 +83,9 @@ export class App extends React.Component {
         </TabContent>
         <TabContent tabKey="reports">
           <Reports />
+        </TabContent>
+        <TabContent tabKey="automap">
+          <AutoMap />
         </TabContent>
         <Loading iconSize="big"
                  isLoading={this.props.findLoading
