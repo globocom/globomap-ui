@@ -104,7 +104,7 @@ export class SearchContent extends Component {
         //                node._id === this.props.currentNode._id);
         return (
           <React.Fragment key={node._id}>
-            <tr>
+            <tr onClick={e => this.onOpenMap(e, node)}>
               <td>{i + index}</td>
               <td>{this.props.namedCollections[node.type].alias}</td>
               <td>{node.name}</td>

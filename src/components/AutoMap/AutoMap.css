@@ -39,6 +39,7 @@ limitations under the License.
 }
 
 .automaps-panel {
+  position: relative;
   background-color: #f2f2f2;
   margin-bottom: 20px;
   min-height: 80px;
@@ -50,4 +51,10 @@ limitations under the License.
 
 .automaps-panel.active {
   opacity: 1;
+}
+
+.automap-content .selected-node {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }

@@ -19,10 +19,16 @@ import Clipboard from 'clipboard';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { saveSharedMap, getSharedMap, saveUserMap,
-         getUserMap, listUserMaps } from '../../redux/modules/stage';
+import {
+  saveSharedMap,
+  getSharedMap,
+  saveUserMap,
+  getUserMap,
+  listUserMaps } from '../../redux/modules/stage';
 import { setTab } from '../../redux/modules/tabs';
-import { NodeInfo, NodeItem } from '../';
+import {
+  NodeInfo,
+  NodeItem } from '../';
 import { Tab } from '../';
 import SubNodes from './SubNodes';
 import './Stage.css';
@@ -158,12 +164,14 @@ export class Stage extends Component {
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
+
           <Tab tabKey="favorites">
             <button className="btn tool-btn btn-favorites"
                     data-tippy-content="Show saved maps">
               <i className="fa fa-star"></i>
             </button>
           </Tab>
+
           {this.state.sharedLinkOpen &&
             <div className="shared-link">
               <input type="text" readOnly={true} className="link-url"
@@ -174,7 +182,8 @@ export class Stage extends Component {
               </button>
             </div>}
 
-          {/* <button className="btn tool-btn btn-fullscreen" onClick={this.toggleFullScreen}>
+          {/* <button className="btn tool-btn btn-fullscreen" onClick={this.toggleFullScreen}
+                  data-tippy-content="Fullscreen">
             {this.state.fullScreen
               ? <i className="fa fa-compress"></i>
               : <i className="fa fa-expand"></i>}
@@ -208,6 +217,12 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { setTab, saveSharedMap, getSharedMap,
-    saveUserMap, getUserMap, listUserMaps }
+  {
+    setTab,
+    saveSharedMap,
+    getSharedMap,
+    saveUserMap,
+    getUserMap,
+    listUserMaps
+  }
 )(Stage);

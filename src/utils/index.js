@@ -109,3 +109,68 @@ export const turnOffLoadings = (state) => {
     }
   });
 };
+
+function containsObject(obj, list) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i] === obj) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function addChildren(graph, node) {
+  const nodeId = node._id;
+  let newNode = Object.assign({}, node);
+
+  if (!newNode.items) {
+    newNode.items = [];
+  }
+
+  for (let i=0, l=graph.edges.length; i<l; i++) {
+    if (graph.edges[i]._from === nodeId) {
+      let newChild = graph.nodes.filter(_node => {
+        return _node._id === graph.edges[i]._to;
+      });
+
+      if (newChild.length > 0) {
+        if (!containsObject(newChild, newNode.items)) {
+          newChild[0].items = [];
+          newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
+        }
+      }
+      // } else if (graph.edges[i]._to === nodeId) {
+      //     let newChild = graph.nodes.filter(_node => {
+      //         return _node._id === graph.edges[i]._from;
+      //     })[0];
+      //     if (!containsObject(newChild, newNode.items))
+      //         newNode.items.push(newChild);
+    }
+  }
+
+  return newNode;
+}
+
+export function traversalToStage(src) {
+  if (src.length === 0) {
+    return [];
+  }
+
+  let graph = src[0];
+  let tree = [Object.assign({'root': true, 'uuid': uuid()}, graph.nodes[0])];
+
+  tree[0] = addChildren(graph, tree[0]);
+  let newestNodes = tree[0].items;
+
+  while (newestNodes.length > 0) {
+    let nextNodes = [];
+    for (let i=0, l=newestNodes.length; i<l; i++) {
+      newestNodes[i] = addChildren(graph, newestNodes[i]);
+      nextNodes.push.apply(nextNodes, newestNodes[i].items);
+      // nextNodes = [...nextNodes, ...newestNodes[i].items];
+    }
+    newestNodes = nextNodes;
+  }
+
+  return tree;
+}

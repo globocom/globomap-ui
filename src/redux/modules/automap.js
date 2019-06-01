@@ -25,6 +25,7 @@ const AUTOMAP_TRAVERSAL = 'automap_traversal';
 const AUTOMAP_TRAVERSAL_SUCCESS = 'automap_traversal_success';
 const AUTOMAP_TRAVERSAL_FAIL = 'automap_traversal_fail';
 
+const AUTOMAP_RESET_NODES = 'automap_reset_nodes';
 const AUTOMAP_RESET_SUBNODES = 'automap_reset_subnodes';
 
 const initialState = {
@@ -46,7 +47,7 @@ export default function reducer(state=initialState, action={}) {
       };
 
     case AUTOMAP_FIND_NODES_SUCCESS:
-      const { result, options } = action;
+      const { result } = action;
       data = result.data;
 
       return {
@@ -94,18 +95,20 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         automapTraversalLoading: false,
-        automapSubNodesList: action.graphs.map(graph => {
-          return { graph: graph.name, edges: [], nodes: [], subnodes: [] };
-        })
+        automapSubNodesList: []
       }
 
-      case AUTOMAP_RESET_SUBNODES:
-        return {
-          ...state,
-          automapSubNodesList: action.graphs.map(graph => {
-            return { graph: graph.name, edges: [], nodes: [], subnodes: [] };
-          })
-        }
+    case AUTOMAP_RESET_NODES:
+      return {
+        ...state,
+        automapNodeList: []
+      }
+
+    case AUTOMAP_RESET_SUBNODES:
+      return {
+        ...state,
+        automapSubNodesList: []
+      }
 
     default:
       return state;
@@ -140,6 +143,12 @@ export function automapTraversalSearch(opts) {
     promise: (client) => client.post('/api/traversal-search', options),
     graphs: options.graphs,
     node: options.node
+  }
+}
+
+export function automapResetNodes() {
+  return {
+    type: AUTOMAP_RESET_NODES
   }
 }
 

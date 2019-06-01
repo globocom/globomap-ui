@@ -72,7 +72,13 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { fetchGraphs, fetchCollections, fetchEdges,
-    fetchQueries, getServerData, clearCurrentNode,
-    toggleHasId }
+  {
+    fetchGraphs,
+    fetchCollections,
+    fetchEdges,
+    fetchQueries,
+    getServerData,
+    clearCurrentNode,
+    toggleHasId
+  }
 )(App);

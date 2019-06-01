@@ -38,16 +38,24 @@ export class SidebarButtons extends Component {
     return (
       <div className="sidebar-buttons">
         <Tab tabKey="search">
-          <button><i onClick={() => this.handleSearch()} className="fa fa-search"></i></button>
+          <button onClick={() => this.handleSearch()}>
+            <i className="fa fa-search"></i>
+          </button>
         </Tab>
         <Tab tabKey="map">
-          <button><i className="fa fa-sitemap"></i></button>
+          <button>
+            <i className="fa fa-sitemap"></i>
+          </button>
         </Tab>
         <Tab tabKey="reports">
-          <button><i className="fa fa-print"></i></button>
+          <button>
+            <i className="fa fa-print"></i>
+          </button>
         </Tab>
         <Tab tabKey="automap">
-          <button><i className="fas fa-question"></i></button>
+          <button data>
+            <i className="fas fa-project-diagram"></i>
+          </button>
         </Tab>
       </div>
     );

@@ -163,20 +163,20 @@ router.post('/traversal-search', isAuthenticated, (req, res) => {
       maxDepth: depth,
       direction: direction || 'any'
     })
-    .then((results) => {
-      results = results.map((resp) => {
+    .then(results => {
+      results = results.map(resp => {
         let data = { graph: resp.data.graph };
-        data.edges = resp.data.edges.map((edge) => {
+        data.edges = resp.data.edges.map(edge => {
           return updateItemInfo(edge);
         });
-        data.nodes = resp.data.nodes.map((node) => {
+        data.nodes = resp.data.nodes.map(node => {
           return updateItemInfo(node);
         });
         return data;
       });
       return res.status(200).json(results);
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error);
       return res.status(500).json({
         error: true,
