@@ -97,7 +97,7 @@ export class AutoMap extends React.Component {
   renderKinds() {
     return this.state.kinds.map(item => {
       return (
-        <button key={item.name} onClick={() => this.setCurrentKind(item)}>
+        <button key={item.name} className="gmap-btn" onClick={() => this.setCurrentKind(item)}>
           {item.name}
         </button>
       );
@@ -111,19 +111,31 @@ export class AutoMap extends React.Component {
   render() {
     const curr = this.state.current;
     const selected = this.state.selected;
+    const tLoading = this.props.automapTraversalLoading;
 
     const automapNodes = this.props.automapNodeList.map((node, i) => {
+      let itemCls = '';
+      if (selected && selected._id === node._id) {
+        itemCls = 'selected';
+      }
       return (
-        <li key={`${i}-${node._id}`}>
+        <li key={`${i}-${node._id}`} className={itemCls}>
           <a href={`#${node._id}`} onClick={e => this.showAutoMap(e, node)}>
             { node.name }
           </a>
+          <button className="btn-build-map gmap-btn sm-size"
+                  onClick={e => this.buildMap(e)}
+                  disabled={ tLoading }>
+            {tLoading
+              ? <span><i className="fa fa-sync-alt fa-spin fa-fw"></i></span>
+              : 'Build Custom Map'}
+          </button>
         </li>
       )
     });
 
     return (
-      <div className="automaps">
+      <div className={`automaps ${this.props.className}`} >
         <h3 className="automaps-title">Custom Maps</h3>
 
         <div className="automaps-panel automap-kind">
@@ -131,30 +143,25 @@ export class AutoMap extends React.Component {
         </div>
 
         <div className="automaps-panel automap-search">
-          <input type="search" name="q" className="automap-q" autoComplete="off" disabled={!this.state.current}
-                      value={this.state.q} ref={elem => { this.inputQ = elem; }}
-                      onChange={_.throttle(this.handleQChange, 300)}
-                      onKeyPress={e => this.handleEnterKeyPress(e)}
-                      placeholder={curr ? curr.name : ''} />
-          <button onClick={() => this.search()} disabled={!this.state.current}>
+          <input type="search" name="q" className="gmap-text automap-q" autoComplete="off"
+                disabled={!this.state.current}
+                value={this.state.q} ref={elem => { this.inputQ = elem; }}
+                onChange={_.throttle(this.handleQChange, 300)}
+                onKeyPress={e => this.handleEnterKeyPress(e)}
+                placeholder={curr ? curr.name : ''} />
+          <button className="gmap-btn"
+                  onClick={() => this.search()}
+                  disabled={!this.state.current}>
             <i className="fas fa-search"></i>
           </button>
         </div>
 
         <div className="automaps-panel automap-content">
           {this.props.automapFindLoading
-            ? <div><i className="ui-loading-cog fa fa-cog fa-spin fa-3x fa-fw"></i></div>
-            : <ul>{ automapNodes }</ul>}
-
-          {selected &&
-            <div className="selected-node">
-              <span className="selected-name">{ selected.name }</span>
-              <button className="btn-build-map" onClick={e => this.buildMap(e)}>
-                {this.props.automapTraversalLoading
-                  ? <i className="ui-loading-cog fa fa-cog fa-spin fa-1x fa-fw"></i>
-                  : 'Build Custom Map'}
-              </button>
-            </div>}
+            ? <div className="content-loading">
+                <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
+              </div>
+            : <ul className="automap-found-nodes">{ automapNodes }</ul>}
         </div>
       </div>
     );

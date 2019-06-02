@@ -53,7 +53,7 @@ export class SidebarButtons extends Component {
           </button>
         </Tab>
         <Tab tabKey="automap">
-          <button data>
+          <button>
             <i className="fas fa-project-diagram"></i>
           </button>
         </Tab>

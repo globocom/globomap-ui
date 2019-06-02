@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Globo.com
+Copyright 2019 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ export class Tab extends React.Component {
   render() {
     return React.Children.map(this.props.children, child => {
       const cls = this.props.currentTab === this.props.tabKey
-                    ? `${child.props.className} active`
-                    : child.props.className
+                    ? `${child.props.className || ''} active`
+                    : child.props.className || ''
 
       return React.cloneElement(child, {
         className:  cls,
@@ -49,5 +49,8 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { registerTab, setTab }
+  {
+    registerTab,
+    setTab
+  }
 )(Tab);

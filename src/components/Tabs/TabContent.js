@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Globo.com
+Copyright 2019 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import {
   registerTab,
   setTab } from '../../redux/modules/tabs';
+import './TabContent.css';
 
 export class TabContent extends React.Component {
 
@@ -27,9 +28,12 @@ export class TabContent extends React.Component {
   }
 
   render() {
-    return this.props.currentTab === this.props.tabKey
-      ? this.props.children
-      : null;
+    return React.Children.map(this.props.children, child => {
+      const cls = this.props.currentTab === this.props.tabKey
+                    ? child.props.className || ''
+                    : `${child.props.className || ''} tab-content-inactive`
+      return React.cloneElement(child, { className: cls });
+    });
   }
 
 }
@@ -42,5 +46,8 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { registerTab, setTab }
+  {
+    registerTab,
+    setTab
+  }
 )(TabContent);

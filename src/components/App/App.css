@@ -35,9 +35,45 @@ button:hover {
   opacity: 0.90;
 }
 
+input:disabled,
 button:disabled {
   cursor: default;
   opacity: 0.3;
+}
+
+.gmap-btn,
+.gmap-text {
+  font-size: 1.2rem;
+  margin: 0 5px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.gmap-btn {
+  color: white;
+  margin: 0 5px;
+  padding: 8px 16px;
+  border-radius: 3px;
+  background-color: #3fe3b2;
+  border-bottom: 2px solid #2eb78e;
+}
+
+.gmap-text {
+  color: #2eb78e;
+  border: 1px solid #ddd;
+  border-bottom: 2px solid #aaa;
+  outline: none;
+}
+
+.gmap-text::placeholder {
+  color: #ddd;
+}
+
+.gmap-btn.sm-size,
+.gmap-text.sm-size {
+  font-size: 14px;
+  padding: 4px 10px;
 }
 
 .has-id {

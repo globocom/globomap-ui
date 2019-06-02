@@ -110,7 +110,7 @@ export const turnOffLoadings = (state) => {
   });
 };
 
-function containsObject(obj, list) {
+const containsObject = (obj, list) => {
   for (let i = 0; i < list.length; i++) {
     if (list[i] === obj) {
       return true;
@@ -119,7 +119,7 @@ function containsObject(obj, list) {
   return false;
 }
 
-function addChildren(graph, node) {
+const addChildren = (graph, node) => {
   const nodeId = node._id;
   let newNode = Object.assign({}, node);
 
@@ -141,17 +141,18 @@ function addChildren(graph, node) {
       }
       // } else if (graph.edges[i]._to === nodeId) {
       //     let newChild = graph.nodes.filter(_node => {
-      //         return _node._id === graph.edges[i]._from;
+      //       return _node._id === graph.edges[i]._from;
       //     })[0];
-      //     if (!containsObject(newChild, newNode.items))
-      //         newNode.items.push(newChild);
+      //     if (!containsObject(newChild, newNode.items)) {
+      //       newNode.items.push(newChild);
+      //     }
     }
   }
 
   return newNode;
 }
 
-export function traversalToStage(src) {
+export const traversalToStage = (src) => {
   if (src.length === 0) {
     return [];
   }
@@ -167,7 +168,6 @@ export function traversalToStage(src) {
     for (let i=0, l=newestNodes.length; i<l; i++) {
       newestNodes[i] = addChildren(graph, newestNodes[i]);
       nextNodes.push.apply(nextNodes, newestNodes[i].items);
-      // nextNodes = [...nextNodes, ...newestNodes[i].items];
     }
     newestNodes = nextNodes;
   }

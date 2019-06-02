@@ -39,22 +39,80 @@ limitations under the License.
 }
 
 .automaps-panel {
+  display: flex;
   position: relative;
-  background-color: #f2f2f2;
+  background-color: #f8f8f8;
   margin-bottom: 20px;
-  min-height: 80px;
   border-radius: 3px;
+  border-bottom: 2px solid #eee;
   padding: 10px;
-  border-bottom: 1px solid  #ccc;
   /* opacity: 0.25; */
 }
 
-.automaps-panel.active {
-  opacity: 1;
+.automap-search .automap-q {
+  flex-grow: 1;
 }
+
+/* .automaps-panel.active {
+  opacity: 1;
+} */
 
 .automap-content .selected-node {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.automap-content .content-loading {
+  flex-grow: 1;
+  text-align: center;
+  padding: 10px;
+  color: #aaa;
+}
+
+.automap-found-nodes {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  background-color: white;
+  min-height: 280px;
+  width: 100%;
+}
+
+.automap-found-nodes li {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.automap-found-nodes li:last-child {
+  border-bottom: none;
+}
+
+.automap-found-nodes li a {
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  padding: 10px 15px;
+  color: #222;
+  font-size: 1em;
+}
+
+.automap-found-nodes li a:hover {
+  color: #2eb78e;
+}
+.automap-found-nodes li .btn-build-map {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 200px;
+}
+
+.automap-found-nodes li.selected {
+  background-color: #f2f2f2;
+}
+
+.automap-found-nodes li.selected .btn-build-map {
+  display: block;
 }

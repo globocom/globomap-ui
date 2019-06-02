@@ -81,7 +81,7 @@ export class Favorites extends React.Component {
   render() {
 
     return (
-      <div className="favorites">
+      <div className={`favorites ${this.props.className}`}>
         <h3 className="favorites-title">
           Saved maps
           <button className="btn-close-favorites"

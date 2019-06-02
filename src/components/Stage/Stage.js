@@ -146,7 +146,7 @@ export class Stage extends Component {
     }
 
     return (
-      <div className={`stage${this.props.full ? ' full' : ''}`}>
+      <div className={`stage ${this.props.className} ${this.props.full ? ' full' : ''}`}>
 
         {this.props.full &&
           <Link to="/" className="btn-close-full">

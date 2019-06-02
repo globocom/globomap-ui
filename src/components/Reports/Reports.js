@@ -117,7 +117,7 @@ export class Reports extends React.Component {
 
     const idx = this.state.paneIndex;
     return (
-      <div className="reports">
+      <div className={`reports ${this.props.className}`}>
         <h3 className="reports-title">Reports</h3>
 
         <div className="reports-tabs">

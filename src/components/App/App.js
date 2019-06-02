@@ -72,21 +72,27 @@ export class App extends React.Component {
     return (
       <div className="main">
         <Sidebar />
+
         <TabContent tabKey="search">
           <Search />
         </TabContent>
+
         <TabContent tabKey="map">
           <Stage />
         </TabContent>
+
         <TabContent tabKey="favorites">
           <Favorites />
         </TabContent>
+
         <TabContent tabKey="reports">
           <Reports />
         </TabContent>
+
         <TabContent tabKey="automap">
           <AutoMap />
         </TabContent>
+
         <Loading iconSize="big"
                  isLoading={this.props.findLoading
                             || this.props.traversalLoading
