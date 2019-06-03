@@ -111,7 +111,7 @@ export const turnOffLoadings = (state) => {
 };
 
 const containsObject = (obj, list) => {
-  for (let i = 0; i < list.length; i++) {
+  for (let i=0, j=list.length; i<j; i++) {
     if (list[i] === obj) {
       return true;
     }
@@ -127,7 +127,7 @@ const addChildren = (graph, node) => {
     newNode.items = [];
   }
 
-  for (let i=0, l=graph.edges.length; i<l; i++) {
+  for (let i=0, j=graph.edges.length; i<j; i++) {
     if (graph.edges[i]._from === nodeId) {
       let newChild = graph.nodes.filter(_node => {
         return _node._id === graph.edges[i]._to;
