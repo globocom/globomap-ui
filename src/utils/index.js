@@ -139,13 +139,14 @@ const addChildren = (graph, node) => {
           newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
         }
       }
-      // } else if (graph.edges[i]._to === nodeId) {
-      //     let newChild = graph.nodes.filter(_node => {
-      //       return _node._id === graph.edges[i]._from;
-      //     })[0];
-      //     if (!containsObject(newChild, newNode.items)) {
-      //       newNode.items.push(newChild);
-      //     }
+    // } else if (graph.edges[i]._to === nodeId) {
+    //   let newChild = graph.nodes.filter(_node => {
+    //     return _node._id === graph.edges[i]._from;
+    //   });
+    //   if (!containsObject(newChild, newNode.items)) {
+    //     newChild[0].items = [];
+    //     newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
+    //   }
     }
   }
 
