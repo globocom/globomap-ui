@@ -89,7 +89,7 @@ export class AutoMap extends React.Component {
 
   buildMap(event) {
     event.stopPropagation();
-    const newMap = traversalToStage(this.props.automapSubNodesList);
+    const newMap = traversalToStage(this.props.automapSubNodesList, 'type');
     this.props.setStageNodes(newMap);
     this.props.setTab('map');
   }

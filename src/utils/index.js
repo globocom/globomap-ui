@@ -139,21 +139,44 @@ const addChildren = (graph, node) => {
           newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
         }
       }
-    // } else if (graph.edges[i]._to === nodeId) {
-    //   let newChild = graph.nodes.filter(_node => {
-    //     return _node._id === graph.edges[i]._from;
-    //   });
-    //   if (!containsObject(newChild, newNode.items)) {
-    //     newChild[0].items = [];
-    //     newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
-    //   }
+    } else if (graph.edges[i]._to === nodeId) {
+      let newChild = graph.nodes.filter(_node => {
+        return _node._id === graph.edges[i]._from;
+      });
+
+      if (newChild.length > 0) {
+        if (!containsObject(newChild, newNode.items)) {
+          newChild[0].items = [];
+          newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
+        }
+      }
     }
   }
 
   return newNode;
 }
 
-export const traversalToStage = (src) => {
+const addChildrenNoRepetition = (graph, father, uniqueProp) => {
+  let possibleChildren = addChildren(graph, father.node).items;
+  father.node.items = [];
+  for (let i=0, l=possibleChildren.length; i<l; i++) {
+    if (!father.ancestors.includes(possibleChildren[i][uniqueProp])) {
+      father.node.items.push(possibleChildren[i]);
+    }
+  }
+}
+
+const getNextGeneration = (father, uniqueProp) => {
+  let nextGeneration = [];
+  for (let i=0, l=father.node.items.length; i<l; i++) {
+    nextGeneration.push({'ancestors': [...father.ancestors,
+                                    father.node[uniqueProp]],
+                       'node': father.node.items[i]});
+  }
+  return nextGeneration;
+}
+
+export const traversalToStage = (src, uniqueProp='_id') => {
   if (src.length === 0) {
     return [];
   }
@@ -162,13 +185,17 @@ export const traversalToStage = (src) => {
   let tree = [Object.assign({'root': true, 'uuid': uuid()}, graph.nodes[0])];
 
   tree[0] = addChildren(graph, tree[0]);
-  let newestNodes = tree[0].items;
+
+  let newestNodes = [];
+  for (let i=0, l=tree[0].items.length; i<l ; i++) {
+    newestNodes.push({'ancestors': [tree[0][uniqueProp]], 'node': tree[0].items[i]});
+  }
 
   while (newestNodes.length > 0) {
     let nextNodes = [];
     for (let i=0, l=newestNodes.length; i<l; i++) {
-      newestNodes[i] = addChildren(graph, newestNodes[i]);
-      nextNodes.push.apply(nextNodes, newestNodes[i].items);
+      addChildrenNoRepetition(graph, newestNodes[i], uniqueProp);
+      nextNodes.push.apply(nextNodes, getNextGeneration(newestNodes[i], uniqueProp));
     }
     newestNodes = nextNodes;
   }
