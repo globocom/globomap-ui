@@ -6,7 +6,7 @@
     "node": "8.9.1"
   },
   "devDependencies": {
-    "babel-jest": "24.8.0",
+    "babel-jest": "^23.6.0",
     "chai": "4.2.0",
     "chai-enzyme": "1.0.0-beta.1",
     "enzyme": "^3.8.0",
