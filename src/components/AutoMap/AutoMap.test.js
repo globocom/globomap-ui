@@ -20,7 +20,7 @@ describe("AutoMap", () => {
   });
 
   it('should render at least 1 initial kind button', () => {
-    expect(component.find('.automap-kind .gmap-btn')).to.have.lengthOf(1);
+    expect(component.find('.automap-kind .gmap-btn')).to.not.be.empty;
   });
 
   it('search input is disabled at initial render', () => {
