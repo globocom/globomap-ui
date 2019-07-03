@@ -108,8 +108,9 @@ router.get('/run-query', isAuthenticated, (req, res) => {
     });
 });
 
-router.get('/find-nodes', isAuthenticated, (req, res) => {
-  const { query, queryType, queryProps, collections, per_page, page } = req.query;
+const findNodes = (options, res) => {
+  const { query, queryType, queryProps, collections, per_page, page } = options;
+
   let co = '';
   if (collections !== undefined) {
     co = collections.toString();
@@ -152,6 +153,14 @@ router.get('/find-nodes', isAuthenticated, (req, res) => {
         message: 'Find Nodes Error'
       });
     });
+}
+
+router.get('/find-nodes', isAuthenticated, (req, res) => {
+  return findNodes(req.query, res);
+});
+
+router.get('/dnslookup-find-nodes', isAuthenticated, (req, res) => {
+
 });
 
 router.post('/traversal-search', isAuthenticated, (req, res) => {
