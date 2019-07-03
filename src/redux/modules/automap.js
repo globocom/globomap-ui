@@ -21,6 +21,10 @@ const AUTOMAP_FIND_NODES = 'automap_find_nodes';
 const AUTOMAP_FIND_NODES_SUCCESS = 'automap_find_nodes_success';
 const AUTOMAP_FIND_NODES_FAIL = 'automap_find_nodes_fail';
 
+const DNSLOOKUP_AUTOMAP_FIND_NODES = 'dnslookup_automap_find_nodes';
+const DNSLOOKUP_AUTOMAP_FIND_NODES_SUCCESS = 'dnslookup_automap_find_nodes_success';
+const DNSLOOKUP_AUTOMAP_FIND_NODES_FAIL = 'dnslookup_automap_find_nodes_fail';
+
 const AUTOMAP_TRAVERSAL = 'automap_traversal';
 const AUTOMAP_TRAVERSAL_SUCCESS = 'automap_traversal_success';
 const AUTOMAP_TRAVERSAL_FAIL = 'automap_traversal_fail';
@@ -36,7 +40,7 @@ const initialState = {
 };
 
 export default function reducer(state=initialState, action={}) {
-  let data;
+  let result, data;
 
   switch (action.type) {
     case AUTOMAP_FIND_NODES:
@@ -47,7 +51,7 @@ export default function reducer(state=initialState, action={}) {
       };
 
     case AUTOMAP_FIND_NODES_SUCCESS:
-      const { result } = action;
+      result = action.result;
       data = result.data;
 
       return {
@@ -57,6 +61,32 @@ export default function reducer(state=initialState, action={}) {
       };
 
     case AUTOMAP_FIND_NODES_FAIL:
+      console.log(action.error);
+      return {
+        ...state,
+        automapNodeList: [],
+        automapFindLoading: false,
+        error: action.error
+      };
+
+    case DNSLOOKUP_AUTOMAP_FIND_NODES:
+      console.log('automap find nodes...');
+      return {
+        ...state,
+        automapFindLoading: true
+      };
+
+    case DNSLOOKUP_AUTOMAP_FIND_NODES_SUCCESS:
+      result = action.result;
+      data = result.data;
+
+      return {
+        ...state,
+        automapNodeList: data.documents,
+        automapFindLoading: false
+      };
+
+    case DNSLOOKUP_AUTOMAP_FIND_NODES_FAIL:
       console.log(action.error);
       return {
         ...state,
@@ -127,6 +157,22 @@ export function automapFindNodes(opts) {
   return {
     types: [AUTOMAP_FIND_NODES, AUTOMAP_FIND_NODES_SUCCESS, AUTOMAP_FIND_NODES_FAIL],
     promise: (client) => client.get('/api/find-nodes', options),
+    options
+  };
+}
+
+export function dnsLookupAutomapFindNodes(opts) {
+  const options = _.merge({
+    query: '',
+    queryProps: [],
+    collections: [],
+    per_page: null,
+    page: 1
+  }, opts);
+
+  return {
+    types: [DNSLOOKUP_AUTOMAP_FIND_NODES, DNSLOOKUP_AUTOMAP_FIND_NODES_SUCCESS, DNSLOOKUP_AUTOMAP_FIND_NODES_FAIL],
+    promise: (client) => client.get('/api/dnslookup-find-nodes', options),
     options
   };
 }

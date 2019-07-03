@@ -22,6 +22,8 @@ const config = require('../config');
 
 const router = express.Router();
 
+const dns = require('dns');
+
 const gmapclient = new GmapClient({
   username: config.globomapApiUsername,
   password: config.globomapApiPassword,
@@ -160,7 +162,13 @@ router.get('/find-nodes', isAuthenticated, (req, res) => {
 });
 
 router.get('/dnslookup-find-nodes', isAuthenticated, (req, res) => {
-
+  let opts = Object.assign({}, req.query);
+  let queryProps = JSON.parse(opts.queryProps[0]);
+  dns.lookup(queryProps.value, (err, result) => {
+    queryProps.value = result;
+    opts.queryProps[0] = JSON.stringify(queryProps);
+    return findNodes(opts, res);
+  });
 });
 
 router.post('/traversal-search', isAuthenticated, (req, res) => {

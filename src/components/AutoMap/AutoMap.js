@@ -21,6 +21,7 @@ import { traversalToStage } from '../../utils';
 import { setStageNodes } from '../../redux/modules/stage';
 import {
   automapFindNodes,
+  dnsLookupAutomapFindNodes,
   automapTraversalSearch,
   automapResetNodes } from '../../redux/modules/automap';
 import { setTab } from '../../redux/modules/tabs';
@@ -33,7 +34,9 @@ export class AutoMap extends React.Component {
 
     this.state = {
       q: '',
-      kinds: [{ name: 'VIP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any' }],
+      kinds: [{ name: 'VIP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', searchby: 'name' },
+              { name: 'VIP by resolving DNS', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', searchby: 'ip' }],
+
       current: null,
       selected: null
     }
@@ -59,6 +62,22 @@ export class AutoMap extends React.Component {
     });
   }
 
+  findNodes(opts, searchby) {
+    let options = {
+      collections: [this.state.current.collection]
+    }
+
+    opts = Object.assign(options, opts);
+
+    if (searchby === 'ip') {
+      this.props.dnsLookupAutomapFindNodes(opts);
+      return;
+    }
+
+    this.props.automapFindNodes(opts);
+
+  }
+
   search() {
     const curr = this.state.current;
 
@@ -66,11 +85,17 @@ export class AutoMap extends React.Component {
       return false;
     }
 
-    this.props.automapFindNodes({
-      collections: [curr.collection],
-      queryType: 'name',
-      query: this.state.q
-    });
+    if (!curr.searchby || curr.searchby === 'name') {
+      this.findNodes({
+        queryType: 'name',
+        query: this.state.q
+      }, curr.searchby);
+    } else {
+      let query = this.state.q;
+      let qProps = [{ 'name': curr.searchby, 'op': '==', 'value': query }];
+
+      this.findNodes({queryProps: qProps}, curr.searchby);
+    }
   }
 
   showAutoMap(event, node) {
@@ -183,6 +208,7 @@ export default connect(
   mapStateToProps,
   {
     automapFindNodes,
+    dnsLookupAutomapFindNodes,
     automapTraversalSearch,
     automapResetNodes,
     setStageNodes,
