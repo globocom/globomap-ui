@@ -99,7 +99,8 @@ export class App extends React.Component {
                             || this.props.getSharedLoading
                             || this.props.saveUserMapLoading
                             || this.props.getUserMapLoading
-                            || this.props.saveSharedLoading} />
+                            || this.props.saveSharedLoading
+                            || this.props.automapTraversalLoading} />
         <Modal />
       </div>
     );
@@ -114,7 +115,8 @@ function mapStateToProps(state) {
     getSharedLoading: state.stage.getSharedLoading,
     saveUserMapLoading: state.stage.saveUserMapLoading,
     getUserMapLoading: state.stage.getUserMapLoading,
-    saveSharedLoading: state.stage.saveSharedLoading
+    saveSharedLoading: state.stage.saveSharedLoading,
+    automapTraversalLoading: state.automap.automapTraversalLoading
   };
 }
 

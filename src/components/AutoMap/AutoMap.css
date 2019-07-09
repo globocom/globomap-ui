@@ -91,28 +91,33 @@ limitations under the License.
 
 .automap-found-nodes li a {
   text-decoration: none;
-  display: block;
+  display: inline-block;
   text-align: left;
   padding: 10px 15px;
   color: #222;
   font-size: 1em;
 }
 
-.automap-found-nodes li a:hover {
+.automap-found-nodes li:hover a,
+.automap-found-nodes li:hover i {
   color: #2eb78e;
 }
-.automap-found-nodes li .btn-build-map {
-  display: none;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 200px;
+
+.automap-found-nodes li .row-tools {
+  display: inline-block;
 }
 
-.automap-found-nodes li.selected {
-  background-color: #f2f2f2;
+.automap-found-nodes li .row-tools button {
+  padding: 8px 8px;
+  font-size: 1.0em;
+  background: none;
+  margin-left: 0 10px;
+  border: none;
+  opacity: 0.05;
 }
-
-.automap-found-nodes li.selected .btn-build-map {
-  display: block;
+.automap-found-nodes li:hover .row-tools button {
+  opacity: 0.5;
+}
+.automap-found-nodes li .row-tools button:hover {
+  opacity: 1;
 }

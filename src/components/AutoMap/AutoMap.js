@@ -22,9 +22,10 @@ import { setStageNodes } from '../../redux/modules/stage';
 import {
   automapFindNodes,
   dnsLookupAutomapFindNodes,
-  automapTraversalSearch,
+  automapTraversal,
   automapResetNodes } from '../../redux/modules/automap';
 import { setTab } from '../../redux/modules/tabs';
+import { NodeInfo } from '../';
 import './AutoMap.css';
 
 export class AutoMap extends React.Component {
@@ -38,10 +39,24 @@ export class AutoMap extends React.Component {
               { name: 'VIP by resolving DNS', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', searchby: 'ip' }],
 
       current: null,
-      selected: null
+      showNodeInfo: false,
+      nodeInfoNode: null
     }
 
     this.handleQChange = this.handleQChange.bind(this);
+    this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
+  }
+
+  onToggleNodeInfo(event, node) {
+    event.stopPropagation();
+    this.setState({
+      showNodeInfo: true,
+      nodeInfoNode: node
+    });
+  }
+
+  onCloseNodeInfo() {
+    this.setState({ showNodeInfo: false });
   }
 
   handleQChange(event) {
@@ -98,25 +113,18 @@ export class AutoMap extends React.Component {
     }
   }
 
-  showAutoMap(event, node) {
+  openMap(event, node) {
     event.preventDefault();
+    event.stopPropagation();
+
     const kind = this.state.current;
 
-    this.props.automapTraversalSearch({
+    this.props.automapTraversal({
       node: node,
       graphs: [kind.graph],
       depth: kind.depth,
       direction: kind.direction
     });
-
-    this.setState({ selected: node });
-  }
-
-  buildMap(event) {
-    event.stopPropagation();
-    const newMap = traversalToStage(this.props.automapSubNodesList, 'type');
-    this.props.setStageNodes(newMap);
-    this.props.setTab('map');
   }
 
   renderKinds() {
@@ -135,26 +143,26 @@ export class AutoMap extends React.Component {
 
   render() {
     const curr = this.state.current;
-    const selected = this.state.selected;
     const tLoading = this.props.automapTraversalLoading;
 
     const automapNodes = this.props.automapNodeList.map((node, i) => {
       let itemCls = '';
-      if (selected && selected._id === node._id) {
-        itemCls = 'selected';
-      }
+
       return (
         <li key={`${i}-${node._id}`} className={itemCls}>
-          <a href={`#${node._id}`} onClick={e => this.showAutoMap(e, node)}>
+          <div className="row-tools">
+            <button onClick={e => this.onToggleNodeInfo(e, node)}
+                    className={this.state.showNodeInfo ? 'active' : ''}
+                    data-tippy-content="Show Info">
+              <i className="icon fa fa-info" />
+            </button>
+            <button onClick={e => this.openMap(e, node)}>
+              <i className="icon fa fa-sitemap" />
+            </button>
+          </div>
+          <a href={`#${node._id}`} onClick={e => this.openMap(e, node)}>
             { node.name }
           </a>
-          <button className="btn-build-map gmap-btn sm-size"
-                  onClick={e => this.buildMap(e)}
-                  disabled={ tLoading }>
-            {tLoading
-              ? <span><i className="fa fa-sync-alt fa-spin fa-fw"></i></span>
-              : 'Build Custom Map'}
-          </button>
         </li>
       )
     });
@@ -188,6 +196,10 @@ export class AutoMap extends React.Component {
               </div>
             : <ul className="automap-found-nodes">{ automapNodes }</ul>}
         </div>
+        {this.state.showNodeInfo &&
+          <NodeInfo node={this.state.nodeInfoNode}
+                    onClose={this.onCloseNodeInfo}
+                    position="right" />}
       </div>
     );
   }
@@ -209,7 +221,7 @@ export default connect(
   {
     automapFindNodes,
     dnsLookupAutomapFindNodes,
-    automapTraversalSearch,
+    automapTraversal,
     automapResetNodes,
     setStageNodes,
     setTab

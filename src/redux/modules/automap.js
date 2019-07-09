@@ -15,7 +15,9 @@ limitations under the License.
 */
 
 import _ from 'lodash';
-import { composeEdges } from '../../utils';
+import { composeEdges, traversalToStage } from '../../utils';
+import { setStageNodes } from './stage';
+import { setTab } from './tabs';
 
 const AUTOMAP_FIND_NODES = 'automap_find_nodes';
 const AUTOMAP_FIND_NODES_SUCCESS = 'automap_find_nodes_success';
@@ -79,6 +81,13 @@ export default function reducer(state=initialState, action={}) {
     case DNSLOOKUP_AUTOMAP_FIND_NODES_SUCCESS:
       result = action.result;
       data = result.data;
+
+      // console.log(state);
+
+      // data.documents.map((d) => {
+      //   d.name = "funcionou?";
+      //   return d;
+      // });
 
       return {
         ...state,
@@ -189,6 +198,16 @@ export function automapTraversalSearch(opts) {
     promise: (client) => client.post('/api/traversal-search', options),
     graphs: options.graphs,
     node: options.node
+  }
+}
+
+export function automapTraversal(opts) {
+  return (dispatch, getState) => {
+    return dispatch(automapTraversalSearch(opts)).then(() => {
+      const newMap = traversalToStage(getState().automap.automapSubNodesList, 'type');
+      dispatch(setStageNodes(newMap));
+      dispatch(setTab('map'));
+    });
   }
 }
 
