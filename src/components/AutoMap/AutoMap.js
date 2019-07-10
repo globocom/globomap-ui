@@ -24,6 +24,9 @@ import {
   dnsLookupAutomapFindNodesAndRename,
   automapTraversal,
   automapResetNodes } from '../../redux/modules/automap';
+import {
+  clearCurrentNode,
+  resetSubNodes } from '../../redux/modules/nodes';
 import { setTab } from '../../redux/modules/tabs';
 import { NodeInfo } from '../';
 import './AutoMap.css';
@@ -118,6 +121,9 @@ export class AutoMap extends React.Component {
     event.stopPropagation();
 
     const kind = this.state.current;
+
+    this.props.clearCurrentNode();
+    this.props.resetSubNodes();
 
     this.props.automapTraversal({
       node: node,
@@ -224,6 +230,8 @@ export default connect(
     automapTraversal,
     automapResetNodes,
     setStageNodes,
+    clearCurrentNode,
+    resetSubNodes,
     setTab
   }
 )(AutoMap);
