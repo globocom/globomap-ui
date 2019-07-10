@@ -17,7 +17,6 @@ limitations under the License.
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { traversalToStage } from '../../utils';
 import { setStageNodes } from '../../redux/modules/stage';
 import {
   automapFindNodes,
@@ -149,8 +148,6 @@ export class AutoMap extends React.Component {
 
   render() {
     const curr = this.state.current;
-    const tLoading = this.props.automapTraversalLoading;
-
     const automapNodes = this.props.automapNodeList.map((node, i) => {
       let itemCls = '';
 

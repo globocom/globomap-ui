@@ -44,8 +44,6 @@ const initialState = {
 };
 
 export default function reducer(state=initialState, action={}) {
-  let result, data;
-
   switch (action.type) {
     case AUTOMAP_FIND_NODES:
       console.log('automap find nodes...');
@@ -55,8 +53,8 @@ export default function reducer(state=initialState, action={}) {
       };
 
     case AUTOMAP_FIND_NODES_SUCCESS:
-      result = action.result;
-      data = result.data;
+      let result = action.result;
+      let data = result.data;
 
       return {
         ...state,
@@ -100,7 +98,7 @@ export default function reducer(state=initialState, action={}) {
       };
 
     case AUTOMAP_RENAME_NODES:
-      let data = action.data;
+      data = action.data;
       let currentNodes = state.automapNodeList.slice();
 
       currentNodes.map((d) => {

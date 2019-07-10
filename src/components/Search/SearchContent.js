@@ -37,7 +37,6 @@ export class SearchContent extends Component {
       nodeInfoNode: null
     };
 
-    // this.onNodeSelect = this.onNodeSelect.bind(this);
     this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
   }
 
@@ -56,15 +55,6 @@ export class SearchContent extends Component {
       this.onCloseSearchContent(event)
     }
   }
-
-  // onNodeSelect(event, node) {
-  //   event.stopPropagation();
-  //   if (this.props.currentNode !== null &&
-  //       this.props.currentNode._id === node._id) {
-  //     return this.props.clearCurrentNode();
-  //   }
-  //   return this.props.setCurrentNode(node);
-  // }
 
   onOpenMap(event, node) {
     event.stopPropagation();
@@ -94,9 +84,6 @@ export class SearchContent extends Component {
   }
 
   render() {
-    let index = this.props.perPage * (this.props.currentPage - 1);
-    index = (index === 0 ? 1 : index + 1);
-
     let allNodes = [];
     if (this.props.nodeList !== undefined) {
       allNodes = this.props.nodeList.map((node, i) => {
