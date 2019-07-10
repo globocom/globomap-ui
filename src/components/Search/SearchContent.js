@@ -105,10 +105,7 @@ export class SearchContent extends Component {
         return (
           <React.Fragment key={node._id}>
             <tr onClick={e => this.onOpenMap(e, node)}>
-              <td>{i + index}</td>
-              <td>{this.props.namedCollections[node.type].alias}</td>
-              <td>{node.name}</td>
-              <td>
+              <th className="row-tools-body">
                 <div className="row-tools">
                   <button onClick={e => this.onToggleNodeInfo(e, node)}
                           className={this.state.showNodeInfo ? 'active' : ''}
@@ -120,7 +117,9 @@ export class SearchContent extends Component {
                     <i className="icon fa fa-sitemap" />
                   </button>
                 </div>
-              </td>
+              </th>
+              <td className="type-body">{this.props.namedCollections[node.type].alias}</td>
+              <td className="name-body">{node.name}</td>
             </tr>
           </React.Fragment>
         );
@@ -137,9 +136,9 @@ export class SearchContent extends Component {
           <table className="search-content-results">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Type</th>
-                <th>Name</th>
+                <th className="row-tools-head"></th>
+                <th className="type-head">Type</th>
+                <th className="name-head">Name</th>
               </tr>
             </thead>
             <tbody>{allNodes}</tbody>

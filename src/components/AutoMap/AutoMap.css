@@ -46,16 +46,11 @@ limitations under the License.
   border-radius: 3px;
   border-bottom: 2px solid #eee;
   padding: 10px;
-  /* opacity: 0.25; */
 }
 
 .automap-search .automap-q {
   flex-grow: 1;
 }
-
-/* .automaps-panel.active {
-  opacity: 1;
-} */
 
 .automap-content .selected-node {
   position: absolute;
@@ -99,7 +94,7 @@ limitations under the License.
 }
 
 .automap-found-nodes li:hover a,
-.automap-found-nodes li:hover i {
+.automap-found-nodes li:hover button {
   color: #2eb78e;
 }
 
@@ -114,6 +109,7 @@ limitations under the License.
   margin-left: 0 10px;
   border: none;
   opacity: 0.05;
+  width: 48px;
 }
 .automap-found-nodes li:hover .row-tools button {
   opacity: 0.5;
