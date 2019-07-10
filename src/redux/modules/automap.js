@@ -27,6 +27,8 @@ const DNSLOOKUP_AUTOMAP_FIND_NODES = 'dnslookup_automap_find_nodes';
 const DNSLOOKUP_AUTOMAP_FIND_NODES_SUCCESS = 'dnslookup_automap_find_nodes_success';
 const DNSLOOKUP_AUTOMAP_FIND_NODES_FAIL = 'dnslookup_automap_find_nodes_fail';
 
+const AUTOMAP_RENAME_NODES = 'automap_rename_nodes';
+
 const AUTOMAP_TRAVERSAL = 'automap_traversal';
 const AUTOMAP_TRAVERSAL_SUCCESS = 'automap_traversal_success';
 const AUTOMAP_TRAVERSAL_FAIL = 'automap_traversal_fail';
@@ -82,13 +84,6 @@ export default function reducer(state=initialState, action={}) {
       result = action.result;
       data = result.data;
 
-      // console.log(state);
-
-      // data.documents.map((d) => {
-      //   d.name = "funcionou?";
-      //   return d;
-      // });
-
       return {
         ...state,
         automapNodeList: data.documents,
@@ -102,6 +97,20 @@ export default function reducer(state=initialState, action={}) {
         automapNodeList: [],
         automapFindLoading: false,
         error: action.error
+      };
+
+    case AUTOMAP_RENAME_NODES:
+      let data = action.data;
+      let currentNodes = state.automapNodeList.slice();
+
+      currentNodes.map((d) => {
+        d.name = data;
+        return d;
+      });
+
+      return {
+        ...state,
+        automapNodeList: currentNodes
       };
 
     case AUTOMAP_TRAVERSAL:
@@ -184,6 +193,23 @@ export function dnsLookupAutomapFindNodes(opts) {
     promise: (client) => client.get('/api/dnslookup-find-nodes', options),
     options
   };
+}
+
+export function automapRenameNodes(txt) {
+  return {
+    type: AUTOMAP_RENAME_NODES,
+    data: txt
+  };
+}
+
+export function dnsLookupAutomapFindNodesAndRename(opts, txt) {
+  return (dispatch, getState) => {
+    return dispatch(dnsLookupAutomapFindNodes(opts)).then(
+      () => {
+        dispatch(automapRenameNodes(txt));
+      }
+    );
+  }
 }
 
 export function automapTraversalSearch(opts) {

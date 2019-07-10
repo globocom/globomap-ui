@@ -21,7 +21,7 @@ import { traversalToStage } from '../../utils';
 import { setStageNodes } from '../../redux/modules/stage';
 import {
   automapFindNodes,
-  dnsLookupAutomapFindNodes,
+  dnsLookupAutomapFindNodesAndRename,
   automapTraversal,
   automapResetNodes } from '../../redux/modules/automap';
 import { setTab } from '../../redux/modules/tabs';
@@ -85,7 +85,7 @@ export class AutoMap extends React.Component {
     opts = Object.assign(options, opts);
 
     if (searchby === 'ip') {
-      this.props.dnsLookupAutomapFindNodes(opts);
+      this.props.dnsLookupAutomapFindNodesAndRename(opts, this.state.q);
       return;
     }
 
@@ -220,7 +220,7 @@ export default connect(
   mapStateToProps,
   {
     automapFindNodes,
-    dnsLookupAutomapFindNodes,
+    dnsLookupAutomapFindNodesAndRename,
     automapTraversal,
     automapResetNodes,
     setStageNodes,
