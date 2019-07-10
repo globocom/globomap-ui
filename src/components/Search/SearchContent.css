@@ -79,6 +79,7 @@ limitations under the License.
 
 .search-content-results thead th {
   border-bottom: 1px solid #333;
+  height: 50px;
 }
 
 .search-content-results tfoot {
@@ -93,7 +94,7 @@ limitations under the License.
   position: absolute;
   left: 0;
   right: 0;
-  top: 30px;
+  top: 50px;
   bottom: 60px;
   padding: 10px 0;
   overflow-y: auto;
