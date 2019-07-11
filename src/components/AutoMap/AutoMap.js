@@ -37,8 +37,8 @@ export class AutoMap extends React.Component {
 
     this.state = {
       q: '',
-      kinds: [{ name: 'VIP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', searchby: 'name' },
-              { name: 'VIP by resolving DNS', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', searchby: 'ip' }],
+      kinds: [{ name: 'VIP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Retrieves maps that show the hosts related to a VIP.\nType at least part of the VIP\'s name.', searchby: 'name' },
+              { name: 'VIP by resolving DNS', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Retrieves maps that show the hosts related to a VIP.\nType a DNS to be resolved. We will return the VIPs whose IP equals the resolved IP.', searchby: 'ip' }],
 
       current: null,
       showNodeInfo: false,
@@ -142,6 +142,19 @@ export class AutoMap extends React.Component {
     });
   }
 
+  renderDescription() {
+    if (!this.state.current) {
+      return;
+    }
+    let descriptionLst = this.state.current.description.split('\n');
+    return descriptionLst.map(item => {
+      return (
+        <p key={item}>{item}</p>
+      );
+    });
+
+  }
+
   componentWillUnmount() {
     this.props.automapResetNodes();
   }
@@ -179,6 +192,7 @@ export class AutoMap extends React.Component {
         </div>
 
         <div className="automaps-panel automap-search">
+          <div className="automap-description">{this.renderDescription()}</div>
           <input type="search" name="q" className="gmap-text automap-q" autoComplete="off"
                 disabled={!this.state.current}
                 value={this.state.q} ref={elem => { this.inputQ = elem; }}

@@ -40,6 +40,7 @@ limitations under the License.
 
 .automaps-panel {
   display: flex;
+  flex-wrap: wrap;
   position: relative;
   background-color: #f8f8f8;
   margin-bottom: 20px;
@@ -116,4 +117,11 @@ limitations under the License.
 }
 .automap-found-nodes li .row-tools button:hover {
   opacity: 1;
+}
+
+.automap-description {
+  flex-basis: 100%;
+  padding: 0px 8px;
+  color: #666;
+  font-size: 0.8rem;
 }
