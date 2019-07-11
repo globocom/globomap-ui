@@ -177,7 +177,7 @@ export class AutoMap extends React.Component {
             </button>
           </div>
           <a href={`#${node._id}`} onClick={e => this.openMap(e, node)}>
-            { node.name }
+            { node.shownName || node.name }
           </a>
         </li>
       )

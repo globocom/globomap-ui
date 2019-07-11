@@ -102,7 +102,7 @@ export default function reducer(state=initialState, action={}) {
       let currentNodes = state.automapNodeList.slice();
 
       currentNodes.map((d) => {
-        d.name = data;
+        d.shownName = data;
         return d;
       });
 
