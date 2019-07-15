@@ -70,6 +70,7 @@ export class AutoMap extends React.Component {
     if (event.key === 'Enter') {
       event.preventDefault();
       this.search();
+      document.activeElement.blur();
     }
   }
 

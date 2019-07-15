@@ -88,6 +88,7 @@ export class SearchHeader extends Component {
     if (event.key === 'Enter') {
       event.preventDefault();
       this.onSendSearchQuery(event);
+      document.activeElement.blur();
     }
   }
 
