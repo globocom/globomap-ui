@@ -72,38 +72,6 @@ router.get('/report', isAuthenticated, (req, res) => {
 
 router.get('/runquery', isAuthenticated, (req, res) => {
   const query = req.query;
-  let target = {
-    _key: "",
-    _id: "",
-    _from: "",
-    _to: "",
-    _rev: "",
-    id: "",
-    name: "80:Default VIP",
-    provider: "napi",
-    timestamp: 1564035134,
-    type: "port",
-    properties: {
-      l4_protocol: "TCP",
-      l7_protocol: "Outros",
-      l7_rule: "Default VIP",
-      port: 80
-    },
-    properties_metadata: {
-      l4_protocol: {
-        description: "L4 Protocol"
-      },
-      l7_protocol: {
-        description: "L7 Protocol"
-      },
-      l7_rule: {
-        description: "L7 Rule"
-      },
-      port: {
-        description: "Port"
-      }
-    }
-  }
 
   if (_.isEmpty(query) || query.q === undefined || query.v === undefined) {
     return res.status(500).json({
@@ -115,27 +83,14 @@ router.get('/runquery', isAuthenticated, (req, res) => {
     .then((data) => {
       let items = query.v.split('/');
       let nodes = data[0].vips;
-      let edges = [];
-
-      nodes.forEach((node, index) => {
-        node['type'] = query.type;
-        let source = {
-          _key: `napi_${index}`,
-          _id: `port/napi_${index}`,
-          _from: query.v,
-          _to: node._id,
-          id: index
-        }
-        let obj = Object.assign({}, target, source);
-        edges.push(obj);
-      });
 
       gmapclient.getNode({collection: items[0], nodeId: items[1]})
         .then((data) => {
-          data['type'] = query.type
+          data['type'] = query.type;
           res.status(200).json([{
             nodes: [data].concat(nodes),
-            edges: edges,
+            type: query.type,
+            rootNode: query.v,
             graph: 'load_balancing'
           }]);
         })

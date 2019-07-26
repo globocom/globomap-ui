@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import _ from 'lodash';
-import { composeEdges, traversalToStage } from '../../utils';
+import { composeEdges, traversalToStage, fakeEdge } from '../../utils';
 import { setStageNodes } from './stage';
 import { setTab } from './tabs';
 
@@ -157,6 +157,28 @@ export default function reducer(state=initialState, action={}) {
 
     case AUTOMAP_TRAVERSAL_REAL_SUCCESS:
       data = action.result.data;
+
+      let edges = [];
+      let nodes = data[0].nodes;
+      let type = data[0].type;
+      let rootNode = data[0].rootNode;
+
+      nodes.forEach((node, index) => {
+        if (node._id !== rootNode) {
+          node['type'] = type;
+          let source = {
+            _key: `napi_${index}`,
+            _id: `port/napi_${index}`,
+            _from: node._id,
+            _to: rootNode,
+            id: index
+          }
+          let obj = Object.assign({}, fakeEdge, source);
+          edges.push(obj);
+        }
+      });
+
+      data[0]['edges'] = edges;
 
       byGraphData = data.map(gData => {
         gData.subnodes = gData.nodes.filter(n => n._id !== action.node._id).map(n => {
