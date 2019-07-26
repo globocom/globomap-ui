@@ -126,7 +126,8 @@ router.get('/runquery', isAuthenticated, (req, res) => {
           _to: node._id,
           id: index
         }
-        edges.push(Object.assign(target, source));
+        let obj = Object.assign({}, target, source);
+        edges.push(obj);
       });
 
       gmapclient.getNode({collection: items[0], nodeId: items[1]})
