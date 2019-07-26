@@ -33,6 +33,10 @@ const AUTOMAP_TRAVERSAL = 'automap_traversal';
 const AUTOMAP_TRAVERSAL_SUCCESS = 'automap_traversal_success';
 const AUTOMAP_TRAVERSAL_FAIL = 'automap_traversal_fail';
 
+const AUTOMAP_TRAVERSAL_REAL = 'automap_traversal_real';
+const AUTOMAP_TRAVERSAL_REAL_SUCCESS = 'automap_traversal_real_success';
+const AUTOMAP_TRAVERSAL_REAL_FAIL = 'automap_traversal_real_fail';
+
 const AUTOMAP_RESET_NODES = 'automap_reset_nodes';
 const AUTOMAP_RESET_SUBNODES = 'automap_reset_subnodes';
 
@@ -121,7 +125,7 @@ export default function reducer(state=initialState, action={}) {
     case AUTOMAP_TRAVERSAL_SUCCESS:
       data = action.result.data;
 
-      const byGraphData = data.map(gData => {
+      let byGraphData = data.map(gData => {
         gData.subnodes = gData.nodes.filter(n => n._id !== action.node._id).map(n => {
           n.edges = composeEdges(n, gData.edges);
           n.edges.graph = gData.graph;
@@ -137,6 +141,39 @@ export default function reducer(state=initialState, action={}) {
       }
 
     case AUTOMAP_TRAVERSAL_FAIL:
+      console.log(action.error);
+      return {
+        ...state,
+        automapTraversalLoading: false,
+        automapSubNodesList: []
+      }
+
+    case AUTOMAP_TRAVERSAL_REAL:
+      console.log('automap traversal search...');
+      return {
+        ...state,
+        automapTraversalLoading: true
+      }
+
+    case AUTOMAP_TRAVERSAL_REAL_SUCCESS:
+      data = action.result.data;
+
+      byGraphData = data.map(gData => {
+        gData.subnodes = gData.nodes.filter(n => n._id !== action.node._id).map(n => {
+          n.edges = composeEdges(n, gData.edges);
+          n.edges.graph = gData.graph;
+          return n;
+        });
+        return gData;
+      });
+
+      return {
+        ...state,
+        automapTraversalLoading: false,
+        automapSubNodesList: byGraphData
+      }
+
+    case AUTOMAP_TRAVERSAL_REAL_FAIL:
       console.log(action.error);
       return {
         ...state,
@@ -222,6 +259,33 @@ export function automapTraversalSearch(opts) {
     promise: (client) => client.post('/api/traversal-search', options),
     graphs: options.graphs,
     node: options.node
+  }
+}
+
+export function automapTraversalQuerySearch(opts) {
+  const options = _.merge({
+    node: null,
+    graphs: [],
+    type: 'vip',
+    q: '',
+    v: ''
+  }, opts);
+
+  return {
+    types: [AUTOMAP_TRAVERSAL_REAL, AUTOMAP_TRAVERSAL_REAL_SUCCESS, AUTOMAP_TRAVERSAL_REAL_FAIL],
+    promise: (client) => client.get('/tools/runquery', options),
+    graphs: options.graphs,
+    node: options.node
+  }
+}
+
+export function automapTraversalQuery(opts) {
+  return (dispatch, getState) => {
+    return dispatch(automapTraversalQuerySearch(opts)).then(() => {
+      const newMap = traversalToStage(getState().automap.automapSubNodesList, 'type');
+      dispatch(setStageNodes(newMap));
+      dispatch(setTab('map'));
+    });
   }
 }
 

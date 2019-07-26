@@ -22,6 +22,7 @@ import {
   automapFindNodes,
   dnsLookupAutomapFindNodesAndRename,
   automapTraversal,
+  automapTraversalQuery,
   automapResetNodes } from '../../redux/modules/automap';
 import {
   clearCurrentNode,
@@ -37,8 +38,9 @@ export class AutoMap extends React.Component {
 
     this.state = {
       q: '',
-      kinds: [{ name: 'VIP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Retrieves maps that show the hosts related to a VIP.\nType at least part of the VIP\'s name.', searchby: 'name' },
-              { name: 'VIP by resolving DNS', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Retrieves maps that show the hosts related to a VIP.\nType a DNS to be resolved. We will return the VIPs whose IP equals the resolved IP.', searchby: 'ip' }],
+      kinds: [{ name: 'VIP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Retrieves maps that show the hosts related to a VIP.\nType at least part of the VIP\'s name.', searchby: 'name', type: 'search' },
+              { name: 'VIP by resolving DNS', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Retrieves maps that show the hosts related to a VIP.\nType a DNS to be resolved. We will return the VIPs whose IP equals the resolved IP.', searchby: 'ip', type: 'search' },
+              { name: 'VIP by Reals', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Retrieves maps that show the hosts related to a VIP.\nType a DNS to be resolved. We will return the VIPs whose IP equals the resolved IP.', searchby: 'name', type: 'query' }],
 
       current: null,
       showNodeInfo: false,
@@ -125,12 +127,21 @@ export class AutoMap extends React.Component {
     this.props.clearCurrentNode();
     this.props.resetSubNodes();
 
-    this.props.automapTraversal({
-      node: node,
-      graphs: [kind.graph],
-      depth: kind.depth,
-      direction: kind.direction
-    });
+    if (kind.type === 'query') {
+        this.props.automapTraversalQuery({
+          node: node,
+          graphs: [kind.graph],
+          q: 'query_vip_vip_real',
+          v: node._id
+        });
+    } else {
+        this.props.automapTraversal({
+          node: node,
+          graphs: [kind.graph],
+          depth: kind.depth,
+          direction: kind.direction
+        });
+    }
   }
 
   renderKinds() {
@@ -240,6 +251,7 @@ export default connect(
     automapFindNodes,
     dnsLookupAutomapFindNodesAndRename,
     automapTraversal,
+    automapTraversalQuery,
     automapResetNodes,
     setStageNodes,
     clearCurrentNode,
