@@ -210,28 +210,10 @@ export const fakeEdge = {
   _to: "",
   _rev: "",
   id: "",
-  name: "80:Default VIP",
-  provider: "napi",
+  name: "",
+  provider: "",
   timestamp: 1564035134,
   type: "port",
-  properties: {
-    l4_protocol: "TCP",
-    l7_protocol: "Outros",
-    l7_rule: "Default VIP",
-    port: 80
-  },
-  properties_metadata: {
-    l4_protocol: {
-      description: "L4 Protocol"
-    },
-    l7_protocol: {
-      description: "L7 Protocol"
-    },
-    l7_rule: {
-      description: "L7 Rule"
-    },
-    port: {
-      description: "Port"
-    }
-  }
+  properties: {},
+  properties_metadata: {}
 }
