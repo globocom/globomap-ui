@@ -97,6 +97,9 @@ export class Reports extends React.Component {
       if (query.collection === '') {
         return null;
       }
+      if (query.name.includes('_custom_maps')) {
+        return null;
+      }
       return (
         <button key={query._id} className="query-btn"
                 onClick={() => this.setQuery(query)}>
