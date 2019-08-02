@@ -131,7 +131,7 @@ export class AutoMap extends React.Component {
         this.props.automapTraversalQuery({
           node: node,
           graphs: [kind.graph],
-          q: 'query_vip_vip_real_custom_maps',
+          q: 'query_vip_vip_custom_maps',
           v: node._id
         });
     } else {
