@@ -40,7 +40,8 @@ export class AutoMap extends React.Component {
       q: '',
       kinds: [{ name: 'VIP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite pelo menos parte do nome do VIP.', searchby: 'name', type: 'search' },
               { name: 'VIP resolvendo o DNS', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite um DNS para ser resolvido. Retornaremos os VIPs cujo IP é igual ao IP resolvido.', searchby: 'ip', type: 'search' },
-              { name: 'Clientes de uma APP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite pelo menos parte do nome do VIP. Retornaremos apenas os VIPs relacionados a APP.', searchby: 'name', type: 'query' }],
+              { name: 'Clientes de uma APP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite pelo menos parte do nome do VIP. Retornaremos apenas os VIPs relacionados a APP.', searchby: 'name', type: 'query', 'query': 'query_vip_access_vip_custom_maps' },
+              { name: 'Dependências de uma APP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite pelo menos parte do nome do VIP. Retornaremos apenas os VIPs relacionados a APP.', searchby: 'name', type: 'query', 'query': 'query_vip_vip_custom_maps' }],
 
       current: null,
       showNodeInfo: false,
@@ -131,8 +132,10 @@ export class AutoMap extends React.Component {
         this.props.automapTraversalQuery({
           node: node,
           graphs: [kind.graph],
-          q: 'query_vip_vip_custom_maps',
-          v: node._id
+          q: kind.query,
+          v: node._id,
+          g: kind.graph,
+          type: kind.collection
         });
     } else {
         this.props.automapTraversal({

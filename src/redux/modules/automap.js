@@ -288,9 +288,10 @@ export function automapTraversalQuerySearch(opts) {
   const options = _.merge({
     node: null,
     graphs: [],
-    type: 'vip',
+    type: '',
     q: '',
-    v: ''
+    v: '',
+    g: ''
   }, opts);
 
   return {

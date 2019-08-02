@@ -73,7 +73,7 @@ router.get('/report', isAuthenticated, (req, res) => {
 router.get('/runquery', isAuthenticated, (req, res) => {
   const query = req.query;
 
-  if (_.isEmpty(query) || query.q === undefined || query.v === undefined) {
+  if (_.isEmpty(query) || query.q === undefined || query.v === undefined || query.g === undefined) {
     return res.status(500).json({
       error: 'Empty query / missing parameters'
     });
@@ -82,7 +82,7 @@ router.get('/runquery', isAuthenticated, (req, res) => {
   gmapclient.runQuery({ kind: query.q, value: query.v })
     .then((data) => {
       let items = query.v.split('/');
-      let nodes = data[0].vips;
+      let nodes = data[0];
 
       gmapclient.getNode({collection: items[0], nodeId: items[1]})
         .then((data) => {
@@ -91,7 +91,7 @@ router.get('/runquery', isAuthenticated, (req, res) => {
             nodes: [data].concat(nodes),
             type: query.type,
             rootNode: query.v,
-            graph: 'load_balancing'
+            graph: query.g
           }]);
         })
         .catch((error) => {
