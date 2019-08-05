@@ -89,7 +89,8 @@ limitations under the License.
 }
 
 .reports-list.active {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .reports-queries .query-btn {
@@ -111,6 +112,7 @@ limitations under the License.
 
 .reports-search {
   position: relative;
+  width: 100%;
 }
 
 .reports-search .reports-q {
@@ -151,6 +153,7 @@ limitations under the License.
   padding: 10px;
   background-color: white;
   min-height: 280px;
+  width: 100%;
 }
 
 .reports-item-list li {
@@ -165,7 +168,7 @@ limitations under the License.
 .reports-item-list .query {
   position: relative;
   text-decoration: none;
-  display: block;
+  display: inline-block;
   text-align: left;
   padding: 10px 15px;
   color: #222;
@@ -174,4 +177,38 @@ limitations under the License.
 
 .reports-item-list .query:hover {
   color: #2eb78e;
+}
+
+.reports-item-list li a {
+  text-decoration: none;
+  display: inline-block;
+  text-align: left;
+  padding: 10px 15px;
+  color: #222;
+  font-size: 1em;
+}
+
+.reports-item-list li:hover a,
+.reports-item-list li:hover button {
+  color: #2eb78e;
+}
+
+.reports-item-list li .row-tools {
+  display: inline-block;
+}
+
+.reports-item-list li .row-tools button {
+  padding: 8px 8px;
+  font-size: 1.0em;
+  background: none;
+  margin-left: 0 10px;
+  border: none;
+  opacity: 0.05;
+  width: 48px;
+}
+.reports-item-list li:hover .row-tools button {
+  opacity: 0.5;
+}
+.reports-item-list li .row-tools button:hover {
+  opacity: 1;
 }

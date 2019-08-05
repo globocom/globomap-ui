@@ -20,8 +20,9 @@ import { connect } from 'react-redux';
 import {
   findReportNodes,
   clearReportNodes } from '../../redux/modules/reports';
-import { sortByName } from '../../utils';
+import { sortByName, customMapsSuffix } from '../../utils';
 import { Loading } from '../';
+import { NodeInfo } from '../';
 import './Reports.css';
 
 export class Reports extends React.Component {
@@ -34,10 +35,25 @@ export class Reports extends React.Component {
       q: '',
       collection: '',
       query: '',
-      paneIndex: 1
+      paneIndex: 1,
+      showNodeInfo: false,
+      nodeInfoNode: null
     }
 
     this.handleQChange = this.handleQChange.bind(this);
+    this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
+  }
+
+  onToggleNodeInfo(event, node) {
+    event.stopPropagation();
+    this.setState({
+      showNodeInfo: true,
+      nodeInfoNode: node
+    });
+  }
+
+  onCloseNodeInfo() {
+    this.setState({ showNodeInfo: false });
   }
 
   handleQChange(event) {
@@ -97,7 +113,7 @@ export class Reports extends React.Component {
       if (query.collection === '') {
         return null;
       }
-      if (query.name.includes('_custom_maps')) {
+      if (query.name.includes(customMapsSuffix)) {
         return null;
       }
       return (
@@ -111,6 +127,15 @@ export class Reports extends React.Component {
     const reportNodes = this.props.reportNodes.map((node, i) => {
       return (
         <li key={`${i}-${node._id}`}>
+
+          <div className="row-tools">
+            <button onClick={e => this.onToggleNodeInfo(e, node)}
+                    className={this.state.showNodeInfo ? 'active' : ''}
+                    data-tippy-content="Show Info">
+              <i className="icon fa fa-info" />
+            </button>
+          </div>
+
           <a className="query" target="_blank" rel="noopener noreferrer"
             href={`/tools/report?q=${this.state.query._key}&v=${node._id}`}>
             { node.name }
@@ -152,6 +177,12 @@ export class Reports extends React.Component {
             </ul>
           </div>
         </div>
+
+        {this.state.showNodeInfo &&
+          <NodeInfo node={this.state.nodeInfoNode}
+                    onClose={this.onCloseNodeInfo}
+                    position="right" />}
+
         <Loading iconSize="big" isLoading={this.props.loading
                                            || this.props.queriesLoading} />
       </div>

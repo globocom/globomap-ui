@@ -17,6 +17,7 @@ limitations under the License.
 import _ from "lodash";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { customMapsSuffix } from '../../utils';
 import './Query.css';
 
 export class Query extends Component {
@@ -29,6 +30,9 @@ export class Query extends Component {
     });
 
     let items = queries.map((q) => {
+      if (q.name.includes(customMapsSuffix)) {
+        return null;
+      }
       return (
         <li key={q.name}>
           <a className="query" target="_blank" rel="noopener noreferrer"

@@ -217,3 +217,5 @@ export const fakeEdge = {
   properties: {},
   properties_metadata: {}
 }
+
+export const customMapsSuffix = '_custom_maps';
