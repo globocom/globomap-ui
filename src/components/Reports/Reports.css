@@ -181,7 +181,7 @@ limitations under the License.
 
 .reports-item-list li a {
   text-decoration: none;
-  display: inline-block;
+  display: inline;
   text-align: left;
   padding: 10px 15px;
   color: #222;
@@ -197,7 +197,8 @@ limitations under the License.
   display: inline-block;
 }
 
-.reports-item-list li .row-tools button {
+.reports-item-list li .row-tools button,
+.reports-item-list li .row-tools a {
   padding: 8px 8px;
   font-size: 1.0em;
   background: none;
@@ -206,9 +207,11 @@ limitations under the License.
   opacity: 0.05;
   width: 48px;
 }
-.reports-item-list li:hover .row-tools button {
+.reports-item-list li:hover .row-tools button,
+.reports-item-list li:hover .row-tools a {
   opacity: 0.5;
 }
-.reports-item-list li .row-tools button:hover {
+.reports-item-list li .row-tools button:hover,
+.reports-item-list li .row-tools a:hover {
   opacity: 1;
 }

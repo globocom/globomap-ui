@@ -20,6 +20,11 @@ import { connect } from 'react-redux';
 import {
   findReportNodes,
   clearReportNodes } from '../../redux/modules/reports';
+import { automapTraversalQuery } from '../../redux/modules/automap';
+import {
+  clearCurrentNode,
+  resetSubNodes } from '../../redux/modules/nodes';
+import { setTab } from '../../redux/modules/tabs';
 import { sortByName, customMapsSuffix } from '../../utils';
 import { Loading } from '../';
 import { NodeInfo } from '../';
@@ -102,6 +107,23 @@ export class Reports extends React.Component {
     this.props.findReportNodes(params);
   }
 
+  openMap(event, node) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const query = this.props.queries.filter(query => (query._key.includes(customMapsSuffix)
+        && query._key.includes(this.state.query._key)))[0];
+
+    this.props.clearCurrentNode();
+    this.props.resetSubNodes();
+
+    this.props.automapTraversalQuery({
+      q: query._key,
+      v: node._id,
+      type: query.collection
+    });
+  }
+
   componentWillUnmount() {
     this.props.clearReportNodes();
   }
@@ -127,15 +149,23 @@ export class Reports extends React.Component {
     const reportNodes = this.props.reportNodes.map((node, i) => {
       return (
         <li key={`${i}-${node._id}`}>
-
           <div className="row-tools">
             <button onClick={e => this.onToggleNodeInfo(e, node)}
                     className={this.state.showNodeInfo ? 'active' : ''}
                     data-tippy-content="Show Info">
               <i className="icon fa fa-info" />
             </button>
+            <a target="_blank" rel="noopener noreferrer"
+              href={`/tools/report?q=${this.state.query._key}&v=${node._id}`}>
+              <i className="icon fa fa-print" />
+            </a>
+            {this.props.queries.filter(query => (query._key.includes(customMapsSuffix)
+              && query._key.includes(this.state.query._key))).length > 0 &&
+              <button onClick={e => this.openMap(e, node)}>
+                <i className="icon fa fa-sitemap" />
+              </button>
+            }
           </div>
-
           <a className="query" target="_blank" rel="noopener noreferrer"
             href={`/tools/report?q=${this.state.query._key}&v=${node._id}`}>
             { node.name }
@@ -204,6 +234,10 @@ export default connect(
   mapStateToProps,
   {
     findReportNodes,
-    clearReportNodes
+    clearReportNodes,
+    automapTraversalQuery,
+    clearCurrentNode,
+    resetSubNodes,
+    setTab
   }
 )(Reports);

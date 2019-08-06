@@ -73,7 +73,7 @@ router.get('/report', isAuthenticated, (req, res) => {
 router.get('/runquery', isAuthenticated, (req, res) => {
   const query = req.query;
 
-  if (_.isEmpty(query) || query.q === undefined || query.v === undefined || query.g === undefined) {
+  if (_.isEmpty(query) || query.q === undefined || query.v === undefined) {
     return res.status(500).json({
       error: 'Empty query / missing parameters'
     });
@@ -90,8 +90,7 @@ router.get('/runquery', isAuthenticated, (req, res) => {
           res.status(200).json([{
             nodes: [data].concat(nodes),
             type: query.type,
-            rootNode: query.v,
-            graph: query.g
+            rootNode: query.v
           }]);
         })
         .catch((error) => {

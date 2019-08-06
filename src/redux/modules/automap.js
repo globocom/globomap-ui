@@ -181,7 +181,7 @@ export default function reducer(state=initialState, action={}) {
       data[0]['edges'] = edges;
 
       byGraphData = data.map(gData => {
-        gData.subnodes = gData.nodes.filter(n => n._id !== action.node._id).map(n => {
+        gData.subnodes = gData.nodes.filter(n => n._id !== action.node).map(n => {
           n.edges = composeEdges(n, gData.edges);
           n.edges.graph = gData.graph;
           return n;
@@ -286,19 +286,15 @@ export function automapTraversalSearch(opts) {
 
 export function automapTraversalQuerySearch(opts) {
   const options = _.merge({
-    node: null,
-    graphs: [],
     type: '',
     q: '',
-    v: '',
-    g: ''
+    v: ''
   }, opts);
 
   return {
     types: [AUTOMAP_TRAVERSAL_REAL, AUTOMAP_TRAVERSAL_REAL_SUCCESS, AUTOMAP_TRAVERSAL_REAL_FAIL],
     promise: (client) => client.get('/tools/runquery', options),
-    graphs: options.graphs,
-    node: options.node
+    node: options.v
   }
 }
 

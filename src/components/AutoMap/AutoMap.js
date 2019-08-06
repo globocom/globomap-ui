@@ -130,11 +130,8 @@ export class AutoMap extends React.Component {
 
     if (kind.type === 'query') {
         this.props.automapTraversalQuery({
-          node: node,
-          graphs: [kind.graph],
           q: kind.query,
           v: node._id,
-          g: kind.graph,
           type: kind.collection
         });
     } else {
