@@ -24,12 +24,14 @@ limitations under the License.
   position: fixed;
   display: flex;
   flex-direction: column;
-  top: 80px;
-  right: 0;
-  bottom: 0;
+  top: 50px;
+  right: 10px;
+  bottom: 10px;
   width: 280px;
   border-left: 1px solid #eee;
   background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
 }
 
 .subnodes .subnodes-graph-items {

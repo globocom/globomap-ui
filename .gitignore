@@ -28,4 +28,5 @@ server/ca-certificates.crt
 .vscode/
 
 docker-compose-temp.yml
-
+*.sublime-workspace
+*.sublime-project

@@ -37,24 +37,19 @@ export class SidebarButtons extends Component {
   render() {
     return (
       <div className="sidebar-buttons">
-        <Tab tabKey="search">
-          <button onClick={() => this.handleSearch()}>
-            <i className="fa fa-search"></i>
-          </button>
-        </Tab>
-        <Tab tabKey="map">
-          <button>
-            <i className="fa fa-sitemap"></i>
-          </button>
-        </Tab>
         <Tab tabKey="reports">
           <button>
-            <i className="fa fa-print"></i>
+            <i className="icon fas fa-print"></i> Reports
           </button>
         </Tab>
         <Tab tabKey="automap">
           <button>
-            <i className="fas fa-project-diagram"></i>
+            <i className="icon fas fa-project-diagram"></i> Custom Maps
+          </button>
+        </Tab>
+        <Tab tabKey="search">
+          <button onClick={() => this.handleSearch()}>
+            <i className="icon fas fa-search"></i> Advanced Search
           </button>
         </Tab>
       </div>

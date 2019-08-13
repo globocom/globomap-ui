@@ -21,18 +21,6 @@ limitations under the License.
   box-sizing: border-box;
 }
 
-.reports {
-  position: fixed;
-  top: 0;
-  left: 100px;
-  bottom: 0;
-  right: 0;
-  padding: 50px 7% 0;
-  z-index: 8;
-  background: white;
-  overflow-y: auto;
-}
-
 .reports-title {
   font-size: 2em;
   font-weight: 300;

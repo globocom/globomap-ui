@@ -26,7 +26,7 @@ export class Search extends Component {
   render() {
     return (
       <div className={`search-container ${this.props.className}`}>
-        <section className="search">
+        <section className="search base-content">
           <SearchHeader />
         </section>
         <SearchContent />

@@ -1,27 +1,36 @@
 .sidebar-buttons {
-  padding: 0 10px;
+  /*padding: 0 10px;*/
 }
 
 .sidebar-buttons button {
   position: relative;
   display: block;
   width: 100%;
-  text-align: center;
+  text-align: left;
   background: transparent;
   color: white;
   border: 0;
   cursor: pointer;
-  font-size: 1.4em;
-  height: 90px;
+  font-size: 1em;
+  font-weight: lighter;
+  height: 50px;
+  padding: 10px 20px;
   border-top: 1px solid rgba(99, 99, 99, 0.2);
   outline: none;
+}
+
+.sidebar-buttons button .icon {
+  display: inline-block;
+  width: 20px;
+  margin-right: 15px;
 }
 
 .sidebar-buttons button:last-child {
   border-bottom: 1px solid rgba(99, 99, 99, 0.2);
 }
 
-.sidebar-buttons button:hover {
+.sidebar-buttons button:hover,
+.sidebar-buttons button.active {
   color: #2eb78e;
 }
 
@@ -29,11 +38,10 @@
 .sidebar-buttons button.active:before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 0;
+  top: 0;
+  right: 0;
   background-color: #2eb78e;
-  height: 40px;
-  margin-top: -20px;
-  margin-left: -7px;
-  width: 4px;
+  height: 49px;
+  width: 5px;
+  border-radius: 50% 0 0 50%;
 }

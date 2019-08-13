@@ -23,15 +23,15 @@ limitations under the License.
 .stage {
   position: fixed;
   top: 0;
-  left: 100px;
+  left: 256px;
   bottom: 0;
   right: 0;
   flex-direction: column;
   overflow: auto;
   z-index: 5;
-  padding: 80px 280px 0 0;
+  padding: 50px 280px 0 0;
 
-  background-color:#fafafa;
+  background-color:#eceef2;
   background-image: radial-gradient(#ddd 3%, transparent 0),
                     radial-gradient(#ddd 3%, transparent 0);
   background-size: 50px 50px;
@@ -92,26 +92,29 @@ limitations under the License.
 }
 
 .stage .stage-tools {
-  position: fixed;
+  position: absolute;
   z-index: 18;
   top: 0;
-  left: 100px;
+  left: 0;
   right: 0;
   display: flex;
-  padding: 10px 20px;
-  height: 80px;
+  padding: 10px 10px 0;
+  height: 50px;
   justify-content: center;
-  background-color: white;
-  border-bottom: 1px solid #eee;
+  /*background-color: white;*/
+  /*border-bottom: 1px solid #eee;*/
 }
 
 .stage-tools .tool-btn {
-  background: transparent;
+  background: white;
   border: 0;
   cursor: pointer;
   font-size: 22px;
   color: #aaa;
   margin: 0 5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 .stage-tools .tool-btn:hover {

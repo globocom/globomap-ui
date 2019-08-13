@@ -3,17 +3,17 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 100px;
-  min-width: 90px;
+  width: 256px;
+  min-width: 256px;
   min-height: 640px;
   background-color: #1e2529;
 }
 
 .sidebar .sidebar-logo {
   text-align: center;
-  padding: 45px 0;
+  padding: 10px 0 30px;
 }
 
 .sidebar .sidebar-logo img {
-  width: 85%;
+  width: 45%;
 }
