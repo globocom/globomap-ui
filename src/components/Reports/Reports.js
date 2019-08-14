@@ -139,7 +139,7 @@ export class Reports extends React.Component {
         return null;
       }
       return (
-        <button key={query._id} className="query-btn"
+        <button key={query._id} className="gmap-btn query-btn"
                 onClick={() => this.setQuery(query)}>
           {query.description}
         </button>
@@ -163,8 +163,7 @@ export class Reports extends React.Component {
               && query._key.includes(this.state.query._key))).length > 0 &&
               <button onClick={e => this.openMap(e, node)}>
                 <i className="icon fa fa-sitemap" />
-              </button>
-            }
+              </button>}
           </div>
           <a className="query" target="_blank" rel="noopener noreferrer"
             href={`/tools/report?q=${this.state.query._key}&v=${node._id}`}>
@@ -177,7 +176,9 @@ export class Reports extends React.Component {
     const idx = this.state.paneIndex;
     return (
       <div className={`reports base-content ${this.props.className}`}>
-        <h3 className="reports-title">Reports</h3>
+        <div className="base-content-header">
+          <h2 className="base-content-title">Reports</h2>
+        </div>
 
         <div className="reports-tabs">
           <button className={idx === 1 ? 'active' : ''} data-step="1"
@@ -210,8 +211,7 @@ export class Reports extends React.Component {
 
         {this.state.showNodeInfo &&
           <NodeInfo node={this.state.nodeInfoNode}
-                    onClose={this.onCloseNodeInfo}
-                    position="right" />}
+                    onClose={this.onCloseNodeInfo} />}
 
         <Loading iconSize="big" isLoading={this.props.loading
                                            || this.props.queriesLoading} />

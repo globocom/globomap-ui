@@ -114,7 +114,7 @@ export class SearchContent extends Component {
     }
 
     return (
-      <div className={`search-content${allNodes.length > 0 ? ' active' : ''}`}>
+      <div className={`search-content base-content${allNodes.length > 0 ? ' active' : ''}`}>
         <button className="search-content-btn-close"
                 onClick={e => this.onCloseSearchContent(e)}>
           <i className="fa fa-times"></i>
@@ -137,8 +137,7 @@ export class SearchContent extends Component {
           </table>}
         {this.state.showNodeInfo &&
           <NodeInfo node={this.state.nodeInfoNode}
-                    onClose={this.onCloseNodeInfo}
-                    position="right" />}
+                    onClose={this.onCloseNodeInfo} />}
       </div>
     );
   }

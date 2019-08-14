@@ -8,25 +8,20 @@
   flex-flow: column;
 }
 
-.search-header button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin: 0 10px 10px 0;
-  outline: none;
+.search-header-base {
+  height: 40px;
+  margin-bottom: 30px;
 }
 
-.search-header button:hover {
-  opacity: 0.75;
+.search-header-base .btn-search {
+  float: right;
 }
 
-.search-top {
-  display: flex;
-}
-
-.search-box .btn-search {
-  font-size: 2em;
-  height: 42px;
+.search-header-type {
+  position: relative;
+  float: left;
+  height: 40px;
+  margin-right: 20px;
 }
 
 .toggle-search-type {
@@ -43,7 +38,7 @@
   font-weight: 300;
   line-height: normal;
   color: #2eb78e;
-  padding: 50px 10px 20px;
+  padding: 0 10px 20px;
   border-bottom: 1px solid #ddd;
   margin-bottom: 40px;
   outline: none;
@@ -62,15 +57,7 @@
 }
 
 .search-for-properties {
-  margin-bottom: 20px;
-}
-
-.search-for-properties .btn-add-prop {
-  font-size: 0.8em;
-}
-
-.search-for-properties .btn-add-prop .icon {
-  color: #2eb78e;
+  margin-bottom: 40px;
 }
 
 .property-items {
@@ -91,19 +78,25 @@
   color: #2eb78e;
   outline: none;
   margin: 0 20px;
-  font-size: 2em;
+  font-size: 1.8rem;
 }
 
 .prop-item .btn-remove-prop {
-  font-size: 2em;
+  font-size: 1.8rem;
   color: #ccc;
   margin-left: 20px;
+  border: none;
+  background-color: none;
+}
+
+.prop-item .btn-remove-prop:disabled {
+  visibility: hidden;
 }
 
 .prop-item .prop-query {
-  font-size: 2em;
-  width: 30%;
-  padding: 30px 10px 10px;
+  font-size: 1.8rem;
+  width: 40%;
+  padding: 10px;
   margin-bottom: 20px;
 }
 
@@ -115,9 +108,9 @@
   color: #ccc;
   width: 100%;
   border: 1px solid #ccc;
-  border-radius: 21px;
-  padding: 12px 20px;
-  height: 42px;
+  border-radius: 20px;
+  padding: 10px 20px;
+  height: 40px;
   cursor: pointer;
   background-color: white;
   z-index: 9;
@@ -125,13 +118,16 @@
 
 .search-types {
   height: 155px;
-  padding: 56px 20px 0 38px;
+  padding: 50px 20px 0 36px;
   z-index: 8;
 }
 
 .search-types button {
   text-align: left;
   width: inherit;
+  border: none;
+  background-color: none;
+  height: 30px
 }
 
 .search-types button:disabled {
@@ -144,10 +140,6 @@
 
 .selected-search-type .search-type {
   color: #2eb78e;
-}
-
-.btn-search-options {
-  float: right;
 }
 
 .search-options {

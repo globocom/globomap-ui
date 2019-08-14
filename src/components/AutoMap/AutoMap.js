@@ -196,8 +196,10 @@ export class AutoMap extends React.Component {
     });
 
     return (
-      <div className={`automaps ${this.props.className}`} >
-        <h3 className="automaps-title">Custom Maps</h3>
+      <div className={`automaps base-content ${this.props.className}`}>
+        <div className="base-content-header">
+          <h2 className="base-content-title">Custom Maps</h2>
+        </div>
 
         <div className="automaps-panel automap-kind">
           {this.renderKinds()}
@@ -227,8 +229,7 @@ export class AutoMap extends React.Component {
         </div>
         {this.state.showNodeInfo &&
           <NodeInfo node={this.state.nodeInfoNode}
-                    onClose={this.onCloseNodeInfo}
-                    position="right" />}
+                    onClose={this.onCloseNodeInfo} />}
       </div>
     );
   }

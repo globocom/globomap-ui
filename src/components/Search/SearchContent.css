@@ -24,22 +24,14 @@ limitations under the License.
 }
 
 .search-content {
-  position: fixed;
-  left: 256px;
-  bottom: 0;
-  right: 0;
-  padding: 20px 7% 0;
-  background-color: #fff;
-  overflow-y: auto;
-  top: 0;
-
-  transform: translateY(250px);
+  top: 200px;
   z-index: 7;
   transition: all 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  background: white;
 }
 
 .search-content.active {
-  transform: translateY(0);
+  top: 0;
   z-index: 9;
 }
 

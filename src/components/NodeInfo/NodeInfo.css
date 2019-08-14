@@ -1,9 +1,16 @@
 .node-info-box {
   box-sizing: border-box;
-  max-width: 50%;
 }
 
 .node-info-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 64vw;
+  height: 80vh;
+  margin-left: -32vw;
+  margin-top: -40vh;
+
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -12,6 +19,17 @@
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   z-index: 99;
+}
+
+.node-info-box-layer {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 98;
 }
 
 .node-info-box.left {

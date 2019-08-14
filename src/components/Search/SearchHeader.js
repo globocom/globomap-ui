@@ -30,7 +30,7 @@ export class SearchHeader extends Component {
     this.state = {
       checkedCollections: [],
       query: '',
-      showOptions: false,
+      showOptions: true,
       showSearchTypes: false,
       searchFor: "name",
       queryProps: [{ 'name': '', 'value': '', 'op': 'LIKE' }],
@@ -156,6 +156,11 @@ export class SearchHeader extends Component {
             onChange={e => this.handlePropChange(e, i, 'value')}
             onKeyPress={e => this.handleKeyPress(e)} />
 
+          {i === 0 &&
+            <button className="btn-remove-prop" disabled={true}>
+              <i className="fas fa-times"></i>
+            </button>}
+
           {i > 0 &&
             <button className="btn-remove-prop" onClick={e => this.removeProp(e, i)}>
               <i className="fas fa-times"></i>
@@ -166,33 +171,7 @@ export class SearchHeader extends Component {
 
     return (
       <header className={`search-header${this.state.showOptions ? ' with-options' : ''}`}>
-
         <div className="search-box">
-          <div className="search-top">
-            <button className="btn btn-search" onClick={e => this.onSendSearchQuery(e)}
-              disabled={this.props.findLoading}>
-                <i className="fa fa-search"></i> Search
-            </button>
-
-            <div className="toggle-search-type">
-              <div className="selected-search-type"
-                  onClick={() => this.setState({ showSearchTypes: !this.state.showSearchTypes })}>
-                for <span className="search-type">{this.state.searchFor}</span> <i className="arrow fas fa-chevron-down"></i>
-              </div>
-              {this.state.showSearchTypes &&
-                <div className="search-types">
-                  <button onClick={() => this.setState({ searchFor: 'all', showSearchTypes: false })}
-                    disabled={this.state.searchFor === 'all'}>all</button>
-
-                  <button onClick={() => this.setState({ searchFor: 'name', showSearchTypes: false })}
-                    disabled={this.state.searchFor === 'name'}>name</button>
-
-                  <button onClick={() => this.setState({ searchFor: 'properties', showSearchTypes: false })}
-                    disabled={this.state.searchFor === 'properties'}>properties</button>
-                </div>}
-            </div>
-          </div>
-
           {this.state.searchFor === 'all' &&
             <div className="search-for-all">
               <input className="search-query" type="search" name="query"
@@ -216,20 +195,54 @@ export class SearchHeader extends Component {
               <div className="property-items" ref={(el) => { this.propItems = el; }}>
                 {propItems}
               </div>
-              <button className="btn-add-prop" onClick={e => this.addProp(e)}>
-                <i className="icon fas fa-plus"></i> Add another search
+              <button className="gmap-btn sm-size btn-add-prop" onClick={e => this.addProp(e)}>
+                <i className="icon fas fa-plus"></i> Add another
               </button>
             </div>}
 
-          <button className="btn btn-search-options" onClick={(e) => this.onToggleSearchOptions(e)}>
-            <i className="fa fa-sliders-h"></i> Toggle filters
-          </button>
+          <div className="search-header-base">
+
+            <div className="search-header-type">
+              <div className="toggle-search-type">
+                <div className="selected-search-type"
+                    onClick={() => this.setState({ showSearchTypes: !this.state.showSearchTypes })}>
+                  by <span className="search-type">{this.state.searchFor}</span> <i className="arrow fas fa-chevron-down"></i>
+                </div>
+                {this.state.showSearchTypes &&
+                  <div className="search-types">
+                    <button onClick={() => this.setState({ searchFor: 'all', showSearchTypes: false })}
+                      disabled={this.state.searchFor === 'all'}>all</button>
+
+                    <button onClick={() => this.setState({ searchFor: 'name', showSearchTypes: false })}
+                      disabled={this.state.searchFor === 'name'}>name</button>
+
+                    <button onClick={() => this.setState({ searchFor: 'properties', showSearchTypes: false })}
+                      disabled={this.state.searchFor === 'properties'}>properties</button>
+                  </div>}
+              </div>
+            </div>
+
+            <button className="gmap-btn btn-search-options" onClick={(e) => this.onToggleSearchOptions(e)}
+              data-tippy-content="Show/hide filters">
+              <i className="fa fa-sliders-h"></i> Toggle filters
+            </button>
+
+            <button className="gmap-btn btn-search" onClick={e => this.onSendSearchQuery(e)}
+              data-tippy-content="Run Search" disabled={this.props.findLoading}>
+                <i className="fa fa-search"></i> Search
+            </button>
+          </div>
+
         </div>
 
         {this.state.showOptions &&
           <div className="search-options">
             <div className="collection-items">
-              {collectionItems}
+              {this.props.collectionsLoading
+                ? <div className="content-loading">
+                    <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                  </div>
+                : collectionItems}
             </div>
           </div>}
       </header>
@@ -244,6 +257,7 @@ function mapStateToProps(state) {
     collections: state.app.collections,
     collectionsByGraphs: state.app.collectionsByGraphs,
     selectedCollections: state.app.selectedCollections,
+    collectionsLoading: state.app.collectionsLoading,
     findLoading: state.nodes.findLoading
   };
 }

@@ -198,8 +198,7 @@ export class Stage extends Component {
 
         {this.state.showNodeInfo &&
           <NodeInfo node={this.state.nodeInfoNode}
-                    onClose={this.onCloseNodeInfo}
-                    position="left" />}
+                    onClose={this.onCloseNodeInfo} />}
 
         {!this.props.full &&
           <SubNodes />}

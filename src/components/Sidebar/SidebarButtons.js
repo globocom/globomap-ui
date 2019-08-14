@@ -37,14 +37,19 @@ export class SidebarButtons extends Component {
   render() {
     return (
       <div className="sidebar-buttons">
-        <Tab tabKey="reports">
+        <Tab tabKey="home">
           <button>
-            <i className="icon fas fa-print"></i> Reports
+            <i className="icon fas fa-home"></i> Home
           </button>
         </Tab>
         <Tab tabKey="automap">
           <button>
             <i className="icon fas fa-project-diagram"></i> Custom Maps
+          </button>
+        </Tab>
+        <Tab tabKey="reports">
+          <button>
+            <i className="icon fas fa-print"></i> Reports
           </button>
         </Tab>
         <Tab tabKey="search">

@@ -95,23 +95,25 @@ export class NodeInfo extends React.Component {
       nodeType = this.props.namedCollections[node.type].alias;
     }
 
-    const position = this.props.position ? this.props.position : 'right';
     return (
-      <div className={`node-info-box ${position}`}>
-        <div className="title">
-          <span className="type">{nodeType}</span>
-          <span className="name">{node.name}</span>
-          <button className="close-btn" onClick={e => this.onClose(e)}>
-            <i className="fa fa-times"></i>
-          </button>
+      <React.Fragment>
+        <div className="node-info-box-layer"></div>
+        <div className="node-info-box">
+          <div className="title">
+            <span className="type">{nodeType}</span>
+            <span className="name">{node.name}</span>
+            <button className="close-btn" onClick={e => this.onClose(e)}>
+              <i className="fa fa-times"></i>
+            </button>
+          </div>
+          <ul className="tabs">
+            {tabsButtons}
+          </ul>
+          <div className="tabs-content">
+            {tabsContent}
+          </div>
         </div>
-        <ul className="tabs">
-          {tabsButtons}
-        </ul>
-        <div className="tabs-content">
-          {tabsContent}
-        </div>
-      </div>
+      </React.Fragment>
     );
   }
 

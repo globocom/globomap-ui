@@ -60,14 +60,20 @@ const initialState = {
   hasId: false,
   modalVisible: false,
   modalContent: null,
+  collectionsLoading: false,
+  graphsLoading: false,
   queriesLoading: false
 };
 
 export default function reducer(state=initialState, action={}) {
   switch (action.type) {
+
     case FETCH_GRAPHS:
       console.log('fetch graphs...');
-      return state;
+      return {
+        ...state,
+        graphsLoading: true
+      }
 
     case FETCH_GRAPHS_SUCCESS:
       let graphs = sortByName(action.result.data);
@@ -89,33 +95,40 @@ export default function reducer(state=initialState, action={}) {
         graphs,
         collectionsByGraphs,
         enabledCollections,
-        namedGraphs: _.mapKeys(action.result, 'name')
+        namedGraphs: _.mapKeys(action.result, 'name'),
+        graphsLoading: false
       };
 
     case FETCH_GRAPHS_FAIL:
       console.log(action.error);
       return {
         ...state,
-        graphs: []
+        graphs: [],
+        graphsLoading: false
       };
 
     case FETCH_COLLECTIONS:
       console.log('fetch collections...');
-      return state;
+      return {
+        ...state,
+        collectionsLoading: true
+      };
 
     case FETCH_COLLECTIONS_SUCCESS:
       const collections = action.result.data;
       return {
         ...state,
         collections: collections,
-        namedCollections: _.mapKeys(collections, 'name')
+        namedCollections: _.mapKeys(collections, 'name'),
+        collectionsLoading: false
       };
 
     case FETCH_COLLECTIONS_FAIL:
       console.log(action.error);
       return {
         ...state,
-        collections: []
+        collections: [],
+        collectionsLoading: false
       };
 
     case FETCH_EDGES:

@@ -32,7 +32,7 @@ button {
 }
 
 button:hover {
-  opacity: 0.90;
+  filter: brightness(105%);
 }
 
 input:disabled,
@@ -41,16 +41,38 @@ button:disabled {
   opacity: 0.3;
 }
 
+.base-content,
+.base-content-header {
+  box-sizing: border-box;
+}
+
 .base-content {
   position: fixed;
   top: 0;
   left: 256px;
   bottom: 0;
   right: 0;
-  padding: 50px 7% 0;
+  padding: 140px 40px 10px;
   z-index: 8;
   background: #eceef2;
   overflow-y: auto;
+}
+
+.base-content-header {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  padding: 0 40px;
+  color: white;
+  background-color: #2eb78e;
+}
+
+.base-content-title {
+  font: lighter 1.8rem "opensans-light", Helvetica, sans-serif;;
 }
 
 .gmap-btn,
@@ -63,18 +85,24 @@ button:disabled {
 }
 
 .gmap-btn {
+  font: lighter 1rem "opensans-light", Helvetica, sans-serif;
   color: white;
   margin: 0 5px;
   padding: 8px 16px;
   border-radius: 3px;
   background-color: #1fc291;
-  border-bottom: 2px solid #15a177;
+  border-bottom: 1px solid #15a177;
+  outline: none;
+}
+
+.gmap-btn i {
+  margin-right: 10px;
 }
 
 .gmap-text {
   color: #2eb78e;
   border: 1px solid #ddd;
-  border-bottom: 2px solid #aaa;
+  border-bottom: 1px solid #aaa;
   outline: none;
 }
 
@@ -86,6 +114,13 @@ button:disabled {
 .gmap-text.sm-size {
   font-size: 14px;
   padding: 4px 10px;
+}
+
+.content-loading {
+  flex-grow: 1;
+  text-align: center;
+  padding: 10px;
+  color: #aaa;
 }
 
 .has-id {

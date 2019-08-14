@@ -21,20 +21,13 @@ limitations under the License.
   box-sizing: border-box;
 }
 
-.reports-title {
-  font-size: 2em;
-  font-weight: 300;
-  height: 42px;
-  margin: 0 0 30px;
-}
-
 .reports-tabs {
   display: flex;
 }
 
 .reports-tabs button {
   flex-grow: 1;
-  background: #f2f2f2;
+  background: white;
   border: 0;
   margin: 0;
   padding: 10px;
@@ -62,40 +55,30 @@ limitations under the License.
   position: relative;
   margin-bottom: 20px;
   min-height: 400px;
-  background-color: #f2f2f2;
+  background-color: white;
 }
 
 .reports-queries,
 .reports-list {
   display: none;
   padding: 30px 20px;
-  background-color: #f2f2f2;
+  background-color: white;
+  width: 100%;
 }
 
 .reports-queries.active {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .reports-list.active {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: column;
 }
 
 .reports-queries .query-btn {
-  flex-grow: 1;
-  position: relative;
-  margin: 0 20px 20px 0;
-  padding: 10px;
-  cursor: pointer;
-  background-color: white;
-  border-radius: 3px;
-  border: 1px solid transparent;
-  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
-}
-
-.reports-queries .query-btn:hover {
-  color: #2eb78e;
-  /* border: 1px solid #2eb78e; */
+  white-space: nowrap;
+  margin-bottom: 10px;
 }
 
 .reports-search {
