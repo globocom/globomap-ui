@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import _ from "lodash";
-import 'tippy.js/dist/tippy.css';
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -38,6 +37,7 @@ import {
   Stage,
   Loading,
   TabContent } from '../';
+// import 'tippy.js/index.css';
 import './App.css';
 
 export class App extends React.Component {
