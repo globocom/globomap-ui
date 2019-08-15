@@ -26,7 +26,7 @@ const router = express.Router();
 let redis = null;
 if (config.redisSentinelsHosts) {
   redis = new Redis({
-    db: 1,
+    db: 0,
     name: config.redisSentinelsService,
     password: config.redisPassword,
     sentinels: config.redisSentinelsHosts.map((sentinelHost) => {
@@ -38,7 +38,7 @@ if (config.redisSentinelsHosts) {
   });
 } else {
   redis = new Redis({
-    db: 1,
+    db: 0,
     host: config.redisHost,
     port: config.redisPort,
     password: config.redisPassword
