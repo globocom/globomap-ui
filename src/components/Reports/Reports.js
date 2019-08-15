@@ -188,7 +188,7 @@ export class Reports extends React.Component {
                   disabled={this.state.query === ''}>Search for a item</button>
         </div>
 
-        <div className="reports-panes">
+        <div className="reports-panes base-panel">
           <div className={`reports-queries ${idx === 1 ? 'active' : ''}`}>
             {queries}
           </div>

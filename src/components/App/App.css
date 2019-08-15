@@ -35,6 +35,10 @@ button:hover {
   filter: brightness(105%);
 }
 
+button:disabled:hover {
+  filter: brightness(100%);
+}
+
 input:disabled,
 button:disabled {
   cursor: default;
@@ -75,6 +79,15 @@ button:disabled {
   font: lighter 1.8rem "opensans-light", Helvetica, sans-serif;;
 }
 
+.base-panel {
+  position: relative;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
 .gmap-btn,
 .gmap-text {
   font-size: 1.2rem;
@@ -93,10 +106,6 @@ button:disabled {
   background-color: #1fc291;
   border-bottom: 1px solid #15a177;
   outline: none;
-}
-
-.gmap-btn i {
-  margin-right: 10px;
 }
 
 .gmap-text {

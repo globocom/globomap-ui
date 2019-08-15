@@ -201,11 +201,11 @@ export class AutoMap extends React.Component {
           <h2 className="base-content-title">Custom Maps</h2>
         </div>
 
-        <div className="automaps-panel automap-kind">
+        <div className="base-panel automaps-panel automap-kind">
           {this.renderKinds()}
         </div>
 
-        <div className="automaps-panel automap-search">
+        <div className="base-panel automaps-panel automap-search">
           <div className="automap-description">{this.renderDescription()}</div>
           <input type="search" name="q" className="gmap-text automap-q" autoComplete="off"
                 disabled={!this.state.current}
@@ -220,7 +220,7 @@ export class AutoMap extends React.Component {
           </button>
         </div>
 
-        <div className="automaps-panel automap-content">
+        <div className="base-panel automaps-panel automap-content">
           {this.props.automapFindLoading
             ? <div className="content-loading">
                 <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>

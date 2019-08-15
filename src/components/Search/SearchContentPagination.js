@@ -94,15 +94,15 @@ export class SearchContentPagination extends Component {
 
     return (
       <div className="search-content-pagination">
-        <button className="btn-previous" onClick={(e) => this.onSendSearchQuery(e, 'previous')}
+        <button className="btn-previous gmap-btn sm-size" onClick={(e) => this.onSendSearchQuery(e, 'previous')}
           disabled={this.props.currentPage === 1}>
           <i className="fa fa-angle-left"></i>
         </button>
 
-        <input className="page-number" type="text" name="pagination"
+        <input className="page-number gmap-text sm-size" type="text" name="pagination"
           value={this.state.pageNumber} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
 
-        <button className="btn-next" onClick={(e) => this.onSendSearchQuery(e, 'next')}
+        <button className="btn-next gmap-btn sm-size" onClick={(e) => this.onSendSearchQuery(e, 'next')}
           disabled={this.props.currentPage === this.props.totalPages}>
           <i className="fa fa-angle-right"></i>
         </button>

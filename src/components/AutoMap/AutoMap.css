@@ -22,11 +22,6 @@ limitations under the License.
 .automaps-panel {
   display: flex;
   flex-wrap: wrap;
-  position: relative;
-  background-color: #f8f8f8;
-  margin-bottom: 20px;
-  border-radius: 3px;
-  border-bottom: 2px solid #eee;
   padding: 10px;
 }
 
@@ -66,6 +61,7 @@ limitations under the License.
   padding: 10px 15px;
   color: #222;
   font-size: 1em;
+  font-weight: lighter;
 }
 
 .automap-found-nodes li:hover a,
@@ -83,7 +79,7 @@ limitations under the License.
   background: none;
   margin-left: 0 10px;
   border: none;
-  opacity: 0.05;
+  opacity: 0.1;
   width: 48px;
 }
 .automap-found-nodes li:hover .row-tools button {
@@ -98,4 +94,8 @@ limitations under the License.
   padding: 0px 8px;
   color: #666;
   font-size: 0.8rem;
+}
+
+.automap-description p {
+  margin-top: 0.5em;
 }
