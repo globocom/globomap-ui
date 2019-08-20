@@ -32,7 +32,7 @@ export class SearchHeader extends Component {
       query: '',
       showOptions: true,
       showSearchTypes: false,
-      searchFor: "name",
+      searchFor: "nome",
       queryProps: [{ 'name': '', 'value': '', 'op': 'LIKE' }],
       propsOperators: ["==", "LIKE", "NOTIN", "IN", "!=", ">", ">=", "<", "<=", "!~", "=~"]
     };
@@ -106,9 +106,9 @@ export class SearchHeader extends Component {
 
     let params = { collections: checked };
 
-    if (this.state.searchFor === 'all') {
+    if (this.state.searchFor === 'tudo') {
       params['query'] = this.state.query;
-    } else if (this.state.searchFor === 'name') {
+    } else if (this.state.searchFor === 'nome') {
       params['query'] = this.state.query;
       params['queryType'] = 'name';
     } else {
@@ -172,7 +172,7 @@ export class SearchHeader extends Component {
     return (
       <header className={`search-header${this.state.showOptions ? ' with-options' : ''}`}>
         <div className="search-box">
-          {this.state.searchFor === 'all' &&
+          {this.state.searchFor === 'tudo' &&
             <div className="search-for-all">
               <input className="search-query" type="search" name="query"
                 placeholder="Type keyword" autoComplete="off"
@@ -181,7 +181,7 @@ export class SearchHeader extends Component {
                 onKeyPress={e => this.handleKeyPress(e)} />
             </div>}
 
-          {this.state.searchFor === 'name' &&
+          {this.state.searchFor === 'nome' &&
             <div className="search-for-all">
               <input className="search-query" type="search" name="query"
                 placeholder="Type keyword" autoComplete="off"
@@ -190,13 +190,13 @@ export class SearchHeader extends Component {
                 onKeyPress={e => this.handleKeyPress(e)} />
             </div>}
 
-          {this.state.searchFor === 'properties' &&
+          {this.state.searchFor === 'propriedades' &&
             <div className="search-for-properties">
               <div className="property-items" ref={(el) => { this.propItems = el; }}>
                 {propItems}
               </div>
               <button className="gmap-btn sm-size btn-add-prop" onClick={e => this.addProp(e)}>
-                <i className="icon fas fa-plus"></i> Add another
+                <i className="icon fas fa-plus"></i> Adicionar outro
               </button>
             </div>}
 
@@ -206,30 +206,30 @@ export class SearchHeader extends Component {
               <div className="toggle-search-type">
                 <div className="selected-search-type"
                     onClick={() => this.setState({ showSearchTypes: !this.state.showSearchTypes })}>
-                  by <span className="search-type">{this.state.searchFor}</span> <i className="arrow fas fa-chevron-down"></i>
+                  por <span className="search-type">{this.state.searchFor}</span> <i className="arrow fas fa-chevron-down"></i>
                 </div>
                 {this.state.showSearchTypes &&
                   <div className="search-types">
-                    <button onClick={() => this.setState({ searchFor: 'all', showSearchTypes: false })}
-                      disabled={this.state.searchFor === 'all'}>all</button>
+                    <button onClick={() => this.setState({ searchFor: 'tudo', showSearchTypes: false })}
+                      disabled={this.state.searchFor === 'tudo'}>tudo</button>
 
-                    <button onClick={() => this.setState({ searchFor: 'name', showSearchTypes: false })}
-                      disabled={this.state.searchFor === 'name'}>name</button>
+                    <button onClick={() => this.setState({ searchFor: 'nome', showSearchTypes: false })}
+                      disabled={this.state.searchFor === 'nome'}>nome</button>
 
-                    <button onClick={() => this.setState({ searchFor: 'properties', showSearchTypes: false })}
-                      disabled={this.state.searchFor === 'properties'}>properties</button>
+                    <button onClick={() => this.setState({ searchFor: 'propriedades', showSearchTypes: false })}
+                      disabled={this.state.searchFor === 'propriedades'}>propriedades</button>
                   </div>}
               </div>
             </div>
 
             <button className="gmap-btn btn-search-options" onClick={(e) => this.onToggleSearchOptions(e)}
               data-tippy-content="Show/hide filters">
-              <i className="fa fa-sliders-h"></i> Toggle filters
+              <i className="fa fa-sliders-h"></i> Habilitar/desabilitar filtros
             </button>
 
             <button className="gmap-btn btn-search" onClick={e => this.onSendSearchQuery(e)}
               data-tippy-content="Run Search" disabled={this.props.findLoading}>
-                <i className="fa fa-search"></i> Search
+                <i className="fa fa-search"></i> Buscar
             </button>
           </div>
 

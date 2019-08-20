@@ -46,7 +46,10 @@ button:disabled {
 }
 
 .base-content,
-.base-content-header {
+.base-content-header,
+.base-content-header .fancy-img,
+.base-panel-content,
+.base-panel-footer {
   box-sizing: border-box;
 }
 
@@ -62,6 +65,10 @@ button:disabled {
   overflow-y: auto;
 }
 
+.base-content.ext {
+  padding-top: 340px;
+}
+
 .base-content-header {
   position: absolute;
   display: flex;
@@ -75,17 +82,105 @@ button:disabled {
   background-color: #2eb78e;
 }
 
+.ext .base-content-header {
+  height: 300px;
+}
+
 .base-content-title {
-  font: lighter 1.8rem "opensans-light", Helvetica, sans-serif;;
+  font: 300 1.8rem "opensans-light", Helvetica, sans-serif;
+}
+
+.base-content-title .subtitle {
+  display: block;
+  font-size: 1rem;
+  letter-spacing: normal;
+}
+
+.ext .base-content-title .subtitle {
+  font: 300 1.4rem "opensans-light", Helvetica, sans-serif;
+}
+
+.base-content-header .base-content-title {
+  width: 60%;
+}
+
+.ext .base-content-header .base-content-title {
+  font: bold 4rem "opensans-light", Helvetica, sans-serif;
+  letter-spacing: -0.2rem;
+}
+
+.base-content-header .fancy-img {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 20px 10px;
+  right: 0;
+  width: 300px;
+  height: 100px;
+  padding-right: 20px;
+  overflow: hidden;
+}
+
+.base-content-header .fancy-img img {
+  position: absolute;
+  width: 75%;
+  top: 20px;
+}
+
+.ext .base-content-header .fancy-img {
+  right: 0;
+  bottom: 0;
+  width: 40%;
+  height: 100%;
+}
+
+.ext .base-content-header .fancy-img img {
+  position: relative;
+  top: 0;
+  width: 75%;
+  height: 75%;
 }
 
 .base-panel {
   position: relative;
   margin-bottom: 20px;
   background-color: white;
+  padding: 0 0 66px;
   border-radius: 5px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+}
+
+.base-panel-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 300;
+  color: #111;
+  padding: 0 20px;
+  height: 40px;
+  margin: 0;
+  background-color: #ddd;
+  border-top: 1px solid white;
+}
+
+.base-panel-content {
+  padding: 20px;
+  font-weight: lighter;
+  line-height: 1.5rem;
+  color: #333;
+}
+
+.base-panel-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 66px;
+  padding: 10px 20px 20px;
+  text-align: right;
 }
 
 .gmap-btn,

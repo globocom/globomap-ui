@@ -28,7 +28,7 @@ export class Search extends Component {
       <div className={`search-container ${this.props.className}`}>
         <section className="search base-content">
           <div className="base-content-header">
-            <h2 className="base-content-title">Advanced Search</h2>
+            <h2 className="base-content-title">Busca Avan&ccedil;ada</h2>
           </div>
           <SearchHeader />
         </section>

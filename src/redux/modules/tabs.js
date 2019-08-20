@@ -19,7 +19,7 @@ const REGISTER_TAB = 'register_tab';
 
 const initialState = {
   tabs: [],
-  currentTab: 'search'
+  currentTab: 'home'
 };
 
 export default function reducer(state=initialState, action={}) {

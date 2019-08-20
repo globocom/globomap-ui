@@ -44,17 +44,17 @@ export class SidebarButtons extends Component {
         </Tab>
         <Tab tabKey="automap">
           <button>
-            <i className="icon fas fa-project-diagram"></i> Custom Maps
+            <i className="icon fas fa-project-diagram"></i> Mapas Autom&aacute;ticos
           </button>
         </Tab>
         <Tab tabKey="reports">
           <button>
-            <i className="icon fas fa-print"></i> Reports
+            <i className="icon fas fa-print"></i> Relat&oacute;rios
           </button>
         </Tab>
         <Tab tabKey="search">
           <button onClick={() => this.handleSearch()}>
-            <i className="icon fas fa-search"></i> Advanced Search
+            <i className="icon fas fa-search"></i> Busca Avan&ccedil;ada
           </button>
         </Tab>
       </div>

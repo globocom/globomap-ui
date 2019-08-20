@@ -28,6 +28,7 @@ import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
 import {
+  Home,
   AutoMap,
   Favorites,
   Modal,
@@ -37,7 +38,6 @@ import {
   Stage,
   Loading,
   TabContent } from '../';
-// import 'tippy.js/index.css';
 import './App.css';
 
 export class App extends React.Component {
@@ -73,25 +73,12 @@ export class App extends React.Component {
       <div className="main">
         <Sidebar />
 
-        <TabContent tabKey="search">
-          <Search />
-        </TabContent>
-
-        <TabContent tabKey="map">
-          <Stage />
-        </TabContent>
-
-        <TabContent tabKey="favorites">
-          <Favorites />
-        </TabContent>
-
-        <TabContent tabKey="reports">
-          <Reports />
-        </TabContent>
-
-        <TabContent tabKey="automap">
-          <AutoMap />
-        </TabContent>
+        <TabContent tabKey="home"><Home /></TabContent>
+        <TabContent tabKey="automap"><AutoMap /></TabContent>
+        <TabContent tabKey="reports"><Reports /></TabContent>
+        <TabContent tabKey="search"><Search /></TabContent>
+        <TabContent tabKey="map"><Stage /></TabContent>
+        <TabContent tabKey="favorites"><Favorites /></TabContent>
 
         <Loading iconSize="big"
                  isLoading={this.props.findLoading

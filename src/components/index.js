@@ -18,6 +18,7 @@ import App from './App/App';
 import AppFull from './App/AppFull';
 import AutoMap from './AutoMap/AutoMap';
 import Favorites from './Favorites/Favorites';
+import Home from './Home/Home';
 import Loading from './Loading/Loading';
 import Modal from './Modal/Modal';
 import Monit from './Monit/Monit';
@@ -41,6 +42,7 @@ export {
   AppFull,
   AutoMap,
   Favorites,
+  Home,
   Loading,
   Modal,
   Monit,

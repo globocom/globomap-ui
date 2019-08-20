@@ -30,7 +30,7 @@ import './Favorites.css';
 
 export class Favorites extends React.Component {
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.listUserMaps();
   }
 

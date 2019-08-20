@@ -1,0 +1,13 @@
+.home {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.home-widget {
+  flex-basis: 48%;
+}
+
+.home-widget.full {
+  flex-basis: 100%;
+}

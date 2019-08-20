@@ -27,7 +27,6 @@ import {
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
-import { setTab } from '../../redux/modules/tabs';
 import { NodeInfo } from '../';
 import './AutoMap.css';
 
@@ -198,7 +197,7 @@ export class AutoMap extends React.Component {
     return (
       <div className={`automaps base-content ${this.props.className}`}>
         <div className="base-content-header">
-          <h2 className="base-content-title">Custom Maps</h2>
+          <h2 className="base-content-title">Mapas Autom&aacute;ticos</h2>
         </div>
 
         <div className="base-panel automaps-panel automap-kind">
@@ -256,8 +255,7 @@ export default connect(
     automapResetNodes,
     setStageNodes,
     clearCurrentNode,
-    resetSubNodes,
-    setTab
+    resetSubNodes
   }
 )(AutoMap);
 

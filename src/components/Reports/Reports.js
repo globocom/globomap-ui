@@ -177,15 +177,15 @@ export class Reports extends React.Component {
     return (
       <div className={`reports base-content ${this.props.className}`}>
         <div className="base-content-header">
-          <h2 className="base-content-title">Reports</h2>
+          <h2 className="base-content-title">Relat&oacute;rios</h2>
         </div>
 
         <div className="reports-tabs">
           <button className={idx === 1 ? 'active' : ''} data-step="1"
-                  onClick={() => this.setPane(1)}>Select report type</button>
+                  onClick={() => this.setPane(1)}>Selecione o tipo de relat&oacute;rio</button>
           <button className={idx === 2 ? 'active' : ''} data-step="2"
                   onClick={() => this.setPane(2)}
-                  disabled={this.state.query === ''}>Search for a item</button>
+                  disabled={this.state.query === ''}>Procure por um item</button>
         </div>
 
         <div className="reports-panes base-panel">
