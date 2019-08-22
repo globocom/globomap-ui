@@ -24,7 +24,9 @@ import {
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
-import { setTab } from '../../redux/modules/tabs';
+import {
+  setTab,
+  closeTab } from '../../redux/modules/tabs';
 import { sortByName } from '../../utils';
 import './Favorites.css';
 
@@ -83,9 +85,9 @@ export class Favorites extends React.Component {
     return (
       <div className={`favorites ${this.props.className}`}>
         <h3 className="favorites-title">
-          Saved maps
+          Mapas Salvos
           <button className="btn-close-favorites"
-                onClick={() => this.props.setTab('map')}>
+                onClick={() => this.props.closeTab('map')}>
           <i className="fas fa-times"></i>
         </button>
         </h3>
@@ -112,7 +114,8 @@ export default connect(
     getUserMap,
     resetSubNodes,
     setStageNodes,
-    setTab
+    setTab,
+    closeTab
   }
 )(Favorites);
 

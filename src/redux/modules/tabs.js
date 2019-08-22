@@ -15,11 +15,13 @@ limitations under the License.
 */
 
 const SET_TAB = 'set_tab';
+const CLOSE_TAB = 'close_tab';
 const REGISTER_TAB = 'register_tab';
 
 const initialState = {
   tabs: [],
-  currentTab: 'home'
+  currentTab: 'home',
+  lastTab: null
 };
 
 export default function reducer(state=initialState, action={}) {
@@ -28,7 +30,15 @@ export default function reducer(state=initialState, action={}) {
     case SET_TAB:
       return {
         ...state,
-        currentTab: action.tabKey
+        currentTab: action.tabKey,
+        lastTab: state.currentTab
+      }
+
+    case CLOSE_TAB:
+      return {
+        ...state,
+        currentTab: state.lastTab,
+        lastTab: 'home'
       }
 
     case REGISTER_TAB:
@@ -49,6 +59,12 @@ export function setTab(tabKey) {
   return {
     type: SET_TAB,
     tabKey
+  }
+}
+
+export function closeTab() {
+  return {
+    type: CLOSE_TAB
   }
 }
 

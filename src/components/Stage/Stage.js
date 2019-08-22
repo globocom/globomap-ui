@@ -155,19 +155,19 @@ export class Stage extends Component {
 
         <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
           <button className="btn tool-btn btn-share-map" onClick={e => this.shareMap(e)}
-                  data-tippy-content="Share this map"
+                  data-tippy-content="Compartilhar este mapa"
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-link"></i>
           </button>
           <button className="btn tool-btn btn-save-map" onClick={e => this.saveMap(e)}
-                  data-tippy-content="Save this map"
+                  data-tippy-content="Salvar este mapa"
                   disabled={!rootNodeHasItens}>
             <i className="fa fa-save"></i>
           </button>
 
           <Tab tabKey="favorites">
             <button className="btn tool-btn btn-favorites"
-                    data-tippy-content="Show saved maps">
+                    data-tippy-content="Mostrar mapas salvos">
               <i className="fa fa-star"></i>
             </button>
           </Tab>
@@ -178,7 +178,7 @@ export class Stage extends Component {
                      value={urlToShare} onClick={e => e.target.select()} />
               <button className="btn-clipboard" onClick={() => alert('Copied!')}
                       data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
-                <i className="fa fa-clipboard"></i> Copy to clipboard
+                <i className="fa fa-clipboard"></i> Copiar para o clipboard
               </button>
             </div>}
 

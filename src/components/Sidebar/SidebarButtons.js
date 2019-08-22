@@ -57,6 +57,11 @@ export class SidebarButtons extends Component {
             <i className="icon fas fa-search"></i> Busca Avan&ccedil;ada
           </button>
         </Tab>
+        <Tab tabKey="favorites">
+          <button>
+            <i className="icon fas fa-star"></i> Mapas Salvos
+          </button>
+        </Tab>
       </div>
     );
   }
