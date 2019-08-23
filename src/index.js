@@ -14,11 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import throttle from 'lodash/throttle';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import {
+  createStore,
+  applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import {
   BrowserRouter,
@@ -29,35 +30,24 @@ import clientMiddleware from './redux/middlewares/clientMiddleware';
 import ApiClient from './helpers/ApiClient';
 import {
   App,
-  AppFull,
   NotFound } from './components';
-import { loadState, saveState } from './utils/localStorage';
-import { turnOffLoadings } from './utils';
 
 const apiClient = new ApiClient()
-const persistedState = turnOffLoadings(loadState());
 
 export const store = createStore(
   reducer,
-  persistedState,
   applyMiddleware(
     thunk,
     clientMiddleware(apiClient)
   )
 );
 
-store.subscribe(throttle(() => {
-  saveState({
-    stage: store.getState().stage
-  });
-}, 1000));
-
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={App} />
-        <Route path="/map/:mapKey" component={AppFull} />
+        <Route path="/map/:mapKey" component={App} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

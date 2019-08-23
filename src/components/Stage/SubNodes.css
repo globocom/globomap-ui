@@ -21,17 +21,19 @@ limitations under the License.
 }
 
 .subnodes {
-  position: fixed;
-  display: flex;
+  position: absolute;
+  display: none;
   flex-direction: column;
   top: 50px;
-  right: 10px;
-  bottom: 10px;
+  right: 0px;
+  bottom: 0px;
   width: 280px;
-  border-left: 1px solid #eee;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
   background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.subnodes.show {
+  display: flex;
 }
 
 .subnodes .subnodes-graph-items {

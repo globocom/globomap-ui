@@ -25,12 +25,12 @@ limitations under the License.
   min-width: 120px;
   max-width: 200px;
   min-height: 80px;
-  padding: 20px;
+  padding: 10px;
   cursor: pointer;
   background-color: white;
   border-radius: 5px;
   border: 1px solid transparent;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .node-item .node-info,
@@ -53,7 +53,7 @@ limitations under the License.
 
 .node-item .type {
   display: block;
-  font-size: 12px;
+  font-size: 10px;
   font-family: 'opensans-bold', Arial, Helvetica, sans-serif;
   color: #757575;
   margin: 0 10px 6px 0;
@@ -63,7 +63,7 @@ limitations under the License.
 .node-item .name {
   display: block;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

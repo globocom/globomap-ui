@@ -53,7 +53,8 @@ limitations under the License.
 }
 
 .user-map-item {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 300;
   border-bottom: 1px solid #e2e2e2;
   padding: 10px;
 }
@@ -61,7 +62,6 @@ limitations under the License.
 .user-map-item:hover {
   cursor: pointer;
   color: #2eb78e;
-  background-color: #f8f8f8;
 }
 
 .user-map-item:first-child {

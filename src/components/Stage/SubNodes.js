@@ -28,7 +28,7 @@ export class SubNodes extends React.Component {
     });
 
     return (
-      <div className="subnodes">
+      <div className={`subnodes ${this.props.currentNode ? 'show' : ''}`}>
         <div className="subnodes-graph-items">
           {byGraph}
         </div>
@@ -40,6 +40,7 @@ export class SubNodes extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    currentNode: state.nodes.currentNode,
     subNodesByGraph: state.nodes.subNodesByGraph
   };
 }

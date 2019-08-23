@@ -77,7 +77,9 @@ export class App extends React.Component {
         <TabContent tabKey="automap"><AutoMap /></TabContent>
         <TabContent tabKey="reports"><Reports /></TabContent>
         <TabContent tabKey="search"><Search /></TabContent>
-        <TabContent tabKey="map"><Stage /></TabContent>
+        <TabContent tabKey="map">
+          <Stage sharedMapKey={this.props.match.params.mapKey} />
+        </TabContent>
         <TabContent tabKey="favorites"><Favorites /></TabContent>
 
         <Loading iconSize="big"

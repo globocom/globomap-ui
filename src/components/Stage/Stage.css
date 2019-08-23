@@ -21,7 +21,7 @@ limitations under the License.
 }
 
 .stage {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 256px;
   bottom: 0;
@@ -35,23 +35,20 @@ limitations under the License.
   background-image: radial-gradient(#ddd 3%, transparent 0),
                     radial-gradient(#ddd 3%, transparent 0);
   background-size: 50px 50px;
+
+  transition: left 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .stage.full {
   top: 0;
   right: 0;
-  left: 0;
-  padding: 0;
+  left: 10px;
   width: auto;
   z-index: 99;
 }
 
-.stage.full .stage-container {
-  padding: 80px;
-}
-
-.stage.full .stage-tools {
-  display: none;
+.stage.no-subnodes {
+  padding-right: 0;
 }
 
 .stage .btn-close-full {
@@ -80,7 +77,7 @@ limitations under the License.
 
 .stage .stage-container {
   display: flex;
-  padding: 40px;
+  padding: 30px;
   justify-content: left;
   overflow: auto;
   height: 100%;
@@ -98,42 +95,27 @@ limitations under the License.
   left: 0;
   right: 0;
   display: flex;
-  padding: 10px 10px 0;
+  padding: 10px;
   height: 50px;
   justify-content: center;
-  /*background-color: white;*/
-  /*border-bottom: 1px solid #eee;*/
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.stage-tools .tool-btn {
-  background: white;
-  border: 0;
-  cursor: pointer;
-  font-size: 22px;
-  color: #aaa;
-  margin: 0 5px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-.stage-tools .tool-btn:hover {
-  color: #333;
-}
-
-.stage-tools .btn:disabled,
-.stage-tools .btn:disabled:hover {
-  color: #ddd;
-  cursor: default;
+.stage-tools .tool-btn-left {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  bottom: 10px;
 }
 
 .stage-tools .shared-link {
   position: absolute;
   display: flex;
-  top: 50px;
+  top: 60px;
   left: 50%;
-  width: 66%;
-  margin-left: -33%;
+  width: 80%;
+  margin-left: -40%;
   background: white;
   padding: 10px;
   border-radius: 4px;

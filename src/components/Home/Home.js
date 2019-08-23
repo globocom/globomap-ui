@@ -42,11 +42,11 @@ export class Home extends React.Component {
         <div className="base-panel home-widget">
           <h3 className="base-panel-title">Mapas autom&aacute;ticos</h3>
 
-          <div class="base-panel-content">
+          <div className="base-panel-content">
             Realize buscas pré-definidas de recursos e obtenha um mapa automático.
           </div>
 
-          <div class="base-panel-footer">
+          <div className="base-panel-footer">
             <button className="gmap-btn" onClick={() => this.props.setTab('automap')}>
               <i className="icon fas fa-project-diagram"></i> Mapas Autom&aacute;ticos
             </button>
@@ -56,11 +56,11 @@ export class Home extends React.Component {
         <div className="base-panel home-widget">
           <h3 className="base-panel-title">Relat&oacute;rios</h3>
 
-          <div class="base-panel-content">
+          <div className="base-panel-content">
             Assim como os mapas automáticos, os relatórios também são buscas pré-definidas, mas o retorno é textual e somente com as informações necessárias.
           </div>
 
-          <div class="base-panel-footer">
+          <div className="base-panel-footer">
             <button className="gmap-btn" onClick={() => this.props.setTab('reports')}>
               <i className="icon fas fa-print"></i> Relat&oacute;rios
             </button>
@@ -70,11 +70,11 @@ export class Home extends React.Component {
         <div className="base-panel home-widget full">
           <h3 className="base-panel-title">Busca Avan&ccedil;ada</h3>
 
-          <div class="base-panel-content">
+          <div className="base-panel-content">
             Na busca avançada você procura por qualquer recurso por nome ou suas propriedades. Podendo também montar um mapa personalizado.
           </div>
 
-          <div class="base-panel-footer">
+          <div className="base-panel-footer">
             <button className="gmap-btn" onClick={() => this.props.setTab('search')}>
               <i className="icon fas fa-search"></i> Busca Avan&ccedil;ada
             </button>
