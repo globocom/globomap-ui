@@ -23,7 +23,7 @@ import {
   clearCurrentNode,
   traversalSearch } from '../../redux/modules/nodes';
 import { addStageNode } from '../../redux/modules/stage';
-import { setTab } from '../../redux/modules/tabs';
+import { setFullTab } from '../../redux/modules/tabs';
 import SearchContentPagination from './SearchContentPagination';
 import { NodeInfo } from '../';
 import './SearchContent.css';
@@ -61,7 +61,7 @@ export class SearchContent extends Component {
     this.props.addStageNode(node, null, true);
 
     // change to map screen and do traversal search
-    this.props.setTab('map');
+    this.props.setFullTab('map');
     this.props.traversalSearch({ node: node });
   }
 
@@ -161,6 +161,6 @@ export default connect(
     clearNodes,
     clearCurrentNode,
     traversalSearch,
-    setTab
+    setFullTab
   }
 )(SearchContent);

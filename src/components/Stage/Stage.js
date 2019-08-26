@@ -25,7 +25,10 @@ import {
   saveUserMap,
   getUserMap,
   listUserMaps } from '../../redux/modules/stage';
-import { setTab } from '../../redux/modules/tabs';
+import {
+  setTab,
+  setFullTab,
+  toggleFullTab } from '../../redux/modules/tabs';
 import {
   NodeInfo,
   NodeItem } from '../';
@@ -39,14 +42,12 @@ export class Stage extends Component {
     super(props);
 
     this.state = {
-      full: false,
       sharedLinkOpen: false,
       showNodeInfo: false,
       nodeInfoNode: null
     };
 
     this.renderNodes = this.renderNodes.bind(this);
-    this.toggleFull = this.toggleFull.bind(this);
     this.openSharedLink = this.openSharedLink.bind(this);
     this.closeSharedLink = this.closeSharedLink.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
@@ -110,16 +111,11 @@ export class Stage extends Component {
     this.closeSharedLink();
   }
 
-  toggleFull() {
-    this.setState({ full: !this.state.full });
-  }
-
   componentDidMount() {
     const { sharedMapKey } = this.props;
 
     if (sharedMapKey) {
-      this.props.setTab('map');
-      this.toggleFull();
+      this.props.setFullTab('map');
       this.props.getSharedMap(sharedMapKey);
     }
 
@@ -148,7 +144,7 @@ export class Stage extends Component {
     }
 
     const noSubnodes = this.props.currentNode ? '' : 'no-subnodes';
-    const full = this.state.full ? 'full' : '';
+    const full = this.props.fullTab ? 'full' : '';
 
     return (
       <div className={`stage ${this.props.className} ${full} ${noSubnodes}`}>
@@ -159,7 +155,7 @@ export class Stage extends Component {
           </Link>}
 
         <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
-          <button className="gmap-btn sm-size tool-btn-left btn-toggle-menu" onClick={this.toggleFull}
+          <button className="gmap-btn sm-size tool-btn-left btn-toggle-menu" onClick={this.props.toggleFullTab}
                   data-tippy-content="Toggle Menu">
             <i className="fas fa-bars"></i>
           </button>
@@ -213,6 +209,7 @@ export class Stage extends Component {
 function mapStateToProps(state) {
   return {
     currentNode: state.nodes.currentNode,
+    fullTab: state.tabs.fullTab,
     ...state.stage
   };
 }
@@ -220,11 +217,13 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    setTab,
     saveSharedMap,
     getSharedMap,
     saveUserMap,
     getUserMap,
-    listUserMaps
+    listUserMaps,
+    setTab,
+    setFullTab,
+    toggleFullTab
   }
 )(Stage);

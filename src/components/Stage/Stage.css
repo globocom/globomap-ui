@@ -42,7 +42,7 @@ limitations under the License.
 .stage.full {
   top: 0;
   right: 0;
-  left: 10px;
+  left: 0;
   width: auto;
   z-index: 99;
 }

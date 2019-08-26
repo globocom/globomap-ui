@@ -81,9 +81,10 @@ export class Favorites extends React.Component {
   }
 
   render() {
+    const full = this.props.fullTab ? 'full' : '';
 
     return (
-      <div className={`favorites ${this.props.className}`}>
+      <div className={`favorites ${full} ${this.props.className}`}>
         <h3 className="favorites-title">
           Mapas Salvos
           <button className="btn-close-favorites"
@@ -101,7 +102,8 @@ export class Favorites extends React.Component {
 function mapStateToProps(state) {
   return {
     hasId: state.app.hasId,
-    userMaps: state.stage.userMaps
+    userMaps: state.stage.userMaps,
+    fullTab: state.tabs.fullTab
   };
 }
 

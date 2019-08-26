@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Globo.com
+Copyright 2019 Globo.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,13 +15,16 @@ limitations under the License.
 */
 
 const SET_TAB = 'set_tab';
+const SET_FULL_TAB = 'set_full_tab';
+const TOGGLE_FULL_TAB = 'toggle_full_tab';
 const CLOSE_TAB = 'close_tab';
 const REGISTER_TAB = 'register_tab';
 
 const initialState = {
   tabs: [],
   currentTab: 'home',
-  lastTab: null
+  lastTab: null,
+  fullTab: false
 };
 
 export default function reducer(state=initialState, action={}) {
@@ -32,6 +35,19 @@ export default function reducer(state=initialState, action={}) {
         ...state,
         currentTab: action.tabKey,
         lastTab: state.currentTab
+      }
+
+    case SET_FULL_TAB:
+      return {
+        ...state,
+        currentTab: action.tabKey,
+        fullTab: true
+      }
+
+    case TOGGLE_FULL_TAB:
+      return {
+        ...state,
+        fullTab: !state.fullTab
       }
 
     case CLOSE_TAB:
@@ -59,6 +75,19 @@ export function setTab(tabKey) {
   return {
     type: SET_TAB,
     tabKey
+  }
+}
+
+export function setFullTab(tabKey) {
+  return {
+    type: SET_FULL_TAB,
+    tabKey
+  }
+}
+
+export function toggleFullTab() {
+  return {
+    type: TOGGLE_FULL_TAB
   }
 }
 

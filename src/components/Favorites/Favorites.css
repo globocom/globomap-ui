@@ -26,6 +26,14 @@ limitations under the License.
   overflow-y: auto;
 }
 
+.favorites.full {
+  top: 0;
+  right: 0;
+  left: 0;
+  width: auto;
+  z-index: 99;
+}
+
 .favorites-title {
   font-size: 2em;
   font-weight: 300;
