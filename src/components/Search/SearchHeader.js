@@ -195,7 +195,7 @@ export class SearchHeader extends Component {
               <div className="property-items" ref={(el) => { this.propItems = el; }}>
                 {propItems}
               </div>
-              <button className="gmap-btn sm-size btn-add-prop" onClick={e => this.addProp(e)}>
+              <button className="gmap-btn small btn-add-prop" onClick={e => this.addProp(e)}>
                 <i className="icon fas fa-plus"></i> Adicionar outro
               </button>
             </div>}

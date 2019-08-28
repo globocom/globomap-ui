@@ -14,4 +14,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export const host = '';
+export const host = 'http://localhost:8888';

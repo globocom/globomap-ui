@@ -104,7 +104,7 @@ export class Monit extends Component {
 
     if (node.type === 'zabbix_graph') {
       zbxGraphButton = (
-        <button className="topcoat-button--cta" onClick={(e) => this.openZbxGraph(e)}>
+        <button className="gmap-btn small" onClick={(e) => this.openZbxGraph(e)}>
           <i className="fa fa-chart-bar"></i>&nbsp;Show Zabbix Graph
         </button>
       );

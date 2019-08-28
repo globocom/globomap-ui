@@ -1,0 +1,24 @@
+.tour-content {
+  display: flex;
+  flex-flow: row;
+  width: 75vw;
+  height: 50vh;
+}
+
+.tour-left,
+.tour-right {
+  padding: 20px;
+
+  /*background-color: rgba(0, 200, 100, 0.3);*/
+}
+
+.tour-left {
+  font: bold 4rem Helvetica;
+  color: #444;
+  letter-spacing: -0.25rem;
+  width: 50%;
+}
+
+.tour-right {
+  width: 50%;
+}

@@ -15,12 +15,6 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  color: white;
-  font-size: 18px;
-}
-
-.modal .close-modal-btn:hover {
-  color: #333;
 }
 
 .modal .modal-loading {

@@ -23,7 +23,8 @@ import {
   fetchEdges,
   fetchQueries,
   getServerData,
-  toggleHasId } from '../../redux/modules/app';
+  toggleHasId,
+  showModal } from '../../redux/modules/app';
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
@@ -37,7 +38,8 @@ import {
   Search,
   Stage,
   Loading,
-  TabContent } from '../';
+  TabContent,
+  Tour } from '../';
 import './App.css';
 
 export class App extends React.Component {
@@ -61,6 +63,9 @@ export class App extends React.Component {
     this.props.fetchEdges();
     this.props.fetchQueries();
     this.props.getServerData();
+
+    this.props.showModal(<Tour />, false);
+
     document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100));
   }
 
@@ -119,6 +124,7 @@ export default connect(
     getServerData,
     clearCurrentNode,
     resetSubNodes,
-    toggleHasId
+    toggleHasId,
+    showModal
   }
 )(App);

@@ -166,6 +166,17 @@ button:disabled {
   border-top: 1px solid white;
 }
 
+.base-panel-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  color: #444;
+  background-color: transparent;
+}
+
 .base-panel-content {
   padding: 20px;
   font-weight: lighter;
@@ -203,6 +214,11 @@ button:disabled {
   outline: none;
 }
 
+.gmap-btn.no-bg {
+  background: transparent;
+  border-bottom: 1px solid transparent;
+}
+
 .gmap-text {
   color: #2eb78e;
   border: 1px solid #ddd;
@@ -214,8 +230,8 @@ button:disabled {
   color: #ddd;
 }
 
-.gmap-btn.sm-size,
-.gmap-text.sm-size {
+.gmap-btn.small,
+.gmap-text.small {
   font-size: 14px;
   padding: 4px 10px;
 }

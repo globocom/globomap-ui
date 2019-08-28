@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import App from './App/App';
-import AppFull from './App/AppFull';
 import AutoMap from './AutoMap/AutoMap';
 import Favorites from './Favorites/Favorites';
 import Home from './Home/Home';
@@ -36,10 +35,10 @@ import Sidebar from './Sidebar/Sidebar';
 import Stage from './Stage/Stage';
 import Tab from './Tabs/Tab';
 import TabContent from './Tabs/TabContent';
+import Tour from './Tour/Tour';
 
 export {
   App,
-  AppFull,
   AutoMap,
   Favorites,
   Home,
@@ -59,5 +58,6 @@ export {
   Sidebar,
   Stage,
   Tab,
-  TabContent
+  TabContent,
+  Tour
 }

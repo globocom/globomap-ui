@@ -39,6 +39,7 @@ const GET_SERVER_DATA_FAIL = 'get_server_data_fail';
 
 const TOGGLE_GRAPH = 'toggle_graph';
 const TOGGLE_HASID = 'toggle_hasid';
+
 const SHOW_MODAL = 'show_modal';
 const CLOSE_MODAL = 'close_modal';
 
@@ -60,6 +61,7 @@ const initialState = {
   hasId: false,
   modalVisible: false,
   modalContent: null,
+  modalShowCloseButton: true,
   collectionsLoading: false,
   graphsLoading: false,
   queriesLoading: false
@@ -226,7 +228,8 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         modalVisible: true,
-        modalContent: action.content
+        modalContent: action.content,
+        modalShowCloseButton: action.showCloseBtn
       }
 
     case CLOSE_MODAL:
@@ -289,10 +292,11 @@ export function toggleHasId() {
   };
 }
 
-export function showModal(content) {
+export function showModal(content, showCloseBtn=true) {
   return {
     type: SHOW_MODAL,
-    content
+    content,
+    showCloseBtn
   }
 }
 

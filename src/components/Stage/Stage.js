@@ -155,25 +155,25 @@ export class Stage extends Component {
           </Link>}
 
         <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
-          <button className="gmap-btn sm-size tool-btn-left btn-toggle-menu" onClick={this.props.toggleFullTab}
+          <button className="gmap-btn small tool-btn-left btn-toggle-menu" onClick={this.props.toggleFullTab}
                   data-tippy-content="Toggle Menu">
             <i className="fas fa-bars"></i>
           </button>
 
-          <button className="gmap-btn sm-size btn-share-map" onClick={e => this.shareMap(e)}
+          <button className="gmap-btn small btn-share-map" onClick={e => this.shareMap(e)}
                   data-tippy-content="Compartilhar este mapa"
                   disabled={!rootNodeHasItens}>
             <i className="fas fa-link"></i>
           </button>
 
-          <button className="gmap-btn sm-size btn-save-map" onClick={e => this.saveMap(e)}
+          <button className="gmap-btn small btn-save-map" onClick={e => this.saveMap(e)}
                   data-tippy-content="Salvar este mapa"
                   disabled={!rootNodeHasItens}>
             <i className="fas fa-save"></i>
           </button>
 
           <Tab tabKey="favorites">
-            <button className="gmap-btn sm-size btn-favorites"
+            <button className="gmap-btn small btn-favorites"
                     data-tippy-content="Mostrar mapas salvos">
               <i className="fas fa-star"></i>
             </button>

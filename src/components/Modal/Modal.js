@@ -23,12 +23,13 @@ import './Modal.css';
 export class Modal extends React.Component {
   render() {
     return this.props.modalVisible
-      ? <div className="modal" onClick={(e) => this.props.closeModal()}>
-          <button className="close-modal-btn topcoat-button--quiet"
-            onClick={(e) => this.props.closeModal()}>
-            <i className="fa fa-times"></i>
-          </button>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      ? <div className="modal">
+          {this.props.showCloseBtn &&
+            <button className="gmap-btn no-bg close-modal-btn"
+              onClick={(e) => this.props.closeModal()}>
+              <i className="fa fa-times"></i>
+            </button>}
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
             <Loading isLoading={this.props.modalContent === null} iconSize="big" />
             {this.props.modalContent}
           </div>
@@ -40,7 +41,8 @@ export class Modal extends React.Component {
 function mapStateToProps(state) {
   return {
     modalVisible: state.app.modalVisible,
-    modalContent: state.app.modalContent
+    modalContent: state.app.modalContent,
+    showCloseBtn: state.app.modalShowCloseButton
   };
 }
 
