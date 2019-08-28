@@ -25,7 +25,7 @@ import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
 import {
-  setTab,
+  setFullTab,
   closeTab } from '../../redux/modules/tabs';
 import { sortByName } from '../../utils';
 import './Favorites.css';
@@ -41,7 +41,7 @@ export class Favorites extends React.Component {
     this.props.clearCurrentNode();
     this.props.resetSubNodes();
     this.props.setStageNodes(content);
-    this.props.setTab('map');
+    this.props.setFullTab('map');
   }
 
   onDeleteGraph(event, key) {
@@ -116,7 +116,7 @@ export default connect(
     getUserMap,
     resetSubNodes,
     setStageNodes,
-    setTab,
+    setFullTab,
     closeTab
   }
 )(Favorites);
