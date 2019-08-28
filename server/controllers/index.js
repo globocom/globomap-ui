@@ -21,6 +21,7 @@ const router = express.Router();
 router.use('/', require('./auth'));
 router.use('/api', require('./base'));
 router.use('/api/maps', require('./maps'));
+router.use('/api/user', require('./user'));
 router.use('/tools', require('./tools'));
 router.use('/plugins', require('./plugins'));
 
