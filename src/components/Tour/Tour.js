@@ -118,7 +118,7 @@ export class Tour extends React.Component {
                 <i className="fas fa-arrow-left"></i> Anterior
               </button>}
 
-            {this.state.stepIndex == totalSteps &&
+            {this.state.stepIndex === totalSteps &&
               <button className="gmap-btn tour-btn-finish" onClick={e => this.onCloseTour(e)}>
                 Fechar <i className="fas fa-check-circle"></i>
               </button>}
