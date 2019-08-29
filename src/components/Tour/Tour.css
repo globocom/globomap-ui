@@ -2,14 +2,13 @@
   display: flex;
   flex-flow: row;
   width: 75vw;
-  height: 50vh;
+  height: 45vh;
+  min-height: 220px;
 }
 
 .tour-left,
 .tour-right {
   padding: 20px;
-
-  /*background-color: rgba(0, 200, 100, 0.3);*/
 }
 
 .tour-left {
@@ -21,4 +20,8 @@
 
 .tour-right {
   width: 50%;
+}
+
+.tour-btn-previous {
+  float: left;
 }
