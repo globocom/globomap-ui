@@ -16,7 +16,10 @@ limitations under the License.
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { closeModal } from '../../redux/modules/app';
+import {
+  closeModal,
+  saveTourStatus } from '../../redux/modules/app';
+import { saveLocal } from '../../utils';
 import './Tour.css';
 
 export class Tour extends React.Component {
@@ -32,8 +35,11 @@ export class Tour extends React.Component {
 
   onCloseTour(event) {
     event.stopPropagation();
+    this.props.saveTourStatus(true);
+
+    saveLocal('tour', true);
+
     this.props.closeModal();
-    console.log('on close tour');
   }
 
   nextStep(event) {
@@ -44,32 +50,26 @@ export class Tour extends React.Component {
     this.setState({ stepIndex: this.state.stepIndex - 1 });
   }
 
-  registerStep(content) {
-    this.setState({ steps: [...this.state.steps, content] });
-  }
-
-  setSteps() {
+  defineSteps() {
     this.setState({
       steps: [
         <React.Fragment>
-          <span className="tour-left">Bem vindo ao Globomap</span>
+          <span className="tour-left">Bem-vindo ao Globomap!</span>
           <div className="tour-right">
-            <p>
-              O Globomap é uma ferramenta para te auxiliar a encontrar recursos e seus relacionamentos.
-            </p>
-            Segue uma breve introdução às suas principais sessões:
-            <ul>
-              <li>Mapas Automáticos</li>
-              <li>Relatórios</li>
-              <li>Busca Avançada</li>
-            </ul>
+            <p>O Globomap é uma ferramenta que mapeia os recursos da globo.com e os relacionamentos entre eles.</p>
+            <p>Com ele, você pode encontrar informações sobre qualquer recurso, bem como quais têm alguma relação com eles.</p>
+            <p>Segue uma breve introdução às suas principais sessões.</p>
           </div>
         </React.Fragment>,
 
         <React.Fragment>
           <span className="tour-left">Mapas Automáticos</span>
           <div className="tour-right">
-            <p>Com os Mapas Automáticos você pode realizar buscas pré-definidas para um recurso e poderá obter uma visualização interativa de seus relacionamentos.</p>
+            <p>
+              Com os Mapas Automáticos você pode realizar buscas pré-definidas para um recurso e poderá obter uma visualização interativa de seus relacionamentos,
+              podendo ver diversas informações de qualquer recurso no mapa.
+            </p>
+            <p>Também é possível personalizar o mapa gerado, apagando partes dele ou até mesmo adicionando novos nós que têm relação com os que estão lá.</p>
           </div>
         </React.Fragment>,
 
@@ -77,16 +77,27 @@ export class Tour extends React.Component {
           <span className="tour-left">Relatórios</span>
           <div className="tour-right">
             <p>Assim como os Mapas Automáticos, os Relatórios também são buscas pré-definidas.</p>
-            <p>A diferença é que o retorno é textual e não interativo, contendo somente as informações relacionadas ao objetivo do relatório.</p>
+            <p>Enquanto os Mapas Automáticos são interativos, os Relatórios são objetivos, contendo somente as informações mais importantes para o relatório.</p>
           </div>
         </React.Fragment>,
 
         <React.Fragment>
           <span className="tour-left">Busca Avançada</span>
           <div className="tour-right">
-            <p>Na Busca Avançada você procura por qualquer recurso, utilizando tanto o nome quanto suas propriedades.</p>
-            <p>Utilize também filtros para facilitar sua busca.</p>
-            <p>A partir de um item retornado na sua busca você poderá visualizar e montar um mapa personalizado com todos os seus relacionamentos.</p>
+            <p>Na Busca Avançada você procura por qualquer recurso. Poderá utilizar na busca o nome ou suas propriedades.</p>
+            <p>É possível também utilizar filtros para facilitar sua busca.</p>
+            <p>A partir de um item retornado na sua busca, você poderá visualizar e montar um mapa personalizado com todos os relacionamentos que seu mapa precisar.</p>
+          </div>
+        </React.Fragment>,
+
+        <React.Fragment>
+          <span className="tour-left">Mapas Salvos</span>
+          <div className="tour-right">
+            <p>
+              No Globomap, é possível salvar qualquer mapa gerado, seja ele automático ou personalizado. Desta forma,
+              você pode consultá-lo mais rapidamente quando quiser.
+            </p>
+            <p>É possível também compartilhar um mapa. Com apenas um link, qualquer um pode visualizar o mapa que você construiu.</p>
           </div>
         </React.Fragment>
       ]
@@ -94,7 +105,7 @@ export class Tour extends React.Component {
   }
 
   componentDidMount() {
-    this.setSteps()
+    this.defineSteps();
   }
 
   render() {
@@ -118,14 +129,14 @@ export class Tour extends React.Component {
                 <i className="fas fa-arrow-left"></i> Anterior
               </button>}
 
-            {this.state.stepIndex === totalSteps &&
-              <button className="gmap-btn tour-btn-finish" onClick={e => this.onCloseTour(e)}>
-                Fechar <i className="fas fa-check-circle"></i>
-              </button>}
-
             {this.state.stepIndex < totalSteps &&
               <button className="gmap-btn tour-btn-next" onClick={e => this.nextStep(e)}>
                 Pr&oacute;ximo <i className="fas fa-arrow-right"></i>
+              </button>}
+
+            {this.state.stepIndex === totalSteps &&
+              <button className="gmap-btn tour-btn-finish" onClick={e => this.onCloseTour(e)}>
+                Fechar <i className="fas fa-check-circle"></i>
               </button>}
           </div>
         </div>
@@ -136,14 +147,14 @@ export class Tour extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return {
-  };
+  return {};
 }
 
 export default connect(
   mapStateToProps,
   {
-    closeModal
+    closeModal,
+    saveTourStatus
   }
 )(Tour);
 

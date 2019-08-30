@@ -15,7 +15,9 @@ limitations under the License.
 */
 
 import _ from 'lodash';
-import { sortByName, getEdgeLinks } from '../../utils';
+import {
+  sortByName,
+  getEdgeLinks } from '../../utils';
 
 const FETCH_GRAPHS = 'fetch_graphs';
 const FETCH_GRAPHS_SUCCESS = 'fetch_graphs_success';
@@ -36,6 +38,14 @@ const FETCH_QUERIES_FAIL = 'fetch_queries_fail';
 const GET_SERVER_DATA = 'get_server_data';
 const GET_SERVER_DATA_SUCCESS = 'get_server_data_success';
 const GET_SERVER_DATA_FAIL = 'get_server_data_fail';
+
+const GET_TOUR_STATUS = 'get_tour_status';
+const GET_TOUR_STATUS_SUCCESS = 'get_tour_status_success';
+const GET_TOUR_STATUS_FAIL = 'get_tour_status_fail';
+
+const SAVE_TOUR_STATUS = 'save_tour_status';
+const SAVE_TOUR_STATUS_SUCCESS = 'save_tour_status_success';
+const SAVE_TOUR_STATUS_FAIL = 'save_tour_status_fail';
 
 const TOGGLE_GRAPH = 'toggle_graph';
 const TOGGLE_HASID = 'toggle_hasid';
@@ -58,6 +68,8 @@ const initialState = {
       picture: ''
     }
   },
+  tourStatus: false,
+  tourStatusLoading: false,
   hasId: false,
   modalVisible: false,
   modalContent: null,
@@ -197,6 +209,45 @@ export default function reducer(state=initialState, action={}) {
         }
       };
 
+    case GET_TOUR_STATUS:
+      console.log('get tour status...');
+      return {
+        ...state,
+        tourStatusLoading: true
+      }
+
+    case GET_TOUR_STATUS_SUCCESS:
+      return {
+        ...state,
+        tourStatus: action.result.data.tour,
+        tourStatusLoading: false
+      };
+
+    case GET_TOUR_STATUS_FAIL:
+      console.log(action.error);
+      return {
+        ...state,
+        tourStatus: false,
+        tourStatusLoading: false
+      };
+
+    case SAVE_TOUR_STATUS:
+      console.log('save tour status...');
+      return state;
+
+    case SAVE_TOUR_STATUS_SUCCESS:
+      return {
+        ...state,
+        tourStatus: action.status
+      };
+
+    case SAVE_TOUR_STATUS_FAIL:
+      console.log(action.error);
+      return {
+        ...state,
+        tourStatus: state.tourStatus
+      };
+
     case TOGGLE_GRAPH:
       const newGraphs = state.graphs.map((graph) => {
         if(graph.name === action.name) {
@@ -276,6 +327,21 @@ export function getServerData() {
   return {
     types: [GET_SERVER_DATA, GET_SERVER_DATA_SUCCESS, GET_SERVER_DATA_FAIL],
     promise: (client) => client.get('/tools/server-data')
+  };
+}
+
+export function getTourStatus() {
+  return {
+    types: [GET_TOUR_STATUS, GET_TOUR_STATUS_SUCCESS, GET_TOUR_STATUS_FAIL],
+    promise: (client) => client.get('/api/user/tour')
+  };
+}
+
+export function saveTourStatus(status) {
+  return {
+    types: [SAVE_TOUR_STATUS, SAVE_TOUR_STATUS_SUCCESS, SAVE_TOUR_STATUS_FAIL],
+    promise: (client) => client.post('/api/user/tour', { tour: status }),
+    status
   };
 }
 

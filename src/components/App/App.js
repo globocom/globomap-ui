@@ -23,6 +23,7 @@ import {
   fetchEdges,
   fetchQueries,
   getServerData,
+  getTourStatus,
   toggleHasId,
   showModal } from '../../redux/modules/app';
 import {
@@ -40,6 +41,7 @@ import {
   Loading,
   TabContent,
   Tour } from '../';
+import { getLocal } from '../../utils';
 import './App.css';
 
 export class App extends React.Component {
@@ -63,8 +65,15 @@ export class App extends React.Component {
     this.props.fetchEdges();
     this.props.fetchQueries();
     this.props.getServerData();
+    this.props.getTourStatus();
 
-    this.props.showModal(<Tour />, false);
+    // if (!this.props.tourStatus) {
+    //   this.props.showModal(<Tour />, false);
+    // }
+
+    if (getLocal('tour') !== 'true') {
+      this.props.showModal(<Tour />, false);
+    }
 
     document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100));
   }
@@ -104,6 +113,8 @@ export class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    tourStatus: state.app.tourStatus,
+    tourStatusLoading: state.app.tourStatusLoading,
     findLoading: state.nodes.findLoading,
     traversalLoading: state.nodes.traversalLoading,
     getSharedLoading: state.stage.getSharedLoading,
@@ -122,6 +133,7 @@ export default connect(
     fetchEdges,
     fetchQueries,
     getServerData,
+    getTourStatus,
     clearCurrentNode,
     resetSubNodes,
     toggleHasId,

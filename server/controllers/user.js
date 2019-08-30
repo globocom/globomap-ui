@@ -86,7 +86,7 @@ router.post('/tour', isAuthenticated, (req, res) => {
     return;
   }
 
-  const tour = req.body.tour;
+  const tour = req.body.params.tour;
 
   getUserInfo(req.session).then(uInfo => {
     redis.hset(uInfo.email, 'tour', tour)

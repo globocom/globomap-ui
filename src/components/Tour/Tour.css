@@ -3,7 +3,7 @@
   flex-flow: row;
   width: 75vw;
   height: 45vh;
-  min-height: 220px;
+  min-height: 230px;
 }
 
 .tour-left,
@@ -12,7 +12,7 @@
 }
 
 .tour-left {
-  font: bold 4rem Helvetica;
+  font: bold 4rem Helvetica, sans-serif;
   color: #444;
   letter-spacing: -0.25rem;
   width: 50%;

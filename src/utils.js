@@ -16,6 +16,8 @@ limitations under the License.
 
 import forOwn from 'lodash/forOwn';
 
+export const customMapsSuffix = '_custom_maps';
+
 export const traverseItems = (nList, fn) => {
   for (let i in nList) {
     let node = nList[i];
@@ -93,7 +95,7 @@ export const sortBy = (arr, prop) => {
   });
 
   return arrCopy;
-}
+};
 
 export const sortByName = (arr) => {
   return sortBy(arr, 'name');
@@ -117,7 +119,7 @@ const containsObject = (obj, list) => {
     }
   }
   return false;
-}
+};
 
 const addChildren = (graph, node) => {
   const nodeId = node._id;
@@ -154,7 +156,7 @@ const addChildren = (graph, node) => {
   }
 
   return newNode;
-}
+};
 
 const addChildrenNoRepetition = (graph, father, uniqueProp) => {
   let possibleChildren = addChildren(graph, father.node).items;
@@ -164,17 +166,18 @@ const addChildrenNoRepetition = (graph, father, uniqueProp) => {
       father.node.items.push(possibleChildren[i]);
     }
   }
-}
+};
 
 const getNextGeneration = (father, uniqueProp) => {
   let nextGeneration = [];
   for (let i=0, l=father.node.items.length; i<l; i++) {
-    nextGeneration.push({'ancestors': [...father.ancestors,
-                                    father.node[uniqueProp]],
-                       'node': father.node.items[i]});
+    nextGeneration.push({
+      'ancestors': [...father.ancestors, father.node[uniqueProp]],
+      'node': father.node.items[i]
+    });
   }
   return nextGeneration;
-}
+};
 
 export const traversalToStage = (src, uniqueProp='_id') => {
   if (src.length === 0) {
@@ -201,7 +204,7 @@ export const traversalToStage = (src, uniqueProp='_id') => {
   }
 
   return tree;
-}
+};
 
 export const fakeEdge = {
   _key: "",
@@ -216,6 +219,36 @@ export const fakeEdge = {
   type: "port",
   properties: {},
   properties_metadata: {}
-}
+};
 
-export const customMapsSuffix = '_custom_maps';
+export const saveLocal = (item, value) => {
+  try {
+    localStorage.setItem(item, value);
+  } catch {
+    // Ignore write errors.
+  }
+};
+
+export const getLocal = (item) => {
+  try {
+    const value = localStorage.getItem(item);
+    return value;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const loadState = () => {
+  const serializedState = getLocal('gmapState');
+
+  if (serializedState === null) {
+    return undefined;
+  }
+
+  return JSON.parse(serializedState);
+};
+
+export const saveState = (state) => {
+  const serializedState = JSON.stringify(state);
+  saveLocal('gmapState', serializedState);
+};

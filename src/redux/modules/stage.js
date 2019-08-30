@@ -292,7 +292,7 @@ export function addNewStageNode(node, parentUuid) {
 
 export function addStageNode(node, parentUuid, setCurrent=false) {
   return (dispatch, getState) => {
-    if(stageHasNode(getState().stage.stageNodes, { node, parentUuid })) {
+    if (stageHasNode(getState().stage.stageNodes, { node, parentUuid })) {
       dispatch(setCurrentNode(node));
       return;
     }
