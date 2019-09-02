@@ -40,11 +40,11 @@ limitations under the License.
   transition: opacity 200ms ease-in;
 }
 
-.ui-loading-leave {
+.ui-loading-exit {
   opacity: 1;
 }
 
-.ui-loading-leave.ui-loading-leave-active {
+.ui-loading-exit.ui-loading-exit-active {
   opacity: 0.01;
   transition: opacity 200ms ease-in;
 }

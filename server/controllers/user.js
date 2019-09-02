@@ -57,7 +57,7 @@ router.get('/tour', isAuthenticated, (req, res) => {
   }
 
   getUserInfo(req.session).then(uInfo => {
-    redis.hget(uInfo.email, 'tour')
+    redis.hget(uInfo.email, 'gmap.tour')
       .then((result) => {
         result = (!result ? false : result)
         res.json({tour: JSON.parse(result)});
@@ -89,7 +89,7 @@ router.post('/tour', isAuthenticated, (req, res) => {
   const tour = req.body.params.tour;
 
   getUserInfo(req.session).then(uInfo => {
-    redis.hset(uInfo.email, 'tour', tour)
+    redis.hset(uInfo.email, 'gmap.tour', tour)
       .then((result) => {
         res.json(result);
       })

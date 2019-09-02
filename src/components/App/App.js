@@ -23,7 +23,6 @@ import {
   fetchEdges,
   fetchQueries,
   getServerData,
-  getTourStatus,
   toggleHasId,
   showModal } from '../../redux/modules/app';
 import {
@@ -41,7 +40,6 @@ import {
   Loading,
   TabContent,
   Tour } from '../';
-import { getLocal } from '../../utils';
 import './App.css';
 
 export class App extends React.Component {
@@ -65,16 +63,6 @@ export class App extends React.Component {
     this.props.fetchEdges();
     this.props.fetchQueries();
     this.props.getServerData();
-    this.props.getTourStatus();
-
-    // if (!this.props.tourStatus) {
-    //   this.props.showModal(<Tour />, false);
-    // }
-
-    if (getLocal('tour') !== 'true') {
-      this.props.showModal(<Tour />, false);
-    }
-
     document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100));
   }
 
@@ -86,7 +74,6 @@ export class App extends React.Component {
     return (
       <div className="main">
         <Sidebar />
-
         <TabContent tabKey="home"><Home /></TabContent>
         <TabContent tabKey="automap"><AutoMap /></TabContent>
         <TabContent tabKey="reports"><Reports /></TabContent>
@@ -95,7 +82,6 @@ export class App extends React.Component {
           <Stage sharedMapKey={this.props.match.params.mapKey} />
         </TabContent>
         <TabContent tabKey="favorites"><Favorites /></TabContent>
-
         <Loading iconSize="big"
                  isLoading={this.props.findLoading
                             || this.props.traversalLoading
@@ -105,6 +91,7 @@ export class App extends React.Component {
                             || this.props.saveSharedLoading
                             || this.props.automapTraversalLoading} />
         <Modal />
+        <Tour />
       </div>
     );
   }
@@ -113,8 +100,6 @@ export class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    tourStatus: state.app.tourStatus,
-    tourStatusLoading: state.app.tourStatusLoading,
     findLoading: state.nodes.findLoading,
     traversalLoading: state.nodes.traversalLoading,
     getSharedLoading: state.stage.getSharedLoading,
@@ -133,7 +118,6 @@ export default connect(
     fetchEdges,
     fetchQueries,
     getServerData,
-    getTourStatus,
     clearCurrentNode,
     resetSubNodes,
     toggleHasId,

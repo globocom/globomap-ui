@@ -16,6 +16,7 @@ limitations under the License.
 
 import _ from 'lodash';
 import {
+  saveLocal,
   sortByName,
   getEdgeLinks } from '../../utils';
 
@@ -43,6 +44,7 @@ const GET_TOUR_STATUS = 'get_tour_status';
 const GET_TOUR_STATUS_SUCCESS = 'get_tour_status_success';
 const GET_TOUR_STATUS_FAIL = 'get_tour_status_fail';
 
+const SET_TOUR_STATUS = 'set_tour_status';
 const SAVE_TOUR_STATUS = 'save_tour_status';
 const SAVE_TOUR_STATUS_SUCCESS = 'save_tour_status_success';
 const SAVE_TOUR_STATUS_FAIL = 'save_tour_status_fail';
@@ -68,7 +70,7 @@ const initialState = {
       picture: ''
     }
   },
-  tourStatus: false,
+  tourStatus: true,
   tourStatusLoading: false,
   hasId: false,
   modalVisible: false,
@@ -217,9 +219,12 @@ export default function reducer(state=initialState, action={}) {
       }
 
     case GET_TOUR_STATUS_SUCCESS:
+      let tourStatus = action.result.data.tour
+      saveLocal('gmap.tour', tourStatus);
+
       return {
         ...state,
-        tourStatus: action.result.data.tour,
+        tourStatus: tourStatus,
         tourStatusLoading: false
       };
 
@@ -231,11 +236,18 @@ export default function reducer(state=initialState, action={}) {
         tourStatusLoading: false
       };
 
+    case SET_TOUR_STATUS:
+      return {
+        ...state,
+        tourStatus: action.status
+      };
+
     case SAVE_TOUR_STATUS:
       console.log('save tour status...');
       return state;
 
     case SAVE_TOUR_STATUS_SUCCESS:
+      saveLocal('gmap.tour', action.status);
       return {
         ...state,
         tourStatus: action.status
@@ -334,6 +346,13 @@ export function getTourStatus() {
   return {
     types: [GET_TOUR_STATUS, GET_TOUR_STATUS_SUCCESS, GET_TOUR_STATUS_FAIL],
     promise: (client) => client.get('/api/user/tour')
+  };
+}
+
+export function setTourStatus(status) {
+  return {
+    type: SET_TOUR_STATUS,
+    status
   };
 }
 

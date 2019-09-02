@@ -17,9 +17,10 @@ limitations under the License.
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  closeModal,
-  saveTourStatus } from '../../redux/modules/app';
-import { saveLocal } from '../../utils';
+  setTourStatus,
+  saveTourStatus,
+  getTourStatus } from '../../redux/modules/app';
+import { getLocal } from '../../utils';
 import './Tour.css';
 
 export class Tour extends React.Component {
@@ -36,10 +37,6 @@ export class Tour extends React.Component {
   onCloseTour(event) {
     event.stopPropagation();
     this.props.saveTourStatus(true);
-
-    saveLocal('tour', true);
-
-    this.props.closeModal();
   }
 
   nextStep(event) {
@@ -106,55 +103,66 @@ export class Tour extends React.Component {
 
   componentDidMount() {
     this.defineSteps();
+
+    const tour = getLocal('gmap.tour');
+    if (tour !== null) {
+      this.props.setTourStatus(tour === 'true');
+    } else {
+      this.props.getTourStatus();
+    }
   }
 
   render() {
     const totalSteps = (this.state.steps.length - 1);
+    return !this.props.tourStatus
+      ? <div className="tour-bg">
+          <div className="tour">
+            <div className="base-panel">
+              <h3 className="base-panel-title">O que &eacute; o Globomap</h3>
+              <button className="base-panel-close-btn" onClick={e => this.onCloseTour(e)}>
+                <i className="fas fa-times"></i>
+              </button>
 
-    return (
-      <div className="tour">
-        <div className="base-panel">
-          <h3 className="base-panel-title">O que &eacute; o Globomap</h3>
-          <button className="base-panel-close-btn" onClick={e => this.onCloseTour(e)}>
-            <i className="fas fa-times"></i>
-          </button>
+              <div className="base-panel-content tour-content">
+                {this.state.steps[this.state.stepIndex]}
+              </div>
 
-          <div className="base-panel-content tour-content">
-            {this.state.steps[this.state.stepIndex]}
-          </div>
+              <div className="base-panel-footer">
+                {this.state.stepIndex > 0 &&
+                  <button className="gmap-btn tour-btn-previous" onClick={e => this.previousStep(e)}>
+                    <i className="fas fa-arrow-left"></i> Anterior
+                  </button>}
 
-          <div className="base-panel-footer">
-            {this.state.stepIndex > 0 &&
-              <button className="gmap-btn tour-btn-previous" onClick={e => this.previousStep(e)}>
-                <i className="fas fa-arrow-left"></i> Anterior
-              </button>}
+                {this.state.stepIndex < totalSteps &&
+                  <button className="gmap-btn tour-btn-next" onClick={e => this.nextStep(e)}>
+                    Pr&oacute;ximo <i className="fas fa-arrow-right"></i>
+                  </button>}
 
-            {this.state.stepIndex < totalSteps &&
-              <button className="gmap-btn tour-btn-next" onClick={e => this.nextStep(e)}>
-                Pr&oacute;ximo <i className="fas fa-arrow-right"></i>
-              </button>}
-
-            {this.state.stepIndex === totalSteps &&
-              <button className="gmap-btn tour-btn-finish" onClick={e => this.onCloseTour(e)}>
-                Fechar <i className="fas fa-check-circle"></i>
-              </button>}
+                {this.state.stepIndex === totalSteps &&
+                  <button className="gmap-btn tour-btn-finish" onClick={e => this.onCloseTour(e)}>
+                    Fechar <i className="fas fa-check-circle"></i>
+                  </button>}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      : null;
   }
 
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    tourStatus: state.app.tourStatus
+  };
 }
 
 export default connect(
   mapStateToProps,
   {
-    closeModal,
-    saveTourStatus
+    setTourStatus,
+    saveTourStatus,
+    getTourStatus
   }
 )(Tour);
 
