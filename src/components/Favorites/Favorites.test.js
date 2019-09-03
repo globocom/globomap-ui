@@ -13,7 +13,7 @@ describe("Favorites", function() {
   let componentWillMountStub;
 
   beforeEach(function() {
-    componentWillMountStub = sinon.stub(Favorites.prototype, 'componentWillMount').value('newValue');
+    componentWillMountStub = sinon.stub(Favorites.prototype, 'UNSAFE_componentWillMount').value('newValue');
   });
 
   afterEach(function () {
