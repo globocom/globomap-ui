@@ -163,12 +163,11 @@ export default function reducer(state=initialState, action={}) {
 
       let edges = [];
       let nodes = data[0].nodes;
-      let type = data[0].type;
       let rootNode = data[0].rootNode;
 
       nodes.forEach((node, index) => {
         if (node._id !== rootNode) {
-          node['type'] = type;
+          node['type'] = node._id.split('/')[0]
           let source = {
             _key: `napi_${index}`,
             _id: `port/napi_${index}`,
