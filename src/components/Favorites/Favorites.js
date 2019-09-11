@@ -28,6 +28,7 @@ import {
   setFullTab,
   closeTab } from '../../redux/modules/tabs';
 import { sortByName } from '../../utils';
+import { App } from '../';
 import './Favorites.css';
 
 export class Favorites extends React.Component {
@@ -84,16 +85,18 @@ export class Favorites extends React.Component {
     const full = this.props.fullTab ? 'full' : '';
 
     return (
-      <div className={`favorites ${full} ${this.props.className}`}>
-        <h3 className="favorites-title">
-          Mapas Salvos
-          <button className="btn-close-favorites"
-                onClick={() => this.props.closeTab('map')}>
-          <i className="fas fa-times"></i>
-        </button>
-        </h3>
-        {this.renderUserMaps()}
-      </div>
+      <App>
+        <div className={`favorites ${full} ${this.props.className}`}>
+          <h3 className="favorites-title">
+            Mapas Salvos
+            <button className="btn-close-favorites"
+                  onClick={() => this.props.closeTab('map')}>
+            <i className="fas fa-times"></i>
+          </button>
+          </h3>
+          {this.renderUserMaps()}
+        </div>
+      </App>
     );
   }
 

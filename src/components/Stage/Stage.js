@@ -26,13 +26,12 @@ import {
   getUserMap,
   listUserMaps } from '../../redux/modules/stage';
 import {
-  setTab,
   setFullTab,
   toggleFullTab } from '../../redux/modules/tabs';
 import {
+  App,
   NodeInfo,
   NodeItem } from '../';
-import { Tab } from '../';
 import SubNodes from './SubNodes';
 import './Stage.css';
 
@@ -147,61 +146,62 @@ export class Stage extends Component {
     const full = this.props.fullTab ? 'full' : '';
 
     return (
-      <div className={`stage ${this.props.className} ${full} ${noSubnodes}`}>
+      <App>
+        <div className={`stage ${this.props.className} ${full} ${noSubnodes}`}>
 
-        {this.props.full &&
-          <Link to="/" className="btn-close-full">
-            <i className="fa fa-arrow-left"></i>
-          </Link>}
+          {this.props.full &&
+            <Link to="/" className="btn-close-full">
+              <i className="fa fa-arrow-left"></i>
+            </Link>}
 
-        <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
-          <button className="gmap-btn small tool-btn-left btn-toggle-menu" onClick={this.props.toggleFullTab}
-                  data-tippy-content="Toggle Menu">
-            <i className="fas fa-bars"></i>
-          </button>
-
-          <button className="gmap-btn small btn-share-map" onClick={e => this.shareMap(e)}
-                  data-tippy-content="Compartilhar este mapa"
-                  disabled={!rootNodeHasItens}>
-            <i className="fas fa-link"></i>
-          </button>
-
-          <button className="gmap-btn small btn-save-map" onClick={e => this.saveMap(e)}
-                  data-tippy-content="Salvar este mapa"
-                  disabled={!rootNodeHasItens}>
-            <i className="fas fa-save"></i>
-          </button>
-
-          <Tab tabKey="favorites">
-            <button className="gmap-btn small btn-favorites"
-                    data-tippy-content="Mostrar mapas salvos">
-              <i className="fas fa-star"></i>
+          <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
+            <button className="gmap-btn small tool-btn-left btn-toggle-menu" onClick={this.props.toggleFullTab}
+                    data-tippy-content="Toggle Menu">
+              <i className="fas fa-bars"></i>
             </button>
-          </Tab>
 
-          {this.state.sharedLinkOpen &&
-            <div className="shared-link">
-              <input type="text" readOnly={true} className="link-url"
-                     value={urlToShare} onClick={e => e.target.select()} />
-              <button className="btn-clipboard" onClick={() => alert('Copiado!')}
-                      data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
-                <i className="fa fa-clipboard"></i> Copiar para o clipboard
-              </button>
-            </div>}
-        </div>
+            <button className="gmap-btn small btn-share-map" onClick={e => this.shareMap(e)}
+                    data-tippy-content="Compartilhar este mapa"
+                    disabled={!rootNodeHasItens}>
+              <i className="fas fa-link"></i>
+            </button>
 
-        <div className="stage-container">
-          <div className="node-item-content">
-            {this.renderNodes(this.props.stageNodes)}
+            <button className="gmap-btn small btn-save-map" onClick={e => this.saveMap(e)}
+                    data-tippy-content="Salvar este mapa"
+                    disabled={!rootNodeHasItens}>
+              <i className="fas fa-save"></i>
+            </button>
+
+            <Link to={'/saved-maps'}
+                  className="gmap-btn small btn-favorites"
+                  data-tippy-content="Mostrar mapas salvos">
+                <i className="fas fa-star"></i>
+            </Link>
+
+            {this.state.sharedLinkOpen &&
+              <div className="shared-link">
+                <input type="text" readOnly={true} className="link-url"
+                       value={urlToShare} onClick={e => e.target.select()} />
+                <button className="btn-clipboard" onClick={() => alert('Copiado!')}
+                        data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
+                  <i className="fa fa-clipboard"></i> Copiar para o clipboard
+                </button>
+              </div>}
           </div>
+
+          <div className="stage-container">
+            <div className="node-item-content">
+              {this.renderNodes(this.props.stageNodes)}
+            </div>
+          </div>
+
+          <SubNodes />
+
+          {this.state.showNodeInfo &&
+            <NodeInfo node={this.state.nodeInfoNode}
+                      onClose={this.onCloseNodeInfo} />}
         </div>
-
-        <SubNodes />
-
-        {this.state.showNodeInfo &&
-          <NodeInfo node={this.state.nodeInfoNode}
-                    onClose={this.onCloseNodeInfo} />}
-      </div>
+      </App>
     );
   }
 }
@@ -222,7 +222,6 @@ export default connect(
     saveUserMap,
     getUserMap,
     listUserMaps,
-    setTab,
     setFullTab,
     toggleFullTab
   }

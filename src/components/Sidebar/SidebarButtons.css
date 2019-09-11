@@ -1,41 +1,41 @@
-.sidebar-buttons {
-  /*padding: 0 10px;*/
+.sidebar-buttons,
+.sidebar-buttons a {
+  box-sizing: border-box;
 }
 
-.sidebar-buttons button {
+.sidebar-buttons a {
   position: relative;
   display: block;
   width: 100%;
   text-align: left;
-  background: transparent;
   color: white;
-  border: 0;
-  cursor: pointer;
   font-size: 1em;
   font-weight: lighter;
   height: 50px;
-  padding: 10px 20px;
+  line-height: 50px;
+  padding: 0 20px;
+  text-decoration: none;
   border-top: 1px solid rgba(99, 99, 99, 0.2);
   outline: none;
 }
 
-.sidebar-buttons button .icon {
+.sidebar-buttons a .icon {
   display: inline-block;
   width: 20px;
   margin-right: 15px;
 }
 
-.sidebar-buttons button:last-child {
+.sidebar-buttons a:last-child {
   border-bottom: 1px solid rgba(99, 99, 99, 0.2);
 }
 
-.sidebar-buttons button:hover,
-.sidebar-buttons button.active {
+.sidebar-buttons a:hover,
+.sidebar-buttons a.active {
   color: #2eb78e;
 }
 
-.sidebar-buttons button:hover:before,
-.sidebar-buttons button.active:before {
+.sidebar-buttons a:hover:before,
+.sidebar-buttons a.active:before {
   content: '';
   position: absolute;
   top: 0;

@@ -61,7 +61,8 @@ export class SearchContent extends Component {
     this.props.addStageNode(node, null, true);
 
     // change to map screen and do traversal search
-    this.props.setFullTab('map');
+    this.props.history.push('/map');
+    // this.props.setFullTab('map');
     this.props.traversalSearch({ node: node });
   }
 

@@ -27,7 +27,9 @@ import {
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
-import { NodeInfo } from '../';
+import {
+  App,
+  NodeInfo } from '../';
 import './AutoMap.css';
 
 export class AutoMap extends React.Component {
@@ -195,41 +197,43 @@ export class AutoMap extends React.Component {
     });
 
     return (
-      <div className={`automaps base-content ${this.props.className}`}>
-        <div className="base-content-header">
-          <h2 className="base-content-title">Mapas Autom&aacute;ticos</h2>
-        </div>
+      <App>
+        <div className={`automaps base-content ${this.props.className}`}>
+          <div className="base-content-header">
+            <h2 className="base-content-title">Mapas Autom&aacute;ticos</h2>
+          </div>
 
-        <div className="base-panel automaps-panel automap-kind">
-          {this.renderKinds()}
-        </div>
+          <div className="base-panel automaps-panel automap-kind">
+            {this.renderKinds()}
+          </div>
 
-        <div className="base-panel automaps-panel automap-search">
-          <div className="automap-description">{this.renderDescription()}</div>
-          <input type="search" name="q" className="gmap-text automap-q" autoComplete="off"
-                disabled={!this.state.current}
-                value={this.state.q} ref={elem => { this.inputQ = elem; }}
-                onChange={_.throttle(this.handleQChange, 300)}
-                onKeyPress={e => this.handleEnterKeyPress(e)}
-                placeholder={curr ? curr.name : ''} />
-          <button className="gmap-btn"
-                  onClick={() => this.search()}
-                  disabled={!this.state.current}>
-            <i className="fas fa-search"></i>
-          </button>
-        </div>
+          <div className="base-panel automaps-panel automap-search">
+            <div className="automap-description">{this.renderDescription()}</div>
+            <input type="search" name="q" className="gmap-text automap-q" autoComplete="off"
+                  disabled={!this.state.current}
+                  value={this.state.q} ref={elem => { this.inputQ = elem; }}
+                  onChange={_.throttle(this.handleQChange, 300)}
+                  onKeyPress={e => this.handleEnterKeyPress(e)}
+                  placeholder={curr ? curr.name : ''} />
+            <button className="gmap-btn"
+                    onClick={() => this.search()}
+                    disabled={!this.state.current}>
+              <i className="fas fa-search"></i>
+            </button>
+          </div>
 
-        <div className="base-panel automaps-panel automap-content">
-          {this.props.automapFindLoading
-            ? <div className="content-loading">
-                <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
-              </div>
-            : <ul className="automap-found-nodes">{ automapNodes }</ul>}
+          <div className="base-panel automaps-panel automap-content">
+            {this.props.automapFindLoading
+              ? <div className="content-loading">
+                  <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                </div>
+              : <ul className="automap-found-nodes">{ automapNodes }</ul>}
+          </div>
+          {this.state.showNodeInfo &&
+            <NodeInfo node={this.state.nodeInfoNode}
+                      onClose={this.onCloseNodeInfo} />}
         </div>
-        {this.state.showNodeInfo &&
-          <NodeInfo node={this.state.nodeInfoNode}
-                    onClose={this.onCloseNodeInfo} />}
-      </div>
+      </App>
     );
   }
 

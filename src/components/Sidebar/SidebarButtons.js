@@ -16,8 +16,7 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setTab } from '../../redux/modules/tabs';
-import { Tab } from '../';
+import { Link } from 'react-router-dom';
 import {
   clearNodes,
   clearCurrentNode } from '../../redux/modules/nodes';
@@ -37,31 +36,25 @@ export class SidebarButtons extends Component {
   render() {
     return (
       <div className="sidebar-buttons">
-        <Tab tabKey="home">
-          <button>
-            <i className="icon fas fa-home"></i> Home
-          </button>
-        </Tab>
-        <Tab tabKey="automap">
-          <button>
-            <i className="icon fas fa-project-diagram"></i> Mapas Autom&aacute;ticos
-          </button>
-        </Tab>
-        <Tab tabKey="reports">
-          <button>
-            <i className="icon fas fa-print"></i> Relat&oacute;rios
-          </button>
-        </Tab>
-        <Tab tabKey="search">
-          <button onClick={() => this.handleSearch()}>
-            <i className="icon fas fa-search"></i> Busca Avan&ccedil;ada
-          </button>
-        </Tab>
-        <Tab tabKey="favorites">
-          <button>
-            <i className="icon fas fa-star"></i> Mapas Salvos
-          </button>
-        </Tab>
+        <Link to="/">
+          <i className="icon fas fa-home"></i> Home
+        </Link>
+
+        <Link to="/auto-maps">
+          <i className="icon fas fa-project-diagram"></i> Mapas Autom&aacute;ticos
+        </Link>
+
+        <Link to="/reports">
+          <i className="icon fas fa-print"></i> Relat&oacute;rios
+        </Link>
+
+        <Link to="/advanced-search" onClick={() => this.handleSearch()}>
+          <i className="icon fas fa-search"></i> Busca Avan&ccedil;ada
+        </Link>
+
+        <Link to="/saved-maps">
+          <i className="icon fas fa-star"></i> Mapas Salvos
+        </Link>
       </div>
     );
   }
@@ -78,7 +71,6 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    setTab,
     clearNodes,
     clearCurrentNode
   }
