@@ -96,7 +96,7 @@
 }
 
 .node-info-box .tabs-content {
-  height: 250px;
+  min-height: 250px;
   overflow: auto;
   padding: 20px 0;
 }
