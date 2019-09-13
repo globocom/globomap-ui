@@ -172,12 +172,6 @@ export class Stage extends Component {
               <i className="fas fa-save"></i>
             </button>
 
-            <Link to={'/saved-maps'}
-                  className="gmap-btn small btn-favorites"
-                  data-tippy-content="Mostrar mapas salvos">
-                <i className="fas fa-star"></i>
-            </Link>
-
             {this.state.sharedLinkOpen &&
               <div className="shared-link">
                 <input type="text" readOnly={true} className="link-url"

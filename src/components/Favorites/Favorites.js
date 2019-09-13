@@ -44,7 +44,7 @@ export class Favorites extends React.Component {
 
   onDeleteGraph(event, key) {
     event.stopPropagation();
-    if (window.confirm('Are you sure to delete this item?')) {
+    if (window.confirm('Tem certeza que deseja apagar este mapa?')) {
       this.props.deleteUserMap(key);
     }
   }
@@ -53,32 +53,39 @@ export class Favorites extends React.Component {
     if (this.props.userMaps.length === 0) {
       return (
         <ul className="user-map-list">
-          <li className="user-map-item no-content">No map saved yet</li>
+          <li className="user-map-item no-content">
+            Voc&ecirc; ainda n&atilde;o salvou nenhum mapa.
+          </li>
         </ul>
       );
     }
 
-    const uMaps = sortByName(this.props.userMaps);
+    let uMaps = sortByName(this.props.userMaps);
+    uMaps = uMaps.map(item => {
+      return (
+        <li key={item.key} className="user-map-item"
+            onClick={e => this.applyGraph(e, item.content)}>
+          <span  className="user-map-item-title">{item.name}</span>
+          <button className="user-map-item-remove-btn"
+                  onClick={e => this.onDeleteGraph(e, item.key)}
+                  title="Delete this item">
+            <i className="fa fa-trash"></i>
+          </button>
+        </li>
+      );
+    })
+
     return (
       <ul className="user-map-list">
-        {uMaps.map(item => {
-          return (
-            <li key={item.key} className="user-map-item"
-                onClick={e => this.applyGraph(e, item.content)}>
-              <span  className="user-map-item-title">{item.name}</span>
-              <button className="user-map-item-remove-btn"
-                      onClick={e => this.onDeleteGraph(e, item.key)}
-                      title="Delete this item">
-                <i className="fa fa-trash"></i>
-              </button>
-            </li>
-          );
-        })}
+        {uMaps}
       </ul>
     );
   }
 
   render() {
+    const qtdMaps = this.props.userMaps.length;
+    const qtdMsg = qtdMaps === 1 ? `${qtdMaps} mapa` : `${qtdMaps} mapas`;
+
     return (
       <App>
         <div className={`favorites base-content ${this.props.className || ''}`}>
@@ -90,7 +97,11 @@ export class Favorites extends React.Component {
           </div>
 
           <div className="base-panel">
-            {this.renderUserMaps()}
+            <h3 className="base-panel-title">{qtdMsg}</h3>
+
+            <div className="base-panel-content">
+              {this.renderUserMaps()}
+            </div>
           </div>
 
         </div>
