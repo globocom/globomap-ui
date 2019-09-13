@@ -16,7 +16,7 @@ limitations under the License.
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { setTab } from '../../redux/modules/tabs';
+import { Link } from 'react-router-dom';
 import {
   App,
   Tour } from '../';
@@ -51,9 +51,9 @@ export class Home extends React.Component {
             </div>
 
             <div className="base-panel-footer">
-              <button className="gmap-btn" onClick={() => this.props.setTab('automap')}>
+              <Link to="/auto-maps" className="gmap-btn">
                 <i className="icon fas fa-project-diagram"></i> Mapas Autom&aacute;ticos
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -65,9 +65,9 @@ export class Home extends React.Component {
             </div>
 
             <div className="base-panel-footer">
-              <button className="gmap-btn" onClick={() => this.props.setTab('reports')}>
+              <Link to="/reports" className="gmap-btn">
                 <i className="icon fas fa-print"></i> Relat&oacute;rios
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -79,9 +79,9 @@ export class Home extends React.Component {
             </div>
 
             <div className="base-panel-footer">
-              <button className="gmap-btn" onClick={() => this.props.setTab('search')}>
+              <Link to="/advanced-search" className="gmap-btn">
                 <i className="icon fas fa-search"></i> Busca Avan&ccedil;ada
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -100,7 +100,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  {
-    setTab
-  }
+  {}
 )(Home);

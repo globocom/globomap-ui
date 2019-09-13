@@ -24,8 +24,9 @@ import { automapTraversalQuery } from '../../redux/modules/automap';
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
-import { setTab } from '../../redux/modules/tabs';
-import { sortByName, customMapsSuffix } from '../../utils';
+import {
+  sortByName,
+  customMapsSuffix } from '../../utils';
 import {
   App,
   Loading,
@@ -243,7 +244,6 @@ export default connect(
     clearReportNodes,
     automapTraversalQuery,
     clearCurrentNode,
-    resetSubNodes,
-    setTab
+    resetSubNodes
   }
 )(Reports);

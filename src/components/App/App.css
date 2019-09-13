@@ -31,11 +31,13 @@ button {
   outline: none;
 }
 
-button:hover {
+button:hover,
+.gmap-btn:hover {
   filter: brightness(105%);
 }
 
-button:disabled:hover {
+button:disabled:hover,
+.gmap-btn:disabled:hover {
   filter: brightness(100%);
 }
 
@@ -146,7 +148,7 @@ button:disabled {
   position: relative;
   margin-bottom: 20px;
   background-color: white;
-  padding: 0 0 66px;
+  padding: 0;
   border-radius: 5px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -211,6 +213,7 @@ button:disabled {
   border-radius: 3px;
   background-color: #1fc291;
   border-bottom: 1px solid #15a177;
+  text-decoration: none;
   outline: none;
 }
 

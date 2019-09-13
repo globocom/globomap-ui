@@ -97,7 +97,6 @@ export class AutoMap extends React.Component {
     }
 
     this.props.automapFindNodes(opts);
-
   }
 
   search() {
@@ -143,6 +142,8 @@ export class AutoMap extends React.Component {
           direction: kind.direction
         });
     }
+
+    this.props.history.push('/map');
   }
 
   renderKinds() {
@@ -166,10 +167,6 @@ export class AutoMap extends React.Component {
       );
     });
 
-  }
-
-  componentWillUnmount() {
-    this.props.automapResetNodes();
   }
 
   render() {
@@ -198,7 +195,7 @@ export class AutoMap extends React.Component {
 
     return (
       <App>
-        <div className={`automaps base-content ${this.props.className}`}>
+        <div className={`automaps base-content ${this.props.className || ''}`}>
           <div className="base-content-header">
             <h2 className="base-content-title">Mapas Autom&aacute;ticos</h2>
           </div>

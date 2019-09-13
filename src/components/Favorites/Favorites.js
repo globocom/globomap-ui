@@ -24,16 +24,13 @@ import {
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
-import {
-  setFullTab,
-  closeTab } from '../../redux/modules/tabs';
 import { sortByName } from '../../utils';
 import { App } from '../';
 import './Favorites.css';
 
 export class Favorites extends React.Component {
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.listUserMaps();
   }
 
@@ -42,7 +39,7 @@ export class Favorites extends React.Component {
     this.props.clearCurrentNode();
     this.props.resetSubNodes();
     this.props.setStageNodes(content);
-    this.props.setFullTab('map');
+    this.props.history.push('/map');
   }
 
   onDeleteGraph(event, key) {
@@ -82,19 +79,20 @@ export class Favorites extends React.Component {
   }
 
   render() {
-    const full = this.props.fullTab ? 'full' : '';
-
     return (
       <App>
-        <div className={`favorites ${full} ${this.props.className}`}>
-          <h3 className="favorites-title">
-            Mapas Salvos
-            <button className="btn-close-favorites"
-                  onClick={() => this.props.closeTab('map')}>
-            <i className="fas fa-times"></i>
-          </button>
-          </h3>
-          {this.renderUserMaps()}
+        <div className={`favorites base-content ${this.props.className || ''}`}>
+
+          <div className="base-content-header">
+            <h3 className="base-content-title">
+              Mapas Salvos
+            </h3>
+          </div>
+
+          <div className="base-panel">
+            {this.renderUserMaps()}
+          </div>
+
         </div>
       </App>
     );
@@ -105,8 +103,7 @@ export class Favorites extends React.Component {
 function mapStateToProps(state) {
   return {
     hasId: state.app.hasId,
-    userMaps: state.stage.userMaps,
-    fullTab: state.tabs.fullTab
+    userMaps: state.stage.userMaps
   };
 }
 
@@ -118,9 +115,7 @@ export default connect(
     deleteUserMap,
     getUserMap,
     resetSubNodes,
-    setStageNodes,
-    setFullTab,
-    closeTab
+    setStageNodes
   }
 )(Favorites);
 

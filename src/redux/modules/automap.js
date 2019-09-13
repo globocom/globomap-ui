@@ -20,7 +20,6 @@ import {
   traversalToStage,
   fakeEdge } from '../../utils';
 import { setStageNodes } from './stage';
-import { setFullTab } from './tabs';
 
 const AUTOMAP_FIND_NODES = 'automap_find_nodes';
 const AUTOMAP_FIND_NODES_SUCCESS = 'automap_find_nodes_success';
@@ -305,7 +304,6 @@ export function automapTraversalQuery(opts) {
     return dispatch(automapTraversalQuerySearch(opts)).then(() => {
       const newMap = traversalToStage(getState().automap.automapSubNodesList, 'type');
       dispatch(setStageNodes(newMap));
-      dispatch(setFullTab('map'));
     });
   }
 }
@@ -315,7 +313,6 @@ export function automapTraversal(opts) {
     return dispatch(automapTraversalSearch(opts)).then(() => {
       const newMap = traversalToStage(getState().automap.automapSubNodesList, 'type');
       dispatch(setStageNodes(newMap));
-      dispatch(setFullTab('map'));
     });
   }
 }

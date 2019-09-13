@@ -33,8 +33,8 @@ import SearchHeader from './Search/SearchHeader';
 import SearchContent from './Search/SearchContent';
 import Sidebar from './Sidebar/Sidebar';
 import Stage from './Stage/Stage';
-import Tab from './Tabs/Tab';
-import TabContent from './Tabs/TabContent';
+// import Tab from './Tabs/Tab';
+// import TabContent from './Tabs/TabContent';
 import Tour from './Tour/Tour';
 
 export {
@@ -57,7 +57,7 @@ export {
   SearchContent,
   Sidebar,
   Stage,
-  Tab,
-  TabContent,
+  // Tab,
+  // TabContent,
   Tour
 }

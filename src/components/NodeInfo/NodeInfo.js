@@ -18,7 +18,10 @@ import _ from "lodash";
 import React from 'react';
 import { connect } from 'react-redux';
 import { clearCurrentNode } from '../../redux/modules/nodes';
-import { Properties, Monit, Query } from '../';
+import {
+  Properties,
+  Monit,
+  Query } from '../';
 import './NodeInfo.css';
 
 export class NodeInfo extends React.Component {
