@@ -76,9 +76,16 @@ const initialState = {
   modalVisible: false,
   modalContent: null,
   modalShowCloseButton: true,
+  serverDataLoading: false,
+  serverDataLoaded: false,
   collectionsLoading: false,
+  collectionsLoaded: false,
   graphsLoading: false,
-  queriesLoading: false
+  graphsLoaded: false,
+  edgesLoading: false,
+  edgesLoaded: false,
+  queriesLoading: false,
+  queriesLoaded: false
 };
 
 export default function reducer(state=initialState, action={}) {
@@ -112,7 +119,8 @@ export default function reducer(state=initialState, action={}) {
         collectionsByGraphs,
         enabledCollections,
         namedGraphs: _.mapKeys(action.result, 'name'),
-        graphsLoading: false
+        graphsLoading: false,
+        graphsLoaded: true
       };
 
     case FETCH_GRAPHS_FAIL:
@@ -136,7 +144,8 @@ export default function reducer(state=initialState, action={}) {
         ...state,
         collections: collections,
         namedCollections: _.mapKeys(collections, 'name'),
-        collectionsLoading: false
+        collectionsLoading: false,
+        collectionsLoaded: true
       };
 
     case FETCH_COLLECTIONS_FAIL:
@@ -144,26 +153,34 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         collections: [],
-        collectionsLoading: false
+        collectionsLoading: false,
+        collectionsLoaded: false
       };
 
     case FETCH_EDGES:
       console.log('fetch edges...');
-      return state;
+      return {
+        ...state,
+        edgesLoading: true
+      };
 
     case FETCH_EDGES_SUCCESS:
       const edges = action.result.data;
       return {
         ...state,
         edges: edges,
-        namedEdges: _.mapKeys(edges, 'name')
+        namedEdges: _.mapKeys(edges, 'name'),
+        edgesLoading: false,
+        edgesLoaded: true
       };
 
     case FETCH_EDGES_FAIL:
       console.log(action.error);
       return {
         ...state,
-        edges: []
+        edges: [],
+        edgesLoading: false,
+        edgesLoaded: false
       };
 
     case FETCH_QUERIES:
@@ -177,7 +194,8 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         queries: action.result.data,
-        queriesLoading: false
+        queriesLoading: false,
+        queriesLoaded: true
       };
 
     case FETCH_QUERIES_FAIL:
@@ -185,17 +203,23 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         queries: [],
-        queriesLoading: false
+        queriesLoading: false,
+        queriesLoaded: false
       };
 
     case GET_SERVER_DATA:
       console.log('get server data...');
-      return state;
+      return {
+        ...state,
+        serverDataLoading: true
+      };
 
     case GET_SERVER_DATA_SUCCESS:
       return {
         ...state,
-        serverData: action.result.data
+        serverData: action.result.data,
+        serverDataLoading: false,
+        serverDataLoaded: true
       };
 
     case GET_SERVER_DATA_FAIL:
@@ -208,7 +232,9 @@ export default function reducer(state=initialState, action={}) {
             email: '',
             picture: ''
           }
-        }
+        },
+        serverDataLoading: false,
+        serverDataLoaded: false
       };
 
     case GET_TOUR_STATUS:
@@ -307,39 +333,84 @@ export default function reducer(state=initialState, action={}) {
   }
 }
 
-export function fetchGraphs() {
+function fetchGraphsStart() {
   return {
     types: [FETCH_GRAPHS, FETCH_GRAPHS_SUCCESS, FETCH_GRAPHS_FAIL],
     promise: (client) => client.get('/api/graphs')
   };
 }
 
-export function fetchCollections() {
+export function fetchGraphs() {
+  return (dispatch, getState) => {
+    if (getState().app.graphsLoaded) {
+      return;
+    }
+    return dispatch(fetchGraphsStart());
+  }
+}
+
+function fetchCollectionsStart() {
   return {
     types: [FETCH_COLLECTIONS, FETCH_COLLECTIONS_SUCCESS, FETCH_COLLECTIONS_FAIL],
     promise: (client) => client.get('/api/collections')
   };
 }
 
-export function fetchEdges() {
+export function fetchCollections() {
+  return (dispatch, getState) => {
+    if (getState().app.collectionsLoaded) {
+      return;
+    }
+    return dispatch(fetchCollectionsStart());
+  }
+}
+
+function fetchEdgesStart() {
   return {
     types: [FETCH_EDGES, FETCH_EDGES_SUCCESS, FETCH_EDGES_FAIL],
     promise: (client) => client.get('/api/edges')
   };
 }
 
-export function fetchQueries() {
+export function fetchEdges() {
+  return (dispatch, getState) => {
+    if (getState().app.edgesLoaded) {
+      return;
+    }
+    return dispatch(fetchEdgesStart());
+  }
+}
+
+function fetchQueriesStart() {
   return {
     types: [FETCH_QUERIES, FETCH_QUERIES_SUCCESS, FETCH_QUERIES_FAIL],
     promise: (client) => client.get('/api/queries')
   };
 }
 
-export function getServerData() {
+export function fetchQueries() {
+  return (dispatch, getState) => {
+    if (getState().app.queriesLoaded) {
+      return;
+    }
+    return dispatch(fetchQueriesStart());
+  }
+}
+
+function getServerDataStart() {
   return {
     types: [GET_SERVER_DATA, GET_SERVER_DATA_SUCCESS, GET_SERVER_DATA_FAIL],
     promise: (client) => client.get('/tools/server-data')
   };
+}
+
+export function getServerData() {
+  return (dispatch, getState) => {
+    if (getState().app.serverDataLoaded) {
+      return;
+    }
+    return dispatch(getServerDataStart());
+  }
 }
 
 export function getTourStatus() {
