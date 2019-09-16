@@ -106,10 +106,32 @@ app.get('/healthcheck', (req, res) => {
   return res.status(200).send('WORKING');
 });
 
-app.get(['/', '/map/:mapId'], isAuthenticated, (req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
+const urls = [
+  '/',
+  '/auto-maps',
+  '/reports',
+  '/advanced-search',
+  '/saved-maps',
+  '/map/:mapId',
+  '/map'
+];
+
+app.get(urls, isAuthenticated, (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'), (err) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
 });
 
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
+
+app.use((req, res, next) => {
+  res.status(404).sendFile(path.resolve(__dirname, '..', 'build', 'index.html'), (err) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
 
 module.exports = app;
