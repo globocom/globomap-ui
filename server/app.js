@@ -98,14 +98,15 @@ app.use(session(sessionConfig));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Controllers
-app.use(require('./controllers'));
-
-// Default routes
+// Healthcheck route
 app.get('/healthcheck', (req, res) => {
   return res.status(200).send('WORKING');
 });
 
+// Controllers
+app.use(require('./controllers'));
+
+// Default routes
 const urls = [
   '/',
   '/auto-maps',
@@ -124,8 +125,10 @@ app.get(urls, isAuthenticated, (req, res) => {
   });
 });
 
+// Static route
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
+// Not found
 app.use((req, res, next) => {
   res.status(404).sendFile(path.resolve(__dirname, '..', 'build', 'index.html'), (err) => {
     if (err) {
