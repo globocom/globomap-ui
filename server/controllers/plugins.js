@@ -28,6 +28,46 @@ const gmapclient = new GmapClient({
 });
 
 // Zabbix
+router.get('/', (req, res) => {
+  gmapclient.getPlugins()
+    .then((data) => {
+      return res.status(200).json(data);
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(500).json({
+        error: true,
+        message: 'Get Plugins Error'
+      });
+    });
+
+});
+
+router.get('/healthcheck', (req, res) => {
+  const { equipment_type, ips } = req.query;
+  const eTypes = zabbixEquipmentTypes.split(',');
+  const nodeType = equipment_type || '';
+
+  if(!eTypes.includes(nodeType)) {
+    return res.status(200).json([]);
+  }
+
+  gmapclient.pluginData('healthcheck', {
+      ips: Array.from(ips || '')
+    })
+    .then((data) => {
+      return res.status(200).json(data);
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(500).json({
+        error: true,
+        message: 'Get Healthcheck Error'
+      });
+    });
+
+});
+
 router.get('/zabbix/monitoring', (req, res) => {
   const { equipment_type, ips } = req.query;
   const eTypes = zabbixEquipmentTypes.split(',');
