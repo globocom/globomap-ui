@@ -21,6 +21,8 @@ import {
   fakeEdge } from '../../utils';
 import { setStageNodes } from './stage';
 
+const SET_CURRENT_KIND = 'set_current_kind';
+
 const AUTOMAP_FIND_NODES = 'automap_find_nodes';
 const AUTOMAP_FIND_NODES_SUCCESS = 'automap_find_nodes_success';
 const AUTOMAP_FIND_NODES_FAIL = 'automap_find_nodes_fail';
@@ -43,6 +45,7 @@ const AUTOMAP_RESET_NODES = 'automap_reset_nodes';
 const AUTOMAP_RESET_SUBNODES = 'automap_reset_subnodes';
 
 const initialState = {
+  currentKind: null,
   automapNodeList: [],
   automapSubNodesList: [],
   automapFindLoading: false,
@@ -51,6 +54,13 @@ const initialState = {
 
 export default function reducer(state=initialState, action={}) {
   switch (action.type) {
+
+    case SET_CURRENT_KIND:
+      return {
+        ...state,
+        currentKind: action.kind
+      };
+
     case AUTOMAP_FIND_NODES:
       console.log('automap find nodes...');
       return {
@@ -218,6 +228,13 @@ export default function reducer(state=initialState, action={}) {
 
     default:
       return state;
+  }
+}
+
+export function setCurrentKind(kind) {
+  return {
+    type: SET_CURRENT_KIND,
+    kind
   }
 }
 
