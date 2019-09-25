@@ -19,6 +19,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setStageNodes } from '../../redux/modules/stage';
 import {
+  setCurrentKind,
   automapFindNodes,
   dnsLookupAutomapFindNodesAndRename,
   automapTraversal,
@@ -27,7 +28,9 @@ import {
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
-import { NodeInfo } from '../';
+import {
+  App,
+  NodeInfo } from '../';
 import './AutoMap.css';
 
 export class AutoMap extends React.Component {
@@ -37,18 +40,57 @@ export class AutoMap extends React.Component {
 
     this.state = {
       q: '',
-      kinds: [{ name: 'VIP', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite pelo menos parte do nome do VIP.', searchby: 'name', type: 'search' },
-              { name: 'VIP resolvendo o DNS', collection: 'vip', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite um DNS para ser resolvido. Retornaremos os VIPs cujo IP é igual ao IP resolvido.', searchby: 'ip', type: 'search' },
-              { name: 'Clientes de uma APP', collection: 'dns', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Recupera mapas que mostram as APPs que dependem uma dada APP.\nDigite pelo menos parte do nome do DNS. Retornaremos apenas os VIPs relacionados à APP.', searchby: 'name', type: 'query', 'query': 'query_vip_access_vip_custom_maps' },
-              { name: 'Dependências de uma APP', collection: 'dns', graph: 'load_balancing', depth: 2, direction: 'any', description: 'Recupera mapas que mostram as APPs das quais uma dada APP depende.\nDigite pelo menos parte do nome do DNS. Retornaremos apenas os VIPs relacionados à APP.', searchby: 'name', type: 'query', 'query': 'query_vip_vip_custom_maps' }],
-
-      current: null,
+      kinds: [
+        {
+          name: 'VIP',
+          collection: 'vip',
+          graph: 'load_balancing',
+          depth: 2,
+          direction: 'any',
+          description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite pelo menos parte do nome do VIP.',
+          searchby: 'name',
+          type: 'search'
+        },
+        {
+          name: 'VIP resolvendo o DNS',
+          collection: 'vip',
+          graph: 'load_balancing',
+          depth: 2,
+          direction: 'any',
+          description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite um DNS para ser resolvido. Retornaremos os VIPs cujo IP é igual ao IP resolvido.',
+          searchby: 'ip',
+          type: 'search'
+        },
+        {
+          name: 'Clientes de uma APP',
+          collection: 'dns',
+          graph: 'load_balancing',
+          depth: 2,
+          direction: 'any',
+          description: 'Recupera mapas que mostram as APPs que dependem uma dada APP.\nDigite pelo menos parte do nome do DNS. Retornaremos apenas os VIPs relacionados à APP.',
+          searchby: 'name',
+          type: 'query',
+          query: 'query_vip_access_vip_custom_maps'
+        },
+        {
+          name: 'Dependências de uma APP',
+          collection: 'dns',
+          graph: 'load_balancing',
+          depth: 2,
+          direction: 'any',
+          description: 'Recupera mapas que mostram as APPs das quais uma dada APP depende.\nDigite pelo menos parte do nome do DNS. Retornaremos apenas os VIPs relacionados à APP.',
+          searchby: 'name',
+          type: 'query',
+          query: 'query_vip_vip_custom_maps'
+        }
+      ],
       showNodeInfo: false,
       nodeInfoNode: null
     }
 
     this.handleQChange = this.handleQChange.bind(this);
     this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
+    this.openMap = this.openMap.bind(this);
   }
 
   onToggleNodeInfo(event, node) {
@@ -76,15 +118,14 @@ export class AutoMap extends React.Component {
     }
   }
 
-  setCurrentKind(kind) {
-    this.setState({ current: kind }, () => {
-      this.inputQ.focus();
-    });
+  setCurrent(kind) {
+    this.props.setCurrentKind(kind);
+    this.inputQ.focus();
   }
 
   findNodes(opts, searchby) {
     let options = {
-      collections: [this.state.current.collection]
+      collections: [this.props.currentKind.collection]
     }
 
     opts = Object.assign(options, opts);
@@ -95,26 +136,25 @@ export class AutoMap extends React.Component {
     }
 
     this.props.automapFindNodes(opts);
-
   }
 
   search() {
-    const curr = this.state.current;
+    const currentKind = this.props.currentKind;
 
-    if (!curr) {
+    if (!currentKind) {
       return false;
     }
 
-    if (!curr.searchby || curr.searchby === 'name') {
+    if (!currentKind.searchby || currentKind.searchby === 'name') {
       this.findNodes({
         queryType: 'name',
         query: this.state.q
-      }, curr.searchby);
+      }, currentKind.searchby);
     } else {
       let query = this.state.q;
-      let qProps = [{ 'name': curr.searchby, 'op': '==', 'value': query }];
+      let qProps = [{ 'name': currentKind.searchby, 'op': '==', 'value': query }];
 
-      this.findNodes({queryProps: qProps}, curr.searchby);
+      this.findNodes({queryProps: qProps}, currentKind.searchby);
     }
   }
 
@@ -122,31 +162,33 @@ export class AutoMap extends React.Component {
     event.preventDefault();
     event.stopPropagation();
 
-    const kind = this.state.current;
+    const kind = this.props.currentKind;
 
     this.props.clearCurrentNode();
     this.props.resetSubNodes();
 
     if (kind.type === 'query') {
-        this.props.automapTraversalQuery({
-          q: kind.query,
-          v: node._id,
-          type: kind.collection
-        });
+      this.props.automapTraversalQuery({
+        q: kind.query,
+        v: node._id,
+        type: kind.collection
+      });
     } else {
-        this.props.automapTraversal({
-          node: node,
-          graphs: [kind.graph],
-          depth: kind.depth,
-          direction: kind.direction
-        });
+      this.props.automapTraversal({
+        node: node,
+        graphs: [kind.graph],
+        depth: kind.depth,
+        direction: kind.direction
+      });
     }
+
+    this.props.history.push('/map');
   }
 
   renderKinds() {
     return this.state.kinds.map(item => {
       return (
-        <button key={item.name} className="gmap-btn" onClick={() => this.setCurrentKind(item)}>
+        <button key={item.name} className="gmap-btn" onClick={() => this.setCurrent(item)}>
           {item.name}
         </button>
       );
@@ -154,10 +196,13 @@ export class AutoMap extends React.Component {
   }
 
   renderDescription() {
-    if (!this.state.current) {
+    const currentKind = this.props.currentKind;
+
+    if (!currentKind) {
       return;
     }
-    let descriptionLst = this.state.current.description.split('\n');
+
+    let descriptionLst = currentKind.description.split('\n');
     return descriptionLst.map(item => {
       return (
         <p key={item}>{item}</p>
@@ -166,12 +211,8 @@ export class AutoMap extends React.Component {
 
   }
 
-  componentWillUnmount() {
-    this.props.automapResetNodes();
-  }
-
   render() {
-    const curr = this.state.current;
+    const currentKind = this.props.currentKind;
     const automapNodes = this.props.automapNodeList.map((node, i) => {
       let itemCls = '';
 
@@ -195,41 +236,45 @@ export class AutoMap extends React.Component {
     });
 
     return (
-      <div className={`automaps base-content ${this.props.className}`}>
-        <div className="base-content-header">
-          <h2 className="base-content-title">Mapas Autom&aacute;ticos</h2>
-        </div>
+      <App>
+        <div className={`automaps base-content ${this.props.className || ''}`}>
+          <div className="base-content-header">
+            <h2 className="base-content-title">Mapas Autom&aacute;ticos</h2>
+          </div>
 
-        <div className="base-panel automaps-panel automap-kind">
-          {this.renderKinds()}
-        </div>
+          <div className="base-panel automaps-panel automap-kind">
+            {this.renderKinds()}
+          </div>
 
-        <div className="base-panel automaps-panel automap-search">
-          <div className="automap-description">{this.renderDescription()}</div>
-          <input type="search" name="q" className="gmap-text automap-q" autoComplete="off"
-                disabled={!this.state.current}
-                value={this.state.q} ref={elem => { this.inputQ = elem; }}
-                onChange={_.throttle(this.handleQChange, 300)}
-                onKeyPress={e => this.handleEnterKeyPress(e)}
-                placeholder={curr ? curr.name : ''} />
-          <button className="gmap-btn"
-                  onClick={() => this.search()}
-                  disabled={!this.state.current}>
-            <i className="fas fa-search"></i>
-          </button>
-        </div>
+          <div className="base-panel automaps-panel automap-search">
+            <div className="automap-description">{this.renderDescription()}</div>
 
-        <div className="base-panel automaps-panel automap-content">
-          {this.props.automapFindLoading
-            ? <div className="content-loading">
-                <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
-              </div>
-            : <ul className="automap-found-nodes">{ automapNodes }</ul>}
+            <input type="search" name="q" className="gmap-text automap-q" autoComplete="off"
+                  disabled={!currentKind}
+                  value={this.state.q} ref={elem => { this.inputQ = elem; }}
+                  onChange={_.throttle(this.handleQChange, 300)}
+                  onKeyPress={e => this.handleEnterKeyPress(e)}
+                  placeholder={currentKind ? currentKind.name : ''} />
+
+            <button className="gmap-btn"
+                    onClick={() => this.search()}
+                    disabled={!currentKind}>
+              <i className="fas fa-search"></i>
+            </button>
+          </div>
+
+          <div className="base-panel automaps-panel automap-content">
+            {this.props.automapFindLoading
+              ? <div className="content-loading">
+                  <i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                </div>
+              : <ul className="automap-found-nodes">{ automapNodes }</ul>}
+          </div>
+          {this.state.showNodeInfo &&
+            <NodeInfo node={this.state.nodeInfoNode}
+                      onClose={this.onCloseNodeInfo} />}
         </div>
-        {this.state.showNodeInfo &&
-          <NodeInfo node={this.state.nodeInfoNode}
-                    onClose={this.onCloseNodeInfo} />}
-      </div>
+      </App>
     );
   }
 
@@ -238,6 +283,7 @@ export class AutoMap extends React.Component {
 function mapStateToProps(state) {
   return {
     hasId: state.app.hasId,
+    currentKind: state.automap.currentKind,
     automapNodeList: state.automap.automapNodeList,
     automapSubNodesList: state.automap.automapSubNodesList,
     automapFindLoading: state.automap.automapFindLoading,
@@ -248,6 +294,7 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
+    setCurrentKind,
     automapFindNodes,
     dnsLookupAutomapFindNodesAndRename,
     automapTraversal,

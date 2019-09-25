@@ -24,10 +24,13 @@ import { automapTraversalQuery } from '../../redux/modules/automap';
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
-import { setTab } from '../../redux/modules/tabs';
-import { sortByName, customMapsSuffix } from '../../utils';
-import { Loading } from '../';
-import { NodeInfo } from '../';
+import {
+  sortByName,
+  customMapsSuffix } from '../../utils';
+import {
+  App,
+  Loading,
+  NodeInfo } from '../';
 import './Reports.css';
 
 export class Reports extends React.Component {
@@ -135,9 +138,11 @@ export class Reports extends React.Component {
       if (query.collection === '') {
         return null;
       }
+
       if (query.name.includes(customMapsSuffix)) {
         return null;
       }
+
       return (
         <button key={query._id} className="gmap-btn query-btn"
                 onClick={() => this.setQuery(query)}>
@@ -175,47 +180,49 @@ export class Reports extends React.Component {
 
     const idx = this.state.paneIndex;
     return (
-      <div className={`reports base-content ${this.props.className}`}>
-        <div className="base-content-header">
-          <h2 className="base-content-title">Relat&oacute;rios</h2>
-        </div>
-
-        <div className="reports-tabs">
-          <button className={idx === 1 ? 'active' : ''} data-step="1"
-                  onClick={() => this.setPane(1)}>Selecione o tipo de relat&oacute;rio</button>
-          <button className={idx === 2 ? 'active' : ''} data-step="2"
-                  onClick={() => this.setPane(2)}
-                  disabled={this.state.query === ''}>Procure por um item</button>
-        </div>
-
-        <div className="reports-panes base-panel">
-          <div className={`reports-queries ${idx === 1 ? 'active' : ''}`}>
-            {queries}
+      <App>
+        <div className={`reports base-content ${this.props.className}`}>
+          <div className="base-content-header">
+            <h2 className="base-content-title">Relat&oacute;rios</h2>
           </div>
-          <div className={`reports-list ${idx === 2 ? 'active' : ''}`}>
-            <div className="reports-search">
-              <input type="search" name="q" className="reports-q" autoFocus autoComplete="off"
-                      value={this.state.q} ref={elem => { this.inputQ = elem; }}
-                      onChange={_.throttle(this.handleQChange, 300)}
-                      onKeyPress={e => this.handleEnterKeyPress(e)}
-                      placeholder={this.state.query.description}/>
-              <button onClick={() => this.search()}>
-                <i className="fas fa-search"></i>
-              </button>
+
+          <div className="reports-tabs">
+            <button className={idx === 1 ? 'active' : ''} data-step="1"
+                    onClick={() => this.setPane(1)}>Selecione o tipo de relat&oacute;rio</button>
+            <button className={idx === 2 ? 'active' : ''} data-step="2"
+                    onClick={() => this.setPane(2)}
+                    disabled={this.state.query === ''}>Procure por um item</button>
+          </div>
+
+          <div className="reports-panes base-panel">
+            <div className={`reports-queries ${idx === 1 ? 'active' : ''}`}>
+              {queries}
             </div>
-            <ul className="reports-item-list">
-              {reportNodes}
-            </ul>
+            <div className={`reports-list ${idx === 2 ? 'active' : ''}`}>
+              <div className="reports-search">
+                <input type="search" name="q" className="reports-q" autoFocus autoComplete="off"
+                        value={this.state.q} ref={elem => { this.inputQ = elem; }}
+                        onChange={_.throttle(this.handleQChange, 300)}
+                        onKeyPress={e => this.handleEnterKeyPress(e)}
+                        placeholder={this.state.query.description}/>
+                <button onClick={() => this.search()}>
+                  <i className="fas fa-search"></i>
+                </button>
+              </div>
+              <ul className="reports-item-list">
+                {reportNodes}
+              </ul>
+            </div>
           </div>
+
+          {this.state.showNodeInfo &&
+            <NodeInfo node={this.state.nodeInfoNode}
+                      onClose={this.onCloseNodeInfo} />}
+
+          <Loading iconSize="big" isLoading={this.props.loading
+                                             || this.props.queriesLoading} />
         </div>
-
-        {this.state.showNodeInfo &&
-          <NodeInfo node={this.state.nodeInfoNode}
-                    onClose={this.onCloseNodeInfo} />}
-
-        <Loading iconSize="big" isLoading={this.props.loading
-                                           || this.props.queriesLoading} />
-      </div>
+      </App>
     );
   }
 
@@ -237,7 +244,6 @@ export default connect(
     clearReportNodes,
     automapTraversalQuery,
     clearCurrentNode,
-    resetSubNodes,
-    setTab
+    resetSubNodes
   }
 )(Reports);

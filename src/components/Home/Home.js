@@ -16,7 +16,10 @@ limitations under the License.
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { setTab } from '../../redux/modules/tabs';
+import { Link } from 'react-router-dom';
+import {
+  App,
+  Tour } from '../';
 import './Home.css';
 
 export class Home extends React.Component {
@@ -28,60 +31,64 @@ export class Home extends React.Component {
 
   render() {
     return (
-      <div className={`home base-content ext ${this.props.className}`}>
-        <div className="base-content-header">
-          <h2 className="base-content-title">
-            Globomap
-            <span className="subtitle">Recursos e seus relacionamentos em um s&oacute; lugar</span>
-          </h2>
-          <div className="fancy-img">
-            <img src="images/undraw_software_engineer_lvl5.svg" alt="Map" />
+      <App>
+        <div className={`home base-content ext ${this.props.className}`}>
+          <div className="base-content-header">
+            <h2 className="base-content-title">
+              Globomap
+              <span className="subtitle">Recursos e seus relacionamentos em um s&oacute; lugar</span>
+            </h2>
+            <div className="fancy-img">
+              <img src="images/undraw_software_engineer_lvl5.svg" alt="Map" />
+            </div>
           </div>
+
+          <div className="base-panel home-widget">
+            <h3 className="base-panel-title">Mapas autom&aacute;ticos</h3>
+
+            <div className="base-panel-content">
+              Realize buscas pré-definidas de recursos e obtenha um mapa automático.
+            </div>
+
+            <div className="base-panel-footer">
+              <Link to="/auto-maps" className="gmap-btn">
+                <i className="icon fas fa-project-diagram"></i> Mapas Autom&aacute;ticos
+              </Link>
+            </div>
+          </div>
+
+          <div className="base-panel home-widget">
+            <h3 className="base-panel-title">Relat&oacute;rios</h3>
+
+            <div className="base-panel-content">
+              Assim como os mapas automáticos, os relatórios também são buscas pré-definidas, mas o retorno é textual e somente com as informações necessárias.
+            </div>
+
+            <div className="base-panel-footer">
+              <Link to="/reports" className="gmap-btn">
+                <i className="icon fas fa-print"></i> Relat&oacute;rios
+              </Link>
+            </div>
+          </div>
+
+          <div className="base-panel home-widget full">
+            <h3 className="base-panel-title">Busca Avan&ccedil;ada</h3>
+
+            <div className="base-panel-content">
+              Na busca avançada você procura por qualquer recurso por nome ou suas propriedades. Podendo também montar um mapa personalizado.
+            </div>
+
+            <div className="base-panel-footer">
+              <Link to="/advanced-search" className="gmap-btn">
+                <i className="icon fas fa-search"></i> Busca Avan&ccedil;ada
+              </Link>
+            </div>
+          </div>
+
         </div>
 
-        <div className="base-panel home-widget">
-          <h3 className="base-panel-title">Mapas autom&aacute;ticos</h3>
-
-          <div className="base-panel-content">
-            Realize buscas pré-definidas de recursos e obtenha um mapa automático.
-          </div>
-
-          <div className="base-panel-footer">
-            <button className="gmap-btn" onClick={() => this.props.setTab('automap')}>
-              <i className="icon fas fa-project-diagram"></i> Mapas Autom&aacute;ticos
-            </button>
-          </div>
-        </div>
-
-        <div className="base-panel home-widget">
-          <h3 className="base-panel-title">Relat&oacute;rios</h3>
-
-          <div className="base-panel-content">
-            Assim como os mapas automáticos, os relatórios também são buscas pré-definidas, mas o retorno é textual e somente com as informações necessárias.
-          </div>
-
-          <div className="base-panel-footer">
-            <button className="gmap-btn" onClick={() => this.props.setTab('reports')}>
-              <i className="icon fas fa-print"></i> Relat&oacute;rios
-            </button>
-          </div>
-        </div>
-
-        <div className="base-panel home-widget full">
-          <h3 className="base-panel-title">Busca Avan&ccedil;ada</h3>
-
-          <div className="base-panel-content">
-            Na busca avançada você procura por qualquer recurso por nome ou suas propriedades. Podendo também montar um mapa personalizado.
-          </div>
-
-          <div className="base-panel-footer">
-            <button className="gmap-btn" onClick={() => this.props.setTab('search')}>
-              <i className="icon fas fa-search"></i> Busca Avan&ccedil;ada
-            </button>
-          </div>
-        </div>
-
-      </div>
+        <Tour />
+      </App>
     );
   }
 
@@ -93,7 +100,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  {
-    setTab
-  }
+  {}
 )(Home);

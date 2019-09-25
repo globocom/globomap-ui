@@ -24,15 +24,13 @@ import {
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
-import {
-  setFullTab,
-  closeTab } from '../../redux/modules/tabs';
 import { sortByName } from '../../utils';
+import { App } from '../';
 import './Favorites.css';
 
 export class Favorites extends React.Component {
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.listUserMaps();
   }
 
@@ -41,12 +39,12 @@ export class Favorites extends React.Component {
     this.props.clearCurrentNode();
     this.props.resetSubNodes();
     this.props.setStageNodes(content);
-    this.props.setFullTab('map');
+    this.props.history.push('/map');
   }
 
   onDeleteGraph(event, key) {
     event.stopPropagation();
-    if (window.confirm('Are you sure to delete this item?')) {
+    if (window.confirm('Tem certeza que deseja apagar este mapa?')) {
       this.props.deleteUserMap(key);
     }
   }
@@ -55,45 +53,59 @@ export class Favorites extends React.Component {
     if (this.props.userMaps.length === 0) {
       return (
         <ul className="user-map-list">
-          <li className="user-map-item no-content">No map saved yet</li>
+          <li className="user-map-item no-content">
+            Voc&ecirc; ainda n&atilde;o salvou nenhum mapa.
+          </li>
         </ul>
       );
     }
 
-    const uMaps = sortByName(this.props.userMaps);
+    let uMaps = sortByName(this.props.userMaps);
+    uMaps = uMaps.map(item => {
+      return (
+        <li key={item.key} className="user-map-item"
+            onClick={e => this.applyGraph(e, item.content)}>
+          <span  className="user-map-item-title">{item.name}</span>
+          <button className="user-map-item-remove-btn"
+                  onClick={e => this.onDeleteGraph(e, item.key)}
+                  title="Delete this item">
+            <i className="fa fa-trash"></i>
+          </button>
+        </li>
+      );
+    })
+
     return (
       <ul className="user-map-list">
-        {uMaps.map(item => {
-          return (
-            <li key={item.key} className="user-map-item"
-                onClick={e => this.applyGraph(e, item.content)}>
-              <span  className="user-map-item-title">{item.name}</span>
-              <button className="user-map-item-remove-btn"
-                      onClick={e => this.onDeleteGraph(e, item.key)}
-                      title="Delete this item">
-                <i className="fa fa-trash"></i>
-              </button>
-            </li>
-          );
-        })}
+        {uMaps}
       </ul>
     );
   }
 
   render() {
-    const full = this.props.fullTab ? 'full' : '';
+    const qtdMaps = this.props.userMaps.length;
+    const qtdMsg = qtdMaps === 1 ? `${qtdMaps} mapa` : `${qtdMaps} mapas`;
 
     return (
-      <div className={`favorites ${full} ${this.props.className}`}>
-        <h3 className="favorites-title">
-          Mapas Salvos
-          <button className="btn-close-favorites"
-                onClick={() => this.props.closeTab('map')}>
-          <i className="fas fa-times"></i>
-        </button>
-        </h3>
-        {this.renderUserMaps()}
-      </div>
+      <App>
+        <div className={`favorites base-content ${this.props.className || ''}`}>
+
+          <div className="base-content-header">
+            <h3 className="base-content-title">
+              Mapas Salvos
+            </h3>
+          </div>
+
+          <div className="base-panel">
+            <h3 className="base-panel-title">{qtdMsg}</h3>
+
+            <div className="base-panel-content">
+              {this.renderUserMaps()}
+            </div>
+          </div>
+
+        </div>
+      </App>
     );
   }
 
@@ -102,8 +114,7 @@ export class Favorites extends React.Component {
 function mapStateToProps(state) {
   return {
     hasId: state.app.hasId,
-    userMaps: state.stage.userMaps,
-    fullTab: state.tabs.fullTab
+    userMaps: state.stage.userMaps
   };
 }
 
@@ -115,9 +126,7 @@ export default connect(
     deleteUserMap,
     getUserMap,
     resetSubNodes,
-    setStageNodes,
-    setFullTab,
-    closeTab
+    setStageNodes
   }
 )(Favorites);
 

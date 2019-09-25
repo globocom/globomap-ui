@@ -6,6 +6,7 @@
 
 .home-widget {
   flex-basis: 48%;
+  padding-bottom: 66px;
 }
 
 .home-widget.full {

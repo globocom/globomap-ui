@@ -29,17 +29,9 @@ import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
 import {
-  Home,
-  AutoMap,
-  Favorites,
   Modal,
-  Reports,
   Sidebar,
-  Search,
-  Stage,
-  Loading,
-  TabContent,
-  Tour } from '../';
+  Loading } from '../';
 import './App.css';
 
 export class App extends React.Component {
@@ -55,7 +47,7 @@ export class App extends React.Component {
       this.props.clearCurrentNode();
       this.props.resetSubNodes();
     }
-  };
+  }
 
   componentDidMount() {
     this.props.fetchGraphs();
@@ -74,14 +66,9 @@ export class App extends React.Component {
     return (
       <div className="main">
         <Sidebar />
-        <TabContent tabKey="home"><Home /></TabContent>
-        <TabContent tabKey="automap"><AutoMap /></TabContent>
-        <TabContent tabKey="reports"><Reports /></TabContent>
-        <TabContent tabKey="search"><Search /></TabContent>
-        <TabContent tabKey="map">
-          <Stage sharedMapKey={this.props.match.params.mapKey} />
-        </TabContent>
-        <TabContent tabKey="favorites"><Favorites /></TabContent>
+
+        {this.props.children}
+
         <Loading iconSize="big"
                  isLoading={this.props.findLoading
                             || this.props.traversalLoading
@@ -91,7 +78,6 @@ export class App extends React.Component {
                             || this.props.saveSharedLoading
                             || this.props.automapTraversalLoading} />
         <Modal />
-        <Tour />
       </div>
     );
   }

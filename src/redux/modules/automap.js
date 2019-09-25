@@ -20,7 +20,8 @@ import {
   traversalToStage,
   fakeEdge } from '../../utils';
 import { setStageNodes } from './stage';
-import { setFullTab } from './tabs';
+
+const SET_CURRENT_KIND = 'set_current_kind';
 
 const AUTOMAP_FIND_NODES = 'automap_find_nodes';
 const AUTOMAP_FIND_NODES_SUCCESS = 'automap_find_nodes_success';
@@ -44,6 +45,7 @@ const AUTOMAP_RESET_NODES = 'automap_reset_nodes';
 const AUTOMAP_RESET_SUBNODES = 'automap_reset_subnodes';
 
 const initialState = {
+  currentKind: null,
   automapNodeList: [],
   automapSubNodesList: [],
   automapFindLoading: false,
@@ -52,6 +54,13 @@ const initialState = {
 
 export default function reducer(state=initialState, action={}) {
   switch (action.type) {
+
+    case SET_CURRENT_KIND:
+      return {
+        ...state,
+        currentKind: action.kind
+      };
+
     case AUTOMAP_FIND_NODES:
       console.log('automap find nodes...');
       return {
@@ -222,6 +231,13 @@ export default function reducer(state=initialState, action={}) {
   }
 }
 
+export function setCurrentKind(kind) {
+  return {
+    type: SET_CURRENT_KIND,
+    kind
+  }
+}
+
 export function automapFindNodes(opts) {
   const options = _.merge({
     query: '',
@@ -305,7 +321,6 @@ export function automapTraversalQuery(opts) {
     return dispatch(automapTraversalQuerySearch(opts)).then(() => {
       const newMap = traversalToStage(getState().automap.automapSubNodesList, 'type');
       dispatch(setStageNodes(newMap));
-      dispatch(setFullTab('map'));
     });
   }
 }
@@ -315,7 +330,6 @@ export function automapTraversal(opts) {
     return dispatch(automapTraversalSearch(opts)).then(() => {
       const newMap = traversalToStage(getState().automap.automapSubNodesList, 'type');
       dispatch(setStageNodes(newMap));
-      dispatch(setFullTab('map'));
     });
   }
 }

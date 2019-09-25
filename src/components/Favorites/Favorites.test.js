@@ -10,14 +10,14 @@ const expect = chai.expect;
 
 describe("Favorites", function() {
 
-  let componentWillMountStub;
+  let componentDidMountStub;
 
   beforeEach(function() {
-    componentWillMountStub = sinon.stub(Favorites.prototype, 'UNSAFE_componentWillMount').value('newValue');
+    componentDidMountStub = sinon.stub(Favorites.prototype, 'componentDidMount').value('newValue');
   });
 
   afterEach(function () {
-    componentWillMountStub.restore();
+    componentDidMountStub.restore();
   });
 
   it('should render Favorites component', () => {

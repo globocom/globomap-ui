@@ -17,6 +17,7 @@ limitations under the License.
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  App,
   SearchHeader,
   SearchContent } from '../';
 import './Search.css';
@@ -25,15 +26,17 @@ export class Search extends Component {
 
   render() {
     return (
-      <div className={`search-container ${this.props.className}`}>
-        <section className="search base-content">
-          <div className="base-content-header">
-            <h2 className="base-content-title">Busca Avan&ccedil;ada</h2>
-          </div>
-          <SearchHeader />
-        </section>
-        <SearchContent />
-      </div>
+      <App>
+        <div className={`search-container ${this.props.className}`}>
+          <section className="search base-content">
+            <div className="base-content-header">
+              <h2 className="base-content-title">Busca Avan&ccedil;ada</h2>
+            </div>
+            <SearchHeader />
+          </section>
+          <SearchContent history={this.props.history} />
+        </div>
+      </App>
     );
   }
 

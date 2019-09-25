@@ -29,7 +29,12 @@ import reducer from './redux/modules/reducer';
 import clientMiddleware from './redux/middlewares/clientMiddleware';
 import ApiClient from './helpers/ApiClient';
 import {
-  App,
+  AutoMap,
+  Favorites,
+  Home,
+  Reports,
+  Search,
+  Stage,
   NotFound } from './components';
 
 const apiClient = new ApiClient()
@@ -46,8 +51,15 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={App} />
-        <Route path="/map/:mapKey" component={App} />
+        <Route path="/" exact component={Home} />
+        <Route path="/auto-maps" component={AutoMap} />
+        <Route path="/reports" component={Reports} />
+        <Route path="/advanced-search" component={Search} />
+        <Route path="/saved-maps" component={Favorites} />
+
+        <Route path="/map" component={Stage} />
+        <Route path="/map/:mapKey" component={Stage} />
+
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
