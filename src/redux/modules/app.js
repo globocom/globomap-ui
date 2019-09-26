@@ -40,6 +40,10 @@ const GET_SERVER_DATA = 'get_server_data';
 const GET_SERVER_DATA_SUCCESS = 'get_server_data_success';
 const GET_SERVER_DATA_FAIL = 'get_server_data_fail';
 
+const GET_PLUGINS = 'get_plugins'
+const GET_PLUGINS_SUCCESS = 'get_plugins_success'
+const GET_PLUGINS_FAIL = 'get_plugins_fail'
+
 const GET_TOUR_STATUS = 'get_tour_status';
 const GET_TOUR_STATUS_SUCCESS = 'get_tour_status_success';
 const GET_TOUR_STATUS_FAIL = 'get_tour_status_fail';
@@ -70,6 +74,7 @@ const initialState = {
       picture: ''
     }
   },
+  plugins: {},
   tourStatus: true,
   tourStatusLoading: false,
   hasId: false,
@@ -235,6 +240,26 @@ export default function reducer(state=initialState, action={}) {
         },
         serverDataLoading: false,
         serverDataLoaded: false
+      };
+
+    case GET_PLUGINS:
+      console.log('get plugins...');
+      return {
+        ...state,
+        plugins: {}
+      };
+
+    case GET_PLUGINS_SUCCESS:
+      return {
+        ...state,
+        plugins: action.result.data
+      };
+
+    case GET_PLUGINS_FAIL:
+      console.log(action.error);
+      return {
+        ...state,
+        plugins: {}
       };
 
     case GET_TOUR_STATUS:
@@ -411,6 +436,13 @@ export function getServerData() {
     }
     return dispatch(getServerDataStart());
   }
+}
+
+export function getPlugins() {
+  return {
+    types: [GET_PLUGINS, GET_PLUGINS_SUCCESS, GET_PLUGINS_FAIL],
+    promise: (client) => client.get('/plugins')
+  };
 }
 
 export function getTourStatus() {

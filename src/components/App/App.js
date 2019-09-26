@@ -23,6 +23,7 @@ import {
   fetchEdges,
   fetchQueries,
   getServerData,
+  getPlugins,
   toggleHasId,
   showModal } from '../../redux/modules/app';
 import {
@@ -55,6 +56,7 @@ export class App extends React.Component {
     this.props.fetchEdges();
     this.props.fetchQueries();
     this.props.getServerData();
+    this.props.getPlugins();
     document.addEventListener('keydown', _.throttle(this.handleKeyDown, 100));
   }
 
@@ -104,6 +106,7 @@ export default connect(
     fetchEdges,
     fetchQueries,
     getServerData,
+    getPlugins,
     clearCurrentNode,
     resetSubNodes,
     toggleHasId,
