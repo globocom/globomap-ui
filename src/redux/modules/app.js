@@ -90,7 +90,9 @@ const initialState = {
   edgesLoading: false,
   edgesLoaded: false,
   queriesLoading: false,
-  queriesLoaded: false
+  queriesLoaded: false,
+  pluginsLoadind: false,
+  pluginsLoaded: false
 };
 
 export default function reducer(state=initialState, action={}) {
@@ -246,20 +248,25 @@ export default function reducer(state=initialState, action={}) {
       console.log('get plugins...');
       return {
         ...state,
-        plugins: {}
+        plugins: {},
+        pluginsLoading: true
       };
 
     case GET_PLUGINS_SUCCESS:
       return {
         ...state,
-        plugins: action.result.data
+        plugins: action.result.data,
+        pluginsLoading: false,
+        pluginsLoaded: true
       };
 
     case GET_PLUGINS_FAIL:
       console.log(action.error);
       return {
         ...state,
-        plugins: {}
+        plugins: {},
+        pluginsLoading: false,
+        pluginsLoaded: false
       };
 
     case GET_TOUR_STATUS:
@@ -438,11 +445,20 @@ export function getServerData() {
   }
 }
 
-export function getPlugins() {
+function getPluginsStart() {
   return {
     types: [GET_PLUGINS, GET_PLUGINS_SUCCESS, GET_PLUGINS_FAIL],
     promise: (client) => client.get('/plugins')
   };
+}
+
+export function getPlugins() {
+  return (dispatch, getState) => {
+    if (getState().app.pluginsLoaded) {
+      return;
+    }
+    return dispatch(getPluginsStart());
+  }
 }
 
 export function getTourStatus() {
