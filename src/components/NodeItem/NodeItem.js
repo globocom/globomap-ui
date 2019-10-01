@@ -33,6 +33,7 @@ export class NodeItem extends Component {
 
   constructor(props) {
     super(props);
+    this.ref = React.createRef();
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
     this.stickyfill = Stickyfill();
@@ -70,10 +71,27 @@ export class NodeItem extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let element = document.getElementsByClassName('sticky');
     this.stickyfill.add(element);
     tippy('.btn-with-tip', { arrow: true, animation: "fade" });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio === 1) {
+          console.log(this.props.node)
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0,
+      }
+    )
+
+    if (this.ref.current) {
+      observer.observe(this.ref.current)
+    }
   }
 
   render() {
@@ -91,7 +109,8 @@ export class NodeItem extends Component {
     }
 
     return (
-      <div key={this.props.node.id}
+      <div ref={this.ref}
+           key={this.props.node.id}
            className={'node-item' + disabled + current + thisnode}
            onClick={exist && _.debounce(this.onItemSelect, 100, true)}>
 
