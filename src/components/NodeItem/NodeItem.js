@@ -39,6 +39,8 @@ export class NodeItem extends Component {
       nodePlugins: []
     };
 
+    this.ref = React.createRef();
+
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
     this.execPlugins = this.execPlugins.bind(this);
@@ -104,10 +106,28 @@ export class NodeItem extends Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let element = document.getElementsByClassName('sticky');
     this.stickyfill.add(element);
     tippy('.btn-with-tip', { arrow: true, animation: "fade" });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio === 1) {
+          console.log(this.props.node)
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0,
+      }
+    )
+
+    if (this.ref.current) {
+      observer.observe(this.ref.current)
+    }
+
     this.filterPlugins();
   }
 
@@ -136,7 +156,7 @@ export class NodeItem extends Component {
 
         <div className="node-info sticky">
           <span className="type">{nodeType}</span>
-          <span className="name">{name}</span>
+          <span ref={this.ref} className="name">{name}</span>
           {this.props.hasId && <span>{id}</span>}
         </div>
 
