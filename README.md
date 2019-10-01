@@ -29,7 +29,7 @@ Now you have an up and running Globo Map UI app (http://localhost:8888)
 ## Developing
 
 ### Built With
-- [React](https://github.com/facebook/react)
+- [React](https://github.com/facebook/react) + [Redux](https://redux.js.org/)
 - [Express](https://github.com/expressjs/express)
 - [Axios](https://github.com/axios/axios)
 
@@ -47,7 +47,7 @@ cd globomap-ui
 npm install
 
 # You still need to set a environment variable with Globo Map API endpoint url:
-export GLOBOMAP_API_URL=<api_endpoint>/v1
+export GLOBOMAP_API_URL=<api_endpoint>/v2
 
 # Start server
 node server
