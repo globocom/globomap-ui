@@ -14,6 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+const GET_PLUGINS = 'get_plugins'
+const GET_PLUGINS_SUCCESS = 'get_plugins_success'
+const GET_PLUGINS_FAIL = 'get_plugins_fail'
+
 const GET_ZBX_MONITORING = 'get_zabbix_monitoring';
 const GET_ZBX_MONITORING_SUCCESS = 'get_zabbix_monitoring_success';
 const GET_ZBX_MONITORING_FAIL = 'get_zabbix_monitoring_fail';
@@ -23,6 +27,10 @@ const GET_ZBX_GRAPH_SUCCESS = 'get_zabbix_graph_success';
 const GET_ZBX_GRAPH_FAIL = 'get_zabbix_graph_fail';
 
 const initialState = {
+  plugins: {},
+  pluginsLoadind: false,
+  pluginsLoaded: false,
+
   zbxMonitLoading: false,
   zbxGraphLoading: false,
   zbxTriggers: [],
@@ -32,6 +40,32 @@ const initialState = {
 export default function reducer(state=initialState, action={}) {
 
   switch (action.type) {
+
+    case GET_PLUGINS:
+      console.log('get plugins...');
+      return {
+        ...state,
+        plugins: {},
+        pluginsLoading: true
+      };
+
+    case GET_PLUGINS_SUCCESS:
+      return {
+        ...state,
+        plugins: action.result.data,
+        pluginsLoading: false,
+        pluginsLoaded: true
+      };
+
+    case GET_PLUGINS_FAIL:
+      console.log(action.error);
+      return {
+        ...state,
+        plugins: {},
+        pluginsLoading: false,
+        pluginsLoaded: false
+      };
+
     case GET_ZBX_MONITORING:
       console.log('get zabbix monitoring...');
       return {
@@ -78,6 +112,22 @@ export default function reducer(state=initialState, action={}) {
 
     default:
       return state;
+  }
+}
+
+function getPluginsStart(options) {
+  return {
+    types: [GET_PLUGINS, GET_PLUGINS_SUCCESS, GET_PLUGINS_FAIL],
+    promise: (client) => client.post('/api/plugins', options)
+  };
+}
+
+export function getPlugins(options) {
+  return (dispatch, getState) => {
+    if (getState().plugins.pluginsLoaded) {
+      return;
+    }
+    return dispatch(getPluginsStart(options));
   }
 }
 

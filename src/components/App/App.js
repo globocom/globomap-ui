@@ -23,9 +23,9 @@ import {
   fetchEdges,
   fetchQueries,
   getServerData,
-  getPlugins,
   toggleHasId,
   showModal } from '../../redux/modules/app';
+import { getPlugins } from '../../redux/modules/plugins';
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';

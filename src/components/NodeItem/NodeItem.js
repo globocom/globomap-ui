@@ -33,8 +33,16 @@ export class NodeItem extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      pluginsFiltered: false,
+      nodePlugins: []
+    };
+
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
+    this.execPlugins = this.execPlugins.bind(this);
+    this.filterPlugins = this.filterPlugins.bind(this);
     this.stickyfill = Stickyfill();
   }
 
@@ -70,11 +78,42 @@ export class NodeItem extends Component {
     }
   }
 
+  execPlugins() {}
+
+  filterPlugins() {
+    if (this.state.pluginsFiltered) {
+      return;
+    }
+
+    const plugins = this.props.plugins;
+    if (!plugins) {
+      return;
+    }
+
+    let nodePlugins = [];
+    Object.keys(plugins).forEach(name => {
+      const plugin = plugins[name];
+      if (plugin.types.includes(this.props.node.type)) {
+        nodePlugins.push(plugin);
+      }
+    });
+
+    this.setState({
+      pluginsFiltered: true,
+      nodePlugins: nodePlugins
+    });
+  }
+
   componentDidMount() {
     let element = document.getElementsByClassName('sticky');
     this.stickyfill.add(element);
     tippy('.btn-with-tip', { arrow: true, animation: "fade" });
+    this.filterPlugins();
   }
+
+  // componentDidUpdate() {
+  //   this.filterPlugins();
+  // }
 
   render() {
     let { _id, name, type, edges, uuid, id } = this.props.node;
@@ -126,7 +165,8 @@ function mapStateToProps(state) {
     currentNode: state.nodes.currentNode,
     stageNodes: state.stage.stageNodes,
     hasId: state.app.hasId,
-    namedCollections: state.app.namedCollections
+    namedCollections: state.app.namedCollections,
+    plugins: state.plugins.plugins
   };
 }
 

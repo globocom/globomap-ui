@@ -17,6 +17,9 @@ limitations under the License.
 const express = require('express');
 const GmapClient = require('globomap-api-jsclient');
 const config = require('../config');
+const {
+  isAuthenticated,
+  updateItemInfo } = require('../helpers');
 
 const router = express.Router();
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
@@ -27,22 +30,41 @@ const gmapclient = new GmapClient({
   apiUrl: config.globomapApiUrl
 });
 
-// Zabbix
-router.get('/', (req, res) => {
+router.get('/', isAuthenticated, (req, res) => {
   gmapclient.getPlugins()
-    .then((data) => {
+    .then(data => {
       return res.status(200).json(data);
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error);
       return res.status(500).json({
         error: true,
         message: 'Get Plugins Error'
       });
     });
-
 });
 
+router.get('/:pluginName', isAuthenticated, (req, res) => {
+  const pluginName = req.params.pluginName;
+  const options = req.query;
+
+  console.log(options);
+
+  gmapclient.pluginData(pluginName, options)
+    .then(data => {
+      return res.status(200).json(data);
+    })
+    .catch(error => {
+      const msg = `Get plugin data error. Plugin: ${pluginName}. Error: ${error}`;
+      console.log(msg);
+      return res.status(500).json({
+        error: true,
+        message: msg
+      });
+    });
+});
+
+// Zabbix
 router.get('/healthcheck', (req, res) => {
   const { equipment_type, ips } = req.query;
   const eTypes = zabbixEquipmentTypes.split(',');
@@ -65,7 +87,6 @@ router.get('/healthcheck', (req, res) => {
         message: 'Get Healthcheck Error'
       });
     });
-
 });
 
 router.get('/zabbix/monitoring', (req, res) => {
