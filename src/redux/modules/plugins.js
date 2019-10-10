@@ -118,7 +118,7 @@ export default function reducer(state=initialState, action={}) {
 function getPluginsStart(options) {
   return {
     types: [GET_PLUGINS, GET_PLUGINS_SUCCESS, GET_PLUGINS_FAIL],
-    promise: (client) => client.post('/api/plugins', options)
+    promise: (client) => client.get('/api/plugins', options)
   };
 }
 

@@ -45,7 +45,7 @@ export class AutoMap extends React.Component {
           name: 'VIP',
           collection: 'vip',
           graph: 'load_balancing',
-          depth: 2,
+          max_depth: 2,
           direction: 'any',
           description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite pelo menos parte do nome do VIP.',
           searchby: 'name',
@@ -55,7 +55,7 @@ export class AutoMap extends React.Component {
           name: 'VIP resolvendo o DNS',
           collection: 'vip',
           graph: 'load_balancing',
-          depth: 2,
+          max_depth: 2,
           direction: 'any',
           description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite um DNS para ser resolvido. Retornaremos os VIPs cujo IP é igual ao IP resolvido.',
           searchby: 'ip',
@@ -65,7 +65,7 @@ export class AutoMap extends React.Component {
           name: 'Clientes de uma APP',
           collection: 'dns',
           graph: 'load_balancing',
-          depth: 2,
+          max_depth: 2,
           direction: 'any',
           description: 'Recupera mapas que mostram as APPs que dependem uma dada APP.\nDigite pelo menos parte do nome do DNS. Retornaremos apenas os VIPs relacionados à APP.',
           searchby: 'name',
@@ -76,7 +76,7 @@ export class AutoMap extends React.Component {
           name: 'Dependências de uma APP',
           collection: 'dns',
           graph: 'load_balancing',
-          depth: 2,
+          max_depth: 2,
           direction: 'any',
           description: 'Recupera mapas que mostram as APPs das quais uma dada APP depende.\nDigite pelo menos parte do nome do DNS. Retornaremos apenas os VIPs relacionados à APP.',
           searchby: 'name',
@@ -177,7 +177,7 @@ export class AutoMap extends React.Component {
       this.props.automapTraversal({
         node: node,
         graphs: [kind.graph],
-        depth: kind.depth,
+        max_depth: kind.max_depth,
         direction: kind.direction
       });
     }

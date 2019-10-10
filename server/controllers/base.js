@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+const dns = require('dns');
 const _ = require('lodash');
 const express = require('express');
 const GmapClient = require('globomap-api-jsclient');
@@ -22,8 +23,6 @@ const config = require('../config');
 
 const router = express.Router();
 
-const dns = require('dns');
-
 const gmapclient = new GmapClient({
   username: config.globomapApiUsername,
   password: config.globomapApiPassword,
@@ -31,7 +30,7 @@ const gmapclient = new GmapClient({
 });
 
 router.get('/graphs', isAuthenticated, (req, res) => {
-  gmapclient.listGraphs({ perPage: 100, page: 1})
+  gmapclient.listGraphs({ per_page: 100, page: 1})
     .then((data) => {
       return res.status(200).json(data.graphs);
     })
@@ -45,7 +44,7 @@ router.get('/graphs', isAuthenticated, (req, res) => {
 });
 
 router.get('/collections', isAuthenticated, (req, res) => {
-  gmapclient.listCollections({ perPage: 100, page: 1 })
+  gmapclient.listCollections({ per_page: 100, page: 1 })
     .then((data) => {
       return res.status(200).json(data.collections);
     })
@@ -59,7 +58,7 @@ router.get('/collections', isAuthenticated, (req, res) => {
 });
 
 router.get('/edges', isAuthenticated, (req, res) => {
-  gmapclient.listEdges({ perPage: 100, page: 1 })
+  gmapclient.listEdges({ per_page: 100, page: 1 })
     .then((data) => {
       return res.status(200).json(data.collections);
     })
@@ -73,7 +72,7 @@ router.get('/edges', isAuthenticated, (req, res) => {
 });
 
 router.get('/queries', isAuthenticated, (req, res) => {
-  gmapclient.listQueries({ perPage: 100, page: 1 })
+  gmapclient.listQueries({ per_page: 100, page: 1 })
     .then((data) => {
       return res.status(200).json(data.documents);
     })
@@ -139,7 +138,7 @@ const findNodes = (options, res) => {
   gmapclient.search({
       collections: co,
       query: q,
-      perPage: per_page || process.env.PAGE_SIZE || 50,
+      per_page: per_page || process.env.PAGE_SIZE || 50,
       page: page
     })
     .then((data) => {
@@ -172,12 +171,12 @@ router.get('/dnslookup-find-nodes', isAuthenticated, (req, res) => {
 });
 
 router.post('/traversal-search', isAuthenticated, (req, res) => {
-  let { graphs, depth, node, direction } = req.body.params;
+  let { graphs, max_depth, node, direction } = req.body.params;
 
   gmapclient.traversalMultiple({
       graphs: graphs,
-      startVertex: node._id,
-      maxDepth: depth,
+      start_vertex: node._id,
+      max_depth: max_depth,
       direction: direction || 'any'
     })
     .then(results => {

@@ -31,7 +31,7 @@ const gmapclient = new GmapClient({
 });
 
 router.get('/', isAuthenticated, (req, res) => {
-  gmapclient.getPlugins()
+  gmapclient.listPlugins()
     .then(data => {
       return res.status(200).json(data);
     })
@@ -39,18 +39,15 @@ router.get('/', isAuthenticated, (req, res) => {
       console.log(error);
       return res.status(500).json({
         error: true,
-        message: 'Get Plugins Error'
+        message: 'List Plugins Error'
       });
     });
 });
 
-router.get('/:pluginName', isAuthenticated, (req, res) => {
+router.post('/:pluginName', isAuthenticated, (req, res) => {
   const pluginName = req.params.pluginName;
-  const options = req.query;
 
-  console.log(options);
-
-  gmapclient.pluginData(pluginName, options)
+  gmapclient.pluginData(pluginName, req.body.params)
     .then(data => {
       return res.status(200).json(data);
     })

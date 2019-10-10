@@ -189,7 +189,7 @@ export function traversalSearchWithGraphs(opts) {
   const options = _.merge({
     node: null,
     graphs: [],
-    depth: 1
+    max_depth: 1
   }, opts);
 
   return {
