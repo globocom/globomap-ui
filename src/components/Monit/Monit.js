@@ -42,21 +42,21 @@ export class Monit extends Component {
                               alt={node.name} />);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const next = nextProps.node;
+  componentDidUpdate(prevProps) {
+    const prev = prevProps.node;
     const current = this.props.node;
 
-    if(!this.monitItems.includes(next.type)) {
+    if(!this.monitItems.includes(current.type)) {
       return;
     }
 
-    if(current._id !== next._id) {
-      if (current.type === 'comp_unit') {
-        this.props.getZabbixMonitoring(next);
+    if(prev._id !== current._id) {
+      if (prev.type === 'comp_unit') {
+        this.props.getZabbixMonitoring(current);
       }
 
-      if (current.type === 'zabbix_graph') {
-        this.props.getZabbixGraph(next);
+      if (prev.type === 'zabbix_graph') {
+        this.props.getZabbixGraph(current);
       }
     }
   }

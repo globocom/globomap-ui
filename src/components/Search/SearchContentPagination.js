@@ -81,9 +81,9 @@ export class SearchContentPagination extends Component {
     this.doFindNodes(pageNumber);
   }
 
-  componentWillReceiveProps(nextProps){
-    if(this.props.currentPage !== nextProps.currentPage) {
-      this.setState({ pageNumber: nextProps.currentPage });
+  componentDidUpdate(prevProps) {
+    if(prevProps.currentPage !== this.props.currentPage) {
+      this.setState({ pageNumber: this.props.currentPage });
     }
   }
 
