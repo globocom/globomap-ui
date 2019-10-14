@@ -27,6 +27,7 @@ import {
   removeStageNode,
   setStageNodes } from '../../redux/modules/stage';
 import { NodeEdges } from '../';
+import NodeItemHealthcheck from './NodeItemHealthcheck';
 import './NodeItem.css';
 
 export class NodeItem extends Component {
@@ -36,6 +37,7 @@ export class NodeItem extends Component {
 
     this.state = {
       pluginsFiltered: false,
+      pluginsLoaded: false,
       nodePlugins: []
     };
 
@@ -43,7 +45,7 @@ export class NodeItem extends Component {
 
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
-    this.execPlugins = this.execPlugins.bind(this);
+    this.loadPlugins = this.loadPlugins.bind(this);
     this.filterPlugins = this.filterPlugins.bind(this);
     this.stickyfill = Stickyfill();
   }
@@ -80,8 +82,6 @@ export class NodeItem extends Component {
     }
   }
 
-  execPlugins() {}
-
   filterPlugins() {
     if (this.state.pluginsFiltered) {
       return;
@@ -93,12 +93,12 @@ export class NodeItem extends Component {
     }
 
     let nodePlugins = [];
-    Object.keys(plugins).forEach(name => {
-      const plugin = plugins[name];
+    for (let i=0, l=plugins.length; i<l; i++) {
+      const plugin = plugins[i];
       if (plugin.types.includes(this.props.node.type)) {
         nodePlugins.push(plugin);
       }
-    });
+    }
 
     this.setState({
       pluginsFiltered: true,
@@ -106,28 +106,30 @@ export class NodeItem extends Component {
     });
   }
 
-  async componentDidMount() {
-    let element = document.getElementsByClassName('sticky');
-    this.stickyfill.add(element);
-    tippy('.btn-with-tip', { arrow: true, animation: "fade" });
+  loadPlugins() {
+    this.setState({ pluginsLoaded: true });
+  }
 
+  addPluginsObserver() {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.intersectionRatio === 1) {
-          console.log(this.props.node)
+        if (entry.intersectionRatio === 1 && !this.state.pluginsLoaded) {
+          this.loadPlugins();
         }
-      },
-      {
-        root: null,
-        rootMargin: '0px',
-        threshold: 1.0,
-      }
+      }, { root: null, rootMargin: '0px', threshold: 1.0 }
     )
 
     if (this.ref.current) {
       observer.observe(this.ref.current)
     }
+  }
 
+  componentDidMount() {
+    let element = document.getElementsByClassName('sticky');
+    this.stickyfill.add(element);
+    tippy('.btn-with-tip', { arrow: true, animation: "fade" });
+
+    this.addPluginsObserver()
     this.filterPlugins();
   }
 
@@ -175,9 +177,12 @@ export class NodeItem extends Component {
               <i className="fa fa-times-circle"></i>
             </button>}
         </div>
+
+        <NodeItemHealthcheck plugins={this.state.nodePlugins} />
       </div>
     );
   }
+
 }
 
 function mapStateToProps(state) {

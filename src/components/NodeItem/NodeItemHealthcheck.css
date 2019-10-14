@@ -1,0 +1,25 @@
+.node-item-hc {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: 0;
+  right: 0;
+  border-top-right-radius: 5px;
+  overflow: hidden;
+}
+
+.node-item-hc .hc-result {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: -30px;
+  right: -30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  transition: all 300ms ease-out;
+}
+
+.node-item-hc.active .hc-result {
+  top: -15px;
+  right: -15px;
+}
