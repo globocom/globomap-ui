@@ -97,7 +97,19 @@ export class Properties extends Component {
 
   buildProperties(item) {
     const properties = item.properties || {};
-    let content = this.buildProps(properties, 0);
+    const properties_metadata = item.properties_metadata || {};
+    const properties_shown = {};
+    if (properties_metadata) {
+      for (const [key, value] of Object.entries(properties)) {
+        if (key in properties_metadata
+            && properties_metadata[key].description) {
+          properties_shown[properties_metadata[key].description] = properties[key];
+        } else {
+          properties_shown[key] = properties[key];
+        }
+      }
+    }
+    let content = this.buildProps(properties_shown, 0);
 
     const itemTimestamp = new Date(parseInt(item.timestamp, 10) * 1000);
     content.push(<div key="timestamp" className="item-prop">

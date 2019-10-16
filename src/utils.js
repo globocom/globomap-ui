@@ -114,7 +114,7 @@ export const turnOffLoadings = (state) => {
 
 const containsObject = (obj, list) => {
   for (let i=0, j=list.length; i<j; i++) {
-    if (list[i] === obj) {
+    if (list[i]._id === obj._id) {
       return true;
     }
   }
@@ -136,7 +136,7 @@ const addChildren = (graph, node) => {
       });
 
       if (newChild.length > 0) {
-        if (!containsObject(newChild, newNode.items)) {
+        if (!containsObject(newChild[0], newNode.items)) {
           newChild[0].items = [];
           newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
         }
@@ -147,7 +147,7 @@ const addChildren = (graph, node) => {
       });
 
       if (newChild.length > 0) {
-        if (!containsObject(newChild, newNode.items)) {
+        if (!containsObject(newChild[0], newNode.items)) {
           newChild[0].items = [];
           newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
         }
