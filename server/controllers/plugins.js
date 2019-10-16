@@ -15,20 +15,12 @@ limitations under the License.
 */
 
 const express = require('express');
-const GmapClient = require('globomap-api-jsclient');
 const config = require('../config');
-const {
-  isAuthenticated,
-  updateItemInfo } = require('../helpers');
+const gmapclient = require('../gmapclient');
+const { isAuthenticated, updateItemInfo } = require('../helpers');
 
 const router = express.Router();
 const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
-
-const gmapclient = new GmapClient({
-  username: config.globomapApiUsername,
-  password: config.globomapApiPassword,
-  apiUrl: config.globomapApiUrl
-});
 
 router.get('/', isAuthenticated, (req, res) => {
   gmapclient.listPlugins()
@@ -52,8 +44,8 @@ router.post('/:pluginName', isAuthenticated, (req, res) => {
       return res.status(200).json(data);
     })
     .catch(error => {
+      console.log(error);
       const msg = `Get plugin data error. Plugin: ${pluginName}. Error: ${error}`;
-      console.log(msg);
       return res.status(500).json({
         error: true,
         message: msg

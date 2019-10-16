@@ -178,7 +178,9 @@ export class NodeItem extends Component {
             </button>}
         </div>
 
-        <NodeItemHealthcheck plugins={this.state.nodePlugins} />
+        {this.state.pluginsLoaded &&
+          <NodeItemHealthcheck  node={this.props.node}
+                                plugins={this.state.nodePlugins} />}
       </div>
     );
   }

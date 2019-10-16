@@ -17,17 +17,11 @@ limitations under the License.
 const dns = require('dns');
 const _ = require('lodash');
 const express = require('express');
-const GmapClient = require('globomap-api-jsclient');
+const gmapclient = require('../gmapclient');
 const { isAuthenticated, updateItemInfo } = require('../helpers');
 const config = require('../config');
 
 const router = express.Router();
-
-const gmapclient = new GmapClient({
-  username: config.globomapApiUsername,
-  password: config.globomapApiPassword,
-  apiUrl: config.globomapApiUrl
-});
 
 router.get('/graphs', isAuthenticated, (req, res) => {
   gmapclient.listGraphs({ per_page: 100, page: 1})

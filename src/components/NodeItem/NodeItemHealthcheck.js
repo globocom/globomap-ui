@@ -44,19 +44,42 @@ export class NodeItemHealthcheck extends Component {
     return false;
   }
 
+  getNodeParameters(parameters=[]) {
+    const nodeProps = this.props.node.properties;
+    let params = {};
+
+    parameters.forEach(param => {
+      if (Object.keys(nodeProps).includes(param)) {
+        params[param] = nodeProps[param];
+      }
+    })
+
+    return params;
+  }
+
   getHealthcheckStatus() {
     const plugin = this.props.plugins.filter(p => {
       return p.name === this.pluginName;
     })[0];
 
     if (plugin) {
-      // axios.post(`${host}/api/plugins/${this.pluginName}`, { params: params });
-      console.log('check status');
+      const params = this.getNodeParameters(plugin.parameters);
+      axios.post(`${host}/api/plugins/${this.pluginName}`, { params: params })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 
-  async componentDidUpdate() {
+  componentDidMount() {
     this.getHealthcheckStatus();
+  }
+
+  componentDidUpdate() {
+    // this.getHealthcheckStatus();
   }
 
   render() {

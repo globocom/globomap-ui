@@ -46,6 +46,7 @@ if (config.environment === 'development') {
   });
 }
 
+// Session
 let sessionConfig = {
   cookie: {
     path: '/',
