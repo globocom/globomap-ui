@@ -15,11 +15,31 @@
   top: -30px;
   right: -30px;
   border-radius: 50%;
-  background-color: #ccc;
-  transition: all 300ms ease-out;
+  background-color: #aaa;
+  transition: all 200ms ease-in;
 }
 
 .node-item-hc.active .hc-result {
   top: -15px;
   right: -15px;
 }
+
+.node-item-hc.active .hc-result .hc-icon {
+  position: absolute;
+  left: 5px;
+  bottom: 4px;
+  font-size: 8px;
+  color: white;
+}
+
+.node-item-hc .hc-result.success { background-color: #42be12; }
+.node-item-hc .hc-result.success .hc-icon { left: 5px; }
+
+.node-item-hc .hc-result.warning { background-color: #ecca0d; }
+.node-item-hc .hc-result.warning .hc-icon { left: 7px; }
+
+.node-item-hc .hc-result.failed { background-color: #f4410b; }
+.node-item-hc .hc-result.failed .hc-icon { left: 6px; }
+
+.node-item-hc .hc-result.nothing { background-color: #ccc; }
+.node-item-hc .hc-result.nothing .hc-icon { left: 5px; }

@@ -39,7 +39,7 @@ router.get('/', isAuthenticated, (req, res) => {
 router.post('/:pluginName', isAuthenticated, (req, res) => {
   const pluginName = req.params.pluginName;
 
-  gmapclient.pluginData(pluginName, req.body.params)
+  gmapclient.pluginData(pluginName, req.body.data)
     .then(data => {
       return res.status(200).json(data);
     })

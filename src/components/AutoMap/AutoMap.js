@@ -17,7 +17,9 @@ limitations under the License.
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { setStageNodes } from '../../redux/modules/stage';
+import {
+  setStageNodes,
+  cleanStageNodes } from '../../redux/modules/stage';
 import {
   setCurrentKind,
   automapFindNodes,
@@ -166,6 +168,7 @@ export class AutoMap extends React.Component {
 
     this.props.clearCurrentNode();
     this.props.resetSubNodes();
+    this.props.cleanStageNodes();
 
     if (kind.type === 'query') {
       this.props.automapTraversalQuery({
@@ -301,6 +304,7 @@ export default connect(
     automapTraversalQuery,
     automapResetNodes,
     setStageNodes,
+    cleanStageNodes,
     clearCurrentNode,
     resetSubNodes
   }

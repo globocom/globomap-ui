@@ -36,11 +36,13 @@ export class NodeItemHealthcheck extends Component {
 
   isEnabled() {
     const plugins = this.props.plugins;
+
     for (let i=0, l=plugins.length; i<l; i++) {
       if (plugins[i].name === this.pluginName) {
         return true;
       }
     }
+
     return false;
   }
 
@@ -64,9 +66,9 @@ export class NodeItemHealthcheck extends Component {
 
     if (plugin) {
       const params = this.getNodeParameters(plugin.parameters);
-      axios.post(`${host}/api/plugins/${this.pluginName}`, { params: params })
-        .then(response => {
-          console.log(response.data);
+      axios.post(`${host}/api/plugins/${this.pluginName}`, { data: params })
+        .then(res => {
+          this.setState({ result: res.data.healthcheck });
         })
         .catch(error => {
           console.log(error);
@@ -78,18 +80,24 @@ export class NodeItemHealthcheck extends Component {
     this.getHealthcheckStatus();
   }
 
-  componentDidUpdate() {
-    // this.getHealthcheckStatus();
-  }
-
   render() {
     if (!this.isEnabled()) {
       return null;
     }
 
+    const result = this.state.result;
+    const icons = {
+      success: 'fa-check',
+      warning: 'fa-exclamation',
+      failed: 'fa-times',
+      nothing: 'fa-question'
+    }
+
     return (
-      <div className="node-item-hc active">
-        <div className="hc-result"></div>
+      <div className={`node-item-hc ${result && 'active'}`}>
+        <div className={`hc-result ${result ? result : ''}`}>
+          <i className={`hc-icon fa ${icons[result]}`}></i>
+        </div>
       </div>
     );
   }

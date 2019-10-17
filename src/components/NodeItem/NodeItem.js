@@ -45,7 +45,6 @@ export class NodeItem extends Component {
 
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onSelfRemove = this.onSelfRemove.bind(this);
-    this.loadPlugins = this.loadPlugins.bind(this);
     this.filterPlugins = this.filterPlugins.bind(this);
     this.stickyfill = Stickyfill();
   }
@@ -106,15 +105,11 @@ export class NodeItem extends Component {
     });
   }
 
-  loadPlugins() {
-    this.setState({ pluginsLoaded: true });
-  }
-
   addPluginsObserver() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.intersectionRatio === 1 && !this.state.pluginsLoaded) {
-          this.loadPlugins();
+          this.setState({ pluginsLoaded: true });
         }
       }, { root: null, rootMargin: '0px', threshold: 1.0 }
     )
@@ -133,9 +128,9 @@ export class NodeItem extends Component {
     this.filterPlugins();
   }
 
-  // componentDidUpdate() {
-  //   this.filterPlugins();
-  // }
+  componentDidUmount() {
+    this.setState({ pluginsLoaded: false });
+  }
 
   render() {
     let { _id, name, type, edges, uuid, id } = this.props.node;
