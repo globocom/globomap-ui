@@ -133,24 +133,23 @@ export function getPlugins(options) {
 
 export function getZabbixMonitoring(node) {
   const options = {
-    equipment_type: node.properties.equipment_type,
     ips: node.properties.ips
   };
 
   return {
     types: [GET_ZBX_MONITORING, GET_ZBX_MONITORING_SUCCESS, GET_ZBX_MONITORING_FAIL],
-    promise: (client) => client.get('/plugins/zabbix/monitoring', options)
+    promise: (client) => client.post('/api/plugins/zabbix-triggers', {}, options)
   };
 }
 
 export function getZabbixGraph(node) {
   const options = {
     encoded: 1,
-    graphId: node.id
+    graphid: node.id
   };
 
   return {
     types: [GET_ZBX_GRAPH, GET_ZBX_GRAPH_SUCCESS, GET_ZBX_GRAPH_FAIL],
-    promise: (client) => client.get('/plugins/zabbix/graph', options)
+    promise: (client) => client.post('/api/plugins/zabbix-graph', {}, options)
   }
 }

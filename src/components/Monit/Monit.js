@@ -17,9 +17,12 @@ limitations under the License.
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Loading } from '../';
-import { showModal, closeModal } from '../../redux/modules/app';
-import { getZabbixMonitoring,
-         getZabbixGraph } from '../../redux/modules/plugins';
+import {
+  showModal,
+  closeModal } from '../../redux/modules/app';
+import {
+  getZabbixMonitoring,
+  getZabbixGraph } from '../../redux/modules/plugins';
 import './Monit.css';
 
 export class Monit extends Component {
@@ -33,10 +36,11 @@ export class Monit extends Component {
 
   openZbxGraph(event) {
     event.stopPropagation();
-    const node = this.props.node;
 
-    if (!node)
+    const node = this.props.node;
+    if (!node) {
       return;
+    }
 
     this.props.showModal(<img src={`data:image/png;base64,${this.props.zbxGraph}`}
                               alt={node.name} />);
@@ -78,8 +82,9 @@ export class Monit extends Component {
   }
 
   render() {
-    if (!this.props.node)
+    if (!this.props.node) {
       return null;
+    }
 
     let node = this.props.node,
         triggers = [],
@@ -137,6 +142,10 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { getZabbixMonitoring, getZabbixGraph, showModal,
-    closeModal }
+  {
+    getZabbixMonitoring,
+    getZabbixGraph,
+    showModal,
+    closeModal
+  }
 )(Monit);

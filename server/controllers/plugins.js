@@ -20,7 +20,6 @@ const gmapclient = require('../gmapclient');
 const { isAuthenticated, updateItemInfo } = require('../helpers');
 
 const router = express.Router();
-const zabbixEquipmentTypes = process.env.ZABBIX_EQUIP_TYPES || 'Servidor,Servidor Virtual';
 
 router.get('/', isAuthenticated, (req, res) => {
   gmapclient.listPlugins()
@@ -31,7 +30,7 @@ router.get('/', isAuthenticated, (req, res) => {
       console.log(error);
       return res.status(500).json({
         error: true,
-        message: 'List Plugins Error'
+        message: `List Plugins Error: ${error}`
       });
     });
 });
@@ -45,92 +44,11 @@ router.post('/:pluginName', isAuthenticated, (req, res) => {
     })
     .catch(error => {
       console.log(error);
-      const msg = `Get plugin data error. Plugin: ${pluginName}. Error: ${error}`;
       return res.status(500).json({
         error: true,
-        message: msg
+        message: `Get plugin data error. Plugin: ${pluginName}. Error: ${error}`
       });
     });
-});
-
-// Zabbix
-router.get('/healthcheck', (req, res) => {
-  const { equipment_type, ips } = req.query;
-  const eTypes = zabbixEquipmentTypes.split(',');
-  const nodeType = equipment_type || '';
-
-  if(!eTypes.includes(nodeType)) {
-    return res.status(200).json([]);
-  }
-
-  gmapclient.pluginData('healthcheck', {
-      ips: Array.from(ips || '')
-    })
-    .then((data) => {
-      return res.status(200).json(data);
-    })
-    .catch((error) => {
-      console.log(error);
-      return res.status(500).json({
-        error: true,
-        message: 'Get Healthcheck Error'
-      });
-    });
-});
-
-router.get('/zabbix/monitoring', (req, res) => {
-  const { equipment_type, ips } = req.query;
-  const eTypes = zabbixEquipmentTypes.split(',');
-  const nodeType = equipment_type || '';
-
-  if(!eTypes.includes(nodeType)) {
-    return res.status(200).json([]);
-  }
-
-  gmapclient.pluginData('zabbix', {
-      ips: Array.from(ips || '')
-    })
-    .then((data) => {
-      return res.status(200).json(data);
-    })
-    .catch((error) => {
-      console.log(error);
-      return res.status(500).json({
-        error: true,
-        message: 'Get Monitoring Error'
-      });
-    });
-
-});
-
-router.get('/zabbix/graph', (req, res) => {
-  const { graphId } = req.query;
-
-  gmapclient.pluginData('zabbix', {
-    encoded: 1,
-    graphid: graphId
-  })
-  .then((data) => {
-    return res.status(200).json(data);
-  })
-  .catch((error) => {
-    // retry
-    gmapclient.pluginData('zabbix', {
-      encoded: 1,
-      graphid: graphId
-    })
-    .then((data) => {
-      return res.status(200).json(data);
-    })
-    .catch((error) => {
-      console.log(error);
-      return res.status(500).json({
-        error: true,
-        message: 'Get Zabbix Graph Error'
-      });
-    });
-  });
-
 });
 
 module.exports = router;
