@@ -121,6 +121,20 @@ const containsObject = (obj, list) => {
   return false;
 };
 
+const removeEdges = (fatherId, node) => {
+  let newNode = Object.assign({}, node);
+  if (newNode.edges) {
+    newNode.edges = Object.assign({}, node.edges);
+    newNode.edges.in = newNode.edges.in.filter(_edge => {
+      return _edge._from === fatherId;
+    });
+    newNode.edges.out = newNode.edges.out.filter(_edge => {
+      return _edge._to === fatherId;
+    });
+  }
+  return newNode;
+}
+
 const addChildren = (graph, node) => {
   const nodeId = node._id;
   let newNode = Object.assign({}, node);
@@ -138,7 +152,9 @@ const addChildren = (graph, node) => {
       if (newChild.length > 0) {
         if (!containsObject(newChild[0], newNode.items)) {
           newChild[0].items = [];
-          newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
+          let childNode = Object.assign({'uuid': uuid()}, newChild[0]);
+          childNode = removeEdges(newNode._id, childNode);
+          newNode.items.push(childNode);
         }
       }
     } else if (graph.edges[i]._to === nodeId) {
@@ -149,7 +165,9 @@ const addChildren = (graph, node) => {
       if (newChild.length > 0) {
         if (!containsObject(newChild[0], newNode.items)) {
           newChild[0].items = [];
-          newNode.items.push(Object.assign({'uuid': uuid()}, newChild[0]));
+          let childNode = Object.assign({'uuid': uuid()}, newChild[0]);
+          childNode = removeEdges(newNode._id, childNode);
+          newNode.items.push(childNode);
         }
       }
     }
