@@ -126,7 +126,7 @@ export class NodeEdges extends Component {
               ? (<div key={elem.dir} className={'edges-' + elem.dir}>
                   <button className={'edges-btn ' + colorCls}
                           onClick={elem.toggleFn}
-                          data-tippy-content="Show link properties">
+                          data-tippy-content="Mostrar propriedades da rela&ccedil;&atilde;o">
                     <i className={'fa fa-long-arrow-alt-'+ (elem.dir === 'in' ? 'right' : 'left')}></i>
                   </button>
                   {elem.openState &&

@@ -29,7 +29,7 @@ export class NodeInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: 'Properties',
+      tab: 'Propriedades',
       show: false
     }
   }
@@ -52,19 +52,19 @@ export class NodeInfo extends React.Component {
     }
 
     const node = this.props.node;
-    const tabs = [{ name: 'Properties', content: <Properties item={node} /> },
-                  { name: 'Monitoring', content: <Monit node={node} /> },
-                  { name: 'Reports', content: <Query node={node} /> }];
+    const tabs = [{ name: 'Propriedades', content: <Properties item={node} /> },
+                  { name: 'Monitoração', content: <Monit node={node} /> },
+                  { name: 'Relatórios', content: <Query node={node} /> }];
 
     const tabsButtons = tabs.map(tabItem => {
       const active = this.state.tab === tabItem.name ? ' active' : '';
       let disabled = false;
 
-      if (tabItem.name === 'Monitoring' && !['comp_unit', 'zabbix_graph'].includes(node.type)) {
+      if (tabItem.name === 'Monitoração' && !['comp_unit', 'zabbix_graph'].includes(node.type)) {
         disabled = true;
       }
 
-      if (tabItem.name === 'Reports') {
+      if (tabItem.name === 'Relatórios') {
         disabled = true;
         let queries = _.filter(this.props.queries, (q) => {
           return q.collection === node.type;

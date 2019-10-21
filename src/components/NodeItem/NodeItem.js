@@ -162,13 +162,13 @@ export class NodeItem extends Component {
         <div className="node-item-tools">
           <button className="btn-with-tip show-node-info-btn"
                   onClick={e => this.onNodeInfo(e)}
-                  data-tippy-content="Mostrar Propriedades">
+                  data-tippy-content="Mostrar propriedades">
             <i className="fa fa-info-circle"></i>
           </button>
           {!this.props.node.root &&
             <button className="btn-with-tip close-node-btn"
                     onClick={this.onSelfRemove}
-                    data-tippy-content="Remover este item">
+                    data-tippy-content="Remover da visuliza&ccedil;&atilde;o">
               <i className="fa fa-times-circle"></i>
             </button>}
         </div>

@@ -156,7 +156,7 @@ export class Stage extends Component {
 
           <div className="stage-tools" ref={ stageTools => this.stageTools = stageTools }>
             <button className="gmap-btn small tool-btn-left btn-toggle-menu" onClick={this.props.toggleFullTab}
-                    data-tippy-content="Toggle Menu">
+                    data-tippy-content="Esconder/Exibir Menu">
               <i className="fas fa-bars"></i>
             </button>
 
