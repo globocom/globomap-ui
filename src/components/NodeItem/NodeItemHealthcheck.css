@@ -24,6 +24,29 @@
   right: -15px;
 }
 
+.node-item-hc .hc-load {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: -15px;
+  right: -15px;
+  border-radius: 50%;
+
+  animation-name: pulse;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+.node-item-hc.active .hc-load {
+  display: none;
+}
+
+@keyframes pulse {
+  from { background-color: #eee; }
+  50% { background-color: #ddd; }
+  to { background-color: #eee; }
+}
+
 .node-item-hc.active .hc-result .hc-icon {
   position: absolute;
   left: 5px;
@@ -41,5 +64,5 @@
 .node-item-hc .hc-result.failed { background-color: #f4410b; }
 .node-item-hc .hc-result.failed .hc-icon { left: 6px; }
 
-.node-item-hc .hc-result.nothing { background-color: #ccc; }
+.node-item-hc .hc-result.nothing { background-color: #aaa; }
 .node-item-hc .hc-result.nothing .hc-icon { left: 5px; }

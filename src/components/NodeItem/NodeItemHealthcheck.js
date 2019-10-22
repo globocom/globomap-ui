@@ -24,7 +24,7 @@ export class NodeItemHealthcheck extends Component {
   constructor(props) {
     super(props);
 
-    // plugin name that this component is enabled
+    // plugin name that this component is enabled for
     this.pluginName = 'healthcheck';
 
     this.state = {
@@ -95,6 +95,7 @@ export class NodeItemHealthcheck extends Component {
 
     return (
       <div className={`node-item-hc ${result && 'active'}`}>
+        {!result && <div className="hc-load"></div>}
         <div className={`hc-result ${result ? result : ''}`}>
           <i className={`hc-icon fa ${icons[result]}`}></i>
         </div>
