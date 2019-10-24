@@ -106,13 +106,16 @@ export class NodeItem extends Component {
   }
 
   addPluginsObserver() {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.intersectionRatio === 1 && !this.state.pluginsLoaded) {
+    try {
+      const observer = new IntersectionObserver(entries => {
+        if (entries[0].intersectionRatio === 1 && !this.state.pluginsLoaded) {
           this.setState({ pluginsLoaded: true });
         }
-      }, { root: null, rootMargin: '0px', threshold: 1.0 }
-    )
+      }, { root: null, rootMargin: '0px', threshold: 1.0 });
+    } catch(error) {
+      // console.log(error);
+      return;
+    }
 
     if (this.ref.current) {
       observer.observe(this.ref.current)

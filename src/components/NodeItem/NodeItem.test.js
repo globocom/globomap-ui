@@ -8,6 +8,8 @@ import { node } from '../__fixtures__';
 chai.use(chaiEnzyme());
 const expect = chai.expect;
 
+const IntersectionObserver = function() {};
+
 describe("NodeItem", function() {
   it('should render NodeItem component', () => {
     const component = shallow(<NodeItem node={node} />);

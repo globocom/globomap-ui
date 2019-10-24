@@ -19,7 +19,8 @@ describe("App", () => {
       fetchCollections: () => {},
       fetchEdges: () => {},
       fetchQueries: () => {},
-      getServerData: () => {}
+      getServerData: () => {},
+      getPlugins: () => {}
     };
     component = shallow(<App {...props} />);
   });
