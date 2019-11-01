@@ -112,13 +112,13 @@ export class NodeItem extends Component {
           this.setState({ pluginsLoaded: true });
         }
       }, { root: null, rootMargin: '0px', threshold: 1.0 });
+
+      if (this.ref.current) {
+        observer.observe(this.ref.current)
+      }
     } catch(error) {
       // console.log(error);
       return;
-    }
-
-    if (this.ref.current) {
-      observer.observe(this.ref.current)
     }
   }
 
