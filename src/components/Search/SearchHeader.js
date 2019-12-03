@@ -106,9 +106,7 @@ export class SearchHeader extends Component {
 
     let params = { collections: checked };
 
-    if (this.state.searchFor === 'tudo') {
-      params['query'] = this.state.query;
-    } else if (this.state.searchFor === 'nome') {
+    if (this.state.searchFor === 'nome') {
       params['query'] = this.state.query;
       params['queryType'] = 'name';
     } else {
@@ -172,15 +170,6 @@ export class SearchHeader extends Component {
     return (
       <header className={`search-header${this.state.showOptions ? ' with-options' : ''}`}>
         <div className="search-box">
-          {this.state.searchFor === 'tudo' &&
-            <div className="search-for-all">
-              <input className="search-query" type="search" name="query"
-                placeholder="Type keyword" autoComplete="off"
-                value={this.state.query}
-                onChange={this.handleSearchChange}
-                onKeyPress={e => this.handleKeyPress(e)} />
-            </div>}
-
           {this.state.searchFor === 'nome' &&
             <div className="search-for-all">
               <input className="search-query" type="search" name="query"
@@ -210,9 +199,6 @@ export class SearchHeader extends Component {
                 </div>
                 {this.state.showSearchTypes &&
                   <div className="search-types">
-                    <button onClick={() => this.setState({ searchFor: 'tudo', showSearchTypes: false })}
-                      disabled={this.state.searchFor === 'tudo'}>tudo</button>
-
                     <button onClick={() => this.setState({ searchFor: 'nome', showSearchTypes: false })}
                       disabled={this.state.searchFor === 'nome'}>nome</button>
 
