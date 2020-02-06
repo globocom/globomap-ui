@@ -93,6 +93,9 @@ export class AutoMap extends React.Component {
     this.handleQChange = this.handleQChange.bind(this);
     this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
     this.openMap = this.openMap.bind(this);
+
+    window.ga('set', 'page', '/auto-maps');
+    window.ga('send', 'pageview');
   }
 
   onToggleNodeInfo(event, node) {
@@ -309,4 +312,3 @@ export default connect(
     resetSubNodes
   }
 )(AutoMap);
-

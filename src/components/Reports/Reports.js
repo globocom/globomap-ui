@@ -50,6 +50,9 @@ export class Reports extends React.Component {
 
     this.handleQChange = this.handleQChange.bind(this);
     this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
+
+    window.ga('set', 'page', '/reports');
+    window.ga('send', 'pageview');
   }
 
   onToggleNodeInfo(event, node) {

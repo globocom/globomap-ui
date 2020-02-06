@@ -24,6 +24,13 @@ import './Search.css';
 
 export class Search extends Component {
 
+  constructor(props) {
+    super(props);
+
+    window.ga('set', 'page', '/advanced-search');
+    window.ga('send', 'pageview');
+  }
+
   render() {
     return (
       <App>

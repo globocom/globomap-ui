@@ -30,6 +30,13 @@ import './Favorites.css';
 
 export class Favorites extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    window.ga('set', 'page', '/saved-maps');
+    window.ga('send', 'pageview');
+  }
+
   componentDidMount() {
     this.props.listUserMaps();
   }
@@ -129,4 +136,3 @@ export default connect(
     setStageNodes
   }
 )(Favorites);
-
