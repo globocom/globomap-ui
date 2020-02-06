@@ -13,6 +13,7 @@ describe("Favorites", function() {
   let componentDidMountStub;
 
   beforeEach(function() {
+    window.ga = function() {}
     componentDidMountStub = sinon.stub(Favorites.prototype, 'componentDidMount').value('newValue');
   });
 

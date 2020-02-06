@@ -12,6 +12,7 @@ describe("AutoMap", () => {
 
   beforeAll(() => {
     const props = { automapNodeList: [] }
+    window.ga = function() {}
     component = shallow(<AutoMap {...props} />);
   })
 

@@ -9,6 +9,10 @@ const expect = chai.expect;
 
 describe("Search", function() {
 
+  beforeEach(function() {
+    window.ga = function() {}
+  });
+
   it('should render Search component', () => {
     const component = shallow(<Search />);
     expect(component).to.exist;

@@ -9,6 +9,10 @@ const expect = chai.expect;
 
 describe("Reports", function() {
 
+  beforeEach(function() {
+    window.ga = function() {}
+  });
+
   it('should render Reports component', () => {
     const props = { queries: [], reportNodes: [] }
     const component = shallow(<Reports {...props} />);
