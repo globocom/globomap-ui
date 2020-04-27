@@ -111,11 +111,11 @@ export class Stage extends Component {
   }
 
   componentDidMount() {
-    const { sharedMapKey } = this.props;
+    const { mapKey } = this.props.match.params;
 
-    if (sharedMapKey) {
+    if (mapKey) {
       this.props.setFullTab('map');
-      this.props.getSharedMap(sharedMapKey);
+      this.props.getSharedMap(mapKey);
     }
 
     document.addEventListener('click', this.handleOutsideClick, false);

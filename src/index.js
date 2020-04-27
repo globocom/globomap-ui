@@ -57,8 +57,8 @@ ReactDOM.render(
         <Route path="/advanced-search" component={Search} />
         <Route path="/saved-maps" component={Favorites} />
 
-        <Route path="/map" component={Stage} />
         <Route path="/map/:mapKey" component={Stage} />
+        <Route path="/map" component={Stage} />
 
         <Route component={NotFound} />
       </Switch>
