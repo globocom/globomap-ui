@@ -12,7 +12,10 @@ describe("Stage", function() {
   let wrapper;
 
   beforeEach(() => {
-    const props = { stageNodes }
+    const props = {
+      match: { params: { mapKey: null } },
+      stageNodes
+    }
     wrapper = shallow(<Stage {...props} />);
   });
 
