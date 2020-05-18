@@ -48,7 +48,7 @@ export class AutoMap extends React.Component {
         {
           name: 'VIP',
           collection: 'vip',
-          graph: 'load_balancing',
+          graph: ['load_balancing'],
           max_depth: 2,
           direction: 'any',
           description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite pelo menos parte do nome do VIP.',
@@ -59,7 +59,7 @@ export class AutoMap extends React.Component {
         {
           name: 'VIP resolvendo o DNS',
           collection: 'vip',
-          graph: 'load_balancing',
+          graph: ['load_balancing'],
           max_depth: 2,
           direction: 'any',
           description: 'Recupera mapas que mostram os hosts relacionados a um VIP.\nDigite um DNS para ser resolvido. Retornaremos os VIPs cujo IP é igual ao IP resolvido.',
@@ -70,7 +70,7 @@ export class AutoMap extends React.Component {
         {
           name: 'Clientes de uma APP',
           collection: 'dns',
-          graph: 'load_balancing',
+          graph: ['load_balancing'],
           max_depth: 2,
           direction: 'any',
           description: 'Recupera mapas que mostram as APPs que dependem uma dada APP.\nDigite pelo menos parte do nome do DNS. Retornaremos apenas os VIPs relacionados à APP.',
@@ -82,7 +82,7 @@ export class AutoMap extends React.Component {
         {
           name: 'Dependências de uma APP',
           collection: 'dns',
-          graph: 'load_balancing',
+          graph: ['load_balancing'],
           max_depth: 2,
           direction: 'any',
           description: 'Recupera mapas que mostram as APPs das quais uma dada APP depende.\nDigite pelo menos parte do nome do DNS. Retornaremos apenas os VIPs relacionados à APP.',
@@ -90,6 +90,16 @@ export class AutoMap extends React.Component {
           searchby: 'name',
           type: 'query',
           query: 'query_vip_vip_custom_maps'
+        },
+        {
+          name: 'Hosts Físicos',
+          collection: 'dns',
+          graph: ['physical_host'],
+          max_depth: 4,
+          direction: 'any',
+          description: 'Recupera mapas que mostram os hosts físicos relacionados a um VIP.\nDigite um DNS para ser resolvido. Retornaremos os VIPs cujo IP é igual ao IP resolvido.',
+          searchby: 'name',
+          type: 'search'
         }
       ],
       showNodeInfo: false,
@@ -190,7 +200,7 @@ export class AutoMap extends React.Component {
     } else {
       this.props.automapTraversal({
         node: node,
-        graphs: [kind.graph],
+        graphs: kind.graph,
         max_depth: kind.max_depth,
         direction: kind.direction
       });
