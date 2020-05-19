@@ -86,15 +86,16 @@ export class AutoMap extends React.Component {
           query: 'query_vip_vip_custom_maps'
         },
         {
-          name: 'Hosts Físicos',
-          collection: 'dns',
+          name: 'Hosts Físicos de um VIP',
+          collection: 'vip',
           graph: ['physical_host'],
-          max_depth: 4,
+          max_depth: 3,
           direction: 'any',
           description: 'Recupera mapas que mostram os hosts físicos relacionados a um VIP.\nDigite um DNS para ser resolvido. Retornaremos os VIPs cujo IP é igual ao IP resolvido.',
           searchby: 'name',
           type: 'search'
         }
+
       ],
       showNodeInfo: false,
       nodeInfoNode: null
