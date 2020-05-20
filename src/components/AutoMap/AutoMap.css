@@ -25,6 +25,13 @@ limitations under the License.
   padding: 10px;
 }
 
+.automaps-panel.automap-kind .gmap-btn {
+  margin: 0.25em;
+  flex: 1 1 14em;
+  min-height: 2.5em;
+  /*max-width: 12em;*/
+}
+
 .automap-search .automap-q {
   flex-grow: 1;
 }
