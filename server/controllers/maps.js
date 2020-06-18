@@ -114,8 +114,9 @@ router.post('/user', isAuthenticated, (req, res) => {
 
   const sNodes = req.body.params.value;
   const mapName = req.body.params.mapName || sNodes[0].name;
-  const mapStr = JSON.stringify(sNodes);
-  const mapKey = createMapHash(mapStr);
+  const mapObj = {'map': sNodes, 'name': mapName}
+  const mapStr = JSON.stringify(mapObj);
+  const mapKey = createMapHash(JSON.stringify(sNodes));
 
   getUserInfo(req.session).then(uInfo => {
     // Redis HASH email:maps, key, value

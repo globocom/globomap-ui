@@ -257,6 +257,9 @@ export default function reducer(state=initialState, action={}) {
     case LIST_USER_MAPS_SUCCESS:
       const items = action.result.data;
       const newItems = Object.keys(items).map((k) => {
+        if ('name' in items[k]) {
+          return { key: k, name: items[k].name, content: items[k].map};
+        }
         let name = '';
         if (0 in items[k]) {
           name = items[k][0]["name"];
