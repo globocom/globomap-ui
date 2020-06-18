@@ -339,10 +339,10 @@ export function getSharedMap(key) {
   };
 }
 
-export function saveUserMap(stageNodes) {
+export function saveUserMap(stageNodes, mapName) {
   return {
     types: [SAVE_USER_MAP, SAVE_USER_MAP_SUCCESS, SAVE_USER_MAP_FAIL],
-    promise: (client) => client.post('/api/maps/user', { value: stageNodes })
+    promise: (client) => client.post('/api/maps/user', { value: stageNodes, "mapName": mapName })
   };
 }
 

@@ -43,7 +43,8 @@ export class Stage extends Component {
     this.state = {
       sharedLinkOpen: false,
       showNodeInfo: false,
-      nodeInfoNode: null
+      nodeInfoNode: null,
+      mapName: ''
     };
 
     this.renderNodes = this.renderNodes.bind(this);
@@ -52,6 +53,7 @@ export class Stage extends Component {
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
     this.onShowNodeInfo = this.onShowNodeInfo.bind(this);
+    this.handleMapNameChange = this.handleMapNameChange.bind(this);
   }
 
   onShowNodeInfo(node) {
@@ -79,10 +81,15 @@ export class Stage extends Component {
     });
   }
 
-  saveMap(event) {
+  saveMap(event, mapName) {
     event.preventDefault();
-    this.props.saveUserMap(this.props.stageNodes);
+    this.props.saveUserMap(this.props.stageNodes, mapName);
     return;
+  }
+
+  handleMapNameChange(event) {
+    let target = event.target;
+    this.setState({ "mapName": target.value });
   }
 
   shareMap(event) {
@@ -166,11 +173,13 @@ export class Stage extends Component {
               <i className="fas fa-link"></i>
             </button>
 
-            <button className="gmap-btn small btn-save-map" onClick={e => this.saveMap(e)}
+            <button className="gmap-btn small btn-save-map" onClick={e => this.saveMap(e, this.state.mapName)}
                     data-tippy-content="Salvar este mapa"
                     disabled={!rootNodeHasItens}>
               <i className="fas fa-save"></i>
             </button>
+            <input type="text" name="map-name" value={this.state.mapName}
+                onChange={this.handleMapNameChange}/>
 
             {this.state.sharedLinkOpen &&
               <div className="shared-link">
