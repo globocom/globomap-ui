@@ -137,3 +137,32 @@ limitations under the License.
   padding: 8px 16px;
   border: 1px solid #ccc;
 }
+
+.stage-tools .save-map {
+  position: absolute;
+  display: flex;
+  top: 60px;
+  left: 50%;
+  width: 80%;
+  margin-left: -40%;
+  background: white;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 19;
+  box-shadow: 0 5px 30px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+.save-map .link-url {
+  flex-grow: 2;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #ccc;
+  border-right: 0;
+  padding: 8px;
+}
+
+.save-map .btn-clipboard {
+  border-radius: 0 4px 4px 0;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+}
