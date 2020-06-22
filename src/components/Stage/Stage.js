@@ -42,6 +42,7 @@ export class Stage extends Component {
 
     this.state = {
       sharedLinkOpen: false,
+      saveMapFormOpen: false,
       showNodeInfo: false,
       nodeInfoNode: null,
       mapName: ''
@@ -87,6 +88,24 @@ export class Stage extends Component {
     return;
   }
 
+  saveMapForm(event) {
+    event.preventDefault();
+    if (!this.state.saveMapFormOpen) {
+      this.openSaveMapForm();
+      return;
+    }
+    this.closeSaveMapForm();
+  }
+
+  openSaveMapForm() {
+    this.setState({ saveMapFormOpen: true });
+    this.setState({ sharedLinkOpen: false });
+  }
+
+  closeSaveMapForm() {
+    this.setState({ saveMapFormOpen: false });
+  }
+
   handleMapNameChange(event) {
     let target = event.target;
     this.setState({ "mapName": target.value });
@@ -104,6 +123,7 @@ export class Stage extends Component {
 
   openSharedLink() {
     this.setState({ sharedLinkOpen: true });
+    this.setState({ saveMapFormOpen: false });
   }
 
   closeSharedLink() {
@@ -115,6 +135,7 @@ export class Stage extends Component {
       return;
     }
     this.closeSharedLink();
+    this.closeSaveMapForm();
   }
 
   componentDidMount() {
@@ -173,13 +194,11 @@ export class Stage extends Component {
               <i className="fas fa-link"></i>
             </button>
 
-            <button className="gmap-btn small btn-save-map" onClick={e => this.saveMap(e, this.state.mapName)}
+            <button className="gmap-btn small btn-save-map" onClick={e => this.saveMapForm(e)}
                     data-tippy-content="Salvar este mapa"
                     disabled={!rootNodeHasItens}>
               <i className="fas fa-save"></i>
             </button>
-            <input type="text" name="map-name" value={this.state.mapName}
-                onChange={this.handleMapNameChange}/>
 
             {this.state.sharedLinkOpen &&
               <div className="shared-link">
@@ -188,6 +207,18 @@ export class Stage extends Component {
                 <button className="btn-clipboard" onClick={() => alert('Copiado!')}
                         data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
                   <i className="fa fa-clipboard"></i> Copiar para o clipboard
+                </button>
+              </div>}
+
+            {this.state.saveMapFormOpen &&
+              <div className="save-map">
+                <input type="text" className="link-url"
+                       placeholder="Nome" onClick={e => e.target.select()}
+                       name="map-name" value={this.state.mapName}
+                       onChange={this.handleMapNameChange}/>
+                <button className="btn-clipboard" onClick={e => this.saveMap(e, this.state.mapName)}
+                        disabled={!rootNodeHasItens}>
+                  <i className="fas fa-save"></i> Salvar Mapa
                 </button>
               </div>}
           </div>
