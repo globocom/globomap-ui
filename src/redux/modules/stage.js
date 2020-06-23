@@ -21,6 +21,7 @@ const STAGE_ADD_NEW_NODE = 'stage_add_new_node';
 const STAGE_REMOVE_NODE = 'stage_remove_node';
 const STAGE_SET_NODES = 'stage_set_nodes';
 const STAGE_CLEAN_NODES = 'stage_clean_nodes';
+const STAGE_RESET_REDIRECT = 'stage_reset_redirect'
 
 const SAVE_SHARED_MAP = 'save_shared_map';
 const SAVE_SHARED_MAP_SUCCESS = 'save_shared_map_success';
@@ -120,6 +121,12 @@ export default function reducer(state=initialState, action={}) {
         stageNodes: []
       }
 
+    case STAGE_RESET_REDIRECT:
+      return {
+        ...state,
+        willRedirect: null
+      }
+
     case SAVE_SHARED_MAP:
       return {
         ...state,
@@ -184,7 +191,8 @@ export default function reducer(state=initialState, action={}) {
         ...state,
         saveUserMapLoading: false,
         latestUserMapKey: newMap.key,
-        userMaps: hasKey ? [...uMaps] : [...uMaps, newMap]
+        userMaps: hasKey ? [...uMaps] : [...uMaps, newMap],
+        willRedirect: '/saved-maps'
       }
 
     case SAVE_USER_MAP_FAIL:
@@ -325,6 +333,12 @@ export function setStageNodes(stageNodes) {
 export function cleanStageNodes() {
   return {
     type: STAGE_CLEAN_NODES
+  }
+}
+
+export function resetRedirect() {
+  return {
+    type: STAGE_RESET_REDIRECT
   }
 }
 

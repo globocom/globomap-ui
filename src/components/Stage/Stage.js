@@ -20,6 +20,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
+  resetRedirect,
   saveSharedMap,
   getSharedMap,
   saveUserMap,
@@ -138,6 +139,18 @@ export class Stage extends Component {
     this.closeSaveMapForm();
   }
 
+  treatRedirect() {
+    if (this.props.willRedirect) {
+      let willRedirect = this.props.willRedirect;
+      this.props.resetRedirect();
+      this.props.history.push(willRedirect);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    this.treatRedirect();
+  }
+
   componentDidMount() {
     const { mapKey } = this.props.match.params;
 
@@ -251,6 +264,7 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
+    resetRedirect,
     saveSharedMap,
     getSharedMap,
     saveUserMap,
