@@ -24,7 +24,7 @@ import {
 import {
   clearCurrentNode,
   resetSubNodes } from '../../redux/modules/nodes';
-import { sortByName } from '../../utils';
+import { sortByTimestampAndName } from '../../utils';
 import { App } from '../';
 import './Favorites.css';
 
@@ -56,6 +56,14 @@ export class Favorites extends React.Component {
     }
   }
 
+  renderTimeStamp(timestamp) {
+    if (timestamp) {
+      return new Date(timestamp).toLocaleString();
+    } else {
+      return '--/--/----';
+    }
+  }
+
   renderUserMaps() {
     if (this.props.userMaps.length === 0) {
       return (
@@ -67,11 +75,12 @@ export class Favorites extends React.Component {
       );
     }
 
-    let uMaps = sortByName(this.props.userMaps);
+    let uMaps = sortByTimestampAndName(this.props.userMaps, true);
     uMaps = uMaps.map(item => {
       return (
         <li key={item.key} className="user-map-item"
             onClick={e => this.applyGraph(e, item.content)}>
+          <span  className="user-map-item-timestamp">{this.renderTimeStamp(item.timestamp)}</span>
           <span  className="user-map-item-title">{item.name}</span>
           <button className="user-map-item-remove-btn"
                   onClick={e => this.onDeleteGraph(e, item.key)}

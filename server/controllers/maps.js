@@ -112,9 +112,10 @@ router.post('/user', isAuthenticated, (req, res) => {
     return;
   }
 
+  const timestamp = Date.now();
   const sNodes = req.body.params.value;
   const mapName = req.body.params.mapName || sNodes[0].name;
-  const mapObj = {'map': sNodes, 'name': mapName}
+  const mapObj = {'map': sNodes, 'name': mapName, 'timestamp': timestamp};
   const mapStr = JSON.stringify(mapObj);
   const mapKey = createMapHash(JSON.stringify(sNodes));
 
@@ -122,7 +123,7 @@ router.post('/user', isAuthenticated, (req, res) => {
     // Redis HASH email:maps, key, value
     redis.hset(`${uInfo.email}:maps`, mapKey, mapStr)
     .then((result) => {
-      res.json({ key: mapKey, name: mapName, content: sNodes });
+      res.json({ key: mapKey, name: mapName, timestamp: timestamp, content: sNodes });
     })
     .catch((error) => {
       console.log(error);

@@ -265,14 +265,24 @@ export default function reducer(state=initialState, action={}) {
     case LIST_USER_MAPS_SUCCESS:
       const items = action.result.data;
       const newItems = Object.keys(items).map((k) => {
+        let curMap = { key: k, timestamp: '' };
         if ('name' in items[k]) {
-          return { key: k, name: items[k].name, content: items[k].map};
+          curMap.content = items[k].map;
+        } else {
+          curMap.content = items[k];
         }
-        let name = '';
-        if (0 in items[k]) {
-          name = items[k][0]["name"];
+        if ('timestamp' in items[k]) {
+          curMap.timestamp = items[k].timestamp;
         }
-        return { key: k, name: name, content: items[k] };
+        if ('name' in items[k]) {
+          curMap.name = items[k].name;
+        } else {
+          curMap.name = '';
+          if (0 in curMap.content) {
+            curMap.name = curMap.content[0]["name"];
+          }
+        }
+        return curMap;
       });
 
       return {

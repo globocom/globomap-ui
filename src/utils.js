@@ -101,6 +101,15 @@ export const sortByName = (arr) => {
   return sortBy(arr, 'name');
 };
 
+export const sortByTimestampAndName = (arr, reverse=false) => {
+  return sortBy(arr, 'name').sort((a,b) => {
+    if (reverse) {
+      return b['timestamp'] - a['timestamp']
+    }
+    return a['timestamp'] - b['timestamp']
+  });
+};
+
 export const turnOffLoadings = (state) => {
   return forOwn(state, (v, k, o) => {
     if (typeof k === 'string' && k.toLowerCase().includes('loading')) {
