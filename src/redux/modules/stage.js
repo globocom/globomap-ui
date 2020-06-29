@@ -23,6 +23,10 @@ const STAGE_SET_NODES = 'stage_set_nodes';
 const STAGE_CLEAN_NODES = 'stage_clean_nodes';
 const STAGE_RESET_REDIRECT = 'stage_reset_redirect'
 
+const COPY_SHARED_MAP = 'copy_shared_map'
+
+const CLEAR_NOTIFICATION = 'clear_notification'
+
 const SAVE_SHARED_MAP = 'save_shared_map';
 const SAVE_SHARED_MAP_SUCCESS = 'save_shared_map_success';
 const SAVE_SHARED_MAP_FAIL = 'save_shared_map_fail';
@@ -127,6 +131,18 @@ export default function reducer(state=initialState, action={}) {
         willRedirect: null
       }
 
+    case COPY_SHARED_MAP:
+      return {
+        ...state,
+        notification: 'btn-clipboard'
+      }
+
+    case CLEAR_NOTIFICATION:
+      return {
+        ...state,
+        notification: ''
+      }
+
     case SAVE_SHARED_MAP:
       return {
         ...state,
@@ -192,7 +208,8 @@ export default function reducer(state=initialState, action={}) {
         saveUserMapLoading: false,
         latestUserMapKey: newMap.key,
         userMaps: hasKey ? [...uMaps] : [...uMaps, newMap],
-        willRedirect: '/saved-maps'
+        notification: 'btn-save',
+        // willRedirect: '/saved-maps'
       }
 
     case SAVE_USER_MAP_FAIL:
@@ -349,6 +366,18 @@ export function cleanStageNodes() {
 export function resetRedirect() {
   return {
     type: STAGE_RESET_REDIRECT
+  }
+}
+
+export function copySharedMap() {
+  return {
+    type: COPY_SHARED_MAP
+  }
+}
+
+export function clearNotification() {
+  return {
+    type: CLEAR_NOTIFICATION
   }
 }
 

@@ -21,6 +21,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   resetRedirect,
+  copySharedMap,
+  clearNotification,
   saveSharedMap,
   getSharedMap,
   saveUserMap,
@@ -81,6 +83,12 @@ export class Stage extends Component {
         </div>
       );
     });
+  }
+
+  copySharedMap(event) {
+    event.preventDefault();
+    this.props.copySharedMap();
+    return;
   }
 
   saveMap(event, mapName) {
@@ -147,8 +155,45 @@ export class Stage extends Component {
     }
   }
 
+  applyNotificationTippy() {
+    if (this.props.notification) {
+      let classToApplyTippy;
+      let notificationTransition = 500;
+      let notificationDuration = 2000;
+      if (this.state.sharedLinkOpen) {
+        classToApplyTippy = 'btn-clipboard';
+      } else if (this.state.saveMapFormOpen) {
+        classToApplyTippy = 'btn-save';
+      }
+      if (document.getElementsByClassName(classToApplyTippy).length > 0) {
+        tippy('.' + classToApplyTippy, {
+          trigger: 'manual',
+          animation: 'scale',
+          duration: notificationTransition,
+          onShown(instance) {
+            (async () => {
+              await new Promise(r => setTimeout(r, notificationDuration));
+              instance.hide();
+            })();
+          }
+        });
+      }
+    }
+  }
+
+  showNotification() {
+    if (this.props.notification) {
+      this.applyNotificationTippy();
+      let notification = document.getElementsByClassName(
+          this.props.notification)[0]._tippy;
+      notification.show();
+      this.props.clearNotification();
+    }
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     this.treatRedirect();
+    this.showNotification();
   }
 
   componentDidMount() {
@@ -217,8 +262,9 @@ export class Stage extends Component {
               <div className="shared-link">
                 <input type="text" readOnly={true} className="link-url"
                        value={urlToShare} onClick={e => e.target.select()} />
-                <button className="btn-clipboard" onClick={() => alert('Copiado!')}
-                        data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
+                <button className="btn-clipboard" onClick={e => this.copySharedMap(e)}
+                       data-tippy-content="Copiado!"
+                       data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
                   <i className="fa fa-clipboard"></i> Copiar para o clipboard
                 </button>
               </div>}
@@ -229,7 +275,8 @@ export class Stage extends Component {
                        placeholder="Nome" onClick={e => e.target.select()}
                        name="map-name" value={this.state.mapName}
                        onChange={this.handleMapNameChange}/>
-                <button className="btn-clipboard" onClick={e => this.saveMap(e, this.state.mapName)}
+                <button className="btn-save" onClick={e => this.saveMap(e, this.state.mapName)}
+                        data-tippy-content="Salvado!"
                         disabled={!rootNodeHasItens}>
                   <i className="fas fa-save"></i> Salvar Mapa
                 </button>
@@ -268,6 +315,8 @@ export default connect(
     saveSharedMap,
     getSharedMap,
     saveUserMap,
+    clearNotification,
+    copySharedMap,
     getUserMap,
     listUserMaps,
     setFullTab,
