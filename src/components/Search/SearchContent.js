@@ -22,7 +22,9 @@ import {
   setCurrentNode,
   clearCurrentNode,
   traversalSearch } from '../../redux/modules/nodes';
-import { addStageNode } from '../../redux/modules/stage';
+import {
+  addStageNode,
+  setMapName } from '../../redux/modules/stage';
 import { setFullTab } from '../../redux/modules/tabs';
 import SearchContentPagination from './SearchContentPagination';
 import { NodeInfo } from '../';
@@ -59,6 +61,7 @@ export class SearchContent extends Component {
   onOpenMap(event, node) {
     event.stopPropagation();
     this.props.addStageNode(node, null, true);
+    this.props.setMapName(node.name);
 
     // change to map screen and do traversal search
     this.props.history.push('/map');
@@ -158,6 +161,7 @@ export default connect(
   mapStateToProps,
   {
     addStageNode,
+    setMapName,
     setCurrentNode,
     clearNodes,
     clearCurrentNode,
