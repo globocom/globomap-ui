@@ -23,6 +23,8 @@ const STAGE_SET_NODES = 'stage_set_nodes';
 const STAGE_CLEAN_NODES = 'stage_clean_nodes';
 const STAGE_RESET_REDIRECT = 'stage_reset_redirect'
 
+const SET_MAP_NAME = 'set_map_name';
+
 const COPY_SHARED_MAP = 'copy_shared_map'
 
 const CLEAR_NOTIFICATION = 'clear_notification'
@@ -63,7 +65,8 @@ const initialState = {
   saveUserMapLoading: false,
   getUserMapLoading: false,
   deleteUserMapLoading: false,
-  listUserMapsLoading: false
+  listUserMapsLoading: false,
+  mapName: ''
 }
 
 export default function reducer(state=initialState, action={}) {
@@ -129,6 +132,12 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         willRedirect: null
+      }
+
+    case SET_MAP_NAME:
+      return {
+        ...state,
+        mapName: action.mapName
       }
 
     case COPY_SHARED_MAP:
@@ -367,6 +376,13 @@ export function resetRedirect() {
   return {
     type: STAGE_RESET_REDIRECT
   }
+}
+
+export function setMapName(mapName) {
+  return {
+    type: SET_MAP_NAME,
+    mapName
+  };
 }
 
 export function copySharedMap() {
