@@ -208,6 +208,10 @@ export class Stage extends Component {
 
     new Clipboard('.btn-clipboard');
     tippy('.stage-tools button', { arrow: true, animation: "fade" });
+
+    if (this.props.mapName) {
+      this.setState({ "mapName": this.props.mapName });
+    }
   }
 
   componentWillUnmount() {
