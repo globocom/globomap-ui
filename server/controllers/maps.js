@@ -113,11 +113,11 @@ router.post('/user', isAuthenticated, (req, res) => {
   }
 
   const timestamp = Date.now();
+  const mapKey = req.body.params.mapKey;
   const sNodes = req.body.params.value;
   const mapName = req.body.params.mapName || sNodes[0].name;
   const mapObj = {'map': sNodes, 'name': mapName, 'timestamp': timestamp};
   const mapStr = JSON.stringify(mapObj);
-  const mapKey = createMapHash(JSON.stringify(sNodes));
 
   getUserInfo(req.session).then(uInfo => {
     // Redis HASH email:maps, key, value

@@ -93,7 +93,7 @@ export class Stage extends Component {
 
   saveMap(event, mapName) {
     event.preventDefault();
-    this.props.saveUserMap(this.props.stageNodes, mapName);
+    this.props.saveUserMap(this.props.stageNodes, mapName, this.state.mapKey);
     return;
   }
 
@@ -211,6 +211,9 @@ export class Stage extends Component {
 
     if (this.props.mapName) {
       this.setState({ "mapName": this.props.mapName });
+    }
+    if (this.props.mapKey) {
+      this.setState({ "mapKey": this.props.mapKey });
     }
   }
 
