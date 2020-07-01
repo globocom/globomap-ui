@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import {
   setStageNodes,
   setMapName,
+  setMapKey,
   cleanStageNodes } from '../../redux/modules/stage';
 import {
   setCurrentKind,
@@ -198,6 +199,7 @@ export class AutoMap extends React.Component {
     this.props.resetSubNodes();
     this.props.cleanStageNodes();
     this.props.setMapName(kind.map_name(node.name));
+    this.props.setMapKey('');
 
     if (kind.type === 'query') {
       this.props.automapTraversalQuery({
@@ -334,6 +336,7 @@ export default connect(
     automapResetNodes,
     setStageNodes,
     setMapName,
+    setMapKey,
     cleanStageNodes,
     clearCurrentNode,
     resetSubNodes

@@ -24,6 +24,7 @@ const STAGE_CLEAN_NODES = 'stage_clean_nodes';
 const STAGE_RESET_REDIRECT = 'stage_reset_redirect'
 
 const SET_MAP_NAME = 'set_map_name';
+const SET_MAP_KEY = 'set_map_key';
 
 const COPY_SHARED_MAP = 'copy_shared_map'
 
@@ -138,6 +139,12 @@ export default function reducer(state=initialState, action={}) {
       return {
         ...state,
         mapName: action.mapName
+      }
+
+    case SET_MAP_KEY:
+      return {
+        ...state,
+        mapKey: action.mapKey
       }
 
     case COPY_SHARED_MAP:
@@ -385,6 +392,16 @@ export function setMapName(mapName) {
   };
 }
 
+export function setMapKey(mapKey) {
+  if (!mapKey) {
+    mapKey = uuid();
+  }
+  return {
+    type: SET_MAP_KEY,
+    mapKey
+  };
+}
+
 export function copySharedMap() {
   return {
     type: COPY_SHARED_MAP
@@ -411,10 +428,10 @@ export function getSharedMap(key) {
   };
 }
 
-export function saveUserMap(stageNodes, mapName) {
+export function saveUserMap(stageNodes, mapName, mapKey) {
   return {
     types: [SAVE_USER_MAP, SAVE_USER_MAP_SUCCESS, SAVE_USER_MAP_FAIL],
-    promise: (client) => client.post('/api/maps/user', { value: stageNodes, "mapName": mapName })
+    promise: (client) => client.post('/api/maps/user', { value: stageNodes, "mapName": mapName, "mapKey": mapKey })
   };
 }
 

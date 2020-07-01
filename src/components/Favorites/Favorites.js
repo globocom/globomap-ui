@@ -21,6 +21,7 @@ import {
   deleteUserMap,
   getUserMap,
   setMapName,
+  setMapKey,
   setStageNodes } from '../../redux/modules/stage';
 import {
   clearCurrentNode,
@@ -42,12 +43,13 @@ export class Favorites extends React.Component {
     this.props.listUserMaps();
   }
 
-  applyGraph(event, content, name) {
+  applyGraph(event, content, name, key) {
     event.stopPropagation();
     this.props.clearCurrentNode();
     this.props.resetSubNodes();
     this.props.setStageNodes(content);
     this.props.setMapName(name);
+    this.props.setMapKey(key);
     this.props.history.push('/map');
   }
 
@@ -81,7 +83,7 @@ export class Favorites extends React.Component {
     uMaps = uMaps.map(item => {
       return (
         <li key={item.key} className="user-map-item"
-            onClick={e => this.applyGraph(e, item.content, item.name)}>
+            onClick={e => this.applyGraph(e, item.content, item.name, item.key)}>
           <span  className="user-map-item-timestamp">{this.renderTimeStamp(item.timestamp)}</span>
           <span  className="user-map-item-title">{item.name}</span>
           <button className="user-map-item-remove-btn"
@@ -145,6 +147,7 @@ export default connect(
     getUserMap,
     resetSubNodes,
     setMapName,
+    setMapKey,
     setStageNodes
   }
 )(Favorites);
