@@ -36,6 +36,7 @@ import {
   NodeInfo,
   NodeItem } from '../';
 import SubNodes from './SubNodes';
+import { uuid } from '../../utils';
 import './Stage.css';
 
 export class Stage extends Component {
@@ -94,6 +95,12 @@ export class Stage extends Component {
   saveMap(event, mapName) {
     event.preventDefault();
     this.props.saveUserMap(this.props.stageNodes, mapName, this.state.mapKey);
+    return;
+  }
+
+  saveMapCopy(event, mapName) {
+    event.preventDefault();
+    this.props.saveUserMap(this.props.stageNodes, mapName, uuid());
     return;
   }
 
@@ -286,6 +293,11 @@ export class Stage extends Component {
                         data-tippy-content="Salvado!"
                         disabled={!rootNodeHasItens}>
                   <i className="fas fa-save"></i> Salvar Mapa
+                </button>
+                <button className="btn-save-copy" onClick={e => this.saveMapCopy(e, this.state.mapName)}
+                        data-tippy-content="Salvado!"
+                        disabled={!rootNodeHasItens}>
+                  <i className="fas fa-save"></i> Salvar Cópia
                 </button>
               </div>}
           </div>
