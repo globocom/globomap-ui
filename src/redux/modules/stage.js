@@ -150,7 +150,7 @@ export default function reducer(state=initialState, action={}) {
     case COPY_SHARED_MAP:
       return {
         ...state,
-        notification: 'btn-clipboard'
+        notification: 'Copiado!'
       }
 
     case CLEAR_NOTIFICATION:
@@ -224,7 +224,7 @@ export default function reducer(state=initialState, action={}) {
         saveUserMapLoading: false,
         latestUserMapKey: newMap.key,
         userMaps: hasKey ? [...uMaps] : [...uMaps, newMap],
-        notification: 'btn-save',
+        notification: 'Salvado!',
         // willRedirect: '/saved-maps'
       }
 

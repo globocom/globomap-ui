@@ -1,0 +1,44 @@
+/*
+Copyright 2018 Globo.com
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.stage-tools .stage-sub-menu {
+  position: absolute;
+  display: flex;
+  top: 60px;
+  left: 50%;
+  width: 80%;
+  margin-left: -40%;
+  background: white;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 19;
+  box-shadow: 0 5px 30px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+.stage-sub-menu .link-url {
+  flex-grow: 2;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #ccc;
+  border-right: 0;
+  padding: 8px;
+}
+
+.stage-sub-menu button {
+  border-radius: 0 4px 4px 0;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+}
