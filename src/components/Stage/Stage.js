@@ -20,9 +20,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  resetRedirect,
   copySharedMap,
-  clearNotification,
   saveSharedMap,
   getSharedMap,
   saveUserMap,
@@ -36,6 +34,7 @@ import {
   NodeInfo,
   NodeItem } from '../';
 import SubNodes from './SubNodes';
+import StageSubMenu from './StageSubMenu';
 import { uuid } from '../../utils';
 import './Stage.css';
 
@@ -45,8 +44,7 @@ export class Stage extends Component {
     super(props);
 
     this.state = {
-      sharedLinkOpen: false,
-      saveMapFormOpen: false,
+      subMenuOpen: '',
       showNodeInfo: false,
       nodeInfoNode: null,
       mapName: ''
@@ -54,7 +52,6 @@ export class Stage extends Component {
 
     this.renderNodes = this.renderNodes.bind(this);
     this.openSharedLink = this.openSharedLink.bind(this);
-    this.closeSharedLink = this.closeSharedLink.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.onCloseNodeInfo = this.onCloseNodeInfo.bind(this);
     this.onShowNodeInfo = this.onShowNodeInfo.bind(this);
@@ -106,20 +103,28 @@ export class Stage extends Component {
 
   saveMapForm(event) {
     event.preventDefault();
-    if (!this.state.saveMapFormOpen) {
+    if (this.state.subMenuOpen !== 'saveMap') {
       this.openSaveMapForm();
       return;
     }
-    this.closeSaveMapForm();
+    this.closeSubMenu();
   }
 
   openSaveMapForm() {
-    this.setState({ saveMapFormOpen: true });
-    this.setState({ sharedLinkOpen: false });
+    this.setState({ subMenuOpen: 'saveMap' });
   }
 
-  closeSaveMapForm() {
-    this.setState({ saveMapFormOpen: false });
+  saveMapCopyForm(event) {
+    event.preventDefault();
+    if (this.state.subMenuOpen !== 'saveMapCopy') {
+      this.openSaveMapCopyForm();
+      return;
+    }
+    this.closeSubMenu();
+  }
+
+  openSaveMapCopyForm() {
+    this.setState({ subMenuOpen: 'saveMapCopy' });
   }
 
   handleMapNameChange(event) {
@@ -129,78 +134,27 @@ export class Stage extends Component {
 
   shareMap(event) {
     event.preventDefault();
-    if (!this.state.sharedLinkOpen) {
+    if (this.state.subMenuOpen !== 'sharedLink') {
       this.openSharedLink();
       this.props.saveSharedMap(this.props.stageNodes);
       return;
     }
-    this.closeSharedLink();
+    this.closeSubMenu();
   }
 
   openSharedLink() {
-    this.setState({ sharedLinkOpen: true });
-    this.setState({ saveMapFormOpen: false });
+    this.setState({ subMenuOpen: 'sharedLink' });
   }
 
-  closeSharedLink() {
-    this.setState({ sharedLinkOpen: false });
+  closeSubMenu() {
+    this.setState({ subMenuOpen: '' });
   }
 
   handleOutsideClick(e) {
     if (this.stageTools && this.stageTools.contains(e.target)) {
       return;
     }
-    this.closeSharedLink();
-    this.closeSaveMapForm();
-  }
-
-  treatRedirect() {
-    if (this.props.willRedirect) {
-      let willRedirect = this.props.willRedirect;
-      this.props.resetRedirect();
-      this.props.history.push(willRedirect);
-    }
-  }
-
-  applyNotificationTippy() {
-    if (this.props.notification) {
-      let classToApplyTippy;
-      let notificationTransition = 500;
-      let notificationDuration = 2000;
-      if (this.state.sharedLinkOpen) {
-        classToApplyTippy = 'btn-clipboard';
-      } else if (this.state.saveMapFormOpen) {
-        classToApplyTippy = 'btn-save';
-      }
-      if (document.getElementsByClassName(classToApplyTippy).length > 0) {
-        tippy('.' + classToApplyTippy, {
-          trigger: 'manual',
-          animation: 'scale',
-          duration: notificationTransition,
-          onShown(instance) {
-            (async () => {
-              await new Promise(r => setTimeout(r, notificationDuration));
-              instance.hide();
-            })();
-          }
-        });
-      }
-    }
-  }
-
-  showNotification() {
-    if (this.props.notification) {
-      this.applyNotificationTippy();
-      let notification = document.getElementsByClassName(
-          this.props.notification)[0]._tippy;
-      notification.show();
-      this.props.clearNotification();
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    this.treatRedirect();
-    this.showNotification();
+    this.closeSubMenu()
   }
 
   componentDidMount() {
@@ -272,34 +226,43 @@ export class Stage extends Component {
               <i className="fas fa-save"></i>
             </button>
 
-            {this.state.sharedLinkOpen &&
-              <div className="shared-link">
-                <input type="text" readOnly={true} className="link-url"
-                       value={urlToShare} onClick={e => e.target.select()} />
-                <button className="btn-clipboard" onClick={e => this.copySharedMap(e)}
-                       data-tippy-content="Copiado!"
-                       data-clipboard-text={urlToShare} disabled={!this.props.latestSharedMapKey}>
-                  <i className="fa fa-clipboard"></i> Copiar para o clipboard
-                </button>
-              </div>}
+            <button className="gmap-btn small btn-save-copy-map" onClick={e => this.saveMapCopyForm(e)}
+                    data-tippy-content="Salvar cópia deste mapa"
+                    disabled={!rootNodeHasItens}>
+              <i class="fas fa-copy"></i>
+            </button>
 
-            {this.state.saveMapFormOpen &&
-              <div className="save-map">
-                <input type="text" className="link-url"
-                       placeholder="Nome" onClick={e => e.target.select()}
-                       name="map-name" value={this.state.mapName}
-                       onChange={this.handleMapNameChange}/>
-                <button className="btn-save" onClick={e => this.saveMap(e, this.state.mapName)}
-                        data-tippy-content="Salvado!"
-                        disabled={!rootNodeHasItens}>
-                  <i className="fas fa-save"></i> Salvar Mapa
-                </button>
-                <button className="btn-save-copy" onClick={e => this.saveMapCopy(e, this.state.mapName)}
-                        data-tippy-content="Salvado!"
-                        disabled={!rootNodeHasItens}>
-                  <i className="fas fa-save"></i> Salvar Cópia
-                </button>
-              </div>}
+            {this.state.subMenuOpen === 'sharedLink' &&
+              <StageSubMenu readOnly={true}
+                            value={urlToShare}
+                            btnClassName='btn-clipboard'
+                            onClick={e => this.copySharedMap(e)}
+                            urlToShare={urlToShare}
+                            disabled={!this.props.latestSharedMapKey}
+                            buttonIcon="fa fa-clipboard"
+                            buttonText="Copiar para o clipboard" />}
+
+            {this.state.subMenuOpen === 'saveMap' &&
+              <StageSubMenu readOnly={false}
+                            value={this.state.mapName}
+                            placeholder="Nome"
+                            onChange={this.handleMapNameChange}
+                            btnClassName='btn-save'
+                            onClick={e => this.saveMap(e, this.state.mapName)}
+                            disabled={!rootNodeHasItens}
+                            buttonIcon="fas fa-save"
+                            buttonText="Salvar Mapa" />}
+
+            {this.state.subMenuOpen === 'saveMapCopy' &&
+              <StageSubMenu readOnly={false}
+                            value={this.state.mapName}
+                            placeholder="Nome"
+                            onChange={this.handleMapNameChange}
+                            btnClassName='btn-save-copy'
+                            onClick={e => this.saveMapCopy(e, this.state.mapName)}
+                            disabled={!rootNodeHasItens}
+                            buttonIcon="fas fa-save"
+                            buttonText="Salvar Cópia" />}
           </div>
 
           <div className="stage-container">
@@ -330,11 +293,9 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    resetRedirect,
     saveSharedMap,
     getSharedMap,
     saveUserMap,
-    clearNotification,
     copySharedMap,
     getUserMap,
     listUserMaps,
