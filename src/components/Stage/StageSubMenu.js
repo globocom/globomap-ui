@@ -97,4 +97,4 @@ export default connect(
     resetRedirect,
     clearNotification,
   }
-)(Stage);
+)(StageSubMenu);
