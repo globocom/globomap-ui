@@ -217,19 +217,19 @@ export class Stage extends Component {
             <button className="gmap-btn small btn-share-map" onClick={e => this.shareMap(e)}
                     data-tippy-content="Compartilhar este mapa"
                     disabled={!rootNodeHasItens}>
-              <i className="fas fa-link"></i>
+              <i className="fas fa-link"></i> Compartilhar
             </button>
 
             <button className="gmap-btn small btn-save-map" onClick={e => this.saveMapForm(e)}
                     data-tippy-content="Salvar este mapa"
                     disabled={!rootNodeHasItens}>
-              <i className="fas fa-save"></i>
+              <i className="fas fa-save"></i> Salvar
             </button>
 
             <button className="gmap-btn small btn-save-copy-map" onClick={e => this.saveMapCopyForm(e)}
                     data-tippy-content="Salvar cópia deste mapa"
                     disabled={!rootNodeHasItens}>
-              <i class="fas fa-copy"></i>
+              <i class="fas fa-copy"></i> Salvar Cópia
             </button>
 
             {this.state.subMenuOpen === 'sharedLink' &&
