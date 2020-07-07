@@ -132,4 +132,19 @@ router.get('/info', isAuthenticated, (req, res) => {
   });
 });
 
+router.get('/catalog', isAuthenticated, (req, res) => {
+  const query = req.query;
+  let color = '';
+
+  if (query !== undefined && query.color !== undefined) {
+    color = query.color;
+  }
+
+  return res.status(200).render('catalog', {
+    catalogApiURI: config.catalogApiURI,
+    catalogToken: config.catalogToken,
+    catalogColor: color
+  });
+});
+
 module.exports = router;

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Catálogo de Apps</title>
+    <link rel="stylesheet" href="/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/fontawesome-all.min.css" />
+    <style>
+      html { background-color: #dee1e5; }
+      .report-main { background-color: #eceef2; }
+      #report-header { padding: 1.2rem; height: 80px; background-color: #2eb78e; }
+      #report-header .title { color: white; }
+      #report-header .title .globo { font-weight: lighter; }
+      .content { border-radius: 5px; overflow: hidden; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+      .content .td_head { font-weight: bold }
+      .report-loading { padding: 20px; text-align: center; background-color: white; }
+      .report-loading-cog { color: rgba(0, 0, 0, 0.3); }
+      #header-info { padding: 0.8rem; height: 60px; background-color: #dee1e5; border-bottom: 1px solid #d9dce0; }
+      .fixed-info { position: fixed; top: 0; left: 0; width: 100%; z-index: 9; }
+      .with-fixed-info { margin-bottom: 60px; }
+    </style>
+  </head>
+  <body>
+    <section id="report-header">
+      <div class="container">
+        <div class="columns is-vcentered">
+          <div class="column">
+            <p class="title">
+              Catálogo de Apps
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="header-info">
+      <div class="container">
+        <div class="columns is-vcentered">
+          <div class="column">
+            <span class="report-type is-size-5">Cadastro e consulta de Apps</span>
+          </div>
+          <div class="column">
+            <span class="report-item is-size-6"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="section report-main">
+      <div class="container">
+        <div class="content" id="data-content">
+          <div id="catalog"></div>
+        </div>
+      </div>
+    </section>
+
+    <script src="<%= catalogApiURI %>/static/js/component-latest.js"></script>
+    <script>
+      new Catalog({
+        elementId: '#catalog',
+        apiURI: '<%= catalogApiURI %>',
+        token: '<%= catalogToken %>',
+        provider: 'globomap',
+        color: '<%= catalogColor %>'
+      });
+    </script>
+
+  </body>
+</html>

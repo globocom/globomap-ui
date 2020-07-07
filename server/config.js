@@ -42,5 +42,9 @@ module.exports = {
   accessTokenUri: process.env.OAUTH_TOKEN_URL,
   authorizationUri: process.env.OAUTH_AUTHORIZE_URL,
   redirectUri: process.env.OAUTH_REDIRECT_URL,
-  oauthUserInfoUrl: process.env.OAUTH_USER_INFO_URL
+  oauthUserInfoUrl: process.env.OAUTH_USER_INFO_URL,
+
+  // Catalog
+  catalogToken: process.env.CATALOG_TOKEN,
+  catalogApiURI: process.env.CATALOG_API_URI
 };
