@@ -82,7 +82,9 @@ if (app.get('env') === 'production') {
     });
   }
 
-  sessionConfig.store = new RedisStore({ client: redisClient });
+  sessionConfig.store = new RedisStore({
+    client: redisClient
+  });
 } else {
   app.set('disable-auth', !config.oauthForceAuth);
 }
