@@ -85,10 +85,7 @@ if (app.get('env') === 'production') {
   }
 
   sessionConfig.store = new RedisStore({
-    client: redisClient,
-    host: config.redisHost,
-    port: config.redisPort,
-    pass: config.redisPassword
+    client: redisClient
   });
 } else {
   app.set('disable-auth', !config.oauthForceAuth);
