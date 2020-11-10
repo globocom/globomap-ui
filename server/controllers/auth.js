@@ -17,7 +17,6 @@ limitations under the License.
 const express = require('express');
 const oauthClient = require('../oauthClient');
 const config = require('../config');
-const axios = require('axios');
 
 const router = express.Router();
 
@@ -37,17 +36,12 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-  const redirectUri = req.protocol + "://" + req.get('Host');
-  const url = `${config.oauthLogoutUrl}?id_token_hint=${req.session.tokenData.access_token}&state=some_random_string`;
   req.session = null;
 
-  axios.get(url)
-    .then(response => {
-      return res.redirect(redirectUri)
-    })
-    .catch(error => {
-      console.log(error);
-    });
+  return res.status(200).json({
+    client: config.clientId,
+    logout: config.oauthLogoutUrl
+  });
 });
 
 module.exports = router;
