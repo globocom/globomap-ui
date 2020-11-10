@@ -14,11 +14,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { host } from '../../config'
 import './User.css';
 
 export class User extends Component {
+
+  logout() {
+    axios.get(`${host}/logout`)
+      .then(resp => {
+        if (resp.status === 200) {
+          return window.location.href = `${resp.data.logout}?client_id=${resp.data.client}&redirect_uri=${window.location.origin}/`;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   render() {
     const uInfo = this.props.serverData.userInfo;
@@ -33,9 +47,11 @@ export class User extends Component {
         <div className="user-avatar">
           <img src={picture} alt={email} />
         </div>
-        <a className="user-logout" href="/logout">
-          Logout <i className="fa fa-sign-out-alt"></i>
-        </a>
+        <div className="sidebar-logout">
+          <button className="gmap-btn no-bg user-logout" onClick={() => this.logout()}>
+            Logout <i className="fa fa-sign-out-alt"></i>
+          </button>
+        </div>
       </div>
     );
   }

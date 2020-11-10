@@ -11,8 +11,6 @@
 }
 
 .sidebar-user .user-logout {
-  display: block;
-  text-align: center;
   color: white;
   font-size: 0.8em;
   text-decoration: none;
@@ -34,4 +32,10 @@
 
 .sidebar-user .user-avatar img {
   width: 100%;
+}
+
+.sidebar-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
