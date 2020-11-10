@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "8.9.1"
+    "node": "8.17.0"
   },
   "devDependencies": {
     "babel-jest": "^23.6.0",
