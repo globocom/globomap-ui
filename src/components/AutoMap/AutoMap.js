@@ -98,6 +98,7 @@ export class AutoMap extends React.Component {
           max_depth: 3,
           direction: 'any',
           description: 'Recupera mapas que mostram os Hosts Físicos relacionados a um VIP.\nDigite um VIP.',
+          map_name: (root_node) => {return 'Hosts de ' + root_node},
           searchby: 'name',
           type: 'search'
         },
@@ -108,6 +109,7 @@ export class AutoMap extends React.Component {
           max_depth: 3,
           direction: 'any',
           description: 'Recupera mapas que mostram os VIPs relacionados a um Host Físico.\nDigite um Host Físico.',
+          map_name: (root_node) => {return 'Vips de ' + root_node},
           searchby: 'name',
           type: 'search'
         }
