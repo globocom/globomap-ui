@@ -28,6 +28,7 @@ const app = express();
 
 // SSL
 https.globalAgent.options.ca = fs.readFileSync(config.certificates);
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // views setup
 app.set('views', path.join(__dirname, 'views'));
