@@ -37,6 +37,7 @@ export class Tour extends React.Component {
   onCloseTour(event) {
     event.stopPropagation();
     this.props.saveTourStatus(true);
+    console.log('clicou')
   }
 
   nextStep(event) {
