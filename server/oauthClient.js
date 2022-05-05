@@ -23,7 +23,7 @@ var oauthClient = new ClientOAuth2({
   accessTokenUri: config.accessTokenUri,
   authorizationUri: config.authorizationUri,
   redirectUri: config.redirectUri,
-  scopes: []
+  scopes: ['email']
 });
 
 oauthClient.isAuthenticated = (session, callback) => {
