@@ -61,12 +61,7 @@ let sessionConfig = {
 
 if (app.get('env') === 'production') {
   let RedisStore = require('connect-redis')(session);
-  let redisClient = new Redis({
-    db: 0,
-    host: config.redisHost,
-    port: config.redisPort,
-    password: config.redisPassword
-  });
+  let redisClient;
 
   if (config.redisSentinelsHosts) {
     redisClient = new Redis({
@@ -79,6 +74,13 @@ if (app.get('env') === 'production') {
           port: config.redisSentinelsPort
         };
       })
+    });
+  } else {
+    redisClient = new Redis({
+      db: 0,
+      host: config.redisHost,
+      port: config.redisPort,
+      password: config.redisPassword
     });
   }
 
